@@ -12,13 +12,11 @@
 
 namespace Webklex\PHPIMAP\Exceptions;
 
-use \Exception;
+use Exception;
 
 /**
- * Class MethodNotSupportedException
- *
- * @package Webklex\PHPIMAP\Exceptions
+ * Class MethodNotSupportedException.
  */
-class MethodNotSupportedException extends Exception {
-
+class MethodNotSupportedException extends Exception
+{
 }

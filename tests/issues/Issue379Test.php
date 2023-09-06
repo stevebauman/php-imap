@@ -28,11 +28,13 @@ use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 
-class Issue379Test extends LiveMailboxTestCase {
-
+class Issue379Test extends LiveMailboxTestCase
+{
     /**
-     * Test issue #379 - Message::getSize() added
+     * Test issue #379 - Message::getSize() added.
+     *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -48,14 +50,14 @@ class Issue379Test extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testIssue(): void {
+    public function testIssue(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         $this->assertEquals(214, $message->getSize());
 
         // Clean up
         $this->assertTrue($message->delete(true));
     }
-
 }

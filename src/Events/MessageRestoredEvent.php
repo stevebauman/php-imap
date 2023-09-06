@@ -13,10 +13,8 @@
 namespace Webklex\PHPIMAP\Events;
 
 /**
- * Class MessageRestoredEvent
- *
- * @package Webklex\PHPIMAP\Events
+ * Class MessageRestoredEvent.
  */
-class MessageRestoredEvent extends MessageNewEvent {
-
+class MessageRestoredEvent extends MessageNewEvent
+{
 }

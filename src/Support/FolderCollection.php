@@ -16,11 +16,10 @@ use Illuminate\Support\Collection;
 use Webklex\PHPIMAP\Folder;
 
 /**
- * Class FolderCollection
+ * Class FolderCollection.
  *
- * @package Webklex\PHPIMAP\Support
  * @implements Collection<int, Folder>
  */
-class FolderCollection extends PaginatedCollection {
-
+class FolderCollection extends PaginatedCollection
+{
 }

@@ -33,16 +33,15 @@ use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
 
 /**
- * Class FolderTest
- *
- * @package Tests
+ * Class FolderTest.
  */
-class FolderTest extends LiveMailboxTestCase {
-
+class FolderTest extends LiveMailboxTestCase
+{
     /**
-     * Try to create a new query instance
+     * Try to create a new query instance.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -52,7 +51,8 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void {
+    public function testQuery(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -62,9 +62,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::hasChildren()
+     * Test Folder::hasChildren().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -75,11 +76,12 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws EventNotFoundException
      */
-    public function testHasChildren(): void {
+    public function testHasChildren(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
         if ($folder->getClient()->getFolder($child_path) === null) {
             $folder->getClient()->createFolder($child_path, false);
@@ -90,9 +92,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::setChildren()
+     * Test Folder::setChildren().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -103,11 +106,12 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetChildren(): void {
+    public function testSetChildren(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
         if ($folder->getClient()->getFolder($child_path) === null) {
             $folder->getClient()->createFolder($child_path, false);
@@ -120,9 +124,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::getChildren()
+     * Test Folder::getChildren().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -133,11 +138,12 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetChildren(): void {
+    public function testGetChildren(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
         if ($folder->getClient()->getFolder($child_path) === null) {
             $folder->getClient()->createFolder($child_path, false);
@@ -151,9 +157,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::move()
+     * Test Folder::move().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -164,10 +171,11 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMove(): void {
+    public function testMove(): void
+    {
         $client = $this->getClient();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
         $folder = $client->getFolder($folder_path);
@@ -187,14 +195,15 @@ class FolderTest extends LiveMailboxTestCase {
         self::assertEquals('other', $new_folder->name);
 
         if ($this->deleteFolder($new_folder) === false) {
-            $this->fail("Could not delete folder: " . $new_folder->path);
+            $this->fail('Could not delete folder: '.$new_folder->path);
         }
     }
 
     /**
-     * Test Folder::delete()
+     * Test Folder::delete().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -205,10 +214,11 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testDelete(): void {
+    public function testDelete(): void
+    {
         $client = $this->getClient();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
         $folder = $client->getFolder($folder_path);
@@ -218,14 +228,15 @@ class FolderTest extends LiveMailboxTestCase {
         self::assertInstanceOf(Folder::class, $folder);
 
         if ($this->deleteFolder($folder) === false) {
-            $this->fail("Could not delete folder: " . $folder->path);
+            $this->fail('Could not delete folder: '.$folder->path);
         }
     }
 
     /**
-     * Test Folder::overview()
+     * Test Folder::overview().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -241,7 +252,8 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws MessageHeaderFetchingException
      * @throws MessageNotFoundException
      */
-    public function testOverview(): void {
+    public function testOverview(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -252,22 +264,23 @@ class FolderTest extends LiveMailboxTestCase {
         self::assertIsArray($overview);
         self::assertCount(0, $overview);
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
 
         $overview = $folder->overview();
 
         self::assertIsArray($overview);
         self::assertCount(1, $overview);
 
-        self::assertEquals($message->from->first()->full, end($overview)["from"]->toString());
+        self::assertEquals($message->from->first()->full, end($overview)['from']->toString());
 
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Folder::appendMessage()
+     * Test Folder::appendMessage().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -283,25 +296,27 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAppendMessage(): void {
+    public function testAppendMessage(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         self::assertInstanceOf(Message::class, $message);
 
-        self::assertEquals("Example", $message->subject);
-        self::assertEquals("to@someone-else.com", $message->to);
-        self::assertEquals("from@someone.com", $message->from);
+        self::assertEquals('Example', $message->subject);
+        self::assertEquals('to@someone-else.com', $message->to);
+        self::assertEquals('from@someone.com', $message->from);
 
         // Clean up
         $this->assertTrue($message->delete(true));
     }
 
     /**
-     * Test Folder::subscribe()
+     * Test Folder::subscribe().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -311,7 +326,8 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSubscribe(): void {
+    public function testSubscribe(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -324,9 +340,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::unsubscribe()
+     * Test Folder::unsubscribe().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -336,7 +353,8 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testUnsubscribe(): void {
+    public function testUnsubscribe(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -348,9 +366,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::status()
+     * Test Folder::status().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -360,7 +379,8 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testStatus(): void {
+    public function testStatus(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -373,9 +393,10 @@ class FolderTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Folder::examine()
+     * Test Folder::examine().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -385,22 +406,24 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testExamine(): void {
+    public function testExamine(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
         $status = $folder->examine();
-        self::assertTrue(isset($status["flags"]) && count($status["flags"]) > 0);
-        self::assertTrue(($status["uidnext"] ?? 0) > 0);
-        self::assertTrue(($status["uidvalidity"] ?? 0) > 0);
-        self::assertTrue(($status["recent"] ?? -1) >= 0);
-        self::assertTrue(($status["exists"] ?? -1) >= 0);
+        self::assertTrue(isset($status['flags']) && count($status['flags']) > 0);
+        self::assertTrue(($status['uidnext'] ?? 0) > 0);
+        self::assertTrue(($status['uidvalidity'] ?? 0) > 0);
+        self::assertTrue(($status['recent'] ?? -1) >= 0);
+        self::assertTrue(($status['exists'] ?? -1) >= 0);
     }
 
     /**
-     * Test Folder::getClient()
+     * Test Folder::getClient().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -410,16 +433,18 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetClient(): void {
+    public function testGetClient(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
         self::assertInstanceOf(Client::class, $folder->getClient());
     }
 
     /**
-     * Test Folder::setDelimiter()
+     * Test Folder::setDelimiter().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -429,19 +454,19 @@ class FolderTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetDelimiter(): void {
+    public function testSetDelimiter(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $folder->setDelimiter("/");
-        self::assertEquals("/", $folder->delimiter);
+        $folder->setDelimiter('/');
+        self::assertEquals('/', $folder->delimiter);
 
-        $folder->setDelimiter(".");
-        self::assertEquals(".", $folder->delimiter);
+        $folder->setDelimiter('.');
+        self::assertEquals('.', $folder->delimiter);
 
-        $default_delimiter = $this->getManager()->get("options.delimiter", "/");
+        $default_delimiter = $this->getManager()->get('options.delimiter', '/');
         $folder->setDelimiter(null);
         self::assertEquals($default_delimiter, $folder->delimiter);
     }
-
 }

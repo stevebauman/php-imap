@@ -15,22 +15,21 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 
 /**
- * Class AttachmentNoDispositionTest
- *
- * @package Tests\fixtures
+ * Class AttachmentNoDispositionTest.
  */
-class AttachmentNoDispositionTest extends FixtureTestCase {
-
+class AttachmentNoDispositionTest extends FixtureTestCase
+{
     /**
-     * Test the fixture attachment_no_disposition.eml
+     * Test the fixture attachment_no_disposition.eml.
      *
      * @return void
      */
-    public function testFixture() : void {
-        $message = $this->getFixture("attachment_no_disposition.eml");
+    public function testFixture(): void
+    {
+        $message = $this->getFixture('attachment_no_disposition.eml');
 
-        self::assertEquals("", $message->subject);
-        self::assertEquals("multipart/mixed", $message->content_type->last());
+        self::assertEquals('', $message->subject);
+        self::assertEquals('multipart/mixed', $message->content_type->last());
         self::assertFalse($message->hasTextBody());
         self::assertFalse($message->hasHTMLBody());
 
@@ -41,11 +40,11 @@ class AttachmentNoDispositionTest extends FixtureTestCase {
         self::assertInstanceOf(Attachment::class, $attachment);
         self::assertEquals('26ed3dd2', $attachment->filename);
         self::assertEquals('26ed3dd2', $attachment->id);
-        self::assertEquals("Prostřeno_2014_poslední volné termíny.xls", $attachment->name);
+        self::assertEquals('Prostřeno_2014_poslední volné termíny.xls', $attachment->name);
         self::assertEquals('text', $attachment->type);
         self::assertEquals('xls', $attachment->getExtension());
-        self::assertEquals("application/vnd.ms-excel", $attachment->content_type);
-        self::assertEquals("a0ef7cfbc05b73dbcb298fe0bc224b41900cdaf60f9904e3fea5ba6c7670013c", hash("sha256", $attachment->content));
+        self::assertEquals('application/vnd.ms-excel', $attachment->content_type);
+        self::assertEquals('a0ef7cfbc05b73dbcb298fe0bc224b41900cdaf60f9904e3fea5ba6c7670013c', hash('sha256', $attachment->content));
         self::assertEquals(146, $attachment->size);
         self::assertEquals(0, $attachment->part_number);
         self::assertNull($attachment->disposition);

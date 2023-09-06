@@ -10,27 +10,30 @@
 *  -
 */
 
-class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask {
-
+class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask
+{
     /**
-     * New custom method which can be called through a mask
+     * New custom method which can be called through a mask.
+     *
      * @return string
      */
-    public function token(): string {
+    public function token(): string
+    {
         return implode('-', [$this->id, $this->getMessage()->getUid(), $this->name]);
     }
 
     /**
-     * Custom attachment saving method
+     * Custom attachment saving method.
+     *
      * @return bool
      */
-    public function custom_save(): bool {
-        $path = "foo".DIRECTORY_SEPARATOR."bar".DIRECTORY_SEPARATOR;
+    public function custom_save(): bool
+    {
+        $path = 'foo'.DIRECTORY_SEPARATOR.'bar'.DIRECTORY_SEPARATOR;
         $filename = $this->token();
 
         return file_put_contents($path.$filename, $this->getContent()) !== false;
     }
-
 }
 
 /** @var \Webklex\PHPIMAP\Client $client */

@@ -12,16 +12,16 @@
 
 namespace Tests\issues;
 
-use PHPUnit\Framework\TestCase;
 use Tests\live\LiveMailboxTestCase;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\IMAP;
 use Webklex\PHPIMAP\Message;
 
-class Issue407Test extends LiveMailboxTestCase {
-
+class Issue407Test extends LiveMailboxTestCase
+{
     /**
      * @return void
+     *
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
@@ -36,22 +36,22 @@ class Issue407Test extends LiveMailboxTestCase {
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testIssue() {
+    public function testIssue()
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         self::assertInstanceOf(Message::class, $message);
 
-        $message->setFlag("Seen");
+        $message->setFlag('Seen');
 
         $flags = $this->getClient()->getConnection()->flags($message->uid, IMAP::ST_UID)->validatedData();
 
         self::assertIsArray($flags);
         self::assertSame(1, count($flags));
-        self::assertSame("\\Seen", $flags[$message->uid][0]);
+        self::assertSame('\\Seen', $flags[$message->uid][0]);
 
         $message->delete();
     }
-
 }

@@ -24,11 +24,13 @@ use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 
-class Issue383Test extends LiveMailboxTestCase {
-
+class Issue383Test extends LiveMailboxTestCase
+{
     /**
-     * Test issue #383 - Does not work when a folder name contains umlauts: Entwürfe
+     * Test issue #383 - Does not work when a folder name contains umlauts: Entwürfe.
+     *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -39,11 +41,12 @@ class Issue383Test extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testIssue(): void {
+    public function testIssue(): void
+    {
         $client = $this->getClient();
         $client->connect();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'Entwürfe+']);
 
         $folder = $client->getFolder($folder_path);
@@ -63,7 +66,7 @@ class Issue383Test extends LiveMailboxTestCase {
 
         // Clean up
         if ($this->deleteFolder($folder) === false) {
-            $this->fail("Could not delete folder: " . $folder->path);
+            $this->fail('Could not delete folder: '.$folder->path);
         }
     }
 }
