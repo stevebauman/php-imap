@@ -1,5 +1,5 @@
 {
-    "name": "webklex/php-imap",
+    "name": "stevebauman/php-imap",
     "type": "library",
     "description": "PHP IMAP client",
     "keywords": [
@@ -9,7 +9,7 @@
         "php-imap",
         "mail"
     ],
-    "homepage": "https://github.com/webklex/php-imap",
+    "homepage": "https://github.com/stevebauman/php-imap",
     "license": "MIT",
     "authors": [
         {
