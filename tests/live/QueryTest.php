@@ -34,16 +34,15 @@ use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
 /**
- * Class QueryTest
- *
- * @package Tests
+ * Class QueryTest.
  */
-class QueryTest extends LiveMailboxTestCase {
-
+class QueryTest extends LiveMailboxTestCase
+{
     /**
-     * Try to create a new query instance
+     * Try to create a new query instance.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -53,7 +52,8 @@ class QueryTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void {
+    public function testQuery(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -63,9 +63,10 @@ class QueryTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Try to create a new query instance with a where clause
+     * Try to create a new query instance with a where clause.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -83,10 +84,11 @@ class QueryTest extends LiveMailboxTestCase {
      * @throws InvalidWhereQueryCriteriaException
      * @throws MessageSearchValidationException
      */
-    public function testQueryWhere(): void {
+    public function testQueryWhere(): void
+    {
         $client = $this->getClient();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'search']);
 
         $folder = $client->getFolder($folder_path);
@@ -149,7 +151,7 @@ class QueryTest extends LiveMailboxTestCase {
         $query = $folder->query()->all();
         self::assertEquals(count($messages), $query->count());
 
-        $query = $folder->query()->whereSubject("test");
+        $query = $folder->query()->whereSubject('test');
         self::assertEquals(11, $query->count());
 
         $query = $folder->query()->whereOn(Carbon::now());
@@ -159,9 +161,10 @@ class QueryTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test query where criteria
+     * Test query where criteria.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -172,7 +175,8 @@ class QueryTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQueryWhereCriteria(): void {
+    public function testQueryWhereCriteria(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -201,7 +205,7 @@ class QueryTest extends LiveMailboxTestCase {
         $this->assertWhereSearchCriteria($folder, 'UNANSWERED');
         $this->assertWhereSearchCriteria($folder, 'DELETED');
         $this->assertWhereSearchCriteria($folder, 'UNDELETED');
-        $this->assertHeaderSearchCriteria($folder, 'Content-Language','en_US');
+        $this->assertHeaderSearchCriteria($folder, 'Content-Language', 'en_US');
         $this->assertWhereSearchCriteria($folder, 'CUSTOM X-Spam-Flag NO');
         $this->assertWhereSearchCriteria($folder, 'CUSTOM X-Spam-Flag YES');
         $this->assertWhereSearchCriteria($folder, 'NOT');
@@ -216,13 +220,14 @@ class QueryTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Assert where search criteria
-     * @param Folder $folder
-     * @param string $criteria
-     * @param string|Carbon|null $value
-     * @param bool $date
+     * Assert where search criteria.
      *
+     * @param  Folder  $folder
+     * @param  string  $criteria
+     * @param  string|Carbon|null  $value
+     * @param  bool  $date
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -231,12 +236,13 @@ class QueryTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void {
+    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void
+    {
         $query = $folder->query()->where($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
-        $criteria = str_replace("CUSTOM ", "", $criteria);
+        $criteria = str_replace('CUSTOM ', '', $criteria);
         $expected = $value === null ? [$criteria] : [$criteria, $value];
         if ($date === true && $value instanceof Carbon) {
             $date_format = ClientManager::get('date_format', 'd M y');
@@ -245,22 +251,23 @@ class QueryTest extends LiveMailboxTestCase {
 
         self::assertIsArray($item);
         self::assertIsString($item[0]);
-        if($value !== null) {
+        if ($value !== null) {
             self::assertCount(2, $item);
             self::assertIsString($item[1]);
-        }else{
+        } else {
             self::assertCount(1, $item);
         }
         self::assertSame($expected, $item);
     }
 
     /**
-     * Assert header search criteria
-     * @param Folder $folder
-     * @param string $criteria
-     * @param mixed|null $value
+     * Assert header search criteria.
      *
+     * @param  Folder  $folder
+     * @param  string  $criteria
+     * @param  mixed|null  $value
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -269,7 +276,8 @@ class QueryTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void {
+    protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
+    {
         $query = $folder->query()->whereHeader($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);
 

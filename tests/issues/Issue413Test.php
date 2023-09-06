@@ -12,17 +12,17 @@
 
 namespace Tests\issues;
 
-use PHPUnit\Framework\TestCase;
 use Tests\live\LiveMailboxTestCase;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
-class Issue413Test extends LiveMailboxTestCase {
-
+class Issue413Test extends LiveMailboxTestCase
+{
     /**
-     * Live server test
+     * Live server test.
      *
      * @return void
+     *
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
@@ -39,7 +39,8 @@ class Issue413Test extends LiveMailboxTestCase {
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testLiveIssueEmail() {
+    public function testLiveIssueEmail()
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -49,16 +50,17 @@ class Issue413Test extends LiveMailboxTestCase {
         $message = $folder->messages()->getMessageByMsgn($_message->msgn);
         self::assertEquals($message->uid, $_message->uid);
 
-        self::assertSame("Test Message", (string)$message->subject);
+        self::assertSame('Test Message', (string) $message->subject);
         self::assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
 
         $message->delete();
     }
 
     /**
-     * Static parsing test
+     * Static parsing test.
      *
      * @return void
+     *
      * @throws \ReflectionException
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
@@ -70,12 +72,12 @@ class Issue413Test extends LiveMailboxTestCase {
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testIssueEmail() {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, "..", "messages", "issue-413.eml"]);
+    public function testIssueEmail()
+    {
+        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-413.eml']);
         $message = Message::fromFile($filename);
 
-        self::assertSame("Test Message", (string)$message->subject);
+        self::assertSame('Test Message', (string) $message->subject);
         self::assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
     }
-
 }

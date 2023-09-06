@@ -14,26 +14,24 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 
-class ImapProtocolTest extends TestCase {
-
-
+class ImapProtocolTest extends TestCase
+{
     /**
-     * ImapProtocol test
+     * ImapProtocol test.
      *
      * @return void
      */
-    public function testImapProtocol(): void {
-
+    public function testImapProtocol(): void
+    {
         $protocol = new ImapProtocol(false);
         self::assertSame(false, $protocol->getCertValidation());
-        self::assertSame("", $protocol->getEncryption());
+        self::assertSame('', $protocol->getEncryption());
 
         $protocol->setCertValidation(true);
-        $protocol->setEncryption("ssl");
+        $protocol->setEncryption('ssl');
 
         self::assertSame(true, $protocol->getCertValidation());
-        self::assertSame("ssl", $protocol->getEncryption());
+        self::assertSame('ssl', $protocol->getEncryption());
     }
 }

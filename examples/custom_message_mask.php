@@ -10,24 +10,27 @@
 *  -
 */
 
-class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask {
-
+class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask
+{
     /**
-     * New custom method which can be called through a mask
+     * New custom method which can be called through a mask.
+     *
      * @return string
      */
-    public function token(): string {
+    public function token(): string
+    {
         return implode('-', [$this->message_id, $this->uid, $this->message_no]);
     }
 
     /**
-     * Get number of message attachments
-     * @return integer
+     * Get number of message attachments.
+     *
+     * @return int
      */
-    public function getAttachmentCount(): int {
+    public function getAttachmentCount(): int
+    {
         return $this->getAttachments()->count();
     }
-
 }
 
 /** @var \Webklex\PHPIMAP\Client $client */
@@ -47,4 +50,3 @@ $masked_message = $message->mask(CustomMessageMask::class);
 echo 'Token for uid ['.$masked_message->uid.']: '.$masked_message->token().' @atms:'.$masked_message->getAttachmentCount();
 
 $masked_message->setFlag('seen');
-

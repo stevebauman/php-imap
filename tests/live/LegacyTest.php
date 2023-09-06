@@ -37,41 +37,41 @@ use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
 /**
- * Class LegacyTest
- *
- * @package Tests
+ * Class LegacyTest.
  */
-class LegacyTest extends TestCase {
-
+class LegacyTest extends TestCase
+{
     /**
-     * Client
+     * Client.
      */
     protected static Client $client;
 
     /**
      * Create a new LegacyTest instance.
-     * @param string|null $name
-     * @param array $data
-     * @param int|string $dataName
+     *
+     * @param  string|null  $name
+     * @param  array  $data
+     * @param  int|string  $dataName
      */
-    public function __construct(?string $name = null, array $data = [], int|string $dataName = '') {
-        if (!getenv("LIVE_MAILBOX") ?? false) {
-            $this->markTestSkipped("This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.");
+    public function __construct(?string $name = null, array $data = [], int|string $dataName = '')
+    {
+        if (! getenv('LIVE_MAILBOX') ?? false) {
+            $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
         }
 
         parent::__construct($name, $data, $dataName);
         $manager = new ClientManager([
             'options' => [
-                "debug" => $_ENV["LIVE_MAILBOX_DEBUG"] ?? false,
+                'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
             ],
             'accounts' => [
                 'legacy' => [
-                    'host'          => getenv("LIVE_MAILBOX_HOST"),
-                    'port'          => getenv("LIVE_MAILBOX_PORT"),
-                    'encryption'    => getenv("LIVE_MAILBOX_ENCRYPTION"),
-                    'validate_cert' => getenv("LIVE_MAILBOX_VALIDATE_CERT"),
-                    'username'      => getenv("LIVE_MAILBOX_USERNAME"),
-                    'password'      => getenv("LIVE_MAILBOX_PASSWORD"),
+                    'host'          => getenv('LIVE_MAILBOX_HOST'),
+                    'port'          => getenv('LIVE_MAILBOX_PORT'),
+                    'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                    'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
+                    'username'      => getenv('LIVE_MAILBOX_USERNAME'),
+                    'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
                     'protocol'      => 'legacy-imap',
                 ],
             ],
@@ -96,9 +96,9 @@ class LegacyTest extends TestCase {
      * @throws AuthFailedException
      * @throws MessageHeaderFetchingException
      */
-    public function testSizes(): void {
-
-        $delimiter = ClientManager::get("options.delimiter");
+    public function testSizes(): void
+    {
+        $delimiter = ClientManager::get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
         if (self::$client->getFolder($child_path) === null) {
             self::$client->createFolder($child_path, false);
@@ -107,7 +107,7 @@ class LegacyTest extends TestCase {
 
         self::assertInstanceOf(Folder::class, $folder);
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         self::assertInstanceOf(Message::class, $message);
 
         self::assertEquals(214, $message->size);
@@ -115,9 +115,10 @@ class LegacyTest extends TestCase {
     }
 
     /**
-     * Try to create a new query instance
+     * Try to create a new query instance.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -127,7 +128,8 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void {
+    public function testQuery(): void
+    {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
 
@@ -137,10 +139,11 @@ class LegacyTest extends TestCase {
     }
 
     /**
-     * Get a folder
-     * @param string $folder_path
+     * Get a folder.
      *
+     * @param  string  $folder_path
      * @return Folder
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -150,20 +153,21 @@ class LegacyTest extends TestCase {
      * @throws RuntimeException
      * @throws FolderFetchingException
      */
-    final protected function getFolder(string $folder_path = "INDEX"): Folder {
+    final protected function getFolder(string $folder_path = 'INDEX'): Folder
+    {
         $folder = self::$client->getFolderByPath($folder_path);
         self::assertInstanceOf(Folder::class, $folder);
 
         return $folder;
     }
 
-
     /**
-     * Append a message to a folder
-     * @param Folder $folder
-     * @param string $message
+     * Append a message to a folder.
      *
+     * @param  Folder  $folder
+     * @param  string  $message
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -176,10 +180,11 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function appendMessage(Folder $folder, string $message): Message {
+    final protected function appendMessage(Folder $folder, string $message): Message
+    {
         $status = $folder->select();
-        if (!isset($status['uidnext'])) {
-            $this->fail("No UIDNEXT returned");
+        if (! isset($status['uidnext'])) {
+            $this->fail('No UIDNEXT returned');
         }
 
         $response = $folder->appendMessage($message);
@@ -190,8 +195,8 @@ class LegacyTest extends TestCase {
                 break;
             }
         }
-        if (!$valid_response) {
-            $this->fail("Failed to append message: ".implode("\n", $response));
+        if (! $valid_response) {
+            $this->fail('Failed to append message: '.implode("\n", $response));
         }
 
         $message = $folder->messages()->getMessageByUid($status['uidnext']);
@@ -201,11 +206,12 @@ class LegacyTest extends TestCase {
     }
 
     /**
-     * Append a message template to a folder
-     * @param Folder $folder
-     * @param string $template
+     * Append a message template to a folder.
      *
+     * @param  Folder  $folder
+     * @param  string  $template
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -218,16 +224,19 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function appendMessageTemplate(Folder $folder, string $template): Message {
-        $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, "..", "messages", $template]));
+    final protected function appendMessageTemplate(Folder $folder, string $template): Message
+    {
+        $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', $template]));
+
         return $this->appendMessage($folder, $content);
     }
 
     /**
-     * Delete a folder if it is given
-     * @param Folder|null $folder
+     * Delete a folder if it is given.
      *
+     * @param  Folder|null  $folder
      * @return bool
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -236,7 +245,8 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function deleteFolder(Folder $folder = null): bool {
+    final protected function deleteFolder(Folder $folder = null): bool
+    {
         $response = $folder?->delete(false);
         if (is_array($response)) {
             $valid_response = false;
@@ -246,18 +256,21 @@ class LegacyTest extends TestCase {
                     break;
                 }
             }
-            if (!$valid_response) {
-                $this->fail("Failed to delete mailbox: ".implode("\n", $response));
+            if (! $valid_response) {
+                $this->fail('Failed to delete mailbox: '.implode("\n", $response));
             }
+
             return $valid_response;
         }
+
         return false;
     }
 
     /**
-     * Try to create a new query instance with a where clause
+     * Try to create a new query instance with a where clause.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -275,8 +288,9 @@ class LegacyTest extends TestCase {
      * @throws InvalidWhereQueryCriteriaException
      * @throws MessageSearchValidationException
      */
-    public function testQueryWhere(): void {
-        $delimiter = ClientManager::get("options.delimiter");
+    public function testQueryWhere(): void
+    {
+        $delimiter = ClientManager::get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'search']);
 
         $folder = self::$client->getFolder($folder_path);
@@ -339,7 +353,7 @@ class LegacyTest extends TestCase {
         $query = $folder->query()->all();
         self::assertEquals(count($messages), $query->count());
 
-        $query = $folder->query()->whereSubject("test");
+        $query = $folder->query()->whereSubject('test');
         self::assertEquals(11, $query->count());
 
         $query = $folder->query()->whereOn(Carbon::now());
@@ -349,9 +363,10 @@ class LegacyTest extends TestCase {
     }
 
     /**
-     * Test query where criteria
+     * Test query where criteria.
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws FolderFetchingException
@@ -362,7 +377,8 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQueryWhereCriteria(): void {
+    public function testQueryWhereCriteria(): void
+    {
         self::$client->reconnect();
 
         $folder = $this->getFolder('INBOX');
@@ -393,7 +409,7 @@ class LegacyTest extends TestCase {
         $this->assertWhereSearchCriteria($folder, 'UNANSWERED');
         $this->assertWhereSearchCriteria($folder, 'DELETED');
         $this->assertWhereSearchCriteria($folder, 'UNDELETED');
-        $this->assertHeaderSearchCriteria($folder, 'Content-Language','en_US');
+        $this->assertHeaderSearchCriteria($folder, 'Content-Language', 'en_US');
         $this->assertWhereSearchCriteria($folder, 'CUSTOM X-Spam-Flag NO');
         $this->assertWhereSearchCriteria($folder, 'CUSTOM X-Spam-Flag YES');
         $this->assertWhereSearchCriteria($folder, 'NOT');
@@ -408,13 +424,14 @@ class LegacyTest extends TestCase {
     }
 
     /**
-     * Assert where search criteria
-     * @param Folder $folder
-     * @param string $criteria
-     * @param string|Carbon|null $value
-     * @param bool $date
+     * Assert where search criteria.
      *
+     * @param  Folder  $folder
+     * @param  string  $criteria
+     * @param  string|Carbon|null  $value
+     * @param  bool  $date
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -423,12 +440,13 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void {
+    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void
+    {
         $query = $folder->query()->where($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
-        $criteria = str_replace("CUSTOM ", "", $criteria);
+        $criteria = str_replace('CUSTOM ', '', $criteria);
         $expected = $value === null ? [$criteria] : [$criteria, $value];
         if ($date === true && $value instanceof Carbon) {
             $date_format = ClientManager::get('date_format', 'd M y');
@@ -437,22 +455,23 @@ class LegacyTest extends TestCase {
 
         self::assertIsArray($item);
         self::assertIsString($item[0]);
-        if($value !== null) {
+        if ($value !== null) {
             self::assertCount(2, $item);
             self::assertIsString($item[1]);
-        }else{
+        } else {
             self::assertCount(1, $item);
         }
         self::assertSame($expected, $item);
     }
 
     /**
-     * Assert header search criteria
-     * @param Folder $folder
-     * @param string $criteria
-     * @param mixed|null $value
+     * Assert header search criteria.
      *
+     * @param  Folder  $folder
+     * @param  string  $criteria
+     * @param  mixed|null  $value
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -461,7 +480,8 @@ class LegacyTest extends TestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void {
+    protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
+    {
         $query = $folder->query()->whereHeader($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);
 

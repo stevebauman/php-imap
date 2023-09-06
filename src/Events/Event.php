@@ -13,16 +13,15 @@
 namespace Webklex\PHPIMAP\Events;
 
 /**
- * Class Event
- *
- * @package Webklex\PHPIMAP\Events
+ * Class Event.
  */
-abstract class Event {
-
+abstract class Event
+{
     /**
      * Dispatch the event with the given arguments.
      */
-    public static function dispatch(): Event {
+    public static function dispatch(): Event
+    {
         return new static(func_get_args());
     }
 }

@@ -13,25 +13,24 @@
 namespace Tests\fixtures;
 
 /**
- * Class MissingFromTest
- *
- * @package Tests\fixtures
+ * Class MissingFromTest.
  */
-class MissingFromTest extends FixtureTestCase {
-
+class MissingFromTest extends FixtureTestCase
+{
     /**
-     * Test the fixture missing_from.eml
+     * Test the fixture missing_from.eml.
      *
      * @return void
      */
-    public function testFixture() : void {
-        $message = $this->getFixture("missing_from.eml");
+    public function testFixture(): void
+    {
+        $message = $this->getFixture('missing_from.eml');
 
-        self::assertEquals("Nuu", $message->getSubject());
-        self::assertEquals("Hi", $message->getTextBody());
+        self::assertEquals('Nuu', $message->getSubject());
+        self::assertEquals('Hi', $message->getTextBody());
         self::assertFalse($message->hasHTMLBody());
-        self::assertEquals("2017-09-13 11:05:45", $message->date->first()->setTimezone('UTC')->format("Y-m-d H:i:s"));
+        self::assertEquals('2017-09-13 11:05:45', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
         self::assertFalse($message->from->first());
-        self::assertEquals("to@here.com", $message->to->first()->mail);
+        self::assertEquals('to@here.com', $message->to->first()->mail);
     }
 }
