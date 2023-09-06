@@ -12,13 +12,11 @@
 
 namespace Webklex\PHPIMAP\Exceptions;
 
-use \Exception;
+use Exception;
 
 /**
- * Class MessageFlagException
- *
- * @package Webklex\PHPIMAP\Exceptions
+ * Class MessageFlagException.
  */
-class MessageFlagException extends Exception {
-
+class MessageFlagException extends Exception
+{
 }

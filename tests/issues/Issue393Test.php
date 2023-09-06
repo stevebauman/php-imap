@@ -22,13 +22,14 @@ use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
-use Webklex\PHPIMAP\Folder;
 
-class Issue393Test extends LiveMailboxTestCase {
-
+class Issue393Test extends LiveMailboxTestCase
+{
     /**
-     * Test issue #393 - "Empty response" when calling getFolders()
+     * Test issue #393 - "Empty response" when calling getFolders().
+     *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -39,11 +40,12 @@ class Issue393Test extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testIssue(): void {
+    public function testIssue(): void
+    {
         $client = $this->getClient();
         $client->connect();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $pattern = implode($delimiter, ['doesnt_exist', '%']);
 
         $folder = $client->getFolder('doesnt_exist');

@@ -13,30 +13,29 @@
 namespace Tests\fixtures;
 
 /**
- * Class PlainOnlyTest
- *
- * @package Tests\fixtures
+ * Class PlainOnlyTest.
  */
-class UndisclosedRecipientsMinusTest extends FixtureTestCase {
-
+class UndisclosedRecipientsMinusTest extends FixtureTestCase
+{
     /**
-     * Test the fixture undisclosed_recipients_minus.eml
+     * Test the fixture undisclosed_recipients_minus.eml.
      *
      * @return void
      */
-    public function testFixture() : void {
-        $message = $this->getFixture("undisclosed_recipients_minus.eml");
+    public function testFixture(): void
+    {
+        $message = $this->getFixture('undisclosed_recipients_minus.eml');
 
-        self::assertEquals("test", $message->subject);
-        self::assertEquals("Hi!", $message->getTextBody());
+        self::assertEquals('test', $message->subject);
+        self::assertEquals('Hi!', $message->getTextBody());
         self::assertFalse($message->hasHTMLBody());
-        self::assertEquals("2017-09-27 10:48:51", $message->date->first()->setTimezone('UTC')->format("Y-m-d H:i:s"));
-        self::assertEquals("from@there.com", $message->from);
+        self::assertEquals('2017-09-27 10:48:51', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
+        self::assertEquals('from@there.com', $message->from);
         self::assertEquals([
-            "undisclosed-recipients",
-            ""
-                           ], $message->to->map(function ($item) {
-            return $item->mailbox;
-        }));
+            'undisclosed-recipients',
+            '',
+        ], $message->to->map(function ($item) {
+                               return $item->mailbox;
+                           }));
     }
 }

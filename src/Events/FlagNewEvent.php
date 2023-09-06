@@ -15,25 +15,25 @@ namespace Webklex\PHPIMAP\Events;
 use Webklex\PHPIMAP\Message;
 
 /**
- * Class FlagNewEvent
- *
- * @package Webklex\PHPIMAP\Events
+ * Class FlagNewEvent.
  */
-class FlagNewEvent extends Event {
-
-    /** @var Message $message */
+class FlagNewEvent extends Event
+{
+    /** @var Message */
     public Message $message;
 
-    /** @var string $flag */
+    /** @var string */
     public string $flag;
 
     /**
      * Create a new event instance.
-     * @var array $arguments
+     *
+     * @var array
      *
      * @return void
      */
-    public function __construct(array $arguments) {
+    public function __construct(array $arguments)
+    {
         $this->message = $arguments[0];
         $this->flag = $arguments[1];
     }

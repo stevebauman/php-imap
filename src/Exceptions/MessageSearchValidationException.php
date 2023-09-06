@@ -12,13 +12,11 @@
 
 namespace Webklex\PHPIMAP\Exceptions;
 
-use \Exception;
+use Exception;
 
 /**
- * Class MessageSearchValidationException
- *
- * @package Webklex\PHPIMAP\Exceptions
+ * Class MessageSearchValidationException.
  */
-class MessageSearchValidationException extends Exception {
-
+class MessageSearchValidationException extends Exception
+{
 }

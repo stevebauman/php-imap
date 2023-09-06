@@ -16,11 +16,10 @@ use Illuminate\Support\Collection;
 use Webklex\PHPIMAP\Message;
 
 /**
- * Class MessageCollection
+ * Class MessageCollection.
  *
- * @package Webklex\PHPIMAP\Support
  * @implements Collection<int, Message>
  */
-class MessageCollection extends PaginatedCollection {
-
+class MessageCollection extends PaginatedCollection
+{
 }

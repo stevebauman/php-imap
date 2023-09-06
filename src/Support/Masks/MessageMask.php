@@ -16,49 +16,52 @@ use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Message;
 
 /**
- * Class MessageMask
- *
- * @package Webklex\PHPIMAP\Support\Masks
+ * Class MessageMask.
  */
-class MessageMask extends Mask {
-
-    /** @var Message $parent */
+class MessageMask extends Mask
+{
+    /** @var Message */
     protected mixed $parent;
 
     /**
-     * Get the message html body
+     * Get the message html body.
      *
      * @return null
      */
-    public function getHtmlBody(){
+    public function getHtmlBody()
+    {
         $bodies = $this->parent->getBodies();
-        if (!isset($bodies['html'])) {
+        if (! isset($bodies['html'])) {
             return null;
         }
 
-        if(is_object($bodies['html']) && property_exists($bodies['html'], 'content')) {
+        if (is_object($bodies['html']) && property_exists($bodies['html'], 'content')) {
             return $bodies['html']->content;
         }
+
         return $bodies['html'];
     }
 
     /**
-     * Get the Message html body filtered by an optional callback
-     * @param callable|null $callback
+     * Get the Message html body filtered by an optional callback.
      *
+     * @param  callable|null  $callback
      * @return string|null
      */
-    public function getCustomHTMLBody(?callable $callback = null): ?string {
+    public function getCustomHTMLBody(?callable $callback = null): ?string
+    {
         $body = $this->getHtmlBody();
-        if($body === null) return null;
+        if ($body === null) {
+            return null;
+        }
 
         if ($callback !== null) {
             $aAttachment = $this->parent->getAttachments();
-            $aAttachment->each(function($oAttachment) use(&$body, $callback) {
+            $aAttachment->each(function ($oAttachment) use (&$body, $callback) {
                 /** @var Attachment $oAttachment */
-                if(is_callable($callback)) {
+                if (is_callable($callback)) {
                     $body = $callback($body, $oAttachment);
-                }elseif(is_string($callback)) {
+                } elseif (is_string($callback)) {
                     call_user_func($callback, [$body, $oAttachment]);
                 }
             });
@@ -73,8 +76,9 @@ class MessageMask extends Mask {
      *
      * @return string|null
      */
-    public function getHTMLBodyWithEmbeddedBase64Images(): ?string {
-        return $this->getCustomHTMLBody(function($body, $oAttachment){
+    public function getHTMLBodyWithEmbeddedBase64Images(): ?string
+    {
+        return $this->getCustomHTMLBody(function ($body, $oAttachment) {
             /** @var Attachment $oAttachment */
             if ($oAttachment->id) {
                 $body = str_replace('cid:'.$oAttachment->id, 'data:'.$oAttachment->getContentType().';base64, '.base64_encode($oAttachment->getContent()), $body);

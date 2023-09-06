@@ -13,18 +13,17 @@
 namespace Webklex\PHPIMAP;
 
 /**
- * Class IMAP
+ * Class IMAP.
  *
  * Independent imap const holder
  */
-class IMAP {
-
+class IMAP
+{
     /**
-     * Message const
+     * Message const.
      *
      * @const integer   TYPE_TEXT
      * @const integer   TYPE_MULTIPART
-     *
      * @const integer   ENC_7BIT
      * @const integer   ENC_8BIT
      * @const integer   ENC_BINARY
@@ -50,7 +49,7 @@ class IMAP {
     const MESSAGE_PRIORITY_LOWEST = 5;
 
     /**
-     * Attachment const
+     * Attachment const.
      *
      * @const integer   TYPE_TEXT
      * @const integer   TYPE_MULTIPART
@@ -73,7 +72,7 @@ class IMAP {
     const ATTACHMENT_TYPE_OTHER = 8;
 
     /**
-     * Client const
+     * Client const.
      *
      * @const integer   CLIENT_OPENTIMEOUT
      * @const integer   CLIENT_READTIMEOUT
@@ -86,7 +85,7 @@ class IMAP {
     const CLIENT_CLOSETIMEOUT = 4;
 
     /**
-     * Generic imap const
+     * Generic imap const.
      *
      * @const integer NIL
      * @const integer IMAP_OPENTIMEOUT
@@ -157,7 +156,6 @@ class IMAP {
      * @const integer IMAP_GC_ENV
      * @const integer IMAP_GC_TEXTS
      */
-    
     const NIL = 0;
     const IMAP_OPENTIMEOUT = 1;
     const IMAP_READTIMEOUT = 2;
@@ -166,14 +164,16 @@ class IMAP {
     const OP_DEBUG = 1;
 
     /**
-     * Open mailbox read-only
+     * Open mailbox read-only.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const OP_READONLY = 2;
 
     /**
      * Don't use or update a .newsrc for news
-     * (NNTP only)
+     * (NNTP only).
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const OP_ANONYMOUS = 4;
@@ -184,6 +184,7 @@ class IMAP {
     /**
      * For IMAP and NNTP
      * names, open a connection but don't open a mailbox.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const OP_HALFOPEN = 64;
@@ -192,19 +193,22 @@ class IMAP {
 
     /**
      * silently expunge the mailbox before closing when
-     * calling <b>imap_close</b>
+     * calling <b>imap_close</b>.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const CL_EXPUNGE = 32768;
 
     /**
-     * The parameter is a UID
+     * The parameter is a UID.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const FT_UID = 1;
 
     /**
-     * Do not set the \Seen flag if not already set
+     * Do not set the \Seen flag if not already set.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const FT_PEEK = 2;
@@ -212,13 +216,15 @@ class IMAP {
 
     /**
      * The return string is in internal format, will not canonicalize to CRLF.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const FT_INTERNAL = 8;
     const FT_PREFETCHTEXT = 32;
 
     /**
-     * The sequence argument contains UIDs instead of sequence numbers
+     * The sequence argument contains UIDs instead of sequence numbers.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const ST_UID = 1;
@@ -227,27 +233,31 @@ class IMAP {
     const ST_SET = 4;
 
     /**
-     * the sequence numbers contain UIDS
+     * the sequence numbers contain UIDS.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const CP_UID = 1;
 
     /**
      * Delete the messages from the current mailbox after copying
-     * with <b>imap_mail_copy</b>
+     * with <b>imap_mail_copy</b>.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const CP_MOVE = 2;
 
     /**
-     * Return UIDs instead of sequence numbers
+     * Return UIDs instead of sequence numbers.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SE_UID = 1;
     const SE_FREE = 2;
 
     /**
-     * Don't prefetch searched messages
+     * Don't prefetch searched messages.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SE_NOPREFETCH = 4;
@@ -263,6 +273,7 @@ class IMAP {
     /**
      * This mailbox has no "children" (there are no
      * mailboxes below this one).
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const LATT_NOINFERIORS = 1;
@@ -270,12 +281,14 @@ class IMAP {
     /**
      * This is only a container, not a mailbox - you
      * cannot open it.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const LATT_NOSELECT = 2;
 
     /**
      * This mailbox is marked. Only used by UW-IMAPD.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const LATT_MARKED = 4;
@@ -283,6 +296,7 @@ class IMAP {
     /**
      * This mailbox is not marked. Only used by
      * UW-IMAPD.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const LATT_UNMARKED = 8;
@@ -292,49 +306,56 @@ class IMAP {
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * message Date
+     * message Date.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTDATE = 0;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * arrival date
+     * arrival date.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTARRIVAL = 1;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * mailbox in first From address
+     * mailbox in first From address.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTFROM = 2;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * message subject
+     * message subject.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTSUBJECT = 3;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * mailbox in first To address
+     * mailbox in first To address.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTTO = 4;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * mailbox in first cc address
+     * mailbox in first cc address.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTCC = 5;
 
     /**
      * Sort criteria for <b>imap_sort</b>:
-     * size of message in octets
+     * size of message in octets.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const SORTSIZE = 6;
@@ -356,20 +377,22 @@ class IMAP {
 
     /**
      * Garbage collector, clear message cache elements.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const IMAP_GC_ELT = 1;
 
     /**
      * Garbage collector, clear envelopes and bodies.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const IMAP_GC_ENV = 2;
 
     /**
      * Garbage collector, clear texts.
+     *
      * @link http://php.net/manual/en/imap.constants.php
      */
     const IMAP_GC_TEXTS = 4;
-    
 }

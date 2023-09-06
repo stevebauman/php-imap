@@ -10,10 +10,10 @@
 *  -
 */
 
-
 namespace Tests\live;
 
 use Carbon\Carbon;
+use ReflectionException;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
@@ -40,19 +40,17 @@ use Webklex\PHPIMAP\Support\AttachmentCollection;
 use Webklex\PHPIMAP\Support\FlagCollection;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 use Webklex\PHPIMAP\Support\Masks\MessageMask;
-use \ReflectionException;
 
 /**
- * Class MessageTest
- *
- * @package Tests\live
+ * Class MessageTest.
  */
-class MessageTest extends LiveMailboxTestCase {
-
+class MessageTest extends LiveMailboxTestCase
+{
     /**
-     * Get the default message
+     * Get the default message.
      *
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -67,19 +65,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function getDefaultMessage() : Message {
+    protected function getDefaultMessage(): Message
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         self::assertInstanceOf(Message::class, $message);
 
         return $message;
     }
 
     /**
-     * Test Message::convertEncoding()
+     * Test Message::convertEncoding().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -95,18 +95,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws MessageNotFoundException
      */
-    public function testConvertEncoding(): void {
+    public function testConvertEncoding(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("Entwürfe+", $message->convertEncoding("Entw&APw-rfe+", "UTF7-IMAP", "UTF-8"));
+        self::assertEquals('Entwürfe+', $message->convertEncoding('Entw&APw-rfe+', 'UTF7-IMAP', 'UTF-8'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::thread()
+     * Test Message::thread().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -123,10 +125,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws GetMessagesFailedException
      */
-    public function testThread(): void {
+    public function testThread(): void
+    {
         $client = $this->getClient();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'thread']);
 
         $folder = $client->getFolder($folder_path);
@@ -135,9 +138,9 @@ class MessageTest extends LiveMailboxTestCase {
         }
         $folder = $client->createFolder($folder_path, false);
 
-        $message1 = $this->appendMessageTemplate($folder, "thread_my_topic.eml");
-        $message2 = $this->appendMessageTemplate($folder, "thread_re_my_topic.eml");
-        $message3 = $this->appendMessageTemplate($folder, "thread_unrelated.eml");
+        $message1 = $this->appendMessageTemplate($folder, 'thread_my_topic.eml');
+        $message2 = $this->appendMessageTemplate($folder, 'thread_re_my_topic.eml');
+        $message3 = $this->appendMessageTemplate($folder, 'thread_unrelated.eml');
 
         $thread = $message1->thread($folder);
         self::assertCount(2, $thread);
@@ -158,9 +161,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::hasAttachments()
+     * Test Message::hasAttachments().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -176,7 +180,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasAttachments(): void {
+    public function testHasAttachments(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertFalse($message->hasAttachments());
 
@@ -184,7 +189,7 @@ class MessageTest extends LiveMailboxTestCase {
         self::assertInstanceOf(Folder::class, $folder);
         self::assertTrue($message->delete());
 
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertInstanceOf(Message::class, $message);
         self::assertTrue($message->hasAttachments());
 
@@ -193,9 +198,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getFetchOptions()
+     * Test Message::getFetchOptions().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -211,7 +217,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchOptions(): void {
+    public function testGetFetchOptions(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals(IMAP::FT_PEEK, $message->getFetchOptions());
 
@@ -220,9 +227,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getMessageId()
+     * Test Message::getMessageId().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -238,21 +246,23 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMessageId(): void {
+    public function testGetMessageId(): void
+    {
         $folder = $this->getFolder('INBOX');
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertInstanceOf(Message::class, $message);
 
-        self::assertEquals("d3a5e91963cb805cee975687d5acb1c6@swift.generated", $message->getMessageId());
+        self::assertEquals('d3a5e91963cb805cee975687d5acb1c6@swift.generated', $message->getMessageId());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getReplyTo()
+     * Test Message::getReplyTo().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -268,23 +278,25 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetReplyTo(): void {
+    public function testGetReplyTo(): void
+    {
         $folder = $this->getFolder('INBOX');
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertInstanceOf(Message::class, $message);
 
-        self::assertEquals("testreply_to <someone@domain.tld>", $message->getReplyTo());
-        self::assertEquals("someone@domain.tld", $message->getReplyTo()->first()->mail);
-        self::assertEquals("testreply_to", $message->getReplyTo()->first()->personal);
+        self::assertEquals('testreply_to <someone@domain.tld>', $message->getReplyTo());
+        self::assertEquals('someone@domain.tld', $message->getReplyTo()->first()->mail);
+        self::assertEquals('testreply_to', $message->getReplyTo()->first()->personal);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setSequence()
+     * Test Message::setSequence().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -300,7 +312,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetSequence(): void {
+    public function testSetSequence(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
 
@@ -315,9 +328,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getEvent()
+     * Test Message::getEvent().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -333,20 +347,22 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetEvent(): void {
+    public function testGetEvent(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->setEvent("message", "test", "test");
-        self::assertEquals("test", $message->getEvent("message", "test"));
+        $message->setEvent('message', 'test', 'test');
+        self::assertEquals('test', $message->getEvent('message', 'test'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::__construct()
+     * Test Message::__construct().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -362,7 +378,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function test__construct(): void {
+    public function test__construct(): void
+    {
         $message = $this->getDefaultMessage();
 
         // Cleanup
@@ -370,9 +387,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setFlag()
+     * Test Message::setFlag().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -388,20 +406,22 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFlag(): void {
+    public function testSetFlag(): void
+    {
         $message = $this->getDefaultMessage();
 
-        self::assertTrue($message->setFlag("seen"));
-        self::assertTrue($message->getFlags()->has("seen"));
+        self::assertTrue($message->setFlag('seen'));
+        self::assertTrue($message->getFlags()->has('seen'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getMsgn()
+     * Test Message::getMsgn().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -417,10 +437,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMsgn(): void {
+    public function testGetMsgn(): void
+    {
         $client = $this->getClient();
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
         $folder = $client->getFolder($folder_path);
@@ -429,7 +450,7 @@ class MessageTest extends LiveMailboxTestCase {
         }
         $folder = $client->createFolder($folder_path, false);
 
-        $message = $this->appendMessageTemplate($folder, "plain.eml");
+        $message = $this->appendMessageTemplate($folder, 'plain.eml');
         self::assertInstanceOf(Message::class, $message);
 
         self::assertEquals(1, $message->getMsgn());
@@ -440,9 +461,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::peek()
+     * Test Message::peek().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -458,27 +480,28 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testPeek(): void {
+    public function testPeek(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertFalse($message->getFlags()->has("seen"));
+        self::assertFalse($message->getFlags()->has('seen'));
         self::assertEquals(IMAP::FT_PEEK, $message->getFetchOptions());
         $message->peek();
-        self::assertFalse($message->getFlags()->has("seen"));
+        self::assertFalse($message->getFlags()->has('seen'));
 
         $message->setFetchOption(IMAP::FT_UID);
         self::assertEquals(IMAP::FT_UID, $message->getFetchOptions());
         $message->peek();
-        self::assertTrue($message->getFlags()->has("seen"));
+        self::assertTrue($message->getFlags()->has('seen'));
 
         // Cleanup
         self::assertTrue($message->delete());
-
     }
 
     /**
-     * Test Message::unsetFlag()
+     * Test Message::unsetFlag().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -494,25 +517,27 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testUnsetFlag(): void {
+    public function testUnsetFlag(): void
+    {
         $message = $this->getDefaultMessage();
 
-        self::assertFalse($message->getFlags()->has("seen"));
+        self::assertFalse($message->getFlags()->has('seen'));
 
-        self::assertTrue($message->setFlag("seen"));
-        self::assertTrue($message->getFlags()->has("seen"));
+        self::assertTrue($message->setFlag('seen'));
+        self::assertTrue($message->getFlags()->has('seen'));
 
-        self::assertTrue($message->unsetFlag("seen"));
-        self::assertFalse($message->getFlags()->has("seen"));
+        self::assertTrue($message->unsetFlag('seen'));
+        self::assertFalse($message->getFlags()->has('seen'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setSequenceId()
+     * Test Message::setSequenceId().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -528,7 +553,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetSequenceId(): void {
+    public function testSetSequenceId(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
 
@@ -544,13 +570,13 @@ class MessageTest extends LiveMailboxTestCase {
 
         // Cleanup
         self::assertTrue($message->delete());
-
     }
 
     /**
-     * Test Message::getTo()
+     * Test Message::getTo().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -566,29 +592,31 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetTo(): void {
+    public function testGetTo(): void
+    {
         $message = $this->getDefaultMessage();
         $folder = $message->getFolder();
         self::assertInstanceOf(Folder::class, $folder);
 
-        self::assertEquals("to@someone-else.com", $message->getTo());
+        self::assertEquals('to@someone-else.com', $message->getTo());
         self::assertTrue($message->delete());
 
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertInstanceOf(Message::class, $message);
 
-        self::assertEquals("testnameto <someone@domain.tld>", $message->getTo());
-        self::assertEquals("testnameto", $message->getTo()->first()->personal);
-        self::assertEquals("someone@domain.tld", $message->getTo()->first()->mail);
+        self::assertEquals('testnameto <someone@domain.tld>', $message->getTo());
+        self::assertEquals('testnameto', $message->getTo()->first()->personal);
+        self::assertEquals('someone@domain.tld', $message->getTo()->first()->mail);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setUid()
+     * Test Message::setUid().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -604,7 +632,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetUid(): void {
+    public function testSetUid(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
 
@@ -617,13 +646,13 @@ class MessageTest extends LiveMailboxTestCase {
 
         // Cleanup
         self::assertTrue($message->delete());
-
     }
 
     /**
-     * Test Message::getUid()
+     * Test Message::getUid().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -639,7 +668,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetUid(): void {
+    public function testGetUid(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
 
@@ -656,9 +686,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::hasTextBody()
+     * Test Message::hasTextBody().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -674,7 +705,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasTextBody(): void {
+    public function testHasTextBody(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->hasTextBody());
 
@@ -683,9 +715,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::__get()
+     * Test Message::__get().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -701,20 +734,22 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function test__get(): void {
+    public function test__get(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
-        self::assertEquals("Example", $message->subject);
-        self::assertEquals("to@someone-else.com", $message->to);
+        self::assertEquals('Example', $message->subject);
+        self::assertEquals('to@someone-else.com', $message->to);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getDate()
+     * Test Message::getDate().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -730,7 +765,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetDate(): void {
+    public function testGetDate(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Carbon::class, $message->getDate()->toDate());
 
@@ -739,9 +775,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setMask()
+     * Test Message::setMask().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -757,7 +794,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMask(): void {
+    public function testSetMask(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals(MessageMask::class, $message->getMask());
 
@@ -772,9 +810,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getSequenceId()
+     * Test Message::getSequenceId().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -790,7 +829,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSequenceId(): void {
+    public function testGetSequenceId(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
 
@@ -809,9 +849,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setConfig()
+     * Test Message::setConfig().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -827,14 +868,15 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetConfig(): void {
+    public function testSetConfig(): void
+    {
         $message = $this->getDefaultMessage();
 
         $config = $message->getConfig();
         self::assertIsArray($config);
 
-        $message->setConfig(["foo" => "bar"]);
-        self::assertArrayHasKey("foo", $message->getConfig());
+        $message->setConfig(['foo' => 'bar']);
+        self::assertArrayHasKey('foo', $message->getConfig());
 
         $message->setConfig($config);
 
@@ -843,9 +885,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getEvents()
+     * Test Message::getEvents().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -861,7 +904,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetEvents(): void {
+    public function testGetEvents(): void
+    {
         $message = $this->getDefaultMessage();
 
         $events = $message->getEvents();
@@ -872,9 +916,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setFetchOption()
+     * Test Message::setFetchOption().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -890,7 +935,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchOption(): void {
+    public function testSetFetchOption(): void
+    {
         $message = $this->getDefaultMessage();
 
         $fetch_option = $message->fetch_options;
@@ -911,9 +957,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getMsglist()
+     * Test Message::getMsglist().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -929,19 +976,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMsglist(): void {
+    public function testGetMsglist(): void
+    {
         $message = $this->getDefaultMessage();
 
-        self::assertEquals(0, (int)$message->getMsglist()->toString());
+        self::assertEquals(0, (int) $message->getMsglist()->toString());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::decodeString()
+     * Test Message::decodeString().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -957,7 +1006,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testDecodeString(): void {
+    public function testDecodeString(): void
+    {
         $message = $this->getDefaultMessage();
 
         $string = '<p class=3D"MsoNormal">Test<o:p></o:p></p>';
@@ -968,9 +1018,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::attachments()
+     * Test Message::attachments().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -986,10 +1037,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAttachments(): void {
+    public function testAttachments(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertTrue($message->hasAttachments());
         self::assertSameSize([1], $message->attachments());
 
@@ -998,9 +1050,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getMask()
+     * Test Message::getMask().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1016,7 +1069,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMask(): void {
+    public function testGetMask(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals(MessageMask::class, $message->getMask());
 
@@ -1031,9 +1085,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::hasHTMLBody()
+     * Test Message::hasHTMLBody().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1049,10 +1104,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasHTMLBody(): void {
+    public function testHasHTMLBody(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "1366671050@github.com.eml");
+        $message = $this->appendMessageTemplate($folder, '1366671050@github.com.eml');
         self::assertTrue($message->hasHTMLBody());
 
         // Cleanup
@@ -1066,9 +1122,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setEvents()
+     * Test Message::setEvents().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1084,14 +1141,15 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetEvents(): void {
+    public function testSetEvents(): void
+    {
         $message = $this->getDefaultMessage();
 
         $events = $message->getEvents();
         self::assertIsArray($events);
 
-        $message->setEvents(["foo" => "bar"]);
-        self::assertArrayHasKey("foo", $message->getEvents());
+        $message->setEvents(['foo' => 'bar']);
+        self::assertArrayHasKey('foo', $message->getEvents());
 
         $message->setEvents($events);
 
@@ -1100,9 +1158,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::__set()
+     * Test Message::__set().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1118,20 +1177,22 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function test__set(): void {
+    public function test__set(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->foo = "bar";
-        self::assertEquals("bar", $message->getFoo());
+        $message->foo = 'bar';
+        self::assertEquals('bar', $message->getFoo());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getHTMLBody()
+     * Test Message::getHTMLBody().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1147,10 +1208,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetHTMLBody(): void {
+    public function testGetHTMLBody(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "1366671050@github.com.eml");
+        $message = $this->appendMessageTemplate($folder, '1366671050@github.com.eml');
         self::assertTrue($message->hasHTMLBody());
         self::assertIsString($message->getHTMLBody());
 
@@ -1166,9 +1228,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getSequence()
+     * Test Message::getSequence().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1184,7 +1247,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSequence(): void {
+    public function testGetSequence(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals(IMAP::ST_UID, $message->getSequence());
 
@@ -1201,9 +1265,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::restore()
+     * Test Message::restore().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1219,23 +1284,25 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testRestore(): void {
+    public function testRestore(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->setFlag("deleted");
-        self::assertTrue($message->hasFlag("deleted"));
+        $message->setFlag('deleted');
+        self::assertTrue($message->hasFlag('deleted'));
 
         $message->restore();
-        self::assertFalse($message->hasFlag("deleted"));
+        self::assertFalse($message->hasFlag('deleted'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getPriority()
+     * Test Message::getPriority().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1251,10 +1318,11 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetPriority(): void {
+    public function testGetPriority(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
         self::assertEquals(1, $message->getPriority()->first());
 
         // Cleanup
@@ -1262,9 +1330,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setAttachments()
+     * Test Message::setAttachments().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1280,21 +1349,23 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetAttachments(): void {
+    public function testSetAttachments(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->setAttachments(new AttachmentCollection(["foo" => "bar"]));
+        $message->setAttachments(new AttachmentCollection(['foo' => 'bar']));
         self::assertIsArray($message->attachments()->toArray());
-        self::assertTrue($message->attachments()->has("foo"));
+        self::assertTrue($message->attachments()->has('foo'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getFrom()
+     * Test Message::getFrom().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1310,18 +1381,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFrom(): void {
+    public function testGetFrom(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("from@someone.com", $message->getFrom()->first()->mail);
+        self::assertEquals('from@someone.com', $message->getFrom()->first()->mail);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setEvent()
+     * Test Message::setEvent().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1337,20 +1410,22 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetEvent(): void {
+    public function testSetEvent(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->setEvent("message", "bar", "foo");
-        self::assertArrayHasKey("bar", $message->getEvents()["message"]);
+        $message->setEvent('message', 'bar', 'foo');
+        self::assertArrayHasKey('bar', $message->getEvents()['message']);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getInReplyTo()
+     * Test Message::getInReplyTo().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1366,26 +1441,28 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetInReplyTo(): void {
+    public function testGetInReplyTo(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("", $message->getInReplyTo());
+        self::assertEquals('', $message->getInReplyTo());
 
         // Cleanup
         self::assertTrue($message->delete());
 
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "1366671050@github.com.eml");
-        self::assertEquals("Webklex/php-imap/issues/349@github.com", $message->getInReplyTo());
+        $message = $this->appendMessageTemplate($folder, '1366671050@github.com.eml');
+        self::assertEquals('Webklex/php-imap/issues/349@github.com', $message->getInReplyTo());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::copy()
+     * Test Message::copy().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1401,12 +1478,13 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testCopy(): void {
+    public function testCopy(): void
+    {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
         self::assertInstanceOf(Client::class, $client);
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
         $folder = $client->getFolder($folder_path);
@@ -1423,13 +1501,13 @@ class MessageTest extends LiveMailboxTestCase {
         // Cleanup
         self::assertTrue($message->delete());
         self::assertTrue($new_message->delete());
-
     }
 
     /**
-     * Test Message::getBodies()
+     * Test Message::getBodies().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1445,20 +1523,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetBodies(): void {
+    public function testGetBodies(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getBodies());
         self::assertCount(1, $message->getBodies());
 
         // Cleanup
         self::assertTrue($message->delete());
-
     }
 
     /**
-     * Test Message::getFlags()
+     * Test Message::getFlags().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1474,24 +1553,26 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFlags(): void {
+    public function testGetFlags(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getFlags()->all());
 
-        self::assertFalse($message->hasFlag("seen"));
+        self::assertFalse($message->hasFlag('seen'));
 
-        self::assertTrue($message->setFlag("seen"));
-        self::assertTrue($message->getFlags()->has("seen"));
-        self::assertTrue($message->hasFlag("seen"));
+        self::assertTrue($message->setFlag('seen'));
+        self::assertTrue($message->getFlags()->has('seen'));
+        self::assertTrue($message->hasFlag('seen'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::addFlag()
+     * Test Message::addFlag().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1507,21 +1588,23 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAddFlag(): void {
+    public function testAddFlag(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertFalse($message->hasFlag("seen"));
+        self::assertFalse($message->hasFlag('seen'));
 
-        self::assertTrue($message->addFlag("seen"));
-        self::assertTrue($message->hasFlag("seen"));
+        self::assertTrue($message->addFlag('seen'));
+        self::assertTrue($message->hasFlag('seen'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getSubject()
+     * Test Message::getSubject().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1537,18 +1620,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSubject(): void {
+    public function testGetSubject(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("Example", $message->getSubject());
+        self::assertEquals('Example', $message->getSubject());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getClient()
+     * Test Message::getClient().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1564,7 +1649,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetClient(): void {
+    public function testGetClient(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Client::class, $message->getClient());
 
@@ -1573,9 +1659,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setFetchFlagsOption()
+     * Test Message::setFetchFlagsOption().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1591,7 +1678,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchFlagsOption(): void {
+    public function testSetFetchFlagsOption(): void
+    {
         $message = $this->getDefaultMessage();
 
         self::assertTrue($message->getFetchFlagsOption());
@@ -1603,9 +1691,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::mask()
+     * Test Message::mask().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1621,7 +1710,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMask(): void {
+    public function testMask(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(MessageMask::class, $message->mask());
 
@@ -1630,9 +1720,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setMsglist()
+     * Test Message::setMsglist().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1648,19 +1739,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMsglist(): void {
+    public function testSetMsglist(): void
+    {
         $message = $this->getDefaultMessage();
-        $message->setMsglist("foo");
-        self::assertEquals("foo", $message->getMsglist());
+        $message->setMsglist('foo');
+        self::assertEquals('foo', $message->getMsglist());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::flags()
+     * Test Message::flags().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1676,7 +1769,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testFlags(): void {
+    public function testFlags(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(FlagCollection::class, $message->flags());
 
@@ -1685,9 +1779,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getAttributes()
+     * Test Message::getAttributes().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1703,19 +1798,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetAttributes(): void {
+    public function testGetAttributes(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getAttributes());
-        self::assertArrayHasKey("subject", $message->getAttributes());
+        self::assertArrayHasKey('subject', $message->getAttributes());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getAttachments()
+     * Test Message::getAttachments().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1731,7 +1828,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetAttachments(): void {
+    public function testGetAttachments(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(AttachmentCollection::class, $message->getAttachments());
 
@@ -1740,9 +1838,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getRawBody()
+     * Test Message::getRawBody().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1758,7 +1857,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetRawBody(): void {
+    public function testGetRawBody(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertIsString($message->getRawBody());
 
@@ -1767,9 +1867,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::is()
+     * Test Message::is().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1785,7 +1886,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testIs(): void {
+    public function testIs(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->is($message));
 
@@ -1794,9 +1896,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setFlags()
+     * Test Message::setFlags().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1812,19 +1915,21 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFlags(): void {
+    public function testSetFlags(): void
+    {
         $message = $this->getDefaultMessage();
         $message->setFlags(new FlagCollection());
-        self::assertFalse($message->hasFlag("recent"));
+        self::assertFalse($message->hasFlag('recent'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::make()
+     * Test Message::make().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1839,26 +1944,28 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws ReflectionException
      */
-    public function testMake(): void {
+    public function testMake(): void
+    {
         $folder = $this->getFolder('INBOX');
         $folder->getClient()->openFolder($folder->path);
 
-        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, "..", "messages", "1366671050@github.com.eml"]));
-        if(!str_contains($email, "\r\n")){
+        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
+        if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }
 
         $raw_header = substr($email, 0, strpos($email, "\r\n\r\n"));
-        $raw_body = substr($email, strlen($raw_header)+8);
+        $raw_body = substr($email, strlen($raw_header) + 8);
 
-        $message = Message::make(0, null, $folder->getClient(), $raw_header, $raw_body, [0 => "\\Seen"], IMAP::ST_UID);
+        $message = Message::make(0, null, $folder->getClient(), $raw_header, $raw_body, [0 => '\\Seen'], IMAP::ST_UID);
         self::assertInstanceOf(Message::class, $message);
     }
 
     /**
-     * Test Message::setAvailableFlags()
+     * Test Message::setAvailableFlags().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1874,21 +1981,23 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetAvailableFlags(): void {
+    public function testSetAvailableFlags(): void
+    {
         $message = $this->getDefaultMessage();
 
-        $message->setAvailableFlags(["foo"]);
-        self::assertSameSize(["foo"], $message->getAvailableFlags());
-        self::assertEquals("foo", $message->getAvailableFlags()[0]);
+        $message->setAvailableFlags(['foo']);
+        self::assertSameSize(['foo'], $message->getAvailableFlags());
+        self::assertEquals('foo', $message->getAvailableFlags()[0]);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getSender()
+     * Test Message::getSender().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1904,22 +2013,24 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSender(): void {
+    public function testGetSender(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "example_attachment.eml");
-        self::assertEquals("testsender <someone@domain.tld>", $message->getSender());
-        self::assertEquals("testsender", $message->getSender()->first()->personal);
-        self::assertEquals("someone@domain.tld", $message->getSender()->first()->mail);
+        $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
+        self::assertEquals('testsender <someone@domain.tld>', $message->getSender());
+        self::assertEquals('testsender', $message->getSender()->first()->personal);
+        self::assertEquals('someone@domain.tld', $message->getSender()->first()->mail);
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::fromFile()
+     * Test Message::fromFile().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -1931,17 +2042,19 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testFromFile(): void {
+    public function testFromFile(): void
+    {
         $this->getManager();
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, "..", "messages", "1366671050@github.com.eml"]);
+        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']);
         $message = Message::fromFile($filename);
         self::assertInstanceOf(Message::class, $message);
     }
 
     /**
-     * Test Message::getStructure()
+     * Test Message::getStructure().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1957,7 +2070,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetStructure(): void {
+    public function testGetStructure(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Structure::class, $message->getStructure());
 
@@ -1966,9 +2080,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::get()
+     * Test Message::get().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -1985,18 +2100,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws RuntimeException
      * @throws MessageSizeFetchingException
      */
-    public function testGet(): void {
+    public function testGet(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("Example", $message->get("subject"));
+        self::assertEquals('Example', $message->get('subject'));
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getSize()
+     * Test Message::getSize().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2012,7 +2129,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSize(): void {
+    public function testGetSize(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertEquals(214, $message->getSize());
 
@@ -2021,9 +2139,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getHeader()
+     * Test Message::getHeader().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2039,7 +2158,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetHeader(): void {
+    public function testGetHeader(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Header::class, $message->getHeader());
 
@@ -2048,9 +2168,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getReferences()
+     * Test Message::getReferences().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2066,21 +2187,23 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetReferences(): void {
+    public function testGetReferences(): void
+    {
         $folder = $this->getFolder('INBOX');
 
-        $message = $this->appendMessageTemplate($folder, "1366671050@github.com.eml");
+        $message = $this->appendMessageTemplate($folder, '1366671050@github.com.eml');
         self::assertIsArray($message->getReferences()->all());
-        self::assertEquals("Webklex/php-imap/issues/349@github.com", $message->getReferences()->first());
+        self::assertEquals('Webklex/php-imap/issues/349@github.com', $message->getReferences()->first());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setFolderPath()
+     * Test Message::setFolderPath().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2096,13 +2219,14 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFolderPath(): void {
+    public function testSetFolderPath(): void
+    {
         $message = $this->getDefaultMessage();
 
         $folder_path = $message->getFolderPath();
 
-        $message->setFolderPath("foo");
-        self::assertEquals("foo", $message->getFolderPath());
+        $message->setFolderPath('foo');
+        self::assertEquals('foo', $message->getFolderPath());
 
         $message->setFolderPath($folder_path);
 
@@ -2111,9 +2235,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getTextBody()
+     * Test Message::getTextBody().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2129,7 +2254,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetTextBody(): void {
+    public function testGetTextBody(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertIsString($message->getTextBody());
 
@@ -2138,9 +2264,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::move()
+     * Test Message::move().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2156,12 +2283,13 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMove(): void {
+    public function testMove(): void
+    {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
         self::assertInstanceOf(Client::class, $client);
 
-        $delimiter = $this->getManager()->get("options.delimiter");
+        $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
         $folder = $client->getFolder($folder_path);
@@ -2180,9 +2308,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getFolderPath()
+     * Test Message::getFolderPath().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2198,18 +2327,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolderPath(): void {
+    public function testGetFolderPath(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("INBOX", $message->getFolderPath());
+        self::assertEquals('INBOX', $message->getFolderPath());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::getFolder()
+     * Test Message::getFolder().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2225,7 +2356,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolder(): void {
+    public function testGetFolder(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Folder::class, $message->getFolder());
 
@@ -2234,9 +2366,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getFetchBodyOption()
+     * Test Message::getFetchBodyOption().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2252,7 +2385,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchBodyOption(): void {
+    public function testGetFetchBodyOption(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->getFetchBodyOption());
 
@@ -2261,9 +2395,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setFetchBodyOption()
+     * Test Message::setFetchBodyOption().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2279,7 +2414,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchBodyOption(): void {
+    public function testSetFetchBodyOption(): void
+    {
         $message = $this->getDefaultMessage();
 
         $message->setFetchBodyOption(false);
@@ -2290,9 +2426,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::getFetchFlagsOption()
+     * Test Message::getFetchFlagsOption().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2308,7 +2445,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchFlagsOption(): void {
+    public function testGetFetchFlagsOption(): void
+    {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->getFetchFlagsOption());
 
@@ -2317,9 +2455,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::__call()
+     * Test Message::__call().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2335,18 +2474,20 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function test__call(): void {
+    public function test__call(): void
+    {
         $message = $this->getDefaultMessage();
-        self::assertEquals("Example", $message->getSubject());
+        self::assertEquals('Example', $message->getSubject());
 
         // Cleanup
         self::assertTrue($message->delete());
     }
 
     /**
-     * Test Message::setClient()
+     * Test Message::setClient().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2362,7 +2503,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetClient(): void {
+    public function testSetClient(): void
+    {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
         self::assertInstanceOf(Client::class, $client);
@@ -2378,9 +2520,10 @@ class MessageTest extends LiveMailboxTestCase {
     }
 
     /**
-     * Test Message::setMsgn()
+     * Test Message::setMsgn().
      *
      * @return void
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -2396,7 +2539,8 @@ class MessageTest extends LiveMailboxTestCase {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMsgn(): void {
+    public function testSetMsgn(): void
+    {
         $message = $this->getDefaultMessage();
 
         $uid = $message->getUid();

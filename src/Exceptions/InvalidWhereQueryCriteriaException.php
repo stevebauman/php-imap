@@ -12,13 +12,11 @@
 
 namespace Webklex\PHPIMAP\Exceptions;
 
-use \Exception;
+use Exception;
 
 /**
- * Class InvalidWhereQueryCriteriaException
- *
- * @package Webklex\PHPIMAP\Exceptions
+ * Class InvalidWhereQueryCriteriaException.
  */
-class InvalidWhereQueryCriteriaException extends Exception {
-
+class InvalidWhereQueryCriteriaException extends Exception
+{
 }

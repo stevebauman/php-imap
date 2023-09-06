@@ -15,25 +15,25 @@ namespace Webklex\PHPIMAP\Events;
 use Webklex\PHPIMAP\Message;
 
 /**
- * Class MessageMovedEvent
- *
- * @package Webklex\PHPIMAP\Events
+ * Class MessageMovedEvent.
  */
-class MessageMovedEvent extends Event {
-
-    /** @var Message $old_message */
+class MessageMovedEvent extends Event
+{
+    /** @var Message */
     public Message $old_message;
 
-    /** @var Message $new_message */
+    /** @var Message */
     public Message $new_message;
 
     /**
      * Create a new event instance.
-     * @var Message[] $messages
+     *
+     * @var Message[]
      *
      * @return void
      */
-    public function __construct(array $messages) {
+    public function __construct(array $messages)
+    {
         $this->old_message = $messages[0];
         $this->new_message = $messages[1];
     }

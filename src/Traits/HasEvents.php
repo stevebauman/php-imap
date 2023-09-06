@@ -12,53 +12,56 @@
 
 namespace Webklex\PHPIMAP\Traits;
 
-
 use Webklex\PHPIMAP\Events\Event;
 use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
 
 /**
- * Trait HasEvents
- *
- * @package Webklex\PHPIMAP\Traits
+ * Trait HasEvents.
  */
-trait HasEvents {
-
+trait HasEvents
+{
     /**
-     * Event holder
+     * Event holder.
      *
-     * @var array $events
+     * @var array
      */
     protected array $events = [];
 
     /**
-     * Set a specific event
-     * @param string $section
-     * @param string $event
-     * @param mixed $class
+     * Set a specific event.
+     *
+     * @param  string  $section
+     * @param  string  $event
+     * @param  mixed  $class
      */
-    public function setEvent(string $section, string $event, mixed $class): void {
+    public function setEvent(string $section, string $event, mixed $class): void
+    {
         if (isset($this->events[$section])) {
             $this->events[$section][$event] = $class;
         }
     }
 
     /**
-     * Set all events
-     * @param array $events
+     * Set all events.
+     *
+     * @param  array  $events
      */
-    public function setEvents(array $events): void {
+    public function setEvents(array $events): void
+    {
         $this->events = $events;
     }
 
     /**
-     * Get a specific event callback
-     * @param string $section
-     * @param string $event
+     * Get a specific event callback.
      *
+     * @param  string  $section
+     * @param  string  $event
      * @return Event|string
+     *
      * @throws EventNotFoundException
      */
-    public function getEvent(string $section, string $event): Event|string {
+    public function getEvent(string $section, string $event): Event|string
+    {
         if (isset($this->events[$section])) {
             return $this->events[$section][$event];
         }
@@ -66,12 +69,12 @@ trait HasEvents {
     }
 
     /**
-     * Get all events
+     * Get all events.
      *
      * @return array
      */
-    public function getEvents(): array {
+    public function getEvents(): array
+    {
         return $this->events;
     }
-
 }

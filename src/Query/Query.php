@@ -38,64 +38,66 @@ use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Support\MessageCollection;
 
 /**
- * Class Query
- *
- * @package Webklex\PHPIMAP\Query
+ * Class Query.
  */
-class Query {
-
-    /** @var Collection $query */
+class Query
+{
+    /** @var Collection */
     protected Collection $query;
 
-    /** @var string $raw_query */
+    /** @var string */
     protected string $raw_query;
 
-    /** @var string[] $extensions */
+    /** @var string[] */
     protected array $extensions;
 
-    /** @var Client $client */
+    /** @var Client */
     protected Client $client;
 
-    /** @var ?int $limit */
+    /** @var ?int */
     protected ?int $limit = null;
 
-    /** @var int $page */
+    /** @var int */
     protected int $page = 1;
 
-    /** @var ?int $fetch_options */
+    /** @var ?int */
     protected ?int $fetch_options = null;
 
-    /** @var boolean $fetch_body */
+    /** @var bool */
     protected bool $fetch_body = true;
 
-    /** @var boolean $fetch_flags */
+    /** @var bool */
     protected bool $fetch_flags = true;
 
-    /** @var int|string $sequence */
+    /** @var int|string */
     protected mixed $sequence = IMAP::NIL;
 
-    /** @var string $fetch_order */
+    /** @var string */
     protected string $fetch_order;
 
-    /** @var string $date_format */
+    /** @var string */
     protected string $date_format;
 
-    /** @var bool $soft_fail */
+    /** @var bool */
     protected bool $soft_fail = false;
 
-    /** @var array $errors */
+    /** @var array */
     protected array $errors = [];
 
     /**
      * Query constructor.
-     * @param Client $client
-     * @param string[] $extensions
+     *
+     * @param  Client  $client
+     * @param  string[]  $extensions
      */
-    public function __construct(Client $client, array $extensions = []) {
+    public function __construct(Client $client, array $extensions = [])
+    {
         $this->setClient($client);
 
         $this->sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
-        if (ClientManager::get('options.fetch') === IMAP::FT_PEEK) $this->leaveUnread();
+        if (ClientManager::get('options.fetch') === IMAP::FT_PEEK) {
+            $this->leaveUnread();
+        }
 
         if (ClientManager::get('options.fetch_order') === 'desc') {
             $this->fetch_order = 'desc';
@@ -112,34 +114,40 @@ class Query {
     }
 
     /**
-     * Instance boot method for additional functionality
+     * Instance boot method for additional functionality.
      */
-    protected function boot(): void {
+    protected function boot(): void
+    {
     }
 
     /**
-     * Parse a given value
-     * @param mixed $value
+     * Parse a given value.
      *
+     * @param  mixed  $value
      * @return string
      */
-    protected function parse_value(mixed $value): string {
+    protected function parse_value(mixed $value): string
+    {
         if ($value instanceof Carbon) {
             $value = $value->format($this->date_format);
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 
     /**
-     * Check if a given date is a valid carbon object and if not try to convert it
-     * @param mixed $date
+     * Check if a given date is a valid carbon object and if not try to convert it.
      *
+     * @param  mixed  $date
      * @return Carbon
+     *
      * @throws MessageSearchValidationException
      */
-    protected function parse_date(mixed $date): Carbon {
-        if ($date instanceof Carbon) return $date;
+    protected function parse_date(mixed $date): Carbon
+    {
+        if ($date instanceof Carbon) {
+            return $date;
+        }
 
         try {
             $date = Carbon::parse($date);
@@ -151,13 +159,14 @@ class Query {
     }
 
     /**
-     * Get the raw IMAP search query
+     * Get the raw IMAP search query.
      *
      * @return string
      */
-    public function generate_query(): string {
+    public function generate_query(): string
+    {
         $query = '';
-        $this->query->each(function($statement) use (&$query) {
+        $this->query->each(function ($statement) use (&$query) {
             if (count($statement) == 1) {
                 $query .= $statement[0];
             } else {
@@ -165,14 +174,13 @@ class Query {
                     $query .= $statement[0];
                 } else {
                     if (is_numeric($statement[1])) {
-                        $query .= $statement[0] . ' ' . $statement[1];
+                        $query .= $statement[0].' '.$statement[1];
                     } else {
-                        $query .= $statement[0] . ' "' . $statement[1] . '"';
+                        $query .= $statement[0].' "'.$statement[1].'"';
                     }
                 }
             }
             $query .= ' ';
-
         });
 
         $this->raw_query = trim($query);
@@ -181,45 +189,51 @@ class Query {
     }
 
     /**
-     * Perform an imap search request
+     * Perform an imap search request.
      *
      * @return Collection
+     *
      * @throws GetMessagesFailedException
      * @throws AuthFailedException
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws ResponseException
      */
-    protected function search(): Collection {
+    protected function search(): Collection
+    {
         $this->generate_query();
 
         try {
             $available_messages = $this->client->getConnection()->search([$this->getRawQuery()], $this->sequence)->validatedData();
+
             return new Collection($available_messages);
         } catch (RuntimeException|ConnectionFailedException $e) {
-            throw new GetMessagesFailedException("failed to fetch messages", 0, $e);
+            throw new GetMessagesFailedException('failed to fetch messages', 0, $e);
         }
     }
 
     /**
-     * Count all available messages matching the current search criteria
+     * Count all available messages matching the current search criteria.
      *
      * @return int
+     *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws ResponseException
      */
-    public function count(): int {
+    public function count(): int
+    {
         return $this->search()->count();
     }
 
     /**
-     * Fetch a given id collection
-     * @param Collection $available_messages
+     * Fetch a given id collection.
      *
+     * @param  Collection  $available_messages
      * @return array
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -227,42 +241,44 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    protected function fetch(Collection $available_messages): array {
+    protected function fetch(Collection $available_messages): array
+    {
         if ($this->fetch_order === 'desc') {
             $available_messages = $available_messages->reverse();
         }
 
         $uids = $available_messages->forPage($this->page, $this->limit)->toArray();
         $extensions = $this->getExtensions();
-        if (empty($extensions) === false && method_exists($this->client->getConnection(), "fetch")) {
+        if (empty($extensions) === false && method_exists($this->client->getConnection(), 'fetch')) {
             $extensions = $this->client->getConnection()->fetch($extensions, $uids, null, $this->sequence)->validatedData();
         }
         $flags = $this->client->getConnection()->flags($uids, $this->sequence)->validatedData();
-        $headers = $this->client->getConnection()->headers($uids, "RFC822", $this->sequence)->validatedData();
+        $headers = $this->client->getConnection()->headers($uids, 'RFC822', $this->sequence)->validatedData();
 
         $contents = [];
         if ($this->getFetchBody()) {
-            $contents = $this->client->getConnection()->content($uids, "RFC822", $this->sequence)->validatedData();
+            $contents = $this->client->getConnection()->content($uids, 'RFC822', $this->sequence)->validatedData();
         }
 
         return [
-            "uids"       => $uids,
-            "flags"      => $flags,
-            "headers"    => $headers,
-            "contents"   => $contents,
-            "extensions" => $extensions,
+            'uids'       => $uids,
+            'flags'      => $flags,
+            'headers'    => $headers,
+            'contents'   => $contents,
+            'extensions' => $extensions,
         ];
     }
 
     /**
-     * Make a new message from given raw components
-     * @param integer $uid
-     * @param integer $msglist
-     * @param string $header
-     * @param string $content
-     * @param array $flags
+     * Make a new message from given raw components.
      *
+     * @param  int  $uid
+     * @param  int  $msglist
+     * @param  string  $header
+     * @param  string  $content
+     * @param  array  $flags
      * @return Message|null
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -272,7 +288,8 @@ class Query {
      * @throws ReflectionException
      * @throws ResponseException
      */
-    protected function make(int $uid, int $msglist, string $header, string $content, array $flags): ?Message {
+    protected function make(int $uid, int $msglist, string $header, string $content, array $flags): ?Message
+    {
         try {
             return Message::make($uid, $msglist, $this->getClient(), $header, $content, $flags, $this->getFetchOptions(), $this->sequence);
         } catch (RuntimeException|MessageFlagException|InvalidMessageDateException|MessageContentFetchingException $e) {
@@ -285,35 +302,40 @@ class Query {
     }
 
     /**
-     * Get the message key for a given message
-     * @param string $message_key
-     * @param integer $msglist
-     * @param Message $message
+     * Get the message key for a given message.
      *
+     * @param  string  $message_key
+     * @param  int  $msglist
+     * @param  Message  $message
      * @return string
      */
-    protected function getMessageKey(string $message_key, int $msglist, Message $message): string {
+    protected function getMessageKey(string $message_key, int $msglist, Message $message): string
+    {
         $key = match ($message_key) {
             'number' => $message->getMessageNo(),
             'list' => $msglist,
             'uid' => $message->getUid(),
             default => $message->getMessageId(),
         };
-        return (string)$key;
+
+        return (string) $key;
     }
 
     /**
-     * Curates a given collection aof messages
-     * @param Collection $available_messages
+     * Curates a given collection aof messages.
      *
+     * @param  Collection  $available_messages
      * @return MessageCollection
+     *
      * @throws GetMessagesFailedException
      */
-    public function curate_messages(Collection $available_messages): MessageCollection {
+    public function curate_messages(Collection $available_messages): MessageCollection
+    {
         try {
             if ($available_messages->count() > 0) {
                 return $this->populate($available_messages);
             }
+
             return MessageCollection::make([]);
         } catch (Exception $e) {
             throw new GetMessagesFailedException($e->getMessage(), 0, $e);
@@ -321,10 +343,11 @@ class Query {
     }
 
     /**
-     * Populate a given id collection and receive a fully fetched message collection
-     * @param Collection $available_messages
+     * Populate a given id collection and receive a fully fetched message collection.
      *
+     * @param  Collection  $available_messages
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -335,7 +358,8 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    protected function populate(Collection $available_messages): MessageCollection {
+    protected function populate(Collection $available_messages): MessageCollection
+    {
         $messages = MessageCollection::make([]);
 
         $messages->total($available_messages->count());
@@ -345,10 +369,10 @@ class Query {
         $raw_messages = $this->fetch($available_messages);
 
         $msglist = 0;
-        foreach ($raw_messages["headers"] as $uid => $header) {
-            $content = $raw_messages["contents"][$uid] ?? "";
-            $flag = $raw_messages["flags"][$uid] ?? [];
-            $extensions = $raw_messages["extensions"][$uid] ?? [];
+        foreach ($raw_messages['headers'] as $uid => $header) {
+            $content = $raw_messages['contents'][$uid] ?? '';
+            $flag = $raw_messages['flags'][$uid] ?? [];
+            $extensions = $raw_messages['extensions'][$uid] ?? [];
 
             $message = $this->make($uid, $msglist, $header, $content, $flag);
             foreach ($extensions as $key => $extension) {
@@ -365,24 +389,27 @@ class Query {
     }
 
     /**
-     * Fetch the current query and return all found messages
+     * Fetch the current query and return all found messages.
      *
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws ResponseException
      */
-    public function get(): MessageCollection {
+    public function get(): MessageCollection
+    {
         return $this->curate_messages($this->search());
     }
 
     /**
-     * Fetch the current query as chunked requests
-     * @param callable $callback
-     * @param int $chunk_size
-     * @param int $start_chunk
+     * Fetch the current query as chunked requests.
+     *
+     * @param  callable  $callback
+     * @param  int  $chunk_size
+     * @param  int  $start_chunk
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -394,7 +421,8 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function chunked(callable $callback, int $chunk_size = 10, int $start_chunk = 1): void {
+    public function chunked(callable $callback, int $chunk_size = 10, int $start_chunk = 1): void
+    {
         $available_messages = $this->search();
         if (($available_messages_count = $available_messages->count()) > 0) {
             $old_limit = $this->limit;
@@ -415,23 +443,25 @@ class Query {
     }
 
     /**
-     * Paginate the current query
-     * @param int $per_page Results you which to receive per page
-     * @param null $page The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
-     * @param string $page_name The page name / uri parameter used for the generated links and the auto mode
+     * Paginate the current query.
      *
+     * @param  int  $per_page  Results you which to receive per page
+     * @param  null  $page  The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
+     * @param  string  $page_name  The page name / uri parameter used for the generated links and the auto mode
      * @return LengthAwarePaginator
+     *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws ResponseException
      */
-    public function paginate(int $per_page = 5, $page = null, string $page_name = 'imap_page'): LengthAwarePaginator {
+    public function paginate(int $per_page = 5, $page = null, string $page_name = 'imap_page'): LengthAwarePaginator
+    {
         if ($page === null && isset($_GET[$page_name]) && $_GET[$page_name] > 0) {
             $this->page = intval($_GET[$page_name]);
         } elseif ($page > 0) {
-            $this->page = (int)$page;
+            $this->page = (int) $page;
         }
 
         $this->limit = $per_page;
@@ -440,12 +470,13 @@ class Query {
     }
 
     /**
-     * Get a new Message instance
-     * @param int $uid
-     * @param null $msglist
-     * @param null $sequence
+     * Get a new Message instance.
      *
+     * @param  int  $uid
+     * @param  null  $msglist
+     * @param  null  $sequence
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -458,16 +489,18 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getMessage(int $uid, $msglist = null, $sequence = null): Message {
+    public function getMessage(int $uid, $msglist = null, $sequence = null): Message
+    {
         return new Message($uid, $msglist, $this->getClient(), $this->getFetchOptions(), $this->getFetchBody(), $this->getFetchFlags(), $sequence ?: $this->sequence);
     }
 
     /**
-     * Get a message by its message number
-     * @param $msgn
-     * @param null $msglist
+     * Get a message by its message number.
      *
+     * @param  $msgn
+     * @param  null  $msglist
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -480,15 +513,17 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getMessageByMsgn($msgn, $msglist = null): Message {
+    public function getMessageByMsgn($msgn, $msglist = null): Message
+    {
         return $this->getMessage($msgn, $msglist, IMAP::ST_MSGN);
     }
 
     /**
-     * Get a message by its uid
-     * @param $uid
+     * Get a message by its uid.
      *
+     * @param  $uid
      * @return Message
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -501,15 +536,17 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getMessageByUid($uid): Message {
+    public function getMessageByUid($uid): Message
+    {
         return $this->getMessage($uid, null, IMAP::ST_UID);
     }
 
     /**
-     * Filter all available uids by a given closure and get a curated list of messages
-     * @param callable $closure
+     * Filter all available uids by a given closure and get a curated list of messages.
      *
+     * @param  callable  $closure
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -519,7 +556,8 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function filter(callable $closure): MessageCollection {
+    public function filter(callable $closure): MessageCollection
+    {
         $connection = $this->getClient()->getConnection();
 
         $uids = $connection->getUid()->validatedData();
@@ -536,10 +574,11 @@ class Query {
     }
 
     /**
-     * Get all messages with an uid greater or equal to a given UID
-     * @param int $uid
+     * Get all messages with an uid greater or equal to a given UID.
      *
+     * @param  int  $uid
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -549,17 +588,19 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getByUidGreaterOrEqual(int $uid): MessageCollection {
-        return $this->filter(function($id) use ($uid) {
+    public function getByUidGreaterOrEqual(int $uid): MessageCollection
+    {
+        return $this->filter(function ($id) use ($uid) {
             return $id >= $uid;
         });
     }
 
     /**
-     * Get all messages with an uid greater than a given UID
-     * @param int $uid
+     * Get all messages with an uid greater than a given UID.
      *
+     * @param  int  $uid
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -569,17 +610,19 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getByUidGreater(int $uid): MessageCollection {
-        return $this->filter(function($id) use ($uid) {
+    public function getByUidGreater(int $uid): MessageCollection
+    {
+        return $this->filter(function ($id) use ($uid) {
             return $id > $uid;
         });
     }
 
     /**
-     * Get all messages with an uid lower than a given UID
-     * @param int $uid
+     * Get all messages with an uid lower than a given UID.
      *
+     * @param  int  $uid
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -589,17 +632,19 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getByUidLower(int $uid): MessageCollection {
-        return $this->filter(function($id) use ($uid) {
+    public function getByUidLower(int $uid): MessageCollection
+    {
+        return $this->filter(function ($id) use ($uid) {
             return $id < $uid;
         });
     }
 
     /**
-     * Get all messages with an uid lower or equal to a given UID
-     * @param int $uid
+     * Get all messages with an uid lower or equal to a given UID.
      *
+     * @param  int  $uid
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -609,17 +654,19 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getByUidLowerOrEqual(int $uid): MessageCollection {
-        return $this->filter(function($id) use ($uid) {
+    public function getByUidLowerOrEqual(int $uid): MessageCollection
+    {
+        return $this->filter(function ($id) use ($uid) {
             return $id <= $uid;
         });
     }
 
     /**
-     * Get all messages with an uid greater than a given UID
-     * @param int $uid
+     * Get all messages with an uid greater than a given UID.
      *
+     * @param  int  $uid
      * @return MessageCollection
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
@@ -629,57 +676,63 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getByUidLowerThan(int $uid): MessageCollection {
-        return $this->filter(function($id) use ($uid) {
+    public function getByUidLowerThan(int $uid): MessageCollection
+    {
+        return $this->filter(function ($id) use ($uid) {
             return $id < $uid;
         });
     }
 
     /**
-     * Don't mark messages as read when fetching
+     * Don't mark messages as read when fetching.
      *
      * @return $this
      */
-    public function leaveUnread(): Query {
+    public function leaveUnread(): Query
+    {
         $this->setFetchOptions(IMAP::FT_PEEK);
 
         return $this;
     }
 
     /**
-     * Mark all messages as read when fetching
+     * Mark all messages as read when fetching.
      *
      * @return $this
      */
-    public function markAsRead(): Query {
+    public function markAsRead(): Query
+    {
         $this->setFetchOptions(IMAP::FT_UID);
 
         return $this;
     }
 
     /**
-     * Set the sequence type
-     * @param int $sequence
+     * Set the sequence type.
      *
+     * @param  int  $sequence
      * @return $this
      */
-    public function setSequence(int $sequence): Query {
+    public function setSequence(int $sequence): Query
+    {
         $this->sequence = $sequence;
 
         return $this;
     }
 
     /**
-     * Get the sequence type
+     * Get the sequence type.
      *
      * @return int|string
      */
-    public function getSequence(): int|string {
+    public function getSequence(): int|string
+    {
         return $this->sequence;
     }
 
     /**
      * @return Client
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -687,228 +740,262 @@ class Query {
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getClient(): Client {
+    public function getClient(): Client
+    {
         $this->client->checkConnection();
+
         return $this->client;
     }
 
     /**
-     * Set the limit and page for the current query
-     * @param int $limit
-     * @param int $page
+     * Set the limit and page for the current query.
      *
+     * @param  int  $limit
+     * @param  int  $page
      * @return $this
      */
-    public function limit(int $limit, int $page = 1): Query {
-        if ($page >= 1) $this->page = $page;
+    public function limit(int $limit, int $page = 1): Query
+    {
+        if ($page >= 1) {
+            $this->page = $page;
+        }
         $this->limit = $limit;
 
         return $this;
     }
 
     /**
-     * Get the current query collection
+     * Get the current query collection.
      *
      * @return Collection
      */
-    public function getQuery(): Collection {
+    public function getQuery(): Collection
+    {
         return $this->query;
     }
 
     /**
-     * Set all query parameters
-     * @param array $query
+     * Set all query parameters.
      *
+     * @param  array  $query
      * @return Query
      */
-    public function setQuery(array $query): Query {
+    public function setQuery(array $query): Query
+    {
         $this->query = new Collection($query);
+
         return $this;
     }
 
     /**
-     * Get the raw query
+     * Get the raw query.
      *
      * @return string
      */
-    public function getRawQuery(): string {
+    public function getRawQuery(): string
+    {
         return $this->raw_query;
     }
 
     /**
-     * Set the raw query
-     * @param string $raw_query
+     * Set the raw query.
      *
+     * @param  string  $raw_query
      * @return Query
      */
-    public function setRawQuery(string $raw_query): Query {
+    public function setRawQuery(string $raw_query): Query
+    {
         $this->raw_query = $raw_query;
+
         return $this;
     }
 
     /**
-     * Get all applied extensions
+     * Get all applied extensions.
      *
      * @return string[]
      */
-    public function getExtensions(): array {
+    public function getExtensions(): array
+    {
         return $this->extensions;
     }
 
     /**
-     * Set all extensions that should be used
-     * @param string[] $extensions
+     * Set all extensions that should be used.
      *
+     * @param  string[]  $extensions
      * @return Query
      */
-    public function setExtensions(array $extensions): Query {
+    public function setExtensions(array $extensions): Query
+    {
         $this->extensions = $extensions;
         if (count($this->extensions) > 0) {
-            if (in_array("UID", $this->extensions) === false) {
-                $this->extensions[] = "UID";
+            if (in_array('UID', $this->extensions) === false) {
+                $this->extensions[] = 'UID';
             }
         }
+
         return $this;
     }
 
     /**
-     * Set the client instance
-     * @param Client $client
+     * Set the client instance.
      *
+     * @param  Client  $client
      * @return Query
      */
-    public function setClient(Client $client): Query {
+    public function setClient(Client $client): Query
+    {
         $this->client = $client;
+
         return $this;
     }
 
     /**
-     * Get the set fetch limit
+     * Get the set fetch limit.
      *
      * @return ?int
      */
-    public function getLimit(): ?int {
+    public function getLimit(): ?int
+    {
         return $this->limit;
     }
 
     /**
-     * Set the fetch limit
-     * @param int $limit
+     * Set the fetch limit.
      *
+     * @param  int  $limit
      * @return Query
      */
-    public function setLimit(int $limit): Query {
+    public function setLimit(int $limit): Query
+    {
         $this->limit = $limit <= 0 ? null : $limit;
+
         return $this;
     }
 
     /**
-     * Get the set page
+     * Get the set page.
      *
      * @return int
      */
-    public function getPage(): int {
+    public function getPage(): int
+    {
         return $this->page;
     }
 
     /**
-     * Set the page
-     * @param int $page
+     * Set the page.
      *
+     * @param  int  $page
      * @return Query
      */
-    public function setPage(int $page): Query {
+    public function setPage(int $page): Query
+    {
         $this->page = $page;
+
         return $this;
     }
 
     /**
-     * Set the fetch option flag
-     * @param int $fetch_options
+     * Set the fetch option flag.
      *
+     * @param  int  $fetch_options
      * @return Query
      */
-    public function setFetchOptions(int $fetch_options): Query {
+    public function setFetchOptions(int $fetch_options): Query
+    {
         $this->fetch_options = $fetch_options;
+
         return $this;
     }
 
     /**
-     * Set the fetch option flag
-     * @param int $fetch_options
+     * Set the fetch option flag.
      *
+     * @param  int  $fetch_options
      * @return Query
      */
-    public function fetchOptions(int $fetch_options): Query {
+    public function fetchOptions(int $fetch_options): Query
+    {
         return $this->setFetchOptions($fetch_options);
     }
 
     /**
-     * Get the fetch option flag
+     * Get the fetch option flag.
      *
      * @return ?int
      */
-    public function getFetchOptions(): ?int {
+    public function getFetchOptions(): ?int
+    {
         return $this->fetch_options;
     }
 
     /**
-     * Get the fetch body flag
+     * Get the fetch body flag.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getFetchBody(): bool {
+    public function getFetchBody(): bool
+    {
         return $this->fetch_body;
     }
 
     /**
-     * Set the fetch body flag
-     * @param boolean $fetch_body
+     * Set the fetch body flag.
      *
+     * @param  bool  $fetch_body
      * @return Query
      */
-    public function setFetchBody(bool $fetch_body): Query {
+    public function setFetchBody(bool $fetch_body): Query
+    {
         $this->fetch_body = $fetch_body;
+
         return $this;
     }
 
     /**
-     * Set the fetch body flag
-     * @param boolean $fetch_body
+     * Set the fetch body flag.
      *
+     * @param  bool  $fetch_body
      * @return Query
      */
-    public function fetchBody(bool $fetch_body): Query {
+    public function fetchBody(bool $fetch_body): Query
+    {
         return $this->setFetchBody($fetch_body);
     }
 
     /**
-     * Get the fetch body flag
+     * Get the fetch body flag.
      *
      * @return bool
      */
-    public function getFetchFlags(): bool {
+    public function getFetchFlags(): bool
+    {
         return $this->fetch_flags;
     }
 
     /**
-     * Set the fetch flag
-     * @param bool $fetch_flags
+     * Set the fetch flag.
      *
+     * @param  bool  $fetch_flags
      * @return Query
      */
-    public function setFetchFlags(bool $fetch_flags): Query {
+    public function setFetchFlags(bool $fetch_flags): Query
+    {
         $this->fetch_flags = $fetch_flags;
+
         return $this;
     }
 
     /**
-     * Set the fetch order
-     * @param string $fetch_order
+     * Set the fetch order.
      *
+     * @param  string  $fetch_order
      * @return Query
      */
-    public function setFetchOrder(string $fetch_order): Query {
+    public function setFetchOrder(string $fetch_order): Query
+    {
         $fetch_order = strtolower($fetch_order);
 
         if (in_array($fetch_order, ['asc', 'desc'])) {
@@ -919,98 +1006,111 @@ class Query {
     }
 
     /**
-     * Set the fetch order
-     * @param string $fetch_order
+     * Set the fetch order.
      *
+     * @param  string  $fetch_order
      * @return Query
      */
-    public function fetchOrder(string $fetch_order): Query {
+    public function fetchOrder(string $fetch_order): Query
+    {
         return $this->setFetchOrder($fetch_order);
     }
 
     /**
-     * Get the fetch order
+     * Get the fetch order.
      *
      * @return string
      */
-    public function getFetchOrder(): string {
+    public function getFetchOrder(): string
+    {
         return $this->fetch_order;
     }
 
     /**
-     * Set the fetch order to ascending
+     * Set the fetch order to ascending.
      *
      * @return Query
      */
-    public function setFetchOrderAsc(): Query {
+    public function setFetchOrderAsc(): Query
+    {
         return $this->setFetchOrder('asc');
     }
 
     /**
-     * Set the fetch order to ascending
+     * Set the fetch order to ascending.
      *
      * @return Query
      */
-    public function fetchOrderAsc(): Query {
+    public function fetchOrderAsc(): Query
+    {
         return $this->setFetchOrderAsc();
     }
 
     /**
-     * Set the fetch order to descending
+     * Set the fetch order to descending.
      *
      * @return Query
      */
-    public function setFetchOrderDesc(): Query {
+    public function setFetchOrderDesc(): Query
+    {
         return $this->setFetchOrder('desc');
     }
 
     /**
-     * Set the fetch order to descending
+     * Set the fetch order to descending.
      *
      * @return Query
      */
-    public function fetchOrderDesc(): Query {
+    public function fetchOrderDesc(): Query
+    {
         return $this->setFetchOrderDesc();
     }
 
     /**
-     * Set soft fail mode
-     * @var boolean $state
+     * Set soft fail mode.
+     *
+     * @var bool
      *
      * @return Query
      */
-    public function softFail(bool $state = true): Query {
+    public function softFail(bool $state = true): Query
+    {
         return $this->setSoftFail($state);
     }
 
     /**
-     * Set soft fail mode
+     * Set soft fail mode.
      *
-     * @var boolean $state
+     * @var bool
+     *
      * @return Query
      */
-    public function setSoftFail(bool $state = true): Query {
+    public function setSoftFail(bool $state = true): Query
+    {
         $this->soft_fail = $state;
 
         return $this;
     }
 
     /**
-     * Get soft fail mode
+     * Get soft fail mode.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getSoftFail(): bool {
+    public function getSoftFail(): bool
+    {
         return $this->soft_fail;
     }
 
     /**
-     * Handle the exception for a given uid
-     * @param integer $uid
+     * Handle the exception for a given uid.
+     *
+     * @param  int  $uid
      *
      * @throws GetMessagesFailedException
      */
-    protected function handleException(int $uid): void {
+    protected function handleException(int $uid): void
+    {
         if ($this->soft_fail === false && $this->hasError($uid)) {
             $error = $this->getError($uid);
             throw new GetMessagesFailedException($error->getMessage(), 0, $error);
@@ -1018,75 +1118,89 @@ class Query {
     }
 
     /**
-     * Add a new error to the error holder
-     * @param integer $uid
-     * @param Exception $error
+     * Add a new error to the error holder.
+     *
+     * @param  int  $uid
+     * @param  Exception  $error
      */
-    protected function setError(int $uid, Exception $error): void {
+    protected function setError(int $uid, Exception $error): void
+    {
         $this->errors[$uid] = $error;
     }
 
     /**
-     * Check if there are any errors / exceptions present
-     * @var ?integer $uid
+     * Check if there are any errors / exceptions present.
      *
-     * @return boolean
+     * @var ?integer
+     *
+     * @return bool
      */
-    public function hasErrors(?int $uid = null): bool {
+    public function hasErrors(?int $uid = null): bool
+    {
         if ($uid !== null) {
             return $this->hasError($uid);
         }
+
         return count($this->errors) > 0;
     }
 
     /**
-     * Check if there is an error / exception present
-     * @var integer $uid
+     * Check if there is an error / exception present.
      *
-     * @return boolean
+     * @var int
+     *
+     * @return bool
      */
-    public function hasError(int $uid): bool {
+    public function hasError(int $uid): bool
+    {
         return isset($this->errors[$uid]);
     }
 
     /**
-     * Get all available errors / exceptions
+     * Get all available errors / exceptions.
      *
      * @return array
      */
-    public function errors(): array {
+    public function errors(): array
+    {
         return $this->getErrors();
     }
 
     /**
-     * Get all available errors / exceptions
+     * Get all available errors / exceptions.
      *
      * @return array
      */
-    public function getErrors(): array {
+    public function getErrors(): array
+    {
         return $this->errors;
     }
 
     /**
-     * Get a specific error / exception
-     * @var integer $uid
+     * Get a specific error / exception.
+     *
+     * @var int
      *
      * @return Exception|null
      */
-    public function error(int $uid): ?Exception {
+    public function error(int $uid): ?Exception
+    {
         return $this->getError($uid);
     }
 
     /**
-     * Get a specific error / exception
-     * @var integer $uid
+     * Get a specific error / exception.
+     *
+     * @var int
      *
      * @return ?Exception
      */
-    public function getError(int $uid): ?Exception {
+    public function getError(int $uid): ?Exception
+    {
         if ($this->hasError($uid)) {
             return $this->errors[$uid];
         }
+
         return null;
     }
 }
