@@ -21,8 +21,6 @@ class EmbeddedEmailTest extends FixtureTestCase
 {
     /**
      * Test the fixture embedded_email.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

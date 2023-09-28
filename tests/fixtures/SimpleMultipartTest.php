@@ -19,8 +19,6 @@ class SimpleMultipartTest extends FixtureTestCase
 {
     /**
      * Test the fixture simple_multipart.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

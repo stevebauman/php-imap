@@ -19,8 +19,6 @@ class PlainOnlyTest extends FixtureTestCase
 {
     /**
      * Test the fixture plain_only.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

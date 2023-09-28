@@ -14,8 +14,6 @@ class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask
 {
     /**
      * New custom method which can be called through a mask.
-     *
-     * @return string
      */
     public function token(): string
     {
@@ -24,8 +22,6 @@ class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask
 
     /**
      * Custom attachment saving method.
-     *
-     * @return bool
      */
     public function custom_save(): bool
     {

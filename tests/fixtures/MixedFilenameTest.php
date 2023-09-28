@@ -21,8 +21,6 @@ class MixedFilenameTest extends FixtureTestCase
 {
     /**
      * Test the fixture mixed_filename.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

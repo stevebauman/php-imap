@@ -21,8 +21,6 @@ class BooleanDecodedContentTest extends FixtureTestCase
 {
     /**
      * Test the fixture boolean_decoded_content.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

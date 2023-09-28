@@ -54,9 +54,6 @@ use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
  */
 class WhereQuery extends Query
 {
-    /**
-     * @var array
-     */
     protected array $available_criteria = [
         'OR', 'AND',
         'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
@@ -67,8 +64,6 @@ class WhereQuery extends Query
     /**
      * Magic method in order to allow alias usage of all "where" methods in an optional connection with "NOT".
      *
-     * @param  string  $name
-     * @param  array|null  $arguments
      * @return mixed
      *
      * @throws InvalidWhereQueryCriteriaException
@@ -101,8 +96,6 @@ class WhereQuery extends Query
     /**
      * Validate a given criteria.
      *
-     * @param  $criteria
-     * @return string
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -122,8 +115,6 @@ class WhereQuery extends Query
     /**
      * Register search parameters.
      *
-     * @param  mixed  $criteria
-     * @param  mixed  $value
      * @return $this
      *
      * @throws InvalidWhereQueryCriteriaException
@@ -156,8 +147,8 @@ class WhereQuery extends Query
     /**
      * Push a given search criteria and value pair to the search query.
      *
-     * @param  $criteria  string
-     * @param  $value  mixed
+     * @param    $criteria  string
+     * @param    $value  mixed
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -174,7 +165,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  Closure|null  $closure
      * @return $this
      */
     public function orWhere(Closure $closure = null): WhereQuery
@@ -188,7 +178,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  Closure|null  $closure
      * @return $this
      */
     public function andWhere(Closure $closure = null): WhereQuery
@@ -202,8 +191,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereAll(): WhereQuery
@@ -212,8 +199,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereAnswered(): WhereQuery
@@ -222,9 +207,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereBcc(string $value): WhereQuery
@@ -233,9 +215,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  mixed  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      * @throws MessageSearchValidationException
      */
@@ -247,9 +226,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereBody(string $value): WhereQuery
@@ -258,9 +234,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereCc(string $value): WhereQuery
@@ -269,8 +242,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereDeleted(): WhereQuery
@@ -279,9 +250,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereFlagged(string $value): WhereQuery
@@ -290,9 +258,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereFrom(string $value): WhereQuery
@@ -301,9 +266,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereKeyword(string $value): WhereQuery
@@ -312,8 +274,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereNew(): WhereQuery
@@ -322,8 +282,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereNot(): WhereQuery
@@ -332,8 +290,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereOld(): WhereQuery
@@ -342,9 +298,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  mixed  $value
-     * @return WhereQuery
-     *
      * @throws MessageSearchValidationException
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -356,8 +309,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereRecent(): WhereQuery
@@ -366,8 +317,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereSeen(): WhereQuery
@@ -376,9 +325,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  mixed  $value
-     * @return WhereQuery
-     *
      * @throws MessageSearchValidationException
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -390,9 +336,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereSubject(string $value): WhereQuery
@@ -401,9 +344,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereText(string $value): WhereQuery
@@ -412,9 +352,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereTo(string $value): WhereQuery
@@ -423,9 +360,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  string  $value
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUnkeyword(string $value): WhereQuery
@@ -434,8 +368,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUnanswered(): WhereQuery
@@ -444,8 +376,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUndeleted(): WhereQuery
@@ -454,8 +384,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUnflagged(): WhereQuery
@@ -464,8 +392,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUnseen(): WhereQuery
@@ -474,8 +400,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereNoXSpam(): WhereQuery
@@ -484,8 +408,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereIsXSpam(): WhereQuery
@@ -496,9 +418,6 @@ class WhereQuery extends Query
     /**
      * Search for a specific header value.
      *
-     * @param  $header
-     * @param  $value
-     * @return WhereQuery
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -510,8 +429,6 @@ class WhereQuery extends Query
     /**
      * Search for a specific message id.
      *
-     * @param  $messageId
-     * @return WhereQuery
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -523,8 +440,6 @@ class WhereQuery extends Query
     /**
      * Search for a specific message id.
      *
-     * @param  $messageId
-     * @return WhereQuery
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -534,9 +449,6 @@ class WhereQuery extends Query
     }
 
     /**
-     * @param  $country_code
-     * @return WhereQuery
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereLanguage($country_code): WhereQuery
@@ -547,8 +459,6 @@ class WhereQuery extends Query
     /**
      * Get message be it UID.
      *
-     * @param  int|string  $uid
-     * @return WhereQuery
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -561,7 +471,6 @@ class WhereQuery extends Query
      * Get messages by their UIDs.
      *
      * @param  array<int, int>  $uids
-     * @return WhereQuery
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -576,12 +485,9 @@ class WhereQuery extends Query
      * Apply the callback if the given "value" is truthy.
      * copied from @url https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Traits/Conditionable.php.
      *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable|null  $default
      * @return $this|null
      */
-    public function when(mixed $value, callable $callback, ?callable $default = null): mixed
+    public function when(mixed $value, callable $callback, callable $default = null): mixed
     {
         if ($value) {
             return $callback($this, $value) ?: $this;
@@ -596,12 +502,9 @@ class WhereQuery extends Query
      * Apply the callback if the given "value" is falsy.
      * copied from @url https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Traits/Conditionable.php.
      *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable|null  $default
      * @return $this|mixed
      */
-    public function unless(mixed $value, callable $callback, ?callable $default = null): mixed
+    public function unless(mixed $value, callable $callback, callable $default = null): mixed
     {
         if (! $value) {
             return $callback($this, $value) ?: $this;

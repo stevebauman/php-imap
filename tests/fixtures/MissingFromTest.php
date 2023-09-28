@@ -19,8 +19,6 @@ class MissingFromTest extends FixtureTestCase
 {
     /**
      * Test the fixture missing_from.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

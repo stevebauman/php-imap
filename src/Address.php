@@ -19,23 +19,19 @@ class Address
 {
     /**
      * Address attributes.
-     *
-     * @var string
-     * @var string
-     * @var string
-     * @var string
-     * @var string
      */
     public string $personal = '';
+
     public string $mailbox = '';
+
     public string $host = '';
+
     public string $mail = '';
+
     public string $full = '';
 
     /**
      * Address constructor.
-     *
-     * @param  object  $object
      */
     public function __construct(object $object)
     {
@@ -84,8 +80,6 @@ class Address
 
     /**
      * Convert instance to array.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -94,8 +88,6 @@ class Address
 
     /**
      * Return the stringified attribute.
-     *
-     * @return string
      */
     public function toString(): string
     {

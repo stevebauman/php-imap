@@ -107,9 +107,9 @@ class HeaderTest extends TestCase
         $method->setAccessible(true);
 
         $mockAttributes = [
-            'content_type'              => new Attribute('content_type', 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv'),
+            'content_type' => new Attribute('content_type', 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv'),
             'content_transfer_encoding' => new Attribute('content_transfer_encoding', 'quoted-printable'),
-            'content_disposition'       => new Attribute('content_disposition', 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"; attribute_test=attribute_test_value'),
+            'content_disposition' => new Attribute('content_disposition', 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"; attribute_test=attribute_test_value'),
         ];
 
         $attributes = new \ReflectionProperty($mock, 'attributes');

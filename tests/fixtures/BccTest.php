@@ -19,8 +19,6 @@ class BccTest extends FixtureTestCase
 {
     /**
      * Test the fixture bcc.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

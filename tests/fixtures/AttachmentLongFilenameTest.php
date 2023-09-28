@@ -21,8 +21,6 @@ class AttachmentLongFilenameTest extends FixtureTestCase
 {
     /**
      * Test the fixture attachment_long_filename.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

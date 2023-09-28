@@ -43,15 +43,11 @@ abstract class LiveMailboxTestCase extends TestCase
 
     /**
      * Client manager.
-     *
-     * @var ClientManager
      */
     protected static ClientManager $manager;
 
     /**
      * Get the client manager.
-     *
-     * @return ClientManager
      */
     final protected function getManager(): ClientManager
     {
@@ -62,13 +58,13 @@ abstract class LiveMailboxTestCase extends TestCase
                 ],
                 'accounts' => [
                     'default' => [
-                        'host'          => getenv('LIVE_MAILBOX_HOST'),
-                        'port'          => getenv('LIVE_MAILBOX_PORT'),
-                        'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                        'host' => getenv('LIVE_MAILBOX_HOST'),
+                        'port' => getenv('LIVE_MAILBOX_PORT'),
+                        'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
                         'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                        'username'      => getenv('LIVE_MAILBOX_USERNAME'),
-                        'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
-                        'protocol'      => 'imap', //might also use imap, [pop3 or nntp (untested)]
+                        'username' => getenv('LIVE_MAILBOX_USERNAME'),
+                        'password' => getenv('LIVE_MAILBOX_PASSWORD'),
+                        'protocol' => 'imap', //might also use imap, [pop3 or nntp (untested)]
                     ],
                 ],
             ]);
@@ -80,7 +76,6 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Get the client.
      *
-     * @return Client
      *
      * @throws MaskNotFoundException
      */
@@ -95,8 +90,6 @@ abstract class LiveMailboxTestCase extends TestCase
 
     /**
      * Get special chars.
-     *
-     * @return string
      */
     final protected function getSpecialChars(): string
     {
@@ -106,8 +99,6 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Get a folder.
      *
-     * @param  string  $folder_path
-     * @return Folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -132,9 +123,6 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Append a message to a folder.
      *
-     * @param  Folder  $folder
-     * @param  string  $message
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -176,9 +164,6 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Append a message template to a folder.
      *
-     * @param  Folder  $folder
-     * @param  string  $template
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -202,8 +187,6 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Delete a folder if it is given.
      *
-     * @param  Folder|null  $folder
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

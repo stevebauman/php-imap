@@ -21,8 +21,6 @@ class UndefinedCharsetHeaderTest extends FixtureTestCase
 {
     /**
      * Test the fixture undefined_charset_header.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

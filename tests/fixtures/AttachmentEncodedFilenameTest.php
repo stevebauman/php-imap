@@ -21,8 +21,6 @@ class AttachmentEncodedFilenameTest extends FixtureTestCase
 {
     /**
      * Test the fixture attachment_encoded_filename.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

@@ -29,7 +29,6 @@ class Issue383Test extends LiveMailboxTestCase
     /**
      * Test issue #383 - Does not work when a folder name contains umlauts: Entwürfe.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

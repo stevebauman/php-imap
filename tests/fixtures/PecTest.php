@@ -22,8 +22,6 @@ class PecTest extends FixtureTestCase
 {
     /**
      * Test the fixture pec.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

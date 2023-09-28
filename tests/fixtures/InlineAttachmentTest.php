@@ -22,8 +22,6 @@ class InlineAttachmentTest extends FixtureTestCase
 {
     /**
      * Test the fixture inline_attachment.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

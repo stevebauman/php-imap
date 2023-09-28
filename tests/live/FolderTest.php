@@ -40,7 +40,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Try to create a new query instance.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -64,7 +63,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::hasChildren().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -94,7 +92,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::setChildren().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -126,7 +123,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::getChildren().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -159,7 +155,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::move().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -202,7 +197,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::delete().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -235,7 +229,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::overview().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -279,7 +272,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::appendMessage().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -315,7 +307,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::subscribe().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -342,7 +333,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::unsubscribe().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -368,7 +358,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::status().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -395,7 +384,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::examine().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -422,7 +410,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::getClient().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -443,7 +430,6 @@ class FolderTest extends LiveMailboxTestCase
     /**
      * Test Folder::setDelimiter().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

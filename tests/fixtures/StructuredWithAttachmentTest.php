@@ -21,8 +21,6 @@ class StructuredWithAttachmentTest extends FixtureTestCase
 {
     /**
      * Test the fixture structured_with_attachment.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

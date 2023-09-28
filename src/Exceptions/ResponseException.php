@@ -23,12 +23,9 @@ class ResponseException extends Exception
     /**
      * Make a new ResponseException instance.
      *
-     * @param  Response  $response
      * @param  false|bool  $debug
-     * @param  Exception|null  $exception
-     * @return ResponseException
      */
-    public static function make(Response $response, bool $debug = false, ?Exception $exception = null): ResponseException
+    public static function make(Response $response, bool $debug = false, Exception $exception = null): ResponseException
     {
         $message = "Command failed to process:\n";
         $message .= "Causes:\n";
@@ -54,9 +51,6 @@ class ResponseException extends Exception
 
     /**
      * Generate a debug message containing all commands send and responses received.
-     *
-     * @param  Response  $response
-     * @return string
      */
     protected static function debug_message(Response $response): string
     {

@@ -23,8 +23,6 @@ class Header
 {
     /**
      * Raw header.
-     *
-     * @var string
      */
     public string $raw = '';
 
@@ -37,22 +35,17 @@ class Header
 
     /**
      * Config holder.
-     *
-     * @var array
      */
     protected array $config = [];
 
     /**
      * Fallback Encoding.
-     *
-     * @var string
      */
     public string $fallback_encoding = 'UTF-8';
 
     /**
      * Header constructor.
      *
-     * @param  string  $raw_header
      *
      * @throws InvalidMessageDateException
      */
@@ -66,8 +59,6 @@ class Header
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @param  string  $method
-     * @param  array  $arguments
      * @return Attribute|mixed
      *
      * @throws MethodNotFoundException
@@ -88,7 +79,6 @@ class Header
     /**
      * Magic getter.
      *
-     * @param  $name
      * @return Attribute|null
      */
     public function __get($name)
@@ -98,9 +88,6 @@ class Header
 
     /**
      * Get a specific header attribute.
-     *
-     * @param  $name
-     * @return Attribute
      */
     public function get($name): Attribute
     {
@@ -114,9 +101,6 @@ class Header
 
     /**
      * Check if a specific attribute exists.
-     *
-     * @param  string  $name
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -128,10 +112,7 @@ class Header
     /**
      * Set a specific attribute.
      *
-     * @param  string  $name
      * @param  array|mixed  $value
-     * @param  bool  $strict
-     * @return Attribute|array
      */
     public function set(string $name, mixed $value, bool $strict = false): Attribute|array
     {
@@ -147,7 +128,6 @@ class Header
     /**
      * Perform a regex match all on the raw header and return the first result.
      *
-     * @param  $pattern
      * @return mixed|null
      */
     public function find($pattern): mixed
@@ -165,8 +145,6 @@ class Header
 
     /**
      * Try to find a boundary if possible.
-     *
-     * @return string|null
      */
     public function getBoundary(): ?string
     {
@@ -182,9 +160,6 @@ class Header
 
     /**
      * Remove all unwanted chars from a given boundary.
-     *
-     * @param  string  $str
-     * @return string
      */
     private function clearBoundaryString(string $str): string
     {
@@ -233,9 +208,6 @@ class Header
      * Parse mail headers from a string.
      *
      * @link https://php.net/manual/en/function.imap-rfc822-parse-headers.php
-     *
-     * @param  $raw_headers
-     * @return object
      */
     public function rfc822_parse_headers($raw_headers): object
     {
@@ -354,16 +326,12 @@ class Header
 
         return [(object) [
             'charset' => $charset,
-            'text'    => $this->convertEncoding($text, $charset),
+            'text' => $this->convertEncoding($text, $charset),
         ]];
     }
 
     /**
      * Check if a given pair of strings has been decoded.
-     *
-     * @param  $encoded
-     * @param  $decoded
-     * @return bool
      */
     private function notDecoded($encoded, $decoded): bool
     {
@@ -375,9 +343,6 @@ class Header
     /**
      * Convert the encoding.
      *
-     * @param  $str
-     * @param  string  $from
-     * @param  string  $to
      * @return mixed|string
      */
     public function convertEncoding($str, string $from = 'ISO-8859-2', string $to = 'UTF-8'): mixed
@@ -394,9 +359,6 @@ class Header
 
     /**
      * Get the encoding of a given abject.
-     *
-     * @param  object|string  $structure
-     * @return string
      */
     public function getEncoding(object|string $structure): string
     {
@@ -419,9 +381,6 @@ class Header
 
     /**
      * Test if a given value is utf-8 encoded.
-     *
-     * @param  $value
-     * @return bool
      */
     private function is_uft8($value): bool
     {
@@ -430,9 +389,6 @@ class Header
 
     /**
      * Try to decode a specific header.
-     *
-     * @param  mixed  $value
-     * @return mixed
      */
     public function decode(mixed $value): mixed
     {
@@ -474,9 +430,6 @@ class Header
 
     /**
      * Decode a given array.
-     *
-     * @param  array  $values
-     * @return array
      */
     private function decodeArray(array $values): array
     {
@@ -508,9 +461,6 @@ class Header
 
     /**
      * Extract a given part as address array from a given header.
-     *
-     * @param  $values
-     * @return array
      */
     private function decodeAddresses($values): array
     {
@@ -524,8 +474,8 @@ class Header
                         if (count($mail_address) == 2) {
                             $addresses[] = (object) [
                                 'personal' => $parsed_address['display'] ?? '',
-                                'mailbox'  => $mail_address[0],
-                                'host'     => $mail_address[1],
+                                'mailbox' => $mail_address[0],
+                                'host' => $mail_address[1],
                             ];
                         }
                     }
@@ -552,8 +502,8 @@ class Header
                     [$mailbox, $host] = array_pad(explode('@', $email), 2, null);
                     $addresses[] = (object) [
                         'personal' => $name,
-                        'mailbox'  => $mailbox,
-                        'host'     => $host,
+                        'mailbox' => $mailbox,
+                        'host' => $host,
                     ];
                 }
             }
@@ -564,8 +514,6 @@ class Header
 
     /**
      * Extract a given part as address array from a given header.
-     *
-     * @param  object  $header
      */
     private function extractAddresses(object $header): void
     {
@@ -578,9 +526,6 @@ class Header
 
     /**
      * Parse Addresses.
-     *
-     * @param  $list
-     * @return array
      */
     private function parseAddresses($list): array
     {
@@ -714,7 +659,6 @@ class Header
      *
      * Please report any new invalid timestamps to [#45](https://github.com/Webklex/php-imap/issues)
      *
-     * @param  object  $header
      *
      * @throws InvalidMessageDateException
      */
@@ -806,8 +750,6 @@ class Header
 
     /**
      * Get all available attributes.
-     *
-     * @return array
      */
     public function getAttributes(): array
     {
@@ -816,9 +758,6 @@ class Header
 
     /**
      * Set all header attributes.
-     *
-     * @param  array  $attributes
-     * @return Header
      */
     public function setAttributes(array $attributes): Header
     {
@@ -829,9 +768,6 @@ class Header
 
     /**
      * Set the configuration used for parsing a raw header.
-     *
-     * @param  array  $config
-     * @return Header
      */
     public function setConfig(array $config): Header
     {

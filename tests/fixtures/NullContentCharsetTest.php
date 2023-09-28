@@ -19,8 +19,6 @@ class NullContentCharsetTest extends FixtureTestCase
 {
     /**
      * Test the fixture null_content_charset.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

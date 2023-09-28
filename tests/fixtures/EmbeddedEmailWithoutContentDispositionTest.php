@@ -21,8 +21,6 @@ class EmbeddedEmailWithoutContentDispositionTest extends FixtureTestCase
 {
     /**
      * Test the fixture embedded_email_without_content_disposition.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

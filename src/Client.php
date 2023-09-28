@@ -47,44 +47,32 @@ class Client
 
     /**
      * Server hostname.
-     *
-     * @var string
      */
     public string $host;
 
     /**
      * Server port.
-     *
-     * @var int
      */
     public int $port;
 
     /**
      * Service protocol.
-     *
-     * @var string
      */
     public string $protocol;
 
     /**
      * Server encryption.
      * Supported: none, ssl, tls, starttls or notls.
-     *
-     * @var string
      */
     public string $encryption;
 
     /**
      * If server has to validate cert.
-     *
-     * @var bool
      */
     public bool $validate_cert = true;
 
     /**
      * Proxy settings.
-     *
-     * @var array
      */
     protected array $proxy = [
         'socket' => null,
@@ -95,29 +83,21 @@ class Client
 
     /**
      * Connection timeout.
-     *
-     * @var int
      */
     public int $timeout;
 
     /**
      * Account username.
-     *
-     * @var string
      */
     public string $username;
 
     /**
      * Account password.
-     *
-     * @var string
      */
     public string $password;
 
     /**
      * Additional data fetched from the server.
-     *
-     * @var array
      */
     public array $extensions;
 
@@ -137,27 +117,21 @@ class Client
 
     /**
      * Default message mask.
-     *
-     * @var string
      */
     protected string $default_message_mask = MessageMask::class;
 
     /**
      * Default attachment mask.
-     *
-     * @var string
      */
     protected string $default_attachment_mask = AttachmentMask::class;
 
     /**
      * Used default account values.
-     *
-     * @var array
      */
     protected array $default_account_config = [
         'host' => 'localhost',
         'port' => 993,
-        'protocol'  => 'imap',
+        'protocol' => 'imap',
         'encryption' => 'ssl',
         'validate_cert' => true,
         'username' => '',
@@ -176,7 +150,6 @@ class Client
     /**
      * Client constructor.
      *
-     * @param  array  $config
      *
      * @throws MaskNotFoundException
      */
@@ -201,8 +174,6 @@ class Client
 
     /**
      * Clone the current Client instance.
-     *
-     * @return Client
      */
     public function clone(): Client
     {
@@ -223,9 +194,6 @@ class Client
 
     /**
      * Set the Client configuration.
-     *
-     * @param  array  $config
-     * @return self
      */
     public function setConfig(array $config): Client
     {
@@ -241,8 +209,6 @@ class Client
 
     /**
      * Get the current config.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -256,10 +222,6 @@ class Client
 
     /**
      * Set a specific account config.
-     *
-     * @param  string  $key
-     * @param  array  $config
-     * @param  array  $default_config
      */
     private function setAccountConfig(string $key, array $config, array $default_config): void
     {
@@ -274,8 +236,6 @@ class Client
 
     /**
      * Get the current account config.
-     *
-     * @return array
      */
     public function getAccountConfig(): array
     {
@@ -291,8 +251,6 @@ class Client
 
     /**
      * Look for a possible events in any available config.
-     *
-     * @param  $config
      */
     protected function setEventsFromConfig($config): void
     {
@@ -307,7 +265,6 @@ class Client
     /**
      * Look for a possible mask in any available config.
      *
-     * @param  $config
      *
      * @throws MaskNotFoundException
      */
@@ -362,7 +319,6 @@ class Client
     /**
      * Get the current imap resource.
      *
-     * @return ProtocolInterface
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -380,8 +336,6 @@ class Client
 
     /**
      * Determine if connection was established.
-     *
-     * @return bool
      */
     public function isConnected(): bool
     {
@@ -523,10 +477,6 @@ class Client
     /**
      * Get a folder instance by a folder name.
      *
-     * @param  string  $folder_name
-     * @param  string|null  $delimiter
-     * @param  bool  $utf7
-     * @return Folder|null
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -536,7 +486,7 @@ class Client
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function getFolder(string $folder_name, ?string $delimiter = null, bool $utf7 = false): ?Folder
+    public function getFolder(string $folder_name, string $delimiter = null, bool $utf7 = false): ?Folder
     {
         // Set delimiter to false to force selection via getFolderByName (maybe useful for uncommon folder names)
         $delimiter = is_null($delimiter) ? ClientManager::get('options.delimiter', '/') : $delimiter;
@@ -551,9 +501,7 @@ class Client
     /**
      * Get a folder instance by a folder name.
      *
-     * @param  $folder_name
      * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
-     * @return Folder|null
      *
      * @throws FolderFetchingException
      * @throws ConnectionFailedException
@@ -571,10 +519,7 @@ class Client
     /**
      * Get a folder instance by a folder path.
      *
-     * @param  $folder_path
-     * @param  bool  $utf7
      * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
-     * @return Folder|null
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -597,10 +542,7 @@ class Client
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
-     * @param  bool  $hierarchical
-     * @param  string|null  $parent_folder
      * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
-     * @return FolderCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -644,10 +586,7 @@ class Client
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
-     * @param  bool  $hierarchical
-     * @param  string|null  $parent_folder
      * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
-     * @return FolderCollection
      *
      * @throws FolderFetchingException
      * @throws ConnectionFailedException
@@ -691,9 +630,6 @@ class Client
     /**
      * Open a given folder.
      *
-     * @param  string  $folder_path
-     * @param  bool  $force_select
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -715,19 +651,14 @@ class Client
 
     /**
      * Set active folder.
-     *
-     * @param  string|null  $folder_path
-     * @return void
      */
-    public function setActiveFolder(?string $folder_path = null): void
+    public function setActiveFolder(string $folder_path = null): void
     {
         $this->active_folder = $folder_path;
     }
 
     /**
      * Get active folder.
-     *
-     * @return string|null
      */
     public function getActiveFolder(): ?string
     {
@@ -737,10 +668,6 @@ class Client
     /**
      * Create a new Folder.
      *
-     * @param  string  $folder_path
-     * @param  bool  $expunge
-     * @param  bool  $utf7
-     * @return Folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -777,9 +704,6 @@ class Client
     /**
      * Delete a given folder.
      *
-     * @param  string  $folder_path
-     * @param  bool  $expunge
-     * @return array
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -812,8 +736,6 @@ class Client
     /**
      * Check a given folder.
      *
-     * @param  string  $folder_path
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -831,8 +753,6 @@ class Client
 
     /**
      * Get the current active folder.
-     *
-     * @return string
      */
     public function getFolderPath(): string
     {
@@ -843,8 +763,6 @@ class Client
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     * @param  array|null  $ids
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -863,7 +781,6 @@ class Client
     /**
      * Retrieve the quota level settings, and usage statics per mailbox.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -882,8 +799,6 @@ class Client
     /**
      * Retrieve the quota settings per user.
      *
-     * @param  string  $quota_root
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -902,7 +817,6 @@ class Client
     /**
      * Delete all messages marked for deletion.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -921,8 +835,6 @@ class Client
     /**
      * Set the connection timeout.
      *
-     * @param  int  $timeout
-     * @return ProtocolInterface
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -945,7 +857,6 @@ class Client
     /**
      * Get the connection timeout.
      *
-     * @return int
      *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
@@ -963,8 +874,6 @@ class Client
 
     /**
      * Get the default message mask.
-     *
-     * @return string
      */
     public function getDefaultMessageMask(): string
     {
@@ -973,9 +882,6 @@ class Client
 
     /**
      * Get the default events for a given section.
-     *
-     * @param  $section
-     * @return array
      */
     public function getDefaultEvents($section): array
     {
@@ -989,7 +895,6 @@ class Client
     /**
      * Set the default message mask.
      *
-     * @param  string  $mask
      * @return $this
      *
      * @throws MaskNotFoundException
@@ -1007,8 +912,6 @@ class Client
 
     /**
      * Get the default attachment mask.
-     *
-     * @return string
      */
     public function getDefaultAttachmentMask(): string
     {
@@ -1018,7 +921,6 @@ class Client
     /**
      * Set the default attachment mask.
      *
-     * @param  string  $mask
      * @return $this
      *
      * @throws MaskNotFoundException

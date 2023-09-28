@@ -19,8 +19,6 @@ class UndisclosedRecipientsMinusTest extends FixtureTestCase
 {
     /**
      * Test the fixture undisclosed_recipients_minus.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {
@@ -35,7 +33,7 @@ class UndisclosedRecipientsMinusTest extends FixtureTestCase
             'undisclosed-recipients',
             '',
         ], $message->to->map(function ($item) {
-                               return $item->mailbox;
-                           }));
+            return $item->mailbox;
+        }));
     }
 }

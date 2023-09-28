@@ -28,7 +28,6 @@ class Issue393Test extends LiveMailboxTestCase
     /**
      * Test issue #393 - "Empty response" when calling getFolders().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

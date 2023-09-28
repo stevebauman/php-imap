@@ -19,8 +19,6 @@ class EmailAddressTest extends FixtureTestCase
 {
     /**
      * Test the fixture email_address.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

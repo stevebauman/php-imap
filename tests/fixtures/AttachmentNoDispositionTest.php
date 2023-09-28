@@ -21,8 +21,6 @@ class AttachmentNoDispositionTest extends FixtureTestCase
 {
     /**
      * Test the fixture attachment_no_disposition.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

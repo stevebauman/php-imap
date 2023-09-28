@@ -25,7 +25,9 @@ use Webklex\PHPIMAP\IMAP;
 class LegacyProtocol extends Protocol
 {
     protected string $protocol = 'imap';
+
     protected string $host = 'localhost';
+
     protected int $port = 993;
 
     /**
@@ -50,9 +52,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Save the information for a nw connection.
-     *
-     * @param  string  $host
-     * @param  int|null  $port
      */
     public function connect(string $host, int $port = null)
     {
@@ -72,7 +71,6 @@ class LegacyProtocol extends Protocol
      *
      * @param  string  $user  username
      * @param  string  $password  password
-     * @return Response
      */
     public function login(string $user, string $password): Response
     {
@@ -126,7 +124,6 @@ class LegacyProtocol extends Protocol
      *
      * @param  string  $user  username
      * @param  string  $token  access token
-     * @return Response
      *
      * @throws AuthFailedException
      * @throws RuntimeException
@@ -138,8 +135,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Get full address of mailbox.
-     *
-     * @return string
      */
     protected function getAddress(): string
     {
@@ -160,8 +155,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Logout of the current session.
-     *
-     * @return Response
      */
     public function logout(): Response
     {
@@ -229,7 +222,6 @@ class LegacyProtocol extends Protocol
      * Examine a given folder.
      *
      * @param  string  $folder  examine this folder
-     * @return Response
      *
      * @throws RuntimeException
      */
@@ -244,10 +236,10 @@ class LegacyProtocol extends Protocol
             $status = \imap_status($this->stream, $this->getAddress().$folder, IMAP::SA_ALL);
 
             return $status ? [
-                'flags'   => [],
-                'exists'  => $status->messages,
-                'recent'  => $status->recent,
-                'unseen'  => $status->unseen,
+                'flags' => [],
+                'exists' => $status->messages,
+                'recent' => $status->recent,
+                'unseen' => $status->unseen,
                 'uidnext' => $status->uidnext,
             ] : [];
         });
@@ -268,10 +260,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message content.
      *
-     * @param  int|array  $uids
-     * @param  string  $rfc
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
     {
@@ -291,10 +280,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message headers.
      *
-     * @param  int|array  $uids
-     * @param  string  $rfc
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
     {
@@ -314,9 +300,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message flags.
      *
-     * @param  int|array  $uids
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function flags(int|array $uids, int|string $uid = IMAP::ST_UID): Response
     {
@@ -346,9 +330,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message sizes.
      *
-     * @param  int|array  $uids
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function sizes(int|array $uids, int|string $uid = IMAP::ST_UID): Response
     {
@@ -430,7 +412,6 @@ class LegacyProtocol extends Protocol
      *
      * @param  string  $sequence  uid sequence
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function overview(string $sequence, int|string $uid = IMAP::ST_UID): Response
     {
@@ -515,7 +496,6 @@ class LegacyProtocol extends Protocol
      * @param  string  $message  full message content
      * @param  array|null  $flags  flags for new message
      * @param  mixed  $date  date for new message
-     * @return Response
      */
     public function appendMessage(string $folder, string $message, array $flags = null, mixed $date = null): Response
     {
@@ -544,11 +524,9 @@ class LegacyProtocol extends Protocol
      * Copy message set from current folder to other folder.
      *
      * @param  string  $folder  destination folder
-     * @param  $from
      * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
      *                        last message, INF means last message available
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @return Response
      */
     public function copyMessage(string $folder, $from, int $to = null, int|string $uid = IMAP::ST_UID): Response
     {
@@ -596,7 +574,6 @@ class LegacyProtocol extends Protocol
      * Move a message set from current folder to another folder.
      *
      * @param  string  $folder  destination folder
-     * @param  $from
      * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
      *                        last message, INF means last message available
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
@@ -649,7 +626,6 @@ class LegacyProtocol extends Protocol
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
      * @param  null  $ids
-     * @return Response
      *
      * @throws MethodNotSupportedException
      */
@@ -662,7 +638,6 @@ class LegacyProtocol extends Protocol
      * Create a new folder (and parent folders if needed).
      *
      * @param  string  $folder  folder name
-     * @return Response
      */
     public function createFolder(string $folder): Response
     {
@@ -678,7 +653,6 @@ class LegacyProtocol extends Protocol
      *
      * @param  string  $old  old name
      * @param  string  $new  new name
-     * @return Response
      */
     public function renameFolder(string $old, string $new): Response
     {
@@ -693,7 +667,6 @@ class LegacyProtocol extends Protocol
      * Delete a folder.
      *
      * @param  string  $folder  folder name
-     * @return Response
      */
     public function deleteFolder(string $folder): Response
     {
@@ -730,8 +703,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Apply session saved changes to the server.
-     *
-     * @return Response
      */
     public function expunge(): Response
     {
@@ -775,7 +746,6 @@ class LegacyProtocol extends Protocol
     /**
      * Search for matching messages.
      *
-     * @param  array  $params
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      * @return Response message ids
      */
@@ -809,7 +779,6 @@ class LegacyProtocol extends Protocol
      * Decode name.
      * It converts UTF7-IMAP encoding to UTF-8.
      *
-     * @param  $name
      * @return array|false|string|string[]|null
      */
     protected function decodeFolderName($name): array|bool|string|null
@@ -819,9 +788,6 @@ class LegacyProtocol extends Protocol
         return mb_convert_encoding($preg[2], 'UTF-8', 'UTF7-IMAP');
     }
 
-    /**
-     * @return string
-     */
     public function getProtocol(): string
     {
         return $this->protocol;
@@ -829,9 +795,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Retrieve the quota level settings, and usage statics per mailbox.
-     *
-     * @param  $username
-     * @return Response
      */
     public function getQuota($username): Response
     {
@@ -844,9 +807,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Retrieve the quota settings per user.
-     *
-     * @param  string  $quota_root
-     * @return Response
      */
     public function getQuotaRoot(string $quota_root = 'INBOX'): Response
     {
@@ -857,10 +817,6 @@ class LegacyProtocol extends Protocol
         });
     }
 
-    /**
-     * @param  string  $protocol
-     * @return LegacyProtocol
-     */
     public function setProtocol(string $protocol): LegacyProtocol
     {
         if (($pos = strpos($protocol, 'legacy')) > 0) {
@@ -873,9 +829,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Create a new Response instance.
-     *
-     * @param  string|null  $command
-     * @return Response
      */
     protected function response(?string $command = ''): Response
     {

@@ -35,7 +35,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test if the connection is working.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -53,7 +52,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test if the connection is working.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -73,7 +71,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test if the connection state can be determined.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -93,7 +90,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test to get the default inbox folder.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -115,7 +111,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test to get the default inbox folder by name.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -137,7 +132,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test to get the default inbox folder by path.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -159,7 +153,6 @@ class ClientTest extends LiveMailboxTestCase
     /**
      * Test to get all folders.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

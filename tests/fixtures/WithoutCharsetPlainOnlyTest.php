@@ -19,8 +19,6 @@ class WithoutCharsetPlainOnlyTest extends FixtureTestCase
 {
     /**
      * Test the fixture without_charset_plain_only.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

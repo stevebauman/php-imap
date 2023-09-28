@@ -20,8 +20,6 @@ class AttributeTest extends TestCase
 {
     /**
      * String Attribute test.
-     *
-     * @return void
      */
     public function testStringAttribute(): void
     {
@@ -34,8 +32,6 @@ class AttributeTest extends TestCase
 
     /**
      * Date Attribute test.
-     *
-     * @return void
      */
     public function testDateAttribute(): void
     {
@@ -47,8 +43,6 @@ class AttributeTest extends TestCase
 
     /**
      * Array Attribute test.
-     *
-     * @return void
      */
     public function testArrayAttribute(): void
     {

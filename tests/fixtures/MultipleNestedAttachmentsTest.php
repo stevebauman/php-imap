@@ -22,8 +22,6 @@ class MultipleNestedAttachmentsTest extends FixtureTestCase
 {
     /**
      * Test the fixture multiple_nested_attachments.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

@@ -22,8 +22,6 @@ class MultipleHtmlPartsAndAttachmentsTest extends FixtureTestCase
 {
     /**
      * Test the fixture multiple_html_parts_and_attachments.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

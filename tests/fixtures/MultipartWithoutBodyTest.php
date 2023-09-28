@@ -19,8 +19,6 @@ class MultipartWithoutBodyTest extends FixtureTestCase
 {
     /**
      * Test the fixture multipart_without_body.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

@@ -24,8 +24,6 @@ class AttachmentMask extends Mask
 
     /**
      * Get the attachment content base64 encoded.
-     *
-     * @return string|null
      */
     public function getContentBase64Encoded(): ?string
     {
@@ -34,8 +32,6 @@ class AttachmentMask extends Mask
 
     /**
      * Get a base64 image src string.
-     *
-     * @return string|null
      */
     public function getImageSrc(): ?string
     {

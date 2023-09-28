@@ -48,12 +48,8 @@ class LegacyTest extends TestCase
 
     /**
      * Create a new LegacyTest instance.
-     *
-     * @param  string|null  $name
-     * @param  array  $data
-     * @param  int|string  $dataName
      */
-    public function __construct(?string $name = null, array $data = [], int|string $dataName = '')
+    public function __construct(string $name = null, array $data = [], int|string $dataName = '')
     {
         if (! getenv('LIVE_MAILBOX') ?? false) {
             $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
@@ -66,13 +62,13 @@ class LegacyTest extends TestCase
             ],
             'accounts' => [
                 'legacy' => [
-                    'host'          => getenv('LIVE_MAILBOX_HOST'),
-                    'port'          => getenv('LIVE_MAILBOX_PORT'),
-                    'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                    'host' => getenv('LIVE_MAILBOX_HOST'),
+                    'port' => getenv('LIVE_MAILBOX_PORT'),
+                    'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
                     'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                    'username'      => getenv('LIVE_MAILBOX_USERNAME'),
-                    'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
-                    'protocol'      => 'legacy-imap',
+                    'username' => getenv('LIVE_MAILBOX_USERNAME'),
+                    'password' => getenv('LIVE_MAILBOX_PASSWORD'),
+                    'protocol' => 'legacy-imap',
                 ],
             ],
         ]);
@@ -117,7 +113,6 @@ class LegacyTest extends TestCase
     /**
      * Try to create a new query instance.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -141,8 +136,6 @@ class LegacyTest extends TestCase
     /**
      * Get a folder.
      *
-     * @param  string  $folder_path
-     * @return Folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -164,9 +157,6 @@ class LegacyTest extends TestCase
     /**
      * Append a message to a folder.
      *
-     * @param  Folder  $folder
-     * @param  string  $message
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -208,9 +198,6 @@ class LegacyTest extends TestCase
     /**
      * Append a message template to a folder.
      *
-     * @param  Folder  $folder
-     * @param  string  $template
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -234,8 +221,6 @@ class LegacyTest extends TestCase
     /**
      * Delete a folder if it is given.
      *
-     * @param  Folder|null  $folder
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -269,7 +254,6 @@ class LegacyTest extends TestCase
     /**
      * Try to create a new query instance with a where clause.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -365,7 +349,6 @@ class LegacyTest extends TestCase
     /**
      * Test query where criteria.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -426,11 +409,6 @@ class LegacyTest extends TestCase
     /**
      * Assert where search criteria.
      *
-     * @param  Folder  $folder
-     * @param  string  $criteria
-     * @param  string|Carbon|null  $value
-     * @param  bool  $date
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -467,10 +445,6 @@ class LegacyTest extends TestCase
     /**
      * Assert header search criteria.
      *
-     * @param  Folder  $folder
-     * @param  string  $criteria
-     * @param  mixed|null  $value
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

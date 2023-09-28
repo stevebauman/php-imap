@@ -19,8 +19,6 @@ class KsC56011987HeadersTest extends FixtureTestCase
 {
     /**
      * Test the fixture ks_c_5601-1987_headers.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

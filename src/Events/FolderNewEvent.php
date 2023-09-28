@@ -19,7 +19,6 @@ use Webklex\PHPIMAP\Folder;
  */
 class FolderNewEvent extends Event
 {
-    /** @var Folder */
     public Folder $folder;
 
     /**

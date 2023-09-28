@@ -19,10 +19,8 @@ use Webklex\PHPIMAP\Message;
  */
 class FlagNewEvent extends Event
 {
-    /** @var Message */
     public Message $message;
 
-    /** @var string */
     public string $flag;
 
     /**

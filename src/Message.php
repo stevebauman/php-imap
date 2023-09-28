@@ -91,15 +91,11 @@ class Message
 
     /**
      * Default mask.
-     *
-     * @var string
      */
     protected string $mask = MessageMask::class;
 
     /**
      * Used config.
-     *
-     * @var array
      */
     protected array $config = [];
 
@@ -112,8 +108,6 @@ class Message
 
     /**
      * The message folder path.
-     *
-     * @var string
      */
     protected string $folder_path;
 
@@ -124,22 +118,15 @@ class Message
      */
     public ?int $fetch_options = null;
 
-    /**
-     * @var int
-     */
     protected int $sequence = IMAP::NIL;
 
     /**
      * Fetch body options.
-     *
-     * @var bool
      */
     public bool $fetch_body = true;
 
     /**
      * Fetch flags options.
-     *
-     * @var bool
      */
     public bool $fetch_flags = true;
 
@@ -150,8 +137,6 @@ class Message
 
     /**
      * Raw message body.
-     *
-     * @var string
      */
     protected string $raw_body = '';
 
@@ -164,15 +149,11 @@ class Message
 
     /**
      * Message body components.
-     *
-     * @var array
      */
     public array $bodies = [];
 
-    /** @var AttachmentCollection */
     public AttachmentCollection $attachments;
 
-    /** @var FlagCollection */
     public FlagCollection $flags;
 
     /**
@@ -185,13 +166,6 @@ class Message
     /**
      * Message constructor.
      *
-     * @param  int  $uid
-     * @param  int|null  $msglist
-     * @param  Client  $client
-     * @param  int|null  $fetch_options
-     * @param  bool  $fetch_body
-     * @param  bool  $fetch_flags
-     * @param  int|null  $sequence
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -246,15 +220,8 @@ class Message
     /**
      * Create a new instance without fetching the message header and providing them raw instead.
      *
-     * @param  int  $uid
-     * @param  int|null  $msglist
-     * @param  Client  $client
-     * @param  string  $raw_header
-     * @param  string  $raw_body
-     * @param  array  $raw_flags
      * @param  null  $fetch_options
      * @param  null  $sequence
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -281,7 +248,7 @@ class Message
         }
         $instance->setEvents([
             'message' => $client->getDefaultEvents('message'),
-            'flag'    => $client->getDefaultEvents('flag'),
+            'flag' => $client->getDefaultEvents('flag'),
         ]);
         $instance->setFolderPath($client->getFolderPath());
         $instance->setSequence($sequence);
@@ -325,8 +292,6 @@ class Message
     /**
      * Create a new message instance by reading and loading a string.
      *
-     * @param  string  $blob
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -384,8 +349,6 @@ class Message
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @param  string  $method
-     * @param  array  $arguments
      * @return mixed
      *
      * @throws AuthFailedException
@@ -418,8 +381,6 @@ class Message
     /**
      * Magic setter.
      *
-     * @param  $name
-     * @param  $value
      * @return mixed
      */
     public function __set($name, $value)
@@ -432,7 +393,6 @@ class Message
     /**
      * Magic getter.
      *
-     * @param  $name
      * @return Attribute|mixed|null
      *
      * @throws AuthFailedException
@@ -452,7 +412,6 @@ class Message
     /**
      * Get an available message or message header attribute.
      *
-     * @param  $name
      * @return Attribute|mixed|null
      *
      * @throws AuthFailedException
@@ -492,8 +451,6 @@ class Message
 
     /**
      * Check if the Message has a text body.
-     *
-     * @return bool
      */
     public function hasTextBody(): bool
     {
@@ -502,8 +459,6 @@ class Message
 
     /**
      * Get the Message text body.
-     *
-     * @return string
      */
     public function getTextBody(): string
     {
@@ -516,8 +471,6 @@ class Message
 
     /**
      * Check if the Message has a html body.
-     *
-     * @return bool
      */
     public function hasHTMLBody(): bool
     {
@@ -526,8 +479,6 @@ class Message
 
     /**
      * Get the Message html body.
-     *
-     * @return string
      */
     public function getHTMLBody(): string
     {
@@ -562,8 +513,6 @@ class Message
     }
 
     /**
-     * @param  string  $raw_header
-     *
      * @throws InvalidMessageDateException
      */
     public function parseRawHeader(string $raw_header): void
@@ -573,8 +522,6 @@ class Message
 
     /**
      * Parse additional raw flags.
-     *
-     * @param  array  $raw_flags
      */
     public function parseRawFlags(array $raw_flags): void
     {
@@ -594,7 +541,6 @@ class Message
     /**
      * Parse additional flags.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -624,7 +570,6 @@ class Message
     /**
      * Parse the Message body.
      *
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -705,8 +650,6 @@ class Message
     /**
      * Parse a given message body.
      *
-     * @param  string  $raw_body
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -728,7 +671,6 @@ class Message
     /**
      * Fetch the Message structure.
      *
-     * @param  Structure  $structure
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -748,8 +690,6 @@ class Message
 
     /**
      * Fetch a given part.
-     *
-     * @param  Part  $part
      */
     private function fetchPart(Part $part): void
     {
@@ -781,10 +721,6 @@ class Message
 
     /**
      * Add a body to the message.
-     *
-     * @param  string  $subtype
-     * @param  string  $content
-     * @return void
      */
     protected function addBody(string $subtype, string $content): void
     {
@@ -802,8 +738,6 @@ class Message
 
     /**
      * Fetch the Message attachment.
-     *
-     * @param  Part  $part
      */
     protected function fetchAttachment(Part $part): void
     {
@@ -820,17 +754,14 @@ class Message
 
     /**
      * Fail proof setter for $fetch_option.
-     *
-     * @param  $option
-     * @return Message
      */
     public function setFetchOption($option): Message
     {
-        if (is_long($option) === true) {
+        if (is_int($option) === true) {
             $this->fetch_options = $option;
         } elseif (is_null($option) === true) {
             $config = ClientManager::get('options.fetch', IMAP::FT_UID);
-            $this->fetch_options = is_long($config) ? $config : 1;
+            $this->fetch_options = is_int($config) ? $config : 1;
         }
 
         return $this;
@@ -838,17 +769,14 @@ class Message
 
     /**
      * Set the sequence type.
-     *
-     * @param  int|null  $sequence
-     * @return Message
      */
     public function setSequence(?int $sequence): Message
     {
-        if (is_long($sequence)) {
+        if (is_int($sequence)) {
             $this->sequence = $sequence;
         } elseif (is_null($sequence)) {
             $config = ClientManager::get('options.sequence', IMAP::ST_MSGN);
-            $this->sequence = is_long($config) ? $config : IMAP::ST_MSGN;
+            $this->sequence = is_int($config) ? $config : IMAP::ST_MSGN;
         }
 
         return $this;
@@ -856,9 +784,6 @@ class Message
 
     /**
      * Fail proof setter for $fetch_body.
-     *
-     * @param  $option
-     * @return Message
      */
     public function setFetchBodyOption($option): Message
     {
@@ -874,9 +799,6 @@ class Message
 
     /**
      * Fail proof setter for $fetch_flags.
-     *
-     * @param  $option
-     * @return Message
      */
     public function setFetchFlagsOption($option): Message
     {
@@ -892,10 +814,6 @@ class Message
 
     /**
      * Decode a given string.
-     *
-     * @param  $string
-     * @param  $encoding
-     * @return string
      */
     public function decodeString($string, $encoding): string
     {
@@ -921,9 +839,6 @@ class Message
     /**
      * Convert the encoding.
      *
-     * @param  $str
-     * @param  string  $from
-     * @param  string  $to
      * @return mixed|string
      */
     public function convertEncoding($str, string $from = 'ISO-8859-2', string $to = 'UTF-8'): mixed
@@ -967,9 +882,6 @@ class Message
 
     /**
      * Get the encoding of a given abject.
-     *
-     * @param  object|string  $structure
-     * @return string
      */
     public function getEncoding(object|string $structure): string
     {
@@ -1009,10 +921,6 @@ class Message
     /**
      * Create a message thread based on the current message.
      *
-     * @param  Folder|null  $sent_folder
-     * @param  MessageCollection|null  $thread
-     * @param  Folder|null  $folder
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1051,11 +959,6 @@ class Message
     /**
      * Fetch a partial thread by message id.
      *
-     * @param  MessageCollection  $thread
-     * @param  string  $in_reply_to
-     * @param  Folder  $primary_folder
-     * @param  Folder  $secondary_folder
-     * @param  Folder  $sent_folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1079,11 +982,6 @@ class Message
     /**
      * Fetch a partial thread by message id.
      *
-     * @param  MessageCollection  $thread
-     * @param  string  $message_id
-     * @param  Folder  $primary_folder
-     * @param  Folder  $secondary_folder
-     * @param  Folder  $sent_folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1107,9 +1005,6 @@ class Message
     /**
      * Copy the current Messages to a mailbox.
      *
-     * @param  string  $folder_path
-     * @param  bool  $expunge
-     * @return null|Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1151,9 +1046,6 @@ class Message
     /**
      * Move the current Messages to a mailbox.
      *
-     * @param  string  $folder_path
-     * @param  bool  $expunge
-     * @return Message|null
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1195,11 +1087,6 @@ class Message
     /**
      * Fetch a new message and fire a given event.
      *
-     * @param  Folder  $folder
-     * @param  int  $next_uid
-     * @param  string  $event
-     * @param  bool  $expunge
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1238,10 +1125,6 @@ class Message
     /**
      * Delete the current Message.
      *
-     * @param  bool  $expunge
-     * @param  string|null  $trash_path
-     * @param  bool  $force_move
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1277,8 +1160,6 @@ class Message
     /**
      * Restore a deleted Message.
      *
-     * @param  bool  $expunge
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1305,8 +1186,6 @@ class Message
     /**
      * Set a given flag.
      *
-     * @param  array|string  $flag
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1338,8 +1217,6 @@ class Message
     /**
      * Unset a given flag.
      *
-     * @param  array|string  $flag
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1372,8 +1249,6 @@ class Message
     /**
      * Set a given flag.
      *
-     * @param  array|string  $flag
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1392,8 +1267,6 @@ class Message
     /**
      * Unset a given flag.
      *
-     * @param  array|string  $flag
-     * @return bool
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1411,8 +1284,6 @@ class Message
 
     /**
      * Get all message attachments.
-     *
-     * @return AttachmentCollection
      */
     public function getAttachments(): AttachmentCollection
     {
@@ -1421,8 +1292,6 @@ class Message
 
     /**
      * Get all message attachments.
-     *
-     * @return AttachmentCollection
      */
     public function attachments(): AttachmentCollection
     {
@@ -1431,8 +1300,6 @@ class Message
 
     /**
      * Checks if there are any attachments present.
-     *
-     * @return bool
      */
     public function hasAttachments(): bool
     {
@@ -1441,8 +1308,6 @@ class Message
 
     /**
      * Get the raw body.
-     *
-     * @return string
      */
     public function getRawBody(): string
     {
@@ -1485,8 +1350,6 @@ class Message
 
     /**
      * Get the used fetch body option.
-     *
-     * @return bool
      */
     public function getFetchBodyOption(): bool
     {
@@ -1495,8 +1358,6 @@ class Message
 
     /**
      * Get the used fetch flags option.
-     *
-     * @return bool
      */
     public function getFetchFlagsOption(): bool
     {
@@ -1505,8 +1366,6 @@ class Message
 
     /**
      * Get all available bodies.
-     *
-     * @return array
      */
     public function getBodies(): array
     {
@@ -1515,8 +1374,6 @@ class Message
 
     /**
      * Get all set flags.
-     *
-     * @return FlagCollection
      */
     public function getFlags(): FlagCollection
     {
@@ -1525,8 +1382,6 @@ class Message
 
     /**
      * Get all set flags.
-     *
-     * @return FlagCollection
      */
     public function flags(): FlagCollection
     {
@@ -1535,9 +1390,6 @@ class Message
 
     /**
      * Check if a flag is set.
-     *
-     * @param  string  $flag
-     * @return bool
      */
     public function hasFlag(string $flag): bool
     {
@@ -1548,8 +1400,6 @@ class Message
 
     /**
      * Get the fetched structure.
-     *
-     * @return Structure|null
      */
     public function getStructure(): ?Structure
     {
@@ -1558,9 +1408,6 @@ class Message
 
     /**
      * Check if a message matches another by comparing basic attributes.
-     *
-     * @param  null|Message  $message
-     * @return bool
      */
     public function is(Message $message = null): bool
     {
@@ -1576,8 +1423,6 @@ class Message
 
     /**
      * Get all message attributes.
-     *
-     * @return array
      */
     public function getAttributes(): array
     {
@@ -1586,9 +1431,6 @@ class Message
 
     /**
      * Set the message mask.
-     *
-     * @param  $mask
-     * @return Message
      */
     public function setMask($mask): Message
     {
@@ -1601,8 +1443,6 @@ class Message
 
     /**
      * Get the used message mask.
-     *
-     * @return string
      */
     public function getMask(): string
     {
@@ -1612,8 +1452,6 @@ class Message
     /**
      * Get a masked instance by providing a mask name.
      *
-     * @param  mixed|null  $mask
-     * @return mixed
      *
      * @throws MaskNotFoundException
      */
@@ -1629,8 +1467,6 @@ class Message
 
     /**
      * Get the message path aka folder path.
-     *
-     * @return string
      */
     public function getFolderPath(): string
     {
@@ -1639,9 +1475,6 @@ class Message
 
     /**
      * Set the message path aka folder path.
-     *
-     * @param  $folder_path
-     * @return Message
      */
     public function setFolderPath($folder_path): Message
     {
@@ -1652,9 +1485,6 @@ class Message
 
     /**
      * Set the config.
-     *
-     * @param  array  $config
-     * @return Message
      */
     public function setConfig(array $config): Message
     {
@@ -1665,8 +1495,6 @@ class Message
 
     /**
      * Get the config.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -1675,9 +1503,6 @@ class Message
 
     /**
      * Set the available flags.
-     *
-     * @param  $available_flags
-     * @return Message
      */
     public function setAvailableFlags($available_flags): Message
     {
@@ -1688,8 +1513,6 @@ class Message
 
     /**
      * Get the available flags.
-     *
-     * @return array
      */
     public function getAvailableFlags(): array
     {
@@ -1698,9 +1521,6 @@ class Message
 
     /**
      * Set the attachment collection.
-     *
-     * @param  $attachments
-     * @return Message
      */
     public function setAttachments($attachments): Message
     {
@@ -1711,9 +1531,6 @@ class Message
 
     /**
      * Set the flag collection.
-     *
-     * @param  $flags
-     * @return Message
      */
     public function setFlags($flags): Message
     {
@@ -1725,8 +1542,6 @@ class Message
     /**
      * Set the client.
      *
-     * @param  $client
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1745,9 +1560,6 @@ class Message
 
     /**
      * Set the message number.
-     *
-     * @param  int  $uid
-     * @return Message
      */
     public function setUid(int $uid): Message
     {
@@ -1760,10 +1572,6 @@ class Message
 
     /**
      * Set the message number.
-     *
-     * @param  int  $msgn
-     * @param  int|null  $msglist
-     * @return Message
      */
     public function setMsgn(int $msgn, int $msglist = null): Message
     {
@@ -1776,8 +1584,6 @@ class Message
 
     /**
      * Get the current sequence type.
-     *
-     * @return int
      */
     public function getSequence(): int
     {
@@ -1786,8 +1592,6 @@ class Message
 
     /**
      * Get the current sequence id (either a UID or a message number!).
-     *
-     * @return int
      */
     public function getSequenceId(): int
     {
@@ -1796,9 +1600,6 @@ class Message
 
     /**
      * Set the sequence id.
-     *
-     * @param  $uid
-     * @param  int|null  $msglist
      */
     public function setSequenceId($uid, int $msglist = null): void
     {
@@ -1812,9 +1613,6 @@ class Message
 
     /**
      * Safe the entire message in a file.
-     *
-     * @param  $filename
-     * @return bool|int
      */
     public function save($filename): bool|int
     {

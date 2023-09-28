@@ -21,8 +21,6 @@ class ExampleBounceTest extends FixtureTestCase
 {
     /**
      * Test the fixture example_bounce.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

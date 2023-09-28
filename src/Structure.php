@@ -22,20 +22,13 @@ class Structure
 {
     /**
      * Raw structure.
-     *
-     * @var string
      */
     public string $raw = '';
 
-    /**
-     * @var Header
-     */
     private Header $header;
 
     /**
      * Message type (if multipart or not).
-     *
-     * @var int
      */
     public int $type = IMAP::MESSAGE_TYPE_TEXT;
 
@@ -48,16 +41,12 @@ class Structure
 
     /**
      * Config holder.
-     *
-     * @var array
      */
     protected array $config = [];
 
     /**
      * Structure constructor.
      *
-     * @param  $raw_structure
-     * @param  Header  $header
      *
      * @throws MessageContentFetchingException
      * @throws InvalidMessageDateException
@@ -123,11 +112,6 @@ class Structure
     }
 
     /**
-     * @param  string  $boundary
-     * @param  string  $context
-     * @param  int  $part_number
-     * @return array
-     *
      * @throws InvalidMessageDateException
      */
     private function detectParts(string $boundary, string $context, int $part_number = 0): array
@@ -152,7 +136,6 @@ class Structure
     /**
      * Find all available parts.
      *
-     * @return array
      *
      * @throws MessageContentFetchingException
      * @throws InvalidMessageDateException

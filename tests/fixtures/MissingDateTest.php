@@ -19,8 +19,6 @@ class MissingDateTest extends FixtureTestCase
 {
     /**
      * Test the fixture missing_date.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

@@ -38,94 +38,68 @@ class Folder
 
     /**
      * Client instance.
-     *
-     * @var Client
      */
     protected Client $client;
 
     /**
      * Folder full path.
-     *
-     * @var string
      */
     public string $path;
 
     /**
      * Folder name.
-     *
-     * @var string
      */
     public string $name;
 
     /**
      * Folder full name.
-     *
-     * @var string
      */
     public string $full_name;
 
     /**
      * Children folders.
-     *
-     * @var FolderCollection
      */
     public FolderCollection $children;
 
     /**
      * Delimiter for folder.
-     *
-     * @var string
      */
     public string $delimiter;
 
     /**
      * Indicates if folder can't contain any "children".
      * CreateFolder won't work on this folder.
-     *
-     * @var bool
      */
     public bool $no_inferiors;
 
     /**
      * Indicates if folder is only container, not a mailbox - you can't open it.
-     *
-     * @var bool
      */
     public bool $no_select;
 
     /**
      * Indicates if folder is marked. This means that it may contain new messages since the last time it was checked.
      * Not provided by all IMAP servers.
-     *
-     * @var bool
      */
     public bool $marked;
 
     /**
      * Indicates if folder contains any "children".
      * Not provided by all IMAP servers.
-     *
-     * @var bool
      */
     public bool $has_children;
 
     /**
      * Indicates if folder refers to others.
      * Not provided by all IMAP servers.
-     *
-     * @var bool
      */
     public bool $referral;
 
-    /** @var array */
     public array $status;
 
     /**
      * Folder constructor.
      *
-     * @param  Client  $client
-     * @param  string  $folder_name
-     * @param  string  $delimiter
      * @param  string[]  $attributes
      */
     public function __construct(Client $client, string $folder_name, string $delimiter, array $attributes)
@@ -149,7 +123,6 @@ class Folder
      * Get a new search query instance.
      *
      * @param  string[]  $extensions
-     * @return WhereQuery
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -171,7 +144,6 @@ class Folder
      * Get a new search query instance.
      *
      * @param  string[]  $extensions
-     * @return WhereQuery
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -189,7 +161,6 @@ class Folder
      * Get a new search query instance.
      *
      * @param  string[]  $extensions
-     * @return WhereQuery
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -205,8 +176,6 @@ class Folder
 
     /**
      * Determine if folder has children.
-     *
-     * @return bool
      */
     public function hasChildren(): bool
     {
@@ -215,9 +184,6 @@ class Folder
 
     /**
      * Set children.
-     *
-     * @param  FolderCollection  $children
-     * @return Folder
      */
     public function setChildren(FolderCollection $children): Folder
     {
@@ -228,8 +194,6 @@ class Folder
 
     /**
      * Get children.
-     *
-     * @return FolderCollection
      */
     public function getChildren(): FolderCollection
     {
@@ -240,7 +204,6 @@ class Folder
      * Decode name.
      * It converts UTF7-IMAP encoding to UTF-8.
      *
-     * @param  $name
      * @return string|array|bool|string[]|null
      */
     protected function decodeName($name): string|array|bool|null
@@ -255,10 +218,6 @@ class Folder
 
     /**
      * Get simple name (without parent folders).
-     *
-     * @param  $delimiter
-     * @param  $full_name
-     * @return string|bool
      */
     protected function getSimpleName($delimiter, $full_name): string|bool
     {
@@ -269,8 +228,6 @@ class Folder
 
     /**
      * Parse attributes and set it to object properties.
-     *
-     * @param  $attributes
      */
     protected function parseAttributes($attributes): void
     {
@@ -284,9 +241,6 @@ class Folder
     /**
      * Move or rename the current folder.
      *
-     * @param  string  $new_name
-     * @param  bool  $expunge
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -316,7 +270,6 @@ class Folder
      * Get a message overview.
      *
      * @param  string|null  $sequence  uid sequence
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -340,10 +293,6 @@ class Folder
     /**
      * Append a string message to the current mailbox.
      *
-     * @param  string  $message
-     * @param  array|null  $options
-     * @param  string|Carbon|null  $internal_date
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -369,9 +318,6 @@ class Folder
     /**
      * Rename the current folder.
      *
-     * @param  string  $new_name
-     * @param  bool  $expunge
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws EventNotFoundException
@@ -390,8 +336,6 @@ class Folder
     /**
      * Delete the current folder.
      *
-     * @param  bool  $expunge
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -421,7 +365,6 @@ class Folder
     /**
      * Subscribe the current folder.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -440,7 +383,6 @@ class Folder
     /**
      * Unsubscribe the current folder.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -531,7 +473,6 @@ class Folder
     /**
      * Get folder status information from the EXAMINE command.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -548,7 +489,6 @@ class Folder
     /**
      * Get folder status information from the EXAMINE command.
      *
-     * @return array
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -567,7 +507,6 @@ class Folder
     /**
      * Load folder status information from the EXAMINE command.
      *
-     * @return Folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -586,7 +525,6 @@ class Folder
     /**
      * Examine the current folder.
      *
-     * @return array
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -603,7 +541,6 @@ class Folder
     /**
      * Select the current folder.
      *
-     * @return array
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -619,8 +556,6 @@ class Folder
 
     /**
      * Get the current Client instance.
-     *
-     * @return Client
      */
     public function getClient(): Client
     {
@@ -629,8 +564,6 @@ class Folder
 
     /**
      * Set the delimiter.
-     *
-     * @param  $delimiter
      */
     public function setDelimiter($delimiter): void
     {

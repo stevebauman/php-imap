@@ -33,7 +33,6 @@ class Issue379Test extends LiveMailboxTestCase
     /**
      * Test issue #379 - Message::getSize() added.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

@@ -22,22 +22,16 @@ class Mask
 {
     /**
      * Available attributes.
-     *
-     * @var array
      */
     protected array $attributes = [];
 
     /**
      * Parent instance.
-     *
-     * @var mixed
      */
     protected mixed $parent;
 
     /**
      * Mask constructor.
-     *
-     * @param  $parent
      */
     public function __construct($parent)
     {
@@ -60,8 +54,6 @@ class Mask
     /**
      * Call dynamic attribute setter and getter methods and inherit the parent calls.
      *
-     * @param  string  $method
-     * @param  array  $arguments
      * @return mixed
      *
      * @throws MethodNotFoundException
@@ -94,8 +86,6 @@ class Mask
     /**
      * Magic setter.
      *
-     * @param  $name
-     * @param  $value
      * @return mixed
      */
     public function __set($name, $value)
@@ -108,7 +98,6 @@ class Mask
     /**
      * Magic getter.
      *
-     * @param  $name
      * @return mixed|null
      */
     public function __get($name)
@@ -122,8 +111,6 @@ class Mask
 
     /**
      * Get the parent instance.
-     *
-     * @return mixed
      */
     public function getParent(): mixed
     {
@@ -132,8 +119,6 @@ class Mask
 
     /**
      * Get all available attributes.
-     *
-     * @return array
      */
     public function getAttributes(): array
     {

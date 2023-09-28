@@ -21,8 +21,6 @@ class MailThatIsAttachmentTest extends FixtureTestCase
 {
     /**
      * Test the fixture mail_that_is_attachment.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

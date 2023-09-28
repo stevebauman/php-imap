@@ -19,8 +19,6 @@ class HtmlOnlyTest extends FixtureTestCase
 {
     /**
      * Test the fixture html_only.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

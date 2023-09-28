@@ -19,10 +19,8 @@ use Webklex\PHPIMAP\Message;
  */
 class MessageMovedEvent extends Event
 {
-    /** @var Message */
     public Message $old_message;
 
-    /** @var Message */
     public Message $new_message;
 
     /**

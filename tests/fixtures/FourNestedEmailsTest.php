@@ -21,8 +21,6 @@ class FourNestedEmailsTest extends FixtureTestCase
 {
     /**
      * Test the fixture four_nested_emails.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

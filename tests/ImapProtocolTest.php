@@ -19,8 +19,6 @@ class ImapProtocolTest extends TestCase
 {
     /**
      * ImapProtocol test.
-     *
-     * @return void
      */
     public function testImapProtocol(): void
     {

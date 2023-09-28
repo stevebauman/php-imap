@@ -54,7 +54,6 @@ class DateTemplateTest extends FixtureTestCase
     /**
      * Test the fixture date-template.eml.
      *
-     * @return void
      *
      * @throws InvalidMessageDateException
      * @throws ReflectionException

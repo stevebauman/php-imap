@@ -14,8 +14,6 @@ class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask
 {
     /**
      * New custom method which can be called through a mask.
-     *
-     * @return string
      */
     public function token(): string
     {
@@ -24,8 +22,6 @@ class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask
 
     /**
      * Get number of message attachments.
-     *
-     * @return int
      */
     public function getAttachmentCount(): int
     {

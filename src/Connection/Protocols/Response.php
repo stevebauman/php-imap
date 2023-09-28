@@ -21,22 +21,16 @@ class Response
 {
     /**
      * The commands used to fetch or manipulate data.
-     *
-     * @var array
      */
     protected array $commands = [];
 
     /**
      * The original response received.
-     *
-     * @var array
      */
     protected array $response = [];
 
     /**
      * Errors that have occurred while fetching or parsing the response.
-     *
-     * @var array
      */
     protected array $errors = [];
 
@@ -49,29 +43,21 @@ class Response
 
     /**
      * Noun to identify the request / response.
-     *
-     * @var int
      */
     protected int $noun = 0;
 
     /**
      * Other related responses.
-     *
-     * @var array
      */
     protected array $response_stack = [];
 
     /**
      * Debug flag.
-     *
-     * @var bool
      */
     protected bool $debug = false;
 
     /**
      * Can the response be empty?
-     *
-     * @var bool
      */
     protected bool $can_be_empty = false;
 
@@ -86,12 +72,6 @@ class Response
 
     /**
      * Make a new response instance.
-     *
-     * @param  int  $noun
-     * @param  array  $commands
-     * @param  array  $responses
-     * @param  bool  $debug
-     * @return Response
      */
     public static function make(int $noun, array $commands = [], array $responses = [], bool $debug = false): Response
     {
@@ -100,9 +80,6 @@ class Response
 
     /**
      * Create a new empty response.
-     *
-     * @param  bool  $debug
-     * @return Response
      */
     public static function empty(bool $debug = false): Response
     {
@@ -111,9 +88,6 @@ class Response
 
     /**
      * Stack another response.
-     *
-     * @param  Response  $response
-     * @return void
      */
     public function stack(Response $response): void
     {
@@ -122,8 +96,6 @@ class Response
 
     /**
      * Get the associated response stack.
-     *
-     * @return array
      */
     public function getStack(): array
     {
@@ -132,8 +104,6 @@ class Response
 
     /**
      * Get all assigned commands.
-     *
-     * @return array
      */
     public function getCommands(): array
     {
@@ -142,9 +112,6 @@ class Response
 
     /**
      * Add a new command.
-     *
-     * @param  string  $command
-     * @return Response
      */
     public function addCommand(string $command): Response
     {
@@ -155,9 +122,6 @@ class Response
 
     /**
      * Set and overwrite all commands.
-     *
-     * @param  array  $commands
-     * @return Response
      */
     public function setCommands(array $commands): Response
     {
@@ -168,8 +132,6 @@ class Response
 
     /**
      * Get all set errors.
-     *
-     * @return array
      */
     public function getErrors(): array
     {
@@ -183,9 +145,6 @@ class Response
 
     /**
      * Set and overwrite all existing errors.
-     *
-     * @param  array  $errors
-     * @return Response
      */
     public function setErrors(array $errors): Response
     {
@@ -196,9 +155,6 @@ class Response
 
     /**
      * Set the response.
-     *
-     * @param  string  $error
-     * @return Response
      */
     public function addError(string $error): Response
     {
@@ -211,7 +167,6 @@ class Response
      * Set the response.
      *
      * @param  array  $response
-     * @return Response
      */
     public function addResponse(mixed $response): Response
     {
@@ -222,9 +177,6 @@ class Response
 
     /**
      * Set the response.
-     *
-     * @param  array  $response
-     * @return Response
      */
     public function setResponse(array $response): Response
     {
@@ -235,8 +187,6 @@ class Response
 
     /**
      * Get the assigned response.
-     *
-     * @return array
      */
     public function getResponse(): array
     {
@@ -245,9 +195,6 @@ class Response
 
     /**
      * Set the result data.
-     *
-     * @param  mixed  $result
-     * @return Response
      */
     public function setResult(mixed $result): Response
     {
@@ -258,9 +205,6 @@ class Response
 
     /**
      * Wrap a result bearing action.
-     *
-     * @param  callable  $callback
-     * @return Response
      */
     public function wrap(callable $callback): Response
     {
@@ -271,8 +215,6 @@ class Response
 
     /**
      * Get the response data.
-     *
-     * @return mixed
      */
     public function data(): mixed
     {
@@ -285,8 +227,6 @@ class Response
 
     /**
      * Get the response data as array.
-     *
-     * @return array
      */
     public function array(): array
     {
@@ -300,8 +240,6 @@ class Response
 
     /**
      * Get the response data as string.
-     *
-     * @return string
      */
     public function string(): string
     {
@@ -315,8 +253,6 @@ class Response
 
     /**
      * Get the response data as integer.
-     *
-     * @return int
      */
     public function integer(): int
     {
@@ -330,8 +266,6 @@ class Response
 
     /**
      * Get the response data as boolean.
-     *
-     * @return bool
      */
     public function boolean(): bool
     {
@@ -364,8 +298,6 @@ class Response
 
     /**
      * Check if the Response can be considered successful.
-     *
-     * @return bool
      */
     public function successful(): bool
     {
@@ -385,9 +317,6 @@ class Response
 
     /**
      * Check if the Response can be considered failed.
-     *
-     * @param  mixed  $data
-     * @return bool
      */
     public function verify_data(mixed $data): bool
     {
@@ -414,9 +343,6 @@ class Response
 
     /**
      * Verify a single line.
-     *
-     * @param  string  $line
-     * @return bool
      */
     public function verify_line(string $line): bool
     {
@@ -425,8 +351,6 @@ class Response
 
     /**
      * Check if the Response can be considered failed.
-     *
-     * @return bool
      */
     public function failed(): bool
     {
@@ -435,8 +359,6 @@ class Response
 
     /**
      * Get the Response noun.
-     *
-     * @return int
      */
     public function Noun(): int
     {
@@ -446,7 +368,6 @@ class Response
     /**
      * Set the Response to be allowed to be empty.
      *
-     * @param  bool  $can_be_empty
      * @return $this
      */
     public function setCanBeEmpty(bool $can_be_empty): Response
@@ -458,8 +379,6 @@ class Response
 
     /**
      * Check if the Response can be empty.
-     *
-     * @return bool
      */
     public function canBeEmpty(): bool
     {

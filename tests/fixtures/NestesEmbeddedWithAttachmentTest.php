@@ -22,8 +22,6 @@ class NestesEmbeddedWithAttachmentTest extends FixtureTestCase
 {
     /**
      * Test the fixture nestes_embedded_with_attachment.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

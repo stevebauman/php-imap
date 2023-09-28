@@ -33,19 +33,13 @@ abstract class FixtureTestCase extends TestCase
 {
     /**
      * Client manager.
-     *
-     * @var ClientManager
      */
     protected static ClientManager $manager;
 
     /**
      * FixtureTestCase constructor.
-     *
-     * @param  string|null  $name
-     * @param  array  $data
-     * @param  $dataName
      */
-    final public function __construct(?string $name = null, array $data = [], $dataName = '')
+    final public function __construct(string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -55,13 +49,13 @@ abstract class FixtureTestCase extends TestCase
             ],
             'accounts' => [
                 'default' => [
-                    'host'          => getenv('LIVE_MAILBOX_HOST'),
-                    'port'          => getenv('LIVE_MAILBOX_PORT'),
-                    'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                    'host' => getenv('LIVE_MAILBOX_HOST'),
+                    'port' => getenv('LIVE_MAILBOX_PORT'),
+                    'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
                     'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                    'username'      => getenv('LIVE_MAILBOX_USERNAME'),
-                    'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
-                    'protocol'      => 'imap', //might also use imap, [pop3 or nntp (untested)]
+                    'username' => getenv('LIVE_MAILBOX_USERNAME'),
+                    'password' => getenv('LIVE_MAILBOX_PASSWORD'),
+                    'protocol' => 'imap', //might also use imap, [pop3 or nntp (untested)]
                 ],
             ],
         ]);
@@ -72,8 +66,6 @@ abstract class FixtureTestCase extends TestCase
     /**
      * Get a fixture message.
      *
-     * @param  string  $template
-     * @return Message
      *
      * @throws ReflectionException
      * @throws AuthFailedException

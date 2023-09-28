@@ -49,7 +49,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Get the default message.
      *
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -78,7 +77,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::convertEncoding().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -107,7 +105,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::thread().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -163,7 +160,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::hasAttachments().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -200,7 +196,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFetchOptions().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -229,7 +224,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getMessageId().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -261,7 +255,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getReplyTo().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -295,7 +288,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setSequence().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -330,7 +322,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getEvent().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -361,7 +352,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::__construct().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -389,7 +379,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFlag().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -420,7 +409,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getMsgn().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -463,7 +451,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::peek().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -500,7 +487,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::unsetFlag().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -536,7 +522,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setSequenceId().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -575,7 +560,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getTo().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -615,7 +599,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setUid().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -651,7 +634,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getUid().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -688,7 +670,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::hasTextBody().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -717,7 +698,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::__get().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -748,7 +728,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getDate().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -777,7 +756,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setMask().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -812,7 +790,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getSequenceId().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -851,7 +828,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setConfig().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -887,7 +863,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getEvents().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -918,7 +893,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFetchOption().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -959,7 +933,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getMsglist().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -989,7 +962,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::decodeString().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1020,7 +992,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::attachments().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1052,7 +1023,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getMask().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1087,7 +1057,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::hasHTMLBody().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1124,7 +1093,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setEvents().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1160,7 +1128,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::__set().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1191,7 +1158,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getHTMLBody().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1230,7 +1196,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getSequence().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1267,7 +1232,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::restore().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1301,7 +1265,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getPriority().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1332,7 +1295,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setAttachments().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1364,7 +1326,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFrom().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1393,7 +1354,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setEvent().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1424,7 +1384,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getInReplyTo().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1461,7 +1420,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::copy().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1506,7 +1464,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getBodies().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1536,7 +1493,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFlags().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1571,7 +1527,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::addFlag().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1603,7 +1558,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getSubject().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1632,7 +1586,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getClient().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1661,7 +1614,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFetchFlagsOption().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1693,7 +1645,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::mask().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1722,7 +1673,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setMsglist().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1752,7 +1702,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::flags().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1781,7 +1730,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getAttributes().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1811,7 +1759,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getAttachments().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1840,7 +1787,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getRawBody().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1869,7 +1815,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::is().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1898,7 +1843,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFlags().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1928,7 +1872,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::make().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1964,7 +1907,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setAvailableFlags().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -1996,7 +1938,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getSender().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2029,7 +1970,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::fromFile().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2053,7 +1993,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getStructure().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2082,7 +2021,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::get().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2112,7 +2050,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getSize().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2141,7 +2078,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getHeader().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2170,7 +2106,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getReferences().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2202,7 +2137,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFolderPath().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2237,7 +2171,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getTextBody().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2266,7 +2199,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::move().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2310,7 +2242,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFolderPath().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2339,7 +2270,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFolder().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2368,7 +2298,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFetchBodyOption().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2397,7 +2326,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setFetchBodyOption().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2428,7 +2356,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::getFetchFlagsOption().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2457,7 +2384,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::__call().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2486,7 +2412,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setClient().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -2522,7 +2447,6 @@ class MessageTest extends LiveMailboxTestCase
     /**
      * Test Message::setMsgn().
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

@@ -22,20 +22,13 @@ class ClientManager
 {
     /**
      * All library config.
-     *
-     * @var array
      */
     public static array $config = [];
 
-    /**
-     * @var array
-     */
     protected array $accounts = [];
 
     /**
      * ClientManager constructor.
-     *
-     * @param  array|string  $config
      */
     public function __construct(array|string $config = [])
     {
@@ -45,8 +38,6 @@ class ClientManager
     /**
      * Dynamically pass calls to the default account.
      *
-     * @param  string  $method
-     * @param  array  $parameters
      * @return mixed
      *
      * @throws Exceptions\MaskNotFoundException
@@ -61,8 +52,6 @@ class ClientManager
     /**
      * Safely create a new client instance which is not listed in accounts.
      *
-     * @param  array  $config
-     * @return Client
      *
      * @throws Exceptions\MaskNotFoundException
      */
@@ -74,7 +63,6 @@ class ClientManager
     /**
      * Get a dotted config parameter.
      *
-     * @param  string  $key
      * @param  null  $default
      * @return mixed|null
      */
@@ -105,7 +93,6 @@ class ClientManager
      * Get the mask for a given section.
      *
      * @param  string  $section  section name such as "message" or "attachment"
-     * @return string|null
      */
     public static function getMask(string $section): ?string
     {
@@ -122,8 +109,6 @@ class ClientManager
     /**
      * Resolve a account instance.
      *
-     * @param  string|null  $name
-     * @return Client
      *
      * @throws Exceptions\MaskNotFoundException
      */
@@ -144,8 +129,6 @@ class ClientManager
     /**
      * Resolve an account.
      *
-     * @param  string  $name
-     * @return Client
      *
      * @throws Exceptions\MaskNotFoundException
      */
@@ -158,9 +141,6 @@ class ClientManager
 
     /**
      * Get the account configuration.
-     *
-     * @param  string|null  $name
-     * @return array
      */
     protected function getClientConfig(?string $name): array
     {
@@ -174,8 +154,6 @@ class ClientManager
 
     /**
      * Get the name of the default account.
-     *
-     * @return string
      */
     public function getDefaultAccount(): string
     {
@@ -184,9 +162,6 @@ class ClientManager
 
     /**
      * Set the name of the default account.
-     *
-     * @param  string  $name
-     * @return void
      */
     public function setDefaultAccount(string $name): void
     {
@@ -200,7 +175,6 @@ class ClientManager
      * If however the default account is missing a parameter the package default account parameter will be used.
      * This can be disabled by setting imap.default in your config file to 'false'
      *
-     * @param  array|string  $config
      * @return $this
      */
     public function setConfig(array|string $config): ClientManager
@@ -260,7 +234,7 @@ class ClientManager
 
         // From https://stackoverflow.com/a/173479
         $isAssoc = function (array $arr) {
-            if ([] === $arr) {
+            if ($arr === []) {
                 return false;
             }
 
@@ -279,6 +253,7 @@ class ClientManager
             foreach ($append as $key => $value) {
                 if (! array_key_exists($key, $base) and ! is_numeric($key)) {
                     $base[$key] = $value;
+
                     continue;
                 }
 

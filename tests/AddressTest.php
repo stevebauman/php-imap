@@ -32,8 +32,6 @@ class AddressTest extends TestCase
 
     /**
      * Address test.
-     *
-     * @return void
      */
     public function testAddress(): void
     {
@@ -48,8 +46,6 @@ class AddressTest extends TestCase
 
     /**
      * Test Address to string conversion.
-     *
-     * @return void
      */
     public function testAddressToStringConversion(): void
     {
@@ -60,8 +56,6 @@ class AddressTest extends TestCase
 
     /**
      * Test Address serialization.
-     *
-     * @return void
      */
     public function testAddressSerialization(): void
     {

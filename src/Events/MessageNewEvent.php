@@ -19,7 +19,6 @@ use Webklex\PHPIMAP\Message;
  */
 class MessageNewEvent extends Event
 {
-    /** @var Message */
     public Message $message;
 
     /**

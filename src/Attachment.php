@@ -55,53 +55,40 @@ use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
  */
 class Attachment
 {
-    /**
-     * @var Message
-     */
     protected Message $oMessage;
 
     /**
      * Used config.
-     *
-     * @var array
      */
     protected array $config = [];
 
-    /** @var Part */
     protected Part $part;
 
     /**
      * Attribute holder.
-     *
-     * @var array
      */
     protected array $attributes = [
-        'content'      => null,
-        'hash'         => null,
-        'type'         => null,
-        'part_number'  => 0,
+        'content' => null,
+        'hash' => null,
+        'type' => null,
+        'part_number' => 0,
         'content_type' => null,
-        'id'           => null,
-        'name'         => null,
-        'filename'     => null,
-        'description'  => null,
-        'disposition'  => null,
-        'img_src'      => null,
-        'size'         => null,
+        'id' => null,
+        'name' => null,
+        'filename' => null,
+        'description' => null,
+        'disposition' => null,
+        'img_src' => null,
+        'size' => null,
     ];
 
     /**
      * Default mask.
-     *
-     * @var string
      */
     protected string $mask = AttachmentMask::class;
 
     /**
      * Attachment constructor.
-     *
-     * @param  Message  $oMessage
-     * @param  Part  $part
      */
     public function __construct(Message $oMessage, Part $part)
     {
@@ -130,8 +117,6 @@ class Attachment
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @param  string  $method
-     * @param  array  $arguments
      * @return mixed
      *
      * @throws MethodNotFoundException
@@ -160,8 +145,6 @@ class Attachment
     /**
      * Magic setter.
      *
-     * @param  $name
-     * @param  $value
      * @return mixed
      */
     public function __set($name, $value)
@@ -174,7 +157,6 @@ class Attachment
     /**
      * magic getter.
      *
-     * @param  $name
      * @return mixed|null
      */
     public function __get($name)
@@ -251,7 +233,7 @@ class Attachment
             $this->name = $this->decodeName($name);
         }
 
-        if (IMAP::ATTACHMENT_TYPE_MESSAGE == $this->part->type) {
+        if ($this->part->type == IMAP::ATTACHMENT_TYPE_MESSAGE) {
             if ($this->part->ifdescription) {
                 if (! $this->name) {
                     $this->name = $this->part->description;
@@ -273,12 +255,8 @@ class Attachment
 
     /**
      * Save the attachment content to your filesystem.
-     *
-     * @param  string  $path
-     * @param  string|null  $filename
-     * @return bool
      */
-    public function save(string $path, ?string $filename = null): bool
+    public function save(string $path, string $filename = null): bool
     {
         $filename = $filename ? $this->decodeName($filename) : $this->filename;
 
@@ -287,9 +265,6 @@ class Attachment
 
     /**
      * Decode a given name.
-     *
-     * @param  string|null  $name
-     * @return string
      */
     public function decodeName(?string $name): string
     {
@@ -323,8 +298,6 @@ class Attachment
 
     /**
      * Get the attachment mime type.
-     *
-     * @return string|null
      */
     public function getMimeType(): ?string
     {
@@ -333,8 +306,6 @@ class Attachment
 
     /**
      * Try to guess the attachment file extension.
-     *
-     * @return string|null
      */
     public function getExtension(): ?string
     {
@@ -366,17 +337,12 @@ class Attachment
 
     /**
      * Get all attributes.
-     *
-     * @return array
      */
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    /**
-     * @return Message
-     */
     public function getMessage(): Message
     {
         return $this->oMessage;
@@ -385,7 +351,6 @@ class Attachment
     /**
      * Set the default mask.
      *
-     * @param  $mask
      * @return $this
      */
     public function setMask($mask): Attachment
@@ -399,8 +364,6 @@ class Attachment
 
     /**
      * Get the used default mask.
-     *
-     * @return string
      */
     public function getMask(): string
     {
@@ -410,8 +373,6 @@ class Attachment
     /**
      * Get a masked instance by providing a mask name.
      *
-     * @param  string|null  $mask
-     * @return mixed
      *
      * @throws MaskNotFoundException
      */

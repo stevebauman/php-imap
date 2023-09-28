@@ -21,22 +21,16 @@ class Part
 {
     /**
      * Raw part.
-     *
-     * @var string
      */
     public string $raw = '';
 
     /**
      * Part type.
-     *
-     * @var int
      */
     public int $type = IMAP::MESSAGE_TYPE_TEXT;
 
     /**
      * Part content.
-     *
-     * @var string
      */
     public string $content = '';
 
@@ -49,22 +43,16 @@ class Part
 
     /**
      * Part charset - if available.
-     *
-     * @var string
      */
     public string $charset = 'utf-8';
 
     /**
      * Part encoding method.
-     *
-     * @var int
      */
     public int $encoding = IMAP::MESSAGE_ENC_OTHER;
 
     /**
      * Alias to check if the part is an attachment.
-     *
-     * @var bool
      */
     public bool $ifdisposition = false;
 
@@ -77,8 +65,6 @@ class Part
 
     /**
      * Alias to check if the part has a description.
-     *
-     * @var bool
      */
     public bool $ifdescription = false;
 
@@ -112,22 +98,16 @@ class Part
 
     /**
      * The part number of the current part.
-     *
-     * @var int
      */
     public int $part_number = 0;
 
     /**
      * Part length in bytes.
-     *
-     * @var int
      */
     public int $bytes;
 
     /**
      * Part content type.
-     *
-     * @var string|null
      */
     public ?string $content_type = null;
 
@@ -139,9 +119,6 @@ class Part
     /**
      * Part constructor.
      *
-     * @param  $raw_part
-     * @param  Header|null  $header
-     * @param  int  $part_number
      *
      * @throws InvalidMessageDateException
      */
@@ -200,7 +177,6 @@ class Part
     /**
      * Find all available headers and return the leftover body segment.
      *
-     * @return string
      *
      * @throws InvalidMessageDateException
      */
@@ -221,7 +197,6 @@ class Part
     /**
      * Try to parse the subtype if any is present.
      *
-     * @param  $content_type
      * @return ?string
      */
     private function parseSubtype($content_type): ?string
@@ -286,8 +261,6 @@ class Part
 
     /**
      * Check if the current part represents an attachment.
-     *
-     * @return bool
      */
     public function isAttachment(): bool
     {
@@ -308,8 +281,6 @@ class Part
 
     /**
      * Get the part header.
-     *
-     * @return Header|null
      */
     public function getHeader(): ?Header
     {

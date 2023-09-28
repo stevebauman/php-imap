@@ -19,10 +19,8 @@ use Webklex\PHPIMAP\Folder;
  */
 class FolderMovedEvent extends Event
 {
-    /** @var Folder */
     public Folder $old_folder;
 
-    /** @var Folder */
     public Folder $new_folder;
 
     /**

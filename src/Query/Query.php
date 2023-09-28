@@ -42,52 +42,41 @@ use Webklex\PHPIMAP\Support\MessageCollection;
  */
 class Query
 {
-    /** @var Collection */
     protected Collection $query;
 
-    /** @var string */
     protected string $raw_query;
 
     /** @var string[] */
     protected array $extensions;
 
-    /** @var Client */
     protected Client $client;
 
     /** @var ?int */
     protected ?int $limit = null;
 
-    /** @var int */
     protected int $page = 1;
 
     /** @var ?int */
     protected ?int $fetch_options = null;
 
-    /** @var bool */
     protected bool $fetch_body = true;
 
-    /** @var bool */
     protected bool $fetch_flags = true;
 
     /** @var int|string */
     protected mixed $sequence = IMAP::NIL;
 
-    /** @var string */
     protected string $fetch_order;
 
-    /** @var string */
     protected string $date_format;
 
-    /** @var bool */
     protected bool $soft_fail = false;
 
-    /** @var array */
     protected array $errors = [];
 
     /**
      * Query constructor.
      *
-     * @param  Client  $client
      * @param  string[]  $extensions
      */
     public function __construct(Client $client, array $extensions = [])
@@ -122,9 +111,6 @@ class Query
 
     /**
      * Parse a given value.
-     *
-     * @param  mixed  $value
-     * @return string
      */
     protected function parse_value(mixed $value): string
     {
@@ -138,8 +124,6 @@ class Query
     /**
      * Check if a given date is a valid carbon object and if not try to convert it.
      *
-     * @param  mixed  $date
-     * @return Carbon
      *
      * @throws MessageSearchValidationException
      */
@@ -160,8 +144,6 @@ class Query
 
     /**
      * Get the raw IMAP search query.
-     *
-     * @return string
      */
     public function generate_query(): string
     {
@@ -191,7 +173,6 @@ class Query
     /**
      * Perform an imap search request.
      *
-     * @return Collection
      *
      * @throws GetMessagesFailedException
      * @throws AuthFailedException
@@ -215,7 +196,6 @@ class Query
     /**
      * Count all available messages matching the current search criteria.
      *
-     * @return int
      *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
@@ -231,8 +211,6 @@ class Query
     /**
      * Fetch a given id collection.
      *
-     * @param  Collection  $available_messages
-     * @return array
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -261,10 +239,10 @@ class Query
         }
 
         return [
-            'uids'       => $uids,
-            'flags'      => $flags,
-            'headers'    => $headers,
-            'contents'   => $contents,
+            'uids' => $uids,
+            'flags' => $flags,
+            'headers' => $headers,
+            'contents' => $contents,
             'extensions' => $extensions,
         ];
     }
@@ -272,12 +250,6 @@ class Query
     /**
      * Make a new message from given raw components.
      *
-     * @param  int  $uid
-     * @param  int  $msglist
-     * @param  string  $header
-     * @param  string  $content
-     * @param  array  $flags
-     * @return Message|null
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -303,11 +275,6 @@ class Query
 
     /**
      * Get the message key for a given message.
-     *
-     * @param  string  $message_key
-     * @param  int  $msglist
-     * @param  Message  $message
-     * @return string
      */
     protected function getMessageKey(string $message_key, int $msglist, Message $message): string
     {
@@ -324,8 +291,6 @@ class Query
     /**
      * Curates a given collection aof messages.
      *
-     * @param  Collection  $available_messages
-     * @return MessageCollection
      *
      * @throws GetMessagesFailedException
      */
@@ -345,8 +310,6 @@ class Query
     /**
      * Populate a given id collection and receive a fully fetched message collection.
      *
-     * @param  Collection  $available_messages
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -391,7 +354,6 @@ class Query
     /**
      * Fetch the current query and return all found messages.
      *
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
@@ -407,9 +369,6 @@ class Query
     /**
      * Fetch the current query as chunked requests.
      *
-     * @param  callable  $callback
-     * @param  int  $chunk_size
-     * @param  int  $start_chunk
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -448,7 +407,6 @@ class Query
      * @param  int  $per_page  Results you which to receive per page
      * @param  null  $page  The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
      * @param  string  $page_name  The page name / uri parameter used for the generated links and the auto mode
-     * @return LengthAwarePaginator
      *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
@@ -472,10 +430,8 @@ class Query
     /**
      * Get a new Message instance.
      *
-     * @param  int  $uid
      * @param  null  $msglist
      * @param  null  $sequence
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -497,9 +453,7 @@ class Query
     /**
      * Get a message by its message number.
      *
-     * @param  $msgn
      * @param  null  $msglist
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -521,8 +475,6 @@ class Query
     /**
      * Get a message by its uid.
      *
-     * @param  $uid
-     * @return Message
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -544,8 +496,6 @@ class Query
     /**
      * Filter all available uids by a given closure and get a curated list of messages.
      *
-     * @param  callable  $closure
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -576,8 +526,6 @@ class Query
     /**
      * Get all messages with an uid greater or equal to a given UID.
      *
-     * @param  int  $uid
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -598,8 +546,6 @@ class Query
     /**
      * Get all messages with an uid greater than a given UID.
      *
-     * @param  int  $uid
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -620,8 +566,6 @@ class Query
     /**
      * Get all messages with an uid lower than a given UID.
      *
-     * @param  int  $uid
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -642,8 +586,6 @@ class Query
     /**
      * Get all messages with an uid lower or equal to a given UID.
      *
-     * @param  int  $uid
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -664,8 +606,6 @@ class Query
     /**
      * Get all messages with an uid greater than a given UID.
      *
-     * @param  int  $uid
-     * @return MessageCollection
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -710,7 +650,6 @@ class Query
     /**
      * Set the sequence type.
      *
-     * @param  int  $sequence
      * @return $this
      */
     public function setSequence(int $sequence): Query
@@ -722,8 +661,6 @@ class Query
 
     /**
      * Get the sequence type.
-     *
-     * @return int|string
      */
     public function getSequence(): int|string
     {
@@ -731,8 +668,6 @@ class Query
     }
 
     /**
-     * @return Client
-     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -750,8 +685,6 @@ class Query
     /**
      * Set the limit and page for the current query.
      *
-     * @param  int  $limit
-     * @param  int  $page
      * @return $this
      */
     public function limit(int $limit, int $page = 1): Query
@@ -766,8 +699,6 @@ class Query
 
     /**
      * Get the current query collection.
-     *
-     * @return Collection
      */
     public function getQuery(): Collection
     {
@@ -776,9 +707,6 @@ class Query
 
     /**
      * Set all query parameters.
-     *
-     * @param  array  $query
-     * @return Query
      */
     public function setQuery(array $query): Query
     {
@@ -789,8 +717,6 @@ class Query
 
     /**
      * Get the raw query.
-     *
-     * @return string
      */
     public function getRawQuery(): string
     {
@@ -799,9 +725,6 @@ class Query
 
     /**
      * Set the raw query.
-     *
-     * @param  string  $raw_query
-     * @return Query
      */
     public function setRawQuery(string $raw_query): Query
     {
@@ -824,7 +747,6 @@ class Query
      * Set all extensions that should be used.
      *
      * @param  string[]  $extensions
-     * @return Query
      */
     public function setExtensions(array $extensions): Query
     {
@@ -840,9 +762,6 @@ class Query
 
     /**
      * Set the client instance.
-     *
-     * @param  Client  $client
-     * @return Query
      */
     public function setClient(Client $client): Query
     {
@@ -863,9 +782,6 @@ class Query
 
     /**
      * Set the fetch limit.
-     *
-     * @param  int  $limit
-     * @return Query
      */
     public function setLimit(int $limit): Query
     {
@@ -876,8 +792,6 @@ class Query
 
     /**
      * Get the set page.
-     *
-     * @return int
      */
     public function getPage(): int
     {
@@ -886,9 +800,6 @@ class Query
 
     /**
      * Set the page.
-     *
-     * @param  int  $page
-     * @return Query
      */
     public function setPage(int $page): Query
     {
@@ -899,9 +810,6 @@ class Query
 
     /**
      * Set the fetch option flag.
-     *
-     * @param  int  $fetch_options
-     * @return Query
      */
     public function setFetchOptions(int $fetch_options): Query
     {
@@ -912,9 +820,6 @@ class Query
 
     /**
      * Set the fetch option flag.
-     *
-     * @param  int  $fetch_options
-     * @return Query
      */
     public function fetchOptions(int $fetch_options): Query
     {
@@ -933,8 +838,6 @@ class Query
 
     /**
      * Get the fetch body flag.
-     *
-     * @return bool
      */
     public function getFetchBody(): bool
     {
@@ -943,9 +846,6 @@ class Query
 
     /**
      * Set the fetch body flag.
-     *
-     * @param  bool  $fetch_body
-     * @return Query
      */
     public function setFetchBody(bool $fetch_body): Query
     {
@@ -956,9 +856,6 @@ class Query
 
     /**
      * Set the fetch body flag.
-     *
-     * @param  bool  $fetch_body
-     * @return Query
      */
     public function fetchBody(bool $fetch_body): Query
     {
@@ -967,8 +864,6 @@ class Query
 
     /**
      * Get the fetch body flag.
-     *
-     * @return bool
      */
     public function getFetchFlags(): bool
     {
@@ -977,9 +872,6 @@ class Query
 
     /**
      * Set the fetch flag.
-     *
-     * @param  bool  $fetch_flags
-     * @return Query
      */
     public function setFetchFlags(bool $fetch_flags): Query
     {
@@ -990,9 +882,6 @@ class Query
 
     /**
      * Set the fetch order.
-     *
-     * @param  string  $fetch_order
-     * @return Query
      */
     public function setFetchOrder(string $fetch_order): Query
     {
@@ -1007,9 +896,6 @@ class Query
 
     /**
      * Set the fetch order.
-     *
-     * @param  string  $fetch_order
-     * @return Query
      */
     public function fetchOrder(string $fetch_order): Query
     {
@@ -1018,8 +904,6 @@ class Query
 
     /**
      * Get the fetch order.
-     *
-     * @return string
      */
     public function getFetchOrder(): string
     {
@@ -1028,8 +912,6 @@ class Query
 
     /**
      * Set the fetch order to ascending.
-     *
-     * @return Query
      */
     public function setFetchOrderAsc(): Query
     {
@@ -1038,8 +920,6 @@ class Query
 
     /**
      * Set the fetch order to ascending.
-     *
-     * @return Query
      */
     public function fetchOrderAsc(): Query
     {
@@ -1048,8 +928,6 @@ class Query
 
     /**
      * Set the fetch order to descending.
-     *
-     * @return Query
      */
     public function setFetchOrderDesc(): Query
     {
@@ -1058,8 +936,6 @@ class Query
 
     /**
      * Set the fetch order to descending.
-     *
-     * @return Query
      */
     public function fetchOrderDesc(): Query
     {
@@ -1070,8 +946,6 @@ class Query
      * Set soft fail mode.
      *
      * @var bool
-     *
-     * @return Query
      */
     public function softFail(bool $state = true): Query
     {
@@ -1082,8 +956,6 @@ class Query
      * Set soft fail mode.
      *
      * @var bool
-     *
-     * @return Query
      */
     public function setSoftFail(bool $state = true): Query
     {
@@ -1094,8 +966,6 @@ class Query
 
     /**
      * Get soft fail mode.
-     *
-     * @return bool
      */
     public function getSoftFail(): bool
     {
@@ -1105,7 +975,6 @@ class Query
     /**
      * Handle the exception for a given uid.
      *
-     * @param  int  $uid
      *
      * @throws GetMessagesFailedException
      */
@@ -1119,9 +988,6 @@ class Query
 
     /**
      * Add a new error to the error holder.
-     *
-     * @param  int  $uid
-     * @param  Exception  $error
      */
     protected function setError(int $uid, Exception $error): void
     {
@@ -1132,10 +998,8 @@ class Query
      * Check if there are any errors / exceptions present.
      *
      * @var ?integer
-     *
-     * @return bool
      */
-    public function hasErrors(?int $uid = null): bool
+    public function hasErrors(int $uid = null): bool
     {
         if ($uid !== null) {
             return $this->hasError($uid);
@@ -1148,8 +1012,6 @@ class Query
      * Check if there is an error / exception present.
      *
      * @var int
-     *
-     * @return bool
      */
     public function hasError(int $uid): bool
     {
@@ -1158,8 +1020,6 @@ class Query
 
     /**
      * Get all available errors / exceptions.
-     *
-     * @return array
      */
     public function errors(): array
     {
@@ -1168,8 +1028,6 @@ class Query
 
     /**
      * Get all available errors / exceptions.
-     *
-     * @return array
      */
     public function getErrors(): array
     {
@@ -1180,8 +1038,6 @@ class Query
      * Get a specific error / exception.
      *
      * @var int
-     *
-     * @return Exception|null
      */
     public function error(int $uid): ?Exception
     {

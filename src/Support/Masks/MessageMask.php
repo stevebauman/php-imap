@@ -44,11 +44,8 @@ class MessageMask extends Mask
 
     /**
      * Get the Message html body filtered by an optional callback.
-     *
-     * @param  callable|null  $callback
-     * @return string|null
      */
-    public function getCustomHTMLBody(?callable $callback = null): ?string
+    public function getCustomHTMLBody(callable $callback = null): ?string
     {
         $body = $this->getHtmlBody();
         if ($body === null) {
@@ -73,8 +70,6 @@ class MessageMask extends Mask
     /**
      * Get the Message html body with embedded base64 images
      * the resulting $body.
-     *
-     * @return string|null
      */
     public function getHTMLBodyWithEmbeddedBase64Images(): ?string
     {

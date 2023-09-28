@@ -19,8 +19,6 @@ class ReferencesTest extends FixtureTestCase
 {
     /**
      * Test the fixture references.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {
@@ -46,8 +44,8 @@ class ReferencesTest extends FixtureTestCase
             'This one: is "right" <ding@dong.com>',
             'No-address@UNKNOWN',
         ], $message->cc->map(function ($address) {
-                /** @var \Webklex\PHPIMAP\Address $address */
-                return $address->full;
-            }));
+            /** @var \Webklex\PHPIMAP\Address $address */
+            return $address->full;
+        }));
     }
 }

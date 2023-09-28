@@ -20,13 +20,10 @@ use Webklex\PHPIMAP\IMAP;
 
 class ClientManagerTest extends TestCase
 {
-    /** @var ClientManager */
     protected ClientManager $cm;
 
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -35,8 +32,6 @@ class ClientManagerTest extends TestCase
 
     /**
      * Test if the config can be accessed.
-     *
-     * @return void
      */
     public function testConfigAccessorAccount(): void
     {
@@ -82,7 +77,7 @@ class ClientManagerTest extends TestCase
             'default' => 'foo',
             'options' => [
                 'fetch' => IMAP::ST_MSGN,
-                'open'  => 'foo',
+                'open' => 'foo',
             ],
         ];
         $cm = new ClientManager($config);

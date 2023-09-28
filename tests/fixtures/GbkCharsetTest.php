@@ -19,8 +19,6 @@ class GbkCharsetTest extends FixtureTestCase
 {
     /**
      * Test the fixture gbk_charset.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

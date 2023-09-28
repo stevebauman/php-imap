@@ -19,8 +19,6 @@ class ImapMimeHeaderDecodeReturnsFalseTest extends FixtureTestCase
 {
     /**
      * Test the fixture imap_mime_header_decode_returns_false.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

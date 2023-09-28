@@ -20,21 +20,15 @@ use Carbon\Carbon;
  */
 class Attribute implements ArrayAccess
 {
-    /** @var string */
     protected string $name;
 
     /**
      * Value holder.
-     *
-     * @var array
      */
     protected array $values = [];
 
     /**
      * Attribute constructor.
-     *
-     * @param  string  $name
-     * @param  mixed|null  $value
      */
     public function __construct(string $name, mixed $value = null)
     {
@@ -44,8 +38,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Handle class invocation calls.
-     *
-     * @return array|string
      */
     public function __invoke(): array|string
     {
@@ -78,8 +70,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Return the stringified attribute.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -88,8 +78,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Convert instance to array.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -98,8 +86,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Convert first value to a date object.
-     *
-     * @return Carbon
      */
     public function toDate(): Carbon
     {
@@ -115,7 +101,6 @@ class Attribute implements ArrayAccess
      * Determine if a value exists at a given key.
      *
      * @param  int|string  $key
-     * @return bool
      */
     public function has(mixed $key = 0): bool
     {
@@ -126,7 +111,6 @@ class Attribute implements ArrayAccess
      * Determine if a value exists at a given key.
      *
      * @param  int|string  $key
-     * @return bool
      */
     public function exist(mixed $key = 0): bool
     {
@@ -135,9 +119,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Check if the attribute contains the given value.
-     *
-     * @param  mixed  $value
-     * @return bool
      */
     public function contains(mixed $value): bool
     {
@@ -146,9 +127,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get a value by a given key.
-     *
-     * @param  int|string  $key
-     * @return mixed
      */
     public function get(int|string $key = 0): mixed
     {
@@ -157,10 +135,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Set the value by a given key.
-     *
-     * @param  mixed  $key
-     * @param  mixed  $value
-     * @return Attribute
      */
     public function set(mixed $value, mixed $key = 0): Attribute
     {
@@ -175,9 +149,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Unset a value by a given key.
-     *
-     * @param  int|string  $key
-     * @return Attribute
      */
     public function remove(int|string $key = 0): Attribute
     {
@@ -192,8 +163,6 @@ class Attribute implements ArrayAccess
      * Add one or more values to the attribute.
      *
      * @param  array|mixed  $value
-     * @param  bool  $strict
-     * @return Attribute
      */
     public function add(mixed $value, bool $strict = false): Attribute
     {
@@ -208,10 +177,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Merge a given array of values with the current values array.
-     *
-     * @param  array  $values
-     * @param  bool  $strict
-     * @return Attribute
      */
     public function merge(array $values, bool $strict = false): Attribute
     {
@@ -224,10 +189,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Attach a given value to the current value array.
-     *
-     * @param  $value
-     * @param  bool  $strict
-     * @return Attribute
      */
     public function attach($value, bool $strict = false): Attribute
     {
@@ -244,9 +205,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Set the attribute name.
-     *
-     * @param  $name
-     * @return Attribute
      */
     public function setName($name): Attribute
     {
@@ -257,8 +215,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get the attribute name.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -267,8 +223,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get all values.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -299,8 +253,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get the number of values.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -309,9 +261,6 @@ class Attribute implements ArrayAccess
 
     /**
      * @see  ArrayAccess::offsetExists
-     *
-     * @param  mixed  $offset
-     * @return bool
      */
     public function offsetExists(mixed $offset): bool
     {
@@ -320,9 +269,6 @@ class Attribute implements ArrayAccess
 
     /**
      * @see  ArrayAccess::offsetGet
-     *
-     * @param  mixed  $offset
-     * @return mixed
      */
     public function offsetGet(mixed $offset): mixed
     {
@@ -331,10 +277,6 @@ class Attribute implements ArrayAccess
 
     /**
      * @see  ArrayAccess::offsetSet
-     *
-     * @param  mixed  $offset
-     * @param  mixed  $value
-     * @return void
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
@@ -343,19 +285,12 @@ class Attribute implements ArrayAccess
 
     /**
      * @see  ArrayAccess::offsetUnset
-     *
-     * @param  mixed  $offset
-     * @return void
      */
     public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
     }
 
-    /**
-     * @param  callable  $callback
-     * @return array
-     */
     public function map(callable $callback): array
     {
         return array_map($callback, $this->values);

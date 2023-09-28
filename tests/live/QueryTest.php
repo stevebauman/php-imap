@@ -41,7 +41,6 @@ class QueryTest extends LiveMailboxTestCase
     /**
      * Try to create a new query instance.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -65,7 +64,6 @@ class QueryTest extends LiveMailboxTestCase
     /**
      * Try to create a new query instance with a where clause.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -163,7 +161,6 @@ class QueryTest extends LiveMailboxTestCase
     /**
      * Test query where criteria.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -222,11 +219,6 @@ class QueryTest extends LiveMailboxTestCase
     /**
      * Assert where search criteria.
      *
-     * @param  Folder  $folder
-     * @param  string  $criteria
-     * @param  string|Carbon|null  $value
-     * @param  bool  $date
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -263,10 +255,6 @@ class QueryTest extends LiveMailboxTestCase
     /**
      * Assert header search criteria.
      *
-     * @param  Folder  $folder
-     * @param  string  $criteria
-     * @param  mixed|null  $value
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException

@@ -38,10 +38,8 @@ use Webklex\PHPIMAP\Message;
 
 class MessageTest extends TestCase
 {
-    /** @var Message */
     protected Message $message;
 
-    /** @var Client */
     protected Client $client;
 
     /** @var MockObject ImapProtocol mockup */
@@ -50,22 +48,21 @@ class MessageTest extends TestCase
     /**
      * Setup the test environment.
      *
-     * @return void
      *
      * @throws MaskNotFoundException
      */
     public function setUp(): void
     {
         $this->client = new Client([
-            'protocol'   => 'imap',
+            'protocol' => 'imap',
             'encryption' => 'ssl',
-            'username'   => 'foo@domain.tld',
-            'password'   => 'bar',
-            'proxy'      => [
-                'socket'          => null,
+            'username' => 'foo@domain.tld',
+            'password' => 'bar',
+            'proxy' => [
+                'socket' => null,
                 'request_fulluri' => false,
-                'username'        => null,
-                'password'        => null,
+                'username' => null,
+                'password' => null,
             ],
         ]);
     }
@@ -73,7 +70,6 @@ class MessageTest extends TestCase
     /**
      * Message test.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -131,7 +127,6 @@ class MessageTest extends TestCase
     /**
      * Test getMessageNumber.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -159,7 +154,6 @@ class MessageTest extends TestCase
     /**
      * Test loadMessageFromFile.
      *
-     * @return void
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -270,8 +264,6 @@ class MessageTest extends TestCase
 
     /**
      * Create a new protocol mockup.
-     *
-     * @return void
      */
     protected function createNewProtocolMockup(): void
     {
@@ -285,7 +277,7 @@ class MessageTest extends TestCase
             1 => "OK Logout completed (0.001 + 0.000 secs).\r\n",
         ]));
         $this->protocol->expects($this->any())->method('selectFolder')->willReturn(Response::empty()->setResponse([
-            'flags'       => [
+            'flags' => [
                 0 => [
                     0 => "\Answered",
                     1 => "\Flagged",
@@ -296,11 +288,11 @@ class MessageTest extends TestCase
                     6 => 'unknown-1',
                 ],
             ],
-            'exists'      => 139,
-            'recent'      => 0,
-            'unseen'      => 94,
+            'exists' => 139,
+            'recent' => 0,
+            'unseen' => 94,
             'uidvalidity' => 1488899637,
-            'uidnext'     => 278,
+            'uidnext' => 278,
         ]));
 
         $this->client->connection = $this->protocol;

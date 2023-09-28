@@ -19,8 +19,6 @@ class WithoutCharsetSimpleMultipartTest extends FixtureTestCase
 {
     /**
      * Test the fixture without_charset_simple_multipart.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

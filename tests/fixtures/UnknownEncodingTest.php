@@ -19,8 +19,6 @@ class UnknownEncodingTest extends FixtureTestCase
 {
     /**
      * Test the fixture unknown_encoding.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {

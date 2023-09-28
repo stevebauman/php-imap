@@ -21,8 +21,6 @@ class PlainTextAttachmentTest extends FixtureTestCase
 {
     /**
      * Test the fixture plain_text_attachment.eml.
-     *
-     * @return void
      */
     public function testFixture(): void
     {
