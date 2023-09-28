@@ -147,8 +147,8 @@ class WhereQuery extends Query
     /**
      * Push a given search criteria and value pair to the search query.
      *
-     * @param    $criteria  string
-     * @param    $value  mixed
+     * @param  $criteria  string
+     * @param  $value  mixed
      *
      * @throws InvalidWhereQueryCriteriaException
      */
