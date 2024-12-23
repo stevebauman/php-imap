@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MessageSizeFetchingException.
  */
-class MessageSizeFetchingException extends Exception {}
+class MessageSizeFetchingException extends Exception
+{
+}

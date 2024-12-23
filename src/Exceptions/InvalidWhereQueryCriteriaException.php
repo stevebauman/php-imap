@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class InvalidWhereQueryCriteriaException.
  */
-class InvalidWhereQueryCriteriaException extends Exception {}
+class InvalidWhereQueryCriteriaException extends Exception
+{
+}

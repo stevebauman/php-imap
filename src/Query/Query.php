@@ -104,7 +104,9 @@ class Query
     /**
      * Instance boot method for additional functionality.
      */
-    protected function boot(): void {}
+    protected function boot(): void
+    {
+    }
 
     /**
      * Parse a given value.

@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class ConnectionFailedException.
  */
-class ConnectionFailedException extends Exception {}
+class ConnectionFailedException extends Exception
+{
+}

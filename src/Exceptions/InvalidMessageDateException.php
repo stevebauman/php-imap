@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class InvalidMessageDateException.
  */
-class InvalidMessageDateException extends Exception {}
+class InvalidMessageDateException extends Exception
+{
+}

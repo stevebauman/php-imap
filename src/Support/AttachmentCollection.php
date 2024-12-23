@@ -21,4 +21,6 @@ use Webklex\PHPIMAP\Attachment;
  *
  * @implements Collection<int, Attachment>
  */
-class AttachmentCollection extends PaginatedCollection {}
+class AttachmentCollection extends PaginatedCollection
+{
+}
