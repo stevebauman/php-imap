@@ -55,15 +55,15 @@ class MessageTest extends TestCase
     protected function setUp(): void
     {
         $this->client = new Client([
-            'protocol' => 'imap',
+            'protocol'   => 'imap',
             'encryption' => 'ssl',
-            'username' => 'foo@domain.tld',
-            'password' => 'bar',
-            'proxy' => [
-                'socket' => null,
+            'username'   => 'foo@domain.tld',
+            'password'   => 'bar',
+            'proxy'      => [
+                'socket'          => null,
                 'request_fulluri' => false,
-                'username' => null,
-                'password' => null,
+                'username'        => null,
+                'password'        => null,
             ],
         ]);
     }
@@ -91,7 +91,7 @@ class MessageTest extends TestCase
         $this->createNewProtocolMockup();
 
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));
-        if (! str_contains($email, "\r\n")) {
+        if (!str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }
 
@@ -228,8 +228,6 @@ class MessageTest extends TestCase
     /**
      * Test issue #348.
      *
-     * @return void
-     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -240,6 +238,8 @@ class MessageTest extends TestCase
      * @throws ReflectionException
      * @throws ResponseException
      * @throws RuntimeException
+     *
+     * @return void
      */
     public function test_issue348()
     {
@@ -289,11 +289,11 @@ class MessageTest extends TestCase
                     6 => 'unknown-1',
                 ],
             ],
-            'exists' => 139,
-            'recent' => 0,
-            'unseen' => 94,
+            'exists'      => 139,
+            'recent'      => 0,
+            'unseen'      => 94,
             'uidvalidity' => 1488899637,
-            'uidnext' => 278,
+            'uidnext'     => 278,
         ]));
 
         $this->client->connection = $this->protocol;

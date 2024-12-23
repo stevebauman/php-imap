@@ -39,9 +39,9 @@ class ClientManager
     /**
      * Dynamically pass calls to the default account.
      *
-     * @return mixed
-     *
      * @throws Exceptions\MaskNotFoundException
+     *
+     * @return mixed
      */
     public function __call(string $method, array $parameters)
     {
@@ -64,7 +64,8 @@ class ClientManager
     /**
      * Get a dotted config parameter.
      *
-     * @param  null  $default
+     * @param null $default
+     *
      * @return mixed|null
      */
     public static function get(string $key, $default = null): mixed
@@ -93,7 +94,7 @@ class ClientManager
     /**
      * Get the mask for a given section.
      *
-     * @param  string  $section  section name such as "message" or "attachment"
+     * @param string $section section name such as "message" or "attachment"
      */
     public static function getMask(string $section): ?string
     {
@@ -120,7 +121,7 @@ class ClientManager
         // If the connection has not been resolved we will resolve it now as all
         // the connections are resolved when they are actually needed, so we do
         // not make any unnecessary connection to the various queue end-points.
-        if (! isset($this->accounts[$name])) {
+        if (!isset($this->accounts[$name])) {
             $this->accounts[$name] = $this->resolve($name);
         }
 
@@ -242,17 +243,17 @@ class ClientManager
             return array_keys($arr) !== range(0, count($arr) - 1);
         };
 
-        if (! is_array($base)) {
+        if (!is_array($base)) {
             $base = empty($base) ? [] : [$base];
         }
 
         foreach ($arrays as $append) {
-            if (! is_array($append)) {
+            if (!is_array($append)) {
                 $append = [$append];
             }
 
             foreach ($append as $key => $value) {
-                if (! array_key_exists($key, $base) and ! is_numeric($key)) {
+                if (!array_key_exists($key, $base) and !is_numeric($key)) {
                     $base[$key] = $value;
 
                     continue;
@@ -273,7 +274,7 @@ class ClientManager
                     // results in $resultConfig['dispositions'] = ['attachment', 'inline']
                     $base[$key] = $this->array_merge_recursive_distinct($base[$key], $value);
                 } elseif (is_numeric($key)) {
-                    if (! in_array($value, $base)) {
+                    if (!in_array($value, $base)) {
                         $base[] = $value;
                     }
                 } else {

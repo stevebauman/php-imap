@@ -24,7 +24,7 @@ class ResponseException extends Exception
     /**
      * Make a new ResponseException instance.
      *
-     * @param  false|bool  $debug
+     * @param false|bool $debug
      */
     public static function make(Response $response, bool $debug = false, ?Exception $exception = null): ResponseException
     {
@@ -35,7 +35,7 @@ class ResponseException extends Exception
             $message .= "\t- $error\n";
         }
 
-        if (! $response->data()) {
+        if (!$response->data()) {
             $message .= "\t- Empty response\n";
         }
 

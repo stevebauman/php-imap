@@ -91,9 +91,9 @@ class Structure
      * @var string
      * @var int
      *
-     * @return Part[]
-     *
      * @throws InvalidMessageDateException
+     *
+     * @return Part[]
      */
     private function parsePart(string $context, int $part_number = 0): array
     {

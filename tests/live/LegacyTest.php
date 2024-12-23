@@ -52,7 +52,7 @@ class LegacyTest extends TestCase
      */
     public function __construct(?string $name = null, array $data = [], int|string $dataName = '')
     {
-        if (! getenv('LIVE_MAILBOX') ?? false) {
+        if (!getenv('LIVE_MAILBOX') ?? false) {
             $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
         }
 
@@ -63,13 +63,13 @@ class LegacyTest extends TestCase
             ],
             'accounts' => [
                 'legacy' => [
-                    'host' => getenv('LIVE_MAILBOX_HOST'),
-                    'port' => getenv('LIVE_MAILBOX_PORT'),
-                    'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                    'host'          => getenv('LIVE_MAILBOX_HOST'),
+                    'port'          => getenv('LIVE_MAILBOX_PORT'),
+                    'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
                     'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                    'username' => getenv('LIVE_MAILBOX_USERNAME'),
-                    'password' => getenv('LIVE_MAILBOX_PASSWORD'),
-                    'protocol' => 'legacy-imap',
+                    'username'      => getenv('LIVE_MAILBOX_USERNAME'),
+                    'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
+                    'protocol'      => 'legacy-imap',
                 ],
             ],
         ]);
@@ -174,7 +174,7 @@ class LegacyTest extends TestCase
     final protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
-        if (! isset($status['uidnext'])) {
+        if (!isset($status['uidnext'])) {
             $this->fail('No UIDNEXT returned');
         }
 
@@ -186,7 +186,7 @@ class LegacyTest extends TestCase
                 break;
             }
         }
-        if (! $valid_response) {
+        if (!$valid_response) {
             $this->fail('Failed to append message: '.implode("\n", $response));
         }
 
@@ -242,7 +242,7 @@ class LegacyTest extends TestCase
                     break;
                 }
             }
-            if (! $valid_response) {
+            if (!$valid_response) {
                 $this->fail('Failed to delete mailbox: '.implode("\n", $response));
             }
 

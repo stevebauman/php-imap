@@ -25,10 +25,10 @@ class AddressTest extends TestCase
      */
     protected array $data = [
         'personal' => 'Username',
-        'mailbox' => 'info',
-        'host' => 'domain.tld',
-        'mail' => 'info@domain.tld',
-        'full' => 'Username <info@domain.tld>',
+        'mailbox'  => 'info',
+        'host'     => 'domain.tld',
+        'mail'     => 'info@domain.tld',
+        'full'     => 'Username <info@domain.tld>',
     ];
 
     /**

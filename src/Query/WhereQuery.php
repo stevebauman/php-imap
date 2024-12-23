@@ -65,10 +65,10 @@ class WhereQuery extends Query
     /**
      * Magic method in order to allow alias usage of all "where" methods in an optional connection with "NOT".
      *
-     * @return mixed
-     *
      * @throws InvalidWhereQueryCriteriaException
      * @throws MethodNotFoundException
+     *
+     * @return mixed
      */
     public function __call(string $name, ?array $arguments)
     {
@@ -81,7 +81,7 @@ class WhereQuery extends Query
             $name = substr($name, 3);
         }
 
-        if (! str_contains(strtolower($name), 'where')) {
+        if (!str_contains(strtolower($name), 'where')) {
             $method = 'where'.ucfirst($name);
         } else {
             $method = lcfirst($name);
@@ -116,8 +116,6 @@ class WhereQuery extends Query
     /**
      * Register search parameters.
      *
-     * @return $this
-     *
      * @throws InvalidWhereQueryCriteriaException
      *
      * Examples:
@@ -127,6 +125,8 @@ class WhereQuery extends Query
      * $query->where(["FROM" => "someone@email.tld"])->where(["SEEN"]);
      * $query->where(["FROM" => "someone@email.tld", "SEEN"]);
      * $query->where("FROM", "someone@email.tld")->where("SEEN");
+     *
+     * @return $this
      */
     public function where(mixed $criteria, mixed $value = null): WhereQuery
     {
@@ -148,8 +148,8 @@ class WhereQuery extends Query
     /**
      * Push a given search criteria and value pair to the search query.
      *
-     * @param  $criteria  string
-     * @param  $value  mixed
+     * @param $criteria string
+     * @param $value    mixed
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -471,7 +471,7 @@ class WhereQuery extends Query
     /**
      * Get messages by their UIDs.
      *
-     * @param  array<int, int>  $uids
+     * @param array<int, int> $uids
      *
      * @throws InvalidWhereQueryCriteriaException
      */
@@ -507,7 +507,7 @@ class WhereQuery extends Query
      */
     public function unless(mixed $value, callable $callback, ?callable $default = null): mixed
     {
-        if (! $value) {
+        if (!$value) {
             return $callback($this, $value) ?: $this;
         } elseif ($default) {
             return $default($this, $value) ?: $this;

@@ -1863,7 +1863,7 @@ class MessageTest extends LiveMailboxTestCase
     public function test_set_flags(): void
     {
         $message = $this->getDefaultMessage();
-        $message->setFlags(new FlagCollection);
+        $message->setFlags(new FlagCollection());
         self::assertFalse($message->hasFlag('recent'));
 
         // Cleanup
@@ -1894,7 +1894,7 @@ class MessageTest extends LiveMailboxTestCase
         $folder->getClient()->openFolder($folder->path);
 
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
-        if (! str_contains($email, "\r\n")) {
+        if (!str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }
 

@@ -259,7 +259,7 @@ class ClientTest extends LiveMailboxTestCase
 
     public function test_get_quota_root(): void
     {
-        if (! getenv('LIVE_MAILBOX_QUOTA_SUPPORT')) {
+        if (!getenv('LIVE_MAILBOX_QUOTA_SUPPORT')) {
             $this->markTestSkipped('Quota support is not enabled');
         }
 

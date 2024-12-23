@@ -60,9 +60,9 @@ class Header
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @return Attribute|mixed
-     *
      * @throws MethodNotFoundException
+     *
+     * @return Attribute|mixed
      */
     public function __call(string $method, array $arguments)
     {
@@ -113,7 +113,7 @@ class Header
     /**
      * Set a specific attribute.
      *
-     * @param  array|mixed  $value
+     * @param array|mixed $value
      */
     public function set(string $name, mixed $value, bool $strict = false): Attribute|array
     {
@@ -196,7 +196,7 @@ class Header
         $this->parseDate($header);
         foreach ($header as $key => $value) {
             $key = trim(rtrim(strtolower($key)));
-            if (! isset($this->attributes[$key])) {
+            if (!isset($this->attributes[$key])) {
                 $this->set($key, $value);
             }
         }
@@ -238,7 +238,7 @@ class Header
                 $line = substr($line, 1);
                 $line = trim(rtrim($line));
                 if ($prev_header !== null) {
-                    if (! isset($headers[$prev_header])) {
+                    if (!isset($headers[$prev_header])) {
                         $headers[$prev_header] = '';
                     }
                     if (is_array($headers[$prev_header])) {
@@ -312,7 +312,8 @@ class Header
      *
      * @link https://php.net/manual/en/function.imap-mime-header-decode.php
      *
-     * @param  string  $text  The MIME text
+     * @param string $text The MIME text
+     *
      * @return array The decoded elements are returned in an array of objects, where each
      *               object has two properties, charset and text.
      */
@@ -327,7 +328,7 @@ class Header
 
         return [(object) [
             'charset' => $charset,
-            'text' => $this->convertEncoding($text, $charset),
+            'text'    => $this->convertEncoding($text, $charset),
         ]];
     }
 
@@ -450,11 +451,11 @@ class Header
 
         $priority = match ((int) "$priority") {
             IMAP::MESSAGE_PRIORITY_HIGHEST => IMAP::MESSAGE_PRIORITY_HIGHEST,
-            IMAP::MESSAGE_PRIORITY_HIGH => IMAP::MESSAGE_PRIORITY_HIGH,
-            IMAP::MESSAGE_PRIORITY_NORMAL => IMAP::MESSAGE_PRIORITY_NORMAL,
-            IMAP::MESSAGE_PRIORITY_LOW => IMAP::MESSAGE_PRIORITY_LOW,
-            IMAP::MESSAGE_PRIORITY_LOWEST => IMAP::MESSAGE_PRIORITY_LOWEST,
-            default => IMAP::MESSAGE_PRIORITY_UNKNOWN,
+            IMAP::MESSAGE_PRIORITY_HIGH    => IMAP::MESSAGE_PRIORITY_HIGH,
+            IMAP::MESSAGE_PRIORITY_NORMAL  => IMAP::MESSAGE_PRIORITY_NORMAL,
+            IMAP::MESSAGE_PRIORITY_LOW     => IMAP::MESSAGE_PRIORITY_LOW,
+            IMAP::MESSAGE_PRIORITY_LOWEST  => IMAP::MESSAGE_PRIORITY_LOWEST,
+            default                        => IMAP::MESSAGE_PRIORITY_UNKNOWN,
         };
 
         $this->set('priority', $priority);
@@ -475,8 +476,8 @@ class Header
                         if (count($mail_address) == 2) {
                             $addresses[] = (object) [
                                 'personal' => $parsed_address['display'] ?? '',
-                                'mailbox' => $mail_address[0],
-                                'host' => $mail_address[1],
+                                'mailbox'  => $mail_address[0],
+                                'host'     => $mail_address[1],
                             ];
                         }
                     }
@@ -503,8 +504,8 @@ class Header
                     [$mailbox, $host] = array_pad(explode('@', $email), 2, null);
                     $addresses[] = (object) [
                         'personal' => $name,
-                        'mailbox' => $mailbox,
-                        'host' => $host,
+                        'mailbox'  => $mailbox,
+                        'host'     => $host,
                     ];
                 }
             }
@@ -539,13 +540,13 @@ class Header
         foreach ($list as $item) {
             $address = (object) $item;
 
-            if (! property_exists($address, 'mailbox')) {
+            if (!property_exists($address, 'mailbox')) {
                 $address->mailbox = false;
             }
-            if (! property_exists($address, 'host')) {
+            if (!property_exists($address, 'host')) {
                 $address->host = false;
             }
-            if (! property_exists($address, 'personal')) {
+            if (!property_exists($address, 'personal')) {
                 $address->personal = false;
             } else {
                 $personalParts = $this->mime_header_decode($address->personal);
@@ -588,7 +589,7 @@ class Header
                 $value = (string) $value;
             }
             // Only parse strings and don't parse any attributes like the user-agent
-            if (! in_array($key, ['user-agent', 'subject'])) {
+            if (!in_array($key, ['user-agent', 'subject'])) {
                 if (($pos = strpos($value, ';')) !== false) {
                     $original = substr($value, 0, $pos);
                     $this->set($key, trim(rtrim($original)));
@@ -673,6 +674,7 @@ class Header
             }
 
             $date = trim(rtrim($date));
+
             try {
                 if (str_contains($date, '&nbsp;')) {
                     $date = str_replace('&nbsp;', ' ', $date);
@@ -734,10 +736,11 @@ class Header
                         $date = trim(array_pop($array));
                         break;
                 }
+
                 try {
                     $parsed_date = Carbon::parse($date);
                 } catch (\Exception $_e) {
-                    if (! isset($this->config['fallback_date'])) {
+                    if (!isset($this->config['fallback_date'])) {
                         throw new InvalidMessageDateException('Invalid message date. ID:'.$this->get('message_id').' Date:'.$header->date.'/'.$date, 1100, $e);
                     } else {
                         $parsed_date = Carbon::parse($this->config['fallback_date']);
