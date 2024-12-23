@@ -31,7 +31,7 @@ class HeaderTest extends TestCase
     public function test_header_parsing(): void
     {
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));
-        if (!str_contains($email, "\r\n")) {
+        if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }
 
@@ -89,7 +89,7 @@ class HeaderTest extends TestCase
 
         $mockHeader = "Content-Type: text/csv; charset=WINDOWS-1252;  name*0=\"TH_Is_a_F ile name example 20221013.c\"; name*1=sv\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: attachment; filename*0=\"TH_Is_a_F ile name example 20221013.c\"; filename*1=\"sv\"\r\n";
 
-        $expected = new \stdClass();
+        $expected = new \stdClass;
         $expected->content_type = 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv';
         $expected->content_transfer_encoding = 'quoted-printable';
         $expected->content_disposition = 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"';
@@ -108,9 +108,9 @@ class HeaderTest extends TestCase
         $method->setAccessible(true);
 
         $mockAttributes = [
-            'content_type'              => new Attribute('content_type', 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv'),
+            'content_type' => new Attribute('content_type', 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv'),
             'content_transfer_encoding' => new Attribute('content_transfer_encoding', 'quoted-printable'),
-            'content_disposition'       => new Attribute('content_disposition', 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"; attribute_test=attribute_test_value'),
+            'content_disposition' => new Attribute('content_disposition', 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"; attribute_test=attribute_test_value'),
         ];
 
         $attributes = new \ReflectionProperty($mock, 'attributes');

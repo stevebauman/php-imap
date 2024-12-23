@@ -101,7 +101,7 @@ class Attribute implements ArrayAccess
     /**
      * Determine if a value exists at a given key.
      *
-     * @param int|string $key
+     * @param  int|string  $key
      */
     public function has(mixed $key = 0): bool
     {
@@ -111,7 +111,7 @@ class Attribute implements ArrayAccess
     /**
      * Determine if a value exists at a given key.
      *
-     * @param int|string $key
+     * @param  int|string  $key
      */
     public function exist(mixed $key = 0): bool
     {
@@ -163,7 +163,7 @@ class Attribute implements ArrayAccess
     /**
      * Add one or more values to the attribute.
      *
-     * @param array|mixed $value
+     * @param  array|mixed  $value
      */
     public function add(mixed $value, bool $strict = false): Attribute
     {

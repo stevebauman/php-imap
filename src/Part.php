@@ -149,7 +149,7 @@ class Part
         }
 
         $content_types = $this->header->get('content_type')->all();
-        if (!empty($content_types)) {
+        if (! empty($content_types)) {
             $this->subtype = $this->parseSubtype($content_types);
             $content_type = $content_types[0];
             $parts = explode(';', $content_type);
@@ -234,11 +234,11 @@ class Part
         if ($encoding) {
             $this->encoding = match (strtolower($encoding)) {
                 'quoted-printable' => IMAP::MESSAGE_ENC_QUOTED_PRINTABLE,
-                'base64'           => IMAP::MESSAGE_ENC_BASE64,
-                '7bit'             => IMAP::MESSAGE_ENC_7BIT,
-                '8bit'             => IMAP::MESSAGE_ENC_8BIT,
-                'binary'           => IMAP::MESSAGE_ENC_BINARY,
-                default            => IMAP::MESSAGE_ENC_OTHER,
+                'base64' => IMAP::MESSAGE_ENC_BASE64,
+                '7bit' => IMAP::MESSAGE_ENC_7BIT,
+                '8bit' => IMAP::MESSAGE_ENC_8BIT,
+                'binary' => IMAP::MESSAGE_ENC_BINARY,
+                default => IMAP::MESSAGE_ENC_OTHER,
             };
         }
     }
@@ -250,13 +250,13 @@ class Part
     {
         $valid_disposition = in_array(strtolower($this->disposition ?? ''), ClientManager::get('options.dispositions'));
 
-        if ($this->type == IMAP::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || !$valid_disposition)) {
+        if ($this->type == IMAP::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || ! $valid_disposition)) {
             if (($this->subtype == null || in_array(strtolower($this->subtype), ['plain', 'html'])) && $this->filename == null && $this->name == null) {
                 return false;
             }
         }
 
-        if ($this->disposition === 'inline' && $this->filename == null && $this->name == null && !$this->header->has('content_id')) {
+        if ($this->disposition === 'inline' && $this->filename == null && $this->name == null && ! $this->header->has('content_id')) {
             return false;
         }
 

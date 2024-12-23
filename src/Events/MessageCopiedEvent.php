@@ -16,6 +16,4 @@ namespace Webklex\PHPIMAP\Events;
 /**
  * Class MessageCopiedEvent.
  */
-class MessageCopiedEvent extends MessageMovedEvent
-{
-}
+class MessageCopiedEvent extends MessageMovedEvent {}

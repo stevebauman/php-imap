@@ -60,11 +60,11 @@ use Webklex\PHPIMAP\Traits\HasEvents;
  * @property Attribute in_reply_to
  * @property Attribute sender
  *
- * @method int       getMsglist()
- * @method int       setMsglist($msglist)
- * @method int       getUid()
- * @method int       getMsgn()
- * @method int       getSize()
+ * @method int getMsglist()
+ * @method int setMsglist($msglist)
+ * @method int getUid()
+ * @method int getMsgn()
+ * @method int getSize()
  * @method Attribute getPriority()
  * @method Attribute getSubject()
  * @method Attribute getMessageId()
@@ -210,8 +210,8 @@ class Message
     /**
      * Create a new instance without fetching the message header and providing them raw instead.
      *
-     * @param null $fetch_options
-     * @param null $sequence
+     * @param  null  $fetch_options
+     * @param  null  $sequence
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -238,7 +238,7 @@ class Message
         }
         $instance->setEvents([
             'message' => $client->getDefaultEvents('message'),
-            'flag'    => $client->getDefaultEvents('flag'),
+            'flag' => $client->getDefaultEvents('flag'),
         ]);
         $instance->setFolderPath($client->getFolderPath());
         $instance->setSequence($sequence);
@@ -308,7 +308,7 @@ class Message
             throw new MaskNotFoundException('Unknown message mask provided');
         }
 
-        if (!str_contains($blob, "\r\n")) {
+        if (! str_contains($blob, "\r\n")) {
             $blob = str_replace("\n", "\r\n", $blob);
         }
         $raw_header = substr($blob, 0, strpos($blob, "\r\n\r\n"));
@@ -339,6 +339,8 @@ class Message
     /**
      * Call dynamic attribute setter and getter methods.
      *
+     * @return mixed
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -348,8 +350,6 @@ class Message
      * @throws MessageSizeFetchingException
      * @throws RuntimeException
      * @throws ResponseException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $arguments)
     {
@@ -383,6 +383,8 @@ class Message
     /**
      * Magic getter.
      *
+     * @return Attribute|mixed|null
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -391,8 +393,6 @@ class Message
      * @throws MessageSizeFetchingException
      * @throws RuntimeException
      * @throws ResponseException
-     *
-     * @return Attribute|mixed|null
      */
     public function __get($name)
     {
@@ -402,6 +402,8 @@ class Message
     /**
      * Get an available message or message header attribute.
      *
+     * @return Attribute|mixed|null
+     *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -410,8 +412,6 @@ class Message
      * @throws RuntimeException
      * @throws ResponseException
      * @throws MessageSizeFetchingException
-     *
-     * @return Attribute|mixed|null
      */
     public function get($name): mixed
     {
@@ -429,7 +429,7 @@ class Message
 
                 return $this->attributes[$name];
             case 'size':
-                if (!isset($this->attributes[$name])) {
+                if (! isset($this->attributes[$name])) {
                     $this->fetchSize();
                 }
 
@@ -452,7 +452,7 @@ class Message
      */
     public function getTextBody(): string
     {
-        if (!isset($this->bodies['text'])) {
+        if (! isset($this->bodies['text'])) {
             return '';
         }
 
@@ -472,7 +472,7 @@ class Message
      */
     public function getHTMLBody(): string
     {
-        if (!isset($this->bodies['html'])) {
+        if (! isset($this->bodies['html'])) {
             return '';
         }
 
@@ -495,7 +495,7 @@ class Message
     {
         $sequence_id = $this->getSequenceId();
         $headers = $this->client->getConnection()->headers([$sequence_id], 'RFC822', $this->sequence)->validatedData();
-        if (!isset($headers[$sequence_id])) {
+        if (! isset($headers[$sequence_id])) {
             throw new MessageHeaderFetchingException('no headers found', 0);
         }
 
@@ -584,7 +584,7 @@ class Message
         } catch (Exceptions\RuntimeException $e) {
             throw new MessageContentFetchingException('failed to fetch content', 0);
         }
-        if (!isset($contents[$sequence_id])) {
+        if (! isset($contents[$sequence_id])) {
             throw new MessageContentFetchingException('no content found', 0);
         }
         $content = $contents[$sequence_id];
@@ -610,7 +610,7 @@ class Message
     {
         $sequence_id = $this->getSequenceId();
         $sizes = $this->client->getConnection()->sizes([$sequence_id], $this->sequence)->validatedData();
-        if (!isset($sizes[$sequence_id])) {
+        if (! isset($sizes[$sequence_id])) {
             throw new MessageSizeFetchingException('sizes did not set an array entry for the supplied sequence_id', 0);
         }
         $this->attributes['size'] = $sizes[$sequence_id];
@@ -857,14 +857,14 @@ class Message
             return $str;
         }
 
-        if (function_exists('iconv') && !EncodingAliases::isUtf7($from) && !EncodingAliases::isUtf7($to)) {
+        if (function_exists('iconv') && ! EncodingAliases::isUtf7($from) && ! EncodingAliases::isUtf7($to)) {
             try {
                 return iconv($from, $to.'//IGNORE', $str);
             } catch (\Exception $e) {
                 return @iconv($from, $to, $str);
             }
         } else {
-            if (!$from) {
+            if (! $from) {
                 return mb_convert_encoding($str, $to);
             }
 
