@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AttachmentLongFilenameTest.php
 * Category: -
@@ -22,7 +23,7 @@ class AttachmentLongFilenameTest extends FixtureTestCase
     /**
      * Test the fixture attachment_long_filename.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('attachment_long_filename.eml');
 

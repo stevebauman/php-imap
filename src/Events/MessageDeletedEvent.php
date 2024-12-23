@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageDeletedEvent.php
 * Category: Event

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: PlainTextAttachmentTest.php
 * Category: -
@@ -22,7 +23,7 @@ class PlainTextAttachmentTest extends FixtureTestCase
     /**
      * Test the fixture plain_text_attachment.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('plain_text_attachment.eml');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: HasEvents.php
 * Category: -
@@ -54,7 +55,7 @@ trait HasEvents
         if (isset($this->events[$section])) {
             return $this->events[$section][$event];
         }
-        throw new EventNotFoundException();
+        throw new EventNotFoundException;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MissingDateTest.php
 * Category: -
@@ -20,7 +21,7 @@ class MissingDateTest extends FixtureTestCase
     /**
      * Test the fixture missing_date.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('missing_date.eml');
 

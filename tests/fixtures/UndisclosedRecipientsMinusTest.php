@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: PlainOnlyTest.php
 * Category: -
@@ -20,7 +21,7 @@ class UndisclosedRecipientsMinusTest extends FixtureTestCase
     /**
      * Test the fixture undisclosed_recipients_minus.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('undisclosed_recipients_minus.eml');
 

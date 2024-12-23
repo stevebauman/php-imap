@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: EmbeddedEmailWithoutContentDispositionEmbeddedTest.php
 * Category: -
@@ -22,7 +23,7 @@ class EmbeddedEmailWithoutContentDispositionEmbeddedTest extends FixtureTestCase
     /**
      * Test the fixture embedded_email_without_content_disposition-embedded.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('embedded_email_without_content_disposition-embedded.eml');
 

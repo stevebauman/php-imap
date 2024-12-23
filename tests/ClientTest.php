@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ClientTest.php
 * Category: -
@@ -40,7 +41,7 @@ class ClientTest extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = new Client([
             'protocol' => 'imap',
@@ -66,7 +67,7 @@ class ClientTest extends TestCase
      * @throws ImapServerErrorException
      * @throws RuntimeException
      */
-    public function testClient(): void
+    public function test_client(): void
     {
         $this->createNewProtocolMockup();
 
@@ -79,7 +80,7 @@ class ClientTest extends TestCase
         self::assertArrayHasKey('new', $this->client->getDefaultEvents('message'));
     }
 
-    public function testClientLogout(): void
+    public function test_client_logout(): void
     {
         $this->createNewProtocolMockup();
 
@@ -90,7 +91,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(Client::class, $this->client->disconnect());
     }
 
-    public function testClientExpunge(): void
+    public function test_client_expunge(): void
     {
         $this->createNewProtocolMockup();
         $this->protocol->expects($this->any())->method('expunge')->willReturn(Response::empty()->setResponse([
@@ -107,7 +108,7 @@ class ClientTest extends TestCase
         self::assertNotEmpty($this->client->expunge());
     }
 
-    public function testClientFolders(): void
+    public function test_client_folders(): void
     {
         $this->createNewProtocolMockup();
         $this->protocol->expects($this->any())->method('expunge')->willReturn(Response::empty()->setResponse([
@@ -264,7 +265,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(Folder::class, $this->client->getFolder('new'));
     }
 
-    public function testClientId(): void
+    public function test_client_id(): void
     {
         $this->createNewProtocolMockup();
         $this->protocol->expects($this->any())->method('ID')->willReturn(Response::empty()->setResponse([
@@ -275,7 +276,7 @@ class ClientTest extends TestCase
         self::assertSame("ID (\"name\" \"Dovecot\")\r\n", $this->client->Id()[0]);
     }
 
-    public function testClientConfig(): void
+    public function test_client_config(): void
     {
         $config = $this->client->getConfig();
         self::assertSame('foo@domain.tld', $config['username']);

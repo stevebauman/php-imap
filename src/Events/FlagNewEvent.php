@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FlagNewEvent.php
 * Category: Event

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageSizeFetchingException.php
 * Category: Exception

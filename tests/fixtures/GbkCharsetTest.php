@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: GbkCharsetTest.php
 * Category: -
@@ -20,7 +21,7 @@ class GbkCharsetTest extends FixtureTestCase
     /**
      * Test the fixture gbk_charset.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('gbk_charset.eml');
 

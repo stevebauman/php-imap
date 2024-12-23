@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MailThatIsAttachmentTest.php
 * Category: -
@@ -22,7 +23,7 @@ class MailThatIsAttachmentTest extends FixtureTestCase
     /**
      * Test the fixture mail_that_is_attachment.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('mail_that_is_attachment.eml');
 

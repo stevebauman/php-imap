@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FolderNewEvent.php
 * Category: Event

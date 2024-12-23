@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ImapServerErrorException.php
 * Category: Exception

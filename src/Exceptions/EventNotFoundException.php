@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     EventNotFoundException.php
 * Category: Exception

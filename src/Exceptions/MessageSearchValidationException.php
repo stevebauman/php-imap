@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageSearchValidationException.php
 * Category: Exception

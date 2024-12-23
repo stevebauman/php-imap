@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FolderFetchingException.php
 * Category: Exception

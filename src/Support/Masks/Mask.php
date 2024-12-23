@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Mask.php
 * Category: Mask

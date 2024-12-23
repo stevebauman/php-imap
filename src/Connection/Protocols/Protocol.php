@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ImapProtocol.php
 * Category: Protocol

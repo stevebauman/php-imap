@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: HeaderTest.php
 * Category: -
@@ -27,7 +28,7 @@ class HeaderTest extends TestCase
      *
      * @throws InvalidMessageDateException
      */
-    public function testHeaderParsing(): void
+    public function test_header_parsing(): void
     {
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));
         if (! str_contains($email, "\r\n")) {
@@ -75,7 +76,7 @@ class HeaderTest extends TestCase
         self::assertSame(48, count($header->getAttributes()));
     }
 
-    public function testRfc822ParseHeaders()
+    public function test_rfc822_parse_headers()
     {
         $mock = $this->getMockBuilder(Header::class)
             ->disableOriginalConstructor()
@@ -88,7 +89,7 @@ class HeaderTest extends TestCase
 
         $mockHeader = "Content-Type: text/csv; charset=WINDOWS-1252;  name*0=\"TH_Is_a_F ile name example 20221013.c\"; name*1=sv\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: attachment; filename*0=\"TH_Is_a_F ile name example 20221013.c\"; filename*1=\"sv\"\r\n";
 
-        $expected = new \stdClass();
+        $expected = new \stdClass;
         $expected->content_type = 'text/csv; charset=WINDOWS-1252;  name*0="TH_Is_a_F ile name example 20221013.c"; name*1=sv';
         $expected->content_transfer_encoding = 'quoted-printable';
         $expected->content_disposition = 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"';
@@ -96,7 +97,7 @@ class HeaderTest extends TestCase
         $this->assertEquals($expected, $mock->rfc822_parse_headers($mockHeader));
     }
 
-    public function testExtractHeaderExtensions()
+    public function test_extract_header_extensions()
     {
         $mock = $this->getMockBuilder(Header::class)
             ->disableOriginalConstructor()

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: PecTest.php
 * Category: -
@@ -23,7 +24,7 @@ class PecTest extends FixtureTestCase
     /**
      * Test the fixture pec.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('pec.eml');
 

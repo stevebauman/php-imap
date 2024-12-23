@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: StructureTest.php
 * Category: -
@@ -25,7 +26,7 @@ class PartTest extends TestCase
      *
      * @throws InvalidMessageDateException
      */
-    public function testTextPart(): void
+    public function test_text_part(): void
     {
         $raw_headers = "Content-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n";
         $raw_body = "\r\nAny updates?";
@@ -49,7 +50,7 @@ class PartTest extends TestCase
      *
      * @throws InvalidMessageDateException
      */
-    public function testHTMLPart(): void
+    public function test_html_part(): void
     {
         $raw_headers = "Content-Type: text/html;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n";
         $raw_body = "\r\n<p></p>\r\n<p dir=\"auto\">Any updates?</p>";
@@ -73,7 +74,7 @@ class PartTest extends TestCase
      *
      * @throws InvalidMessageDateException
      */
-    public function testBase64Part(): void
+    public function test_base64_part(): void
     {
         $raw_headers = "Content-Type: application/octet-stream; name=6mfFxiU5Yhv9WYJx.txt\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=6mfFxiU5Yhv9WYJx.txt\r\n";
         $raw_body = "em5rNTUxTVAzVFAzV1BwOUtsMWduTEVycldFZ2tKRkF0dmFLcWtUZ3JrM2RLSThkWDM4WVQ4QmFW\r\neFJjT0VSTg==";

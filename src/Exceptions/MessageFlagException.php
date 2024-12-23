@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageFlagException.php
 * Category: Exception

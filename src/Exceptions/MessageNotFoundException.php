@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageNotFoundException.php
 * Category: Exception

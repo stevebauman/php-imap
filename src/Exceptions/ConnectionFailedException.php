@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ConnectionFailedException.php
 * Category: Exception

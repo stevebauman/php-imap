@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: FolderTest.php
 * Category: -
@@ -50,7 +51,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void
+    public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -74,7 +75,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws EventNotFoundException
      */
-    public function testHasChildren(): void
+    public function test_has_children(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -103,7 +104,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetChildren(): void
+    public function test_set_children(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -116,7 +117,7 @@ class FolderTest extends LiveMailboxTestCase
         }
         self::assertTrue($folder->hasChildren());
 
-        $folder->setChildren(new FolderCollection());
+        $folder->setChildren(new FolderCollection);
         self::assertTrue($folder->getChildren()->isEmpty());
     }
 
@@ -134,7 +135,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetChildren(): void
+    public function test_get_children(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -166,7 +167,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMove(): void
+    public function test_move(): void
     {
         $client = $this->getClient();
 
@@ -208,7 +209,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testDelete(): void
+    public function test_delete(): void
     {
         $client = $this->getClient();
 
@@ -245,7 +246,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws MessageHeaderFetchingException
      * @throws MessageNotFoundException
      */
-    public function testOverview(): void
+    public function test_overview(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -288,7 +289,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAppendMessage(): void
+    public function test_append_message(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -317,7 +318,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSubscribe(): void
+    public function test_subscribe(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -343,7 +344,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testUnsubscribe(): void
+    public function test_unsubscribe(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -368,7 +369,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testStatus(): void
+    public function test_status(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -394,7 +395,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testExamine(): void
+    public function test_examine(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -420,7 +421,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetClient(): void
+    public function test_get_client(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -440,7 +441,7 @@ class FolderTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetDelimiter(): void
+    public function test_set_delimiter(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);

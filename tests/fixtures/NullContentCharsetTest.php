@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: NullContentCharsetTest.php
 * Category: -
@@ -20,7 +21,7 @@ class NullContentCharsetTest extends FixtureTestCase
     /**
      * Test the fixture null_content_charset.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('null_content_charset.eml');
 

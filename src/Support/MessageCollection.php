@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageCollection.php
 * Category: Collection

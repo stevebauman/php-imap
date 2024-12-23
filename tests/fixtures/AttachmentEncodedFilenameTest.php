@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AttachmentEncodedFilenameTest.php
 * Category: -
@@ -22,7 +23,7 @@ class AttachmentEncodedFilenameTest extends FixtureTestCase
     /**
      * Test the fixture attachment_encoded_filename.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('attachment_encoded_filename.eml');
 

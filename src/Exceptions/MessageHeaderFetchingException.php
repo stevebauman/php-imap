@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageHeaderFetchingException.php
 * Category: Exception

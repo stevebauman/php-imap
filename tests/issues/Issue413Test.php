@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue413Test.php
 * Category: Test
@@ -39,7 +40,7 @@ class Issue413Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testLiveIssueEmail()
+    public function test_live_issue_email()
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -72,7 +73,7 @@ class Issue413Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testIssueEmail()
+    public function test_issue_email()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-413.eml']);
         $message = Message::fromFile($filename);

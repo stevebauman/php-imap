@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: custom_message_mask.php
 * Category: Example

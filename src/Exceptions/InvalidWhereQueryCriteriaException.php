@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     InvalidWhereQueryCriteriaException.php
 * Category: Exception

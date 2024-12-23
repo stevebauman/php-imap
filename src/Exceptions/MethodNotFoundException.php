@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MethodNotFoundException.php
 * Category: Exception

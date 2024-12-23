@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ImapProtocolTest.php
 * Category: -
@@ -20,7 +21,7 @@ class ImapProtocolTest extends TestCase
     /**
      * ImapProtocol test.
      */
-    public function testImapProtocol(): void
+    public function test_imap_protocol(): void
     {
         $protocol = new ImapProtocol(false);
         self::assertSame(false, $protocol->getCertValidation());

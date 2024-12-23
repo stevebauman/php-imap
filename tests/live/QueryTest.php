@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: QueryTest.php
 * Category: -
@@ -51,7 +52,7 @@ class QueryTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void
+    public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -82,7 +83,7 @@ class QueryTest extends LiveMailboxTestCase
      * @throws InvalidWhereQueryCriteriaException
      * @throws MessageSearchValidationException
      */
-    public function testQueryWhere(): void
+    public function test_query_where(): void
     {
         $client = $this->getClient();
 
@@ -172,7 +173,7 @@ class QueryTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQueryWhereCriteria(): void
+    public function test_query_where_criteria(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -228,7 +229,7 @@ class QueryTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void
+    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);

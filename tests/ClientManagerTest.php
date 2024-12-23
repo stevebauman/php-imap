@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ClientManagerTest.php
 * Category: -
@@ -25,15 +26,15 @@ class ClientManagerTest extends TestCase
     /**
      * Setup the test environment.
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->cm = new ClientManager();
+        $this->cm = new ClientManager;
     }
 
     /**
      * Test if the config can be accessed.
      */
-    public function testConfigAccessorAccount(): void
+    public function test_config_accessor_account(): void
     {
         self::assertSame('default', ClientManager::get('default'));
         self::assertSame('d-M-Y', ClientManager::get('date_format'));
@@ -46,7 +47,7 @@ class ClientManagerTest extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    public function testMakeClient(): void
+    public function test_make_client(): void
     {
         self::assertInstanceOf(Client::class, $this->cm->make([]));
     }
@@ -56,7 +57,7 @@ class ClientManagerTest extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    public function testAccountAccessor(): void
+    public function test_account_accessor(): void
     {
         self::assertSame('default', $this->cm->getDefaultAccount());
         self::assertNotEmpty($this->cm->account('default'));
@@ -71,7 +72,7 @@ class ClientManagerTest extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    public function testSetConfig(): void
+    public function test_set_config(): void
     {
         $config = [
             'default' => 'foo',

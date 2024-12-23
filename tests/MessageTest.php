@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MessageTest.php
 * Category: -
@@ -51,7 +52,7 @@ class MessageTest extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = new Client([
             'protocol' => 'imap',
@@ -85,7 +86,7 @@ class MessageTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMessage(): void
+    public function test_message(): void
     {
         $this->createNewProtocolMockup();
 
@@ -136,7 +137,7 @@ class MessageTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMessageNumber(): void
+    public function test_get_message_number(): void
     {
         $this->createNewProtocolMockup();
         $this->protocol->expects($this->any())->method('getMessageNumber')->willReturn(Response::empty()->setResult(''));
@@ -168,7 +169,7 @@ class MessageTest extends TestCase
      * @throws RuntimeException
      * @throws MessageSizeFetchingException
      */
-    public function testLoadMessageFromFile(): void
+    public function test_load_message_from_file(): void
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']);
         $message = Message::fromFile($filename);
@@ -240,7 +241,7 @@ class MessageTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testIssue348()
+    public function test_issue348()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', 'issue-348.eml']);
         $message = Message::fromFile($filename);

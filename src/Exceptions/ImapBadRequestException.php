@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ImapBadRequestException.php
 * Category: Exception

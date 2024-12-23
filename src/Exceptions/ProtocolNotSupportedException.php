@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ProtocolNotSupportedException.php
 * Category: Exception

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: StructureTest.php
 * Category: -
@@ -26,7 +27,7 @@ class StructureTest extends TestCase
      * @throws InvalidMessageDateException
      * @throws MessageContentFetchingException
      */
-    public function testStructureParsing(): void
+    public function test_structure_parsing(): void
     {
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));
         if (! str_contains($email, "\r\n")) {

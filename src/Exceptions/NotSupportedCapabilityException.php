@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     RuntimeException.php
 * Category: Exception

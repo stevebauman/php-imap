@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FlagDeletedEvent.php
 * Category: Event

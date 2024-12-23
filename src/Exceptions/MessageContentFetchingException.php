@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageContentFetchingException.php
 * Category: Exception

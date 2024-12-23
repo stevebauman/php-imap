@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     Message.php
 * Category: -
@@ -84,8 +85,6 @@ class Message
 
     /**
      * Client instance.
-     *
-     * @var ?Client
      */
     private ?Client $client = null;
 
@@ -113,8 +112,6 @@ class Message
 
     /**
      * Fetch body options.
-     *
-     * @var ?integer
      */
     public ?int $fetch_options = null;
 
@@ -130,9 +127,6 @@ class Message
      */
     public bool $fetch_flags = true;
 
-    /**
-     * @var ?Header
-     */
     public ?Header $header = null;
 
     /**
@@ -142,8 +136,6 @@ class Message
 
     /**
      * Message structure.
-     *
-     * @var ?Structure
      */
     protected ?Structure $structure = null;
 
@@ -158,8 +150,6 @@ class Message
 
     /**
      * A list of all available and supported flags.
-     *
-     * @var ?array
      */
     private ?array $available_flags = null;
 
@@ -179,7 +169,7 @@ class Message
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function __construct(int $uid, ?int $msglist, Client $client, int $fetch_options = null, bool $fetch_body = false, bool $fetch_flags = false, int $sequence = null)
+    public function __construct(int $uid, ?int $msglist, Client $client, ?int $fetch_options = null, bool $fetch_body = false, bool $fetch_flags = false, ?int $sequence = null)
     {
         $this->boot();
 
@@ -903,7 +893,6 @@ class Message
     /**
      * Get the messages folder.
      *
-     * @return ?Folder
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -931,7 +920,7 @@ class Message
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function thread(Folder $sent_folder = null, MessageCollection &$thread = null, Folder $folder = null): MessageCollection
+    public function thread(?Folder $sent_folder = null, ?MessageCollection &$thread = null, ?Folder $folder = null): MessageCollection
     {
         $thread = $thread ?: MessageCollection::make([]);
         $folder = $folder ?: $this->getFolder();
@@ -1140,7 +1129,7 @@ class Message
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function delete(bool $expunge = true, string $trash_path = null, bool $force_move = false): bool
+    public function delete(bool $expunge = true, ?string $trash_path = null, bool $force_move = false): bool
     {
         $status = $this->setFlag('Deleted');
         if ($force_move) {
@@ -1320,8 +1309,6 @@ class Message
 
     /**
      * Get the message header.
-     *
-     * @return ?Header
      */
     public function getHeader(): ?Header
     {
@@ -1330,8 +1317,6 @@ class Message
 
     /**
      * Get the current client.
-     *
-     * @return ?Client
      */
     public function getClient(): ?Client
     {
@@ -1340,8 +1325,6 @@ class Message
 
     /**
      * Get the used fetch option.
-     *
-     * @return ?integer
      */
     public function getFetchOptions(): ?int
     {
@@ -1409,7 +1392,7 @@ class Message
     /**
      * Check if a message matches another by comparing basic attributes.
      */
-    public function is(Message $message = null): bool
+    public function is(?Message $message = null): bool
     {
         if (is_null($message)) {
             return false;
@@ -1573,7 +1556,7 @@ class Message
     /**
      * Set the message number.
      */
-    public function setMsgn(int $msgn, int $msglist = null): Message
+    public function setMsgn(int $msgn, ?int $msglist = null): Message
     {
         $this->msgn = $msgn;
         $this->msglist = $msglist;
@@ -1601,7 +1584,7 @@ class Message
     /**
      * Set the sequence id.
      */
-    public function setSequenceId($uid, int $msglist = null): void
+    public function setSequenceId($uid, ?int $msglist = null): void
     {
         if ($this->getSequence() === IMAP::ST_UID) {
             $this->setUid($uid);

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: UndefinedCharsetHeaderTest.php
 * Category: -
@@ -22,7 +23,7 @@ class UndefinedCharsetHeaderTest extends FixtureTestCase
     /**
      * Test the fixture undefined_charset_header.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('undefined_charset_header.eml');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: InlineAttachmentTest.php
 * Category: -
@@ -23,7 +24,7 @@ class InlineAttachmentTest extends FixtureTestCase
     /**
      * Test the fixture inline_attachment.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('inline_attachment.eml');
 

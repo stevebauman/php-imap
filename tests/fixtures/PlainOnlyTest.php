@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: PlainOnlyTest.php
 * Category: -
@@ -20,7 +21,7 @@ class PlainOnlyTest extends FixtureTestCase
     /**
      * Test the fixture plain_only.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('plain_only.eml');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ExampleBounceTest.php
 * Category: -
@@ -22,7 +23,7 @@ class ExampleBounceTest extends FixtureTestCase
     /**
      * Test the fixture example_bounce.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('example_bounce.eml');
 

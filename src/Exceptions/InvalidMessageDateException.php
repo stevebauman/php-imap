@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     InvalidMessageDateException.php
 * Category: Exception

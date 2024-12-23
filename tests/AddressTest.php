@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AddressTest.php
 * Category: -
@@ -33,7 +34,7 @@ class AddressTest extends TestCase
     /**
      * Address test.
      */
-    public function testAddress(): void
+    public function test_address(): void
     {
         $address = new Address((object) $this->data);
 
@@ -47,7 +48,7 @@ class AddressTest extends TestCase
     /**
      * Test Address to string conversion.
      */
-    public function testAddressToStringConversion(): void
+    public function test_address_to_string_conversion(): void
     {
         $address = new Address((object) $this->data);
 
@@ -57,7 +58,7 @@ class AddressTest extends TestCase
     /**
      * Test Address serialization.
      */
-    public function testAddressSerialization(): void
+    public function test_address_serialization(): void
     {
         $address = new Address((object) $this->data);
 

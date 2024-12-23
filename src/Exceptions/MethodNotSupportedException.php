@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MethodNotSupportedException.php
 * Category: Exception

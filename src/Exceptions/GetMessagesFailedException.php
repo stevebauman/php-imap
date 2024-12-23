@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     GetMessagesFailedException.php
 * Category: Exception

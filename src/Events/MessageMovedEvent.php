@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageMovedEvent.php
 * Category: Event

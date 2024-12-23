@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FlagCollection.php
 * Category: Collection

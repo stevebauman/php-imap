@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     AuthFailedException.php
 * Category: Exception

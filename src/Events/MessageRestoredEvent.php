@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageRestoredEvent.php
 * Category: Event

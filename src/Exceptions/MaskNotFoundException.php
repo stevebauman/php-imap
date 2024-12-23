@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MaskNotFoundException.php
 * Category: Exception

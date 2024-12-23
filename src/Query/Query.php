@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     Query.php
 * Category: -
@@ -51,12 +52,10 @@ class Query
 
     protected Client $client;
 
-    /** @var ?int */
     protected ?int $limit = null;
 
     protected int $page = 1;
 
-    /** @var ?int */
     protected ?int $fetch_options = null;
 
     protected bool $fetch_body = true;
@@ -98,7 +97,7 @@ class Query
         $this->soft_fail = ClientManager::get('options.soft_fail', false);
 
         $this->setExtensions($extensions);
-        $this->query = new Collection();
+        $this->query = new Collection;
         $this->boot();
     }
 
@@ -136,7 +135,7 @@ class Query
         try {
             $date = Carbon::parse($date);
         } catch (Exception) {
-            throw new MessageSearchValidationException();
+            throw new MessageSearchValidationException;
         }
 
         return $date;
@@ -511,7 +510,7 @@ class Query
         $connection = $this->getClient()->getConnection();
 
         $uids = $connection->getUid()->validatedData();
-        $available_messages = new Collection();
+        $available_messages = new Collection;
         if (is_array($uids)) {
             foreach ($uids as $id) {
                 if ($closure($id)) {
@@ -772,8 +771,6 @@ class Query
 
     /**
      * Get the set fetch limit.
-     *
-     * @return ?int
      */
     public function getLimit(): ?int
     {
@@ -828,8 +825,6 @@ class Query
 
     /**
      * Get the fetch option flag.
-     *
-     * @return ?int
      */
     public function getFetchOptions(): ?int
     {
@@ -997,9 +992,9 @@ class Query
     /**
      * Check if there are any errors / exceptions present.
      *
-     * @var ?integer
+     * @var ?int
      */
-    public function hasErrors(int $uid = null): bool
+    public function hasErrors(?int $uid = null): bool
     {
         if ($uid !== null) {
             return $this->hasError($uid);
@@ -1048,8 +1043,6 @@ class Query
      * Get a specific error / exception.
      *
      * @var int
-     *
-     * @return ?Exception
      */
     public function getError(int $uid): ?Exception
     {

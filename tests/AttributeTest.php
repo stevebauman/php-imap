@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AttributeTest.php
 * Category: -
@@ -21,7 +22,7 @@ class AttributeTest extends TestCase
     /**
      * String Attribute test.
      */
-    public function testStringAttribute(): void
+    public function test_string_attribute(): void
     {
         $attribute = new Attribute('foo', 'bar');
 
@@ -33,7 +34,7 @@ class AttributeTest extends TestCase
     /**
      * Date Attribute test.
      */
-    public function testDateAttribute(): void
+    public function test_date_attribute(): void
     {
         $attribute = new Attribute('foo', '2022-12-26 08:07:14 GMT-0800');
 
@@ -44,7 +45,7 @@ class AttributeTest extends TestCase
     /**
      * Array Attribute test.
      */
-    public function testArrayAttribute(): void
+    public function test_array_attribute(): void
     {
         $attribute = new Attribute('foo', ['bar']);
 
