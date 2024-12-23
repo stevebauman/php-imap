@@ -18,6 +18,4 @@ use Exception;
 /**
  * Class RuntimeException.
  */
-class RuntimeException extends Exception
-{
-}
+class RuntimeException extends Exception {}

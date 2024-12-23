@@ -18,6 +18,4 @@ use Exception;
 /**
  * Class EventNotFoundException.
  */
-class EventNotFoundException extends Exception
-{
-}
+class EventNotFoundException extends Exception {}
