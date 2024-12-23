@@ -186,18 +186,22 @@ class ImapProtocol extends Protocol
 
         //  replace any trailing <NL> including spaces with a single space
         $line = rtrim($line).' ';
+
         while (($pos = strpos($line, ' ')) !== false) {
             $token = substr($line, 0, $pos);
+
             if (! strlen($token)) {
                 $line = substr($line, $pos + 1);
 
                 continue;
             }
+
             while ($token[0] == '(') {
                 $stack[] = $tokens;
                 $tokens = [];
                 $token = substr($token, 1);
             }
+
             if ($token[0] == '"') {
                 if (preg_match('%^\(*\"((.|\\\|\")*?)\"( |$)%', $line, $matches)) {
                     $tokens[] = $matches[1];
@@ -206,39 +210,52 @@ class ImapProtocol extends Protocol
                     continue;
                 }
             }
+
             if ($token[0] == '{') {
                 $endPos = strpos($token, '}');
                 $chars = substr($token, 1, $endPos - 1);
+
                 if (is_numeric($chars)) {
                     $token = '';
+
                     while (strlen($token) < $chars) {
                         $token .= $this->nextLine($response);
                     }
                     $line = '';
+
                     if (strlen($token) > $chars) {
                         $line = substr($token, $chars);
                         $token = substr($token, 0, $chars);
                     } else {
                         $line .= $this->nextLine($response);
                     }
+
                     $tokens[] = $token;
+
                     $line = trim($line).' ';
 
                     continue;
                 }
             }
+
             if ($stack && $token[strlen($token) - 1] == ')') {
                 // closing braces are not separated by spaces, so we need to count them
                 $braces = strlen($token);
+
                 $token = rtrim($token, ')');
+
                 // only count braces if more than one
                 $braces -= strlen($token) + 1;
+
                 // only add if token had more than just closing braces
                 if (rtrim($token) != '') {
                     $tokens[] = rtrim($token);
                 }
+
                 $token = $tokens;
+
                 $tokens = array_pop($stack);
+
                 // special handling if more than one closing brace
                 while ($braces-- > 0) {
                     $tokens[] = $token;
@@ -246,7 +263,9 @@ class ImapProtocol extends Protocol
                     $tokens = array_pop($stack);
                 }
             }
+
             $tokens[] = $token;
+
             $line = substr($line, $pos + 1);
         }
 
@@ -272,6 +291,7 @@ class ImapProtocol extends Protocol
     public function readLine(Response $response, array|string &$tokens = [], string $wantedTag = '*', bool $dontParse = false): bool
     {
         $line = $this->nextTaggedLine($response, $tag); // get next tag
+
         if (! $dontParse) {
             $tokens = $this->decodeLine($response, $line);
         } else {
@@ -295,13 +315,16 @@ class ImapProtocol extends Protocol
     public function readResponse(Response $response, string $tag, bool $dontParse = false): array
     {
         $lines = [];
+
         $tokens = ''; // define $tokens variable before first use
+
         do {
             $readAll = $this->readLine($response, $tokens, $tag, $dontParse);
             $lines[] = $tokens;
         } while (! $readAll);
 
         $original = $tokens;
+
         if ($dontParse) {
             // First two chars are still needed for the response code
             $tokens = [trim(substr($tokens, 0, 3))];
@@ -313,10 +336,10 @@ class ImapProtocol extends Protocol
         if ($tokens[0] == 'OK') {
             return $lines ?: [true];
         } elseif ($tokens[0] == 'NO' || $tokens[0] == 'BAD' || $tokens[0] == 'BYE') {
-            throw new ImapServerErrorException(implode("\n", $original));
+            throw new ImapServerErrorException(var_export($original, true));
         }
 
-        throw new ImapBadRequestException(implode("\n", $original));
+        throw new ImapBadRequestException(var_export($original, true));
     }
 
     /**
