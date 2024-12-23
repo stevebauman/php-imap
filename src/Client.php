@@ -74,10 +74,10 @@ class Client
      * Proxy settings.
      */
     protected array $proxy = [
-        'socket'          => null,
+        'socket' => null,
         'request_fulluri' => false,
-        'username'        => null,
-        'password'        => null,
+        'username' => null,
+        'password' => null,
     ];
 
     /**
@@ -124,20 +124,20 @@ class Client
      * Used default account values.
      */
     protected array $default_account_config = [
-        'host'           => 'localhost',
-        'port'           => 993,
-        'protocol'       => 'imap',
-        'encryption'     => 'ssl',
-        'validate_cert'  => true,
-        'username'       => '',
-        'password'       => '',
+        'host' => 'localhost',
+        'port' => 993,
+        'protocol' => 'imap',
+        'encryption' => 'ssl',
+        'validate_cert' => true,
+        'username' => '',
+        'password' => '',
         'authentication' => null,
-        'extensions'     => [],
-        'proxy'          => [
-            'socket'          => null,
+        'extensions' => [],
+        'proxy' => [
+            'socket' => null,
             'request_fulluri' => false,
-            'username'        => null,
-            'password'        => null,
+            'username' => null,
+            'password' => null,
         ],
         'timeout' => 30,
     ];
@@ -172,7 +172,7 @@ class Client
      */
     public function clone(): Client
     {
-        $client = new self();
+        $client = new self;
         $client->events = $this->events;
         $client->timeout = $this->timeout;
         $client->active_folder = $this->active_folder;
@@ -351,7 +351,7 @@ class Client
     public function checkConnection(): bool
     {
         try {
-            if (!$this->isConnected()) {
+            if (! $this->isConnected()) {
                 $this->connect();
 
                 return true;
@@ -384,14 +384,14 @@ class Client
     /**
      * Connect to server.
      *
+     * @return $this
+     *
      * @throws ConnectionFailedException
      * @throws AuthFailedException
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws RuntimeException
      * @throws ResponseException
-     *
-     * @return $this
      */
     public function connect(): Client
     {
@@ -417,7 +417,7 @@ class Client
             $this->connection->enableDebug();
         }
 
-        if (!ClientManager::get('options.uid_cache')) {
+        if (! ClientManager::get('options.uid_cache')) {
             $this->connection->disableUidCache();
         }
 
@@ -442,22 +442,22 @@ class Client
     protected function authenticate(): void
     {
         if ($this->authentication == 'oauth') {
-            if (!$this->connection->authenticate($this->username, $this->password)->validatedData()) {
-                throw new AuthFailedException();
+            if (! $this->connection->authenticate($this->username, $this->password)->validatedData()) {
+                throw new AuthFailedException;
             }
-        } elseif (!$this->connection->login($this->username, $this->password)->validatedData()) {
-            throw new AuthFailedException();
+        } elseif (! $this->connection->login($this->username, $this->password)->validatedData()) {
+            throw new AuthFailedException;
         }
     }
 
     /**
      * Disconnect from server.
      *
+     * @return $this
+     *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws RuntimeException
-     *
-     * @return $this
      */
     public function disconnect(): Client
     {
@@ -496,7 +496,7 @@ class Client
     /**
      * Get a folder instance by a folder name.
      *
-     * @param bool $soft_fail If true, it will return null instead of throwing an exception
+     * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
      *
      * @throws FolderFetchingException
      * @throws ConnectionFailedException
@@ -514,7 +514,7 @@ class Client
     /**
      * Get a folder instance by a folder path.
      *
-     * @param bool $soft_fail If true, it will return null instead of throwing an exception
+     * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -526,7 +526,7 @@ class Client
      */
     public function getFolderByPath($folder_path, bool $utf7 = false, bool $soft_fail = false): ?Folder
     {
-        if (!$utf7) {
+        if (! $utf7) {
             $folder_path = EncodingAliases::convert($folder_path, 'utf-8', 'utf7-imap');
         }
 
@@ -537,7 +537,7 @@ class Client
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
-     * @param bool $soft_fail If true, it will return an empty collection instead of throwing an exception
+     * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -555,7 +555,7 @@ class Client
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
         $items = $this->connection->folders('', $pattern)->validatedData();
 
-        if (!empty($items)) {
+        if (! empty($items)) {
             foreach ($items as $folder_name => $item) {
                 $folder = new Folder($this, $folder_name, $item['delimiter'], $item['flags']);
 
@@ -570,7 +570,7 @@ class Client
             }
 
             return $folders;
-        } elseif (!$soft_fail) {
+        } elseif (! $soft_fail) {
             throw new FolderFetchingException('failed to fetch any folders');
         }
 
@@ -581,7 +581,7 @@ class Client
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
-     * @param bool $soft_fail If true, it will return an empty collection instead of throwing an exception
+     * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
      *
      * @throws FolderFetchingException
      * @throws ConnectionFailedException
@@ -599,7 +599,7 @@ class Client
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
         $items = $this->connection->folders('', $pattern)->validatedData();
 
-        if (!empty($items)) {
+        if (! empty($items)) {
             foreach ($items as $folder_name => $item) {
                 $folder = new Folder($this, $folder_name, $item['delimiter'], $item['flags']);
 
@@ -615,7 +615,7 @@ class Client
             }
 
             return $folders;
-        } elseif (!$soft_fail) {
+        } elseif (! $soft_fail) {
             throw new FolderFetchingException('failed to fetch any folders');
         }
 
@@ -677,7 +677,7 @@ class Client
     {
         $this->checkConnection();
 
-        if (!$utf7) {
+        if (! $utf7) {
             $folder_path = EncodingAliases::convert($folder_path, 'utf-8', 'UTF7-IMAP');
         }
 
@@ -890,9 +890,9 @@ class Client
     /**
      * Set the default message mask.
      *
-     * @throws MaskNotFoundException
-     *
      * @return $this
+     *
+     * @throws MaskNotFoundException
      */
     public function setDefaultMessageMask(string $mask): Client
     {
@@ -916,9 +916,9 @@ class Client
     /**
      * Set the default attachment mask.
      *
-     * @throws MaskNotFoundException
-     *
      * @return $this
+     *
+     * @throws MaskNotFoundException
      */
     public function setDefaultAttachmentMask(string $mask): Client
     {

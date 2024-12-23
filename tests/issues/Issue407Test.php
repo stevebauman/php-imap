@@ -21,6 +21,8 @@ use Webklex\PHPIMAP\Message;
 class Issue407Test extends LiveMailboxTestCase
 {
     /**
+     * @return void
+     *
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
@@ -34,8 +36,6 @@ class Issue407Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
-     *
-     * @return void
      */
     public function test_issue()
     {

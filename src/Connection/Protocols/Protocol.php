@@ -49,10 +49,10 @@ abstract class Protocol implements ProtocolInterface
      * Proxy settings.
      */
     protected array $proxy = [
-        'socket'          => null,
+        'socket' => null,
         'request_fulluri' => false,
-        'username'        => null,
-        'password'        => null,
+        'username' => null,
+        'password' => null,
     ];
 
     /**
@@ -155,7 +155,7 @@ abstract class Protocol implements ProtocolInterface
         if ($this->encryption) {
             $options['ssl'] = [
                 'verify_peer_name' => $this->getCertValidation(),
-                'verify_peer'      => $this->getCertValidation(),
+                'verify_peer' => $this->getCertValidation(),
             ];
         }
 
@@ -178,13 +178,12 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Create a new resource stream.
      *
-     * @param string $host    hostname or IP address of IMAP server
-     * @param int    $port    of IMAP server, default is 143 (993 for ssl)
-     * @param int    $timeout timeout in seconds for initiating session
+     * @param  string  $host  hostname or IP address of IMAP server
+     * @param  int  $port  of IMAP server, default is 143 (993 for ssl)
+     * @param  int  $timeout  timeout in seconds for initiating session
+     * @return resource The socket created.
      *
      * @throws ConnectionFailedException
-     *
-     * @return resource The socket created.
      */
     public function createStream($transport, string $host, int $port, int $timeout)
     {
@@ -198,7 +197,7 @@ abstract class Protocol implements ProtocolInterface
             stream_context_create($this->defaultSocketOptions($transport))
         );
 
-        if (!$stream) {
+        if (! $stream) {
             throw new ConnectionFailedException($errstr, $errno);
         }
 
@@ -235,7 +234,7 @@ abstract class Protocol implements ProtocolInterface
         if ($uid == IMAP::ST_UID || $uid == IMAP::FT_UID) {
             return 'UID';
         }
-        if (strlen($uid) > 0 && !is_numeric($uid)) {
+        if (strlen($uid) > 0 && ! is_numeric($uid)) {
             return (string) $uid;
         }
 
@@ -316,21 +315,21 @@ abstract class Protocol implements ProtocolInterface
      */
     public function meta(): array
     {
-        if (!$this->stream) {
+        if (! $this->stream) {
             return [
                 'crypto' => [
-                    'protocol'       => '',
-                    'cipher_name'    => '',
-                    'cipher_bits'    => 0,
+                    'protocol' => '',
+                    'cipher_name' => '',
+                    'cipher_bits' => 0,
                     'cipher_version' => '',
                 ],
-                'timed_out'    => true,
-                'blocked'      => true,
-                'eof'          => true,
-                'stream_type'  => 'tcp_socket/unknown',
-                'mode'         => 'c',
+                'timed_out' => true,
+                'blocked' => true,
+                'eof' => true,
+                'stream_type' => 'tcp_socket/unknown',
+                'mode' => 'c',
                 'unread_bytes' => 0,
-                'seekable'     => false,
+                'seekable' => false,
             ];
         }
 

@@ -32,7 +32,7 @@ class MessageMask extends Mask
     public function getHtmlBody()
     {
         $bodies = $this->parent->getBodies();
-        if (!isset($bodies['html'])) {
+        if (! isset($bodies['html'])) {
             return null;
         }
 

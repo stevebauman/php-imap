@@ -36,10 +36,10 @@ class PaginatedCollection extends Collection
 
         $total = $this->total ?: $this->count();
 
-        $results = !$prepaginated && $total ? $this->forPage($page, $per_page)->toArray() : $this->all();
+        $results = ! $prepaginated && $total ? $this->forPage($page, $per_page)->toArray() : $this->all();
 
         return $this->paginator($results, $total, $per_page, $page, [
-            'path'     => Paginator::resolveCurrentPath(),
+            'path' => Paginator::resolveCurrentPath(),
             'pageName' => $page_name,
         ]);
     }
@@ -55,7 +55,7 @@ class PaginatedCollection extends Collection
     /**
      * Get and set the total amount.
      *
-     * @param null $total
+     * @param  null  $total
      */
     public function total($total = null): ?int
     {

@@ -34,8 +34,8 @@ class LegacyProtocol extends Protocol
     /**
      * Imap constructor.
      *
-     * @param bool  $cert_validation set to false to skip SSL certificate validation
-     * @param mixed $encryption      Connection encryption method
+     * @param  bool  $cert_validation  set to false to skip SSL certificate validation
+     * @param  mixed  $encryption  Connection encryption method
      */
     public function __construct(bool $cert_validation = true, mixed $encryption = false)
     {
@@ -70,8 +70,8 @@ class LegacyProtocol extends Protocol
     /**
      * Login to a new session.
      *
-     * @param string $user     username
-     * @param string $password password
+     * @param  string  $user  username
+     * @param  string  $password  password
      */
     public function login(string $user, string $password): Response
     {
@@ -94,7 +94,7 @@ class LegacyProtocol extends Protocol
                 throw new AuthFailedException($message);
             }
 
-            if (!$this->stream) {
+            if (! $this->stream) {
                 $errors = \imap_errors();
                 $message = implode('; ', is_array($errors) ? $errors : []);
 
@@ -126,8 +126,8 @@ class LegacyProtocol extends Protocol
     /**
      * Authenticate your current session.
      *
-     * @param string $user  username
-     * @param string $token access token
+     * @param  string  $user  username
+     * @param  string  $token  access token
      *
      * @throws AuthFailedException
      * @throws RuntimeException
@@ -143,7 +143,7 @@ class LegacyProtocol extends Protocol
     protected function getAddress(): string
     {
         $address = '{'.$this->host.':'.$this->port.'/'.$this->protocol;
-        if (!$this->cert_validation) {
+        if (! $this->cert_validation) {
             $address .= '/novalidate-cert';
         }
         if (in_array($this->encryption, ['tls', 'notls', 'ssl'])) {
@@ -189,17 +189,16 @@ class LegacyProtocol extends Protocol
      */
     public function getCapabilities(): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
      * Change the current folder.
      *
-     * @param string $folder change to this folder
+     * @param  string  $folder  change to this folder
+     * @return Response see examineOrselect()
      *
      * @throws RuntimeException
-     *
-     * @return Response see examineOrselect()
      */
     public function selectFolder(string $folder = 'INBOX'): Response
     {
@@ -226,7 +225,7 @@ class LegacyProtocol extends Protocol
     /**
      * Examine a given folder.
      *
-     * @param string $folder examine this folder
+     * @param  string  $folder  examine this folder
      *
      * @throws RuntimeException
      */
@@ -241,10 +240,10 @@ class LegacyProtocol extends Protocol
             $status = \imap_status($this->stream, $this->getAddress().$folder, IMAP::SA_ALL);
 
             return $status ? [
-                'flags'   => [],
-                'exists'  => $status->messages,
-                'recent'  => $status->recent,
-                'unseen'  => $status->unseen,
+                'flags' => [],
+                'exists' => $status->messages,
+                'recent' => $status->recent,
+                'unseen' => $status->unseen,
                 'uidnext' => $status->uidnext,
             ] : [];
         });
@@ -253,19 +252,19 @@ class LegacyProtocol extends Protocol
     /**
      * Get the status of a given folder.
      *
-     * @throws MethodNotSupportedException
-     *
      * @return Response list of STATUS items
+     *
+     * @throws MethodNotSupportedException
      */
     public function folderStatus(string $folder = 'INBOX', $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
      * Fetch message content.
      *
-     * @param int|string $uid set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
     {
@@ -285,7 +284,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message headers.
      *
-     * @param int|string $uid set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
     {
@@ -305,7 +304,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message flags.
      *
-     * @param int|string $uid set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function flags(int|array $uids, int|string $uid = IMAP::ST_UID): Response
     {
@@ -335,7 +334,7 @@ class LegacyProtocol extends Protocol
     /**
      * Fetch message sizes.
      *
-     * @param int|string $uid set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function sizes(int|array $uids, int|string $uid = IMAP::ST_UID): Response
     {
@@ -364,8 +363,7 @@ class LegacyProtocol extends Protocol
     /**
      * Get uid for a given id.
      *
-     * @param int|null $id message number
-     *
+     * @param  int|null  $id  message number
      * @return Response message number for given message or all messages as array
      */
     public function getUid(?int $id = null): Response
@@ -402,8 +400,7 @@ class LegacyProtocol extends Protocol
     /**
      * Get a message number for a uid.
      *
-     * @param string $id uid
-     *
+     * @param  string  $id  uid
      * @return Response message number
      */
     public function getMessageNumber(string $id): Response
@@ -417,8 +414,8 @@ class LegacyProtocol extends Protocol
     /**
      * Get a message overview.
      *
-     * @param string     $sequence uid sequence
-     * @param int|string $uid      set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  string  $sequence  uid sequence
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function overview(string $sequence, int|string $uid = IMAP::ST_UID): Response
     {
@@ -431,9 +428,8 @@ class LegacyProtocol extends Protocol
     /**
      * Get a list of available folders.
      *
-     * @param string $reference mailbox reference for list
-     * @param string $folder    mailbox name match with wildcards
-     *
+     * @param  string  $reference  mailbox reference for list
+     * @param  string  $folder  mailbox name match with wildcards
      * @return Response folders that matched $folder as array(name => array('delimiter' => .., 'flags' => ..))
      */
     public function folders(string $reference = '', string $folder = '*'): Response
@@ -459,15 +455,14 @@ class LegacyProtocol extends Protocol
     /**
      * Manage flags.
      *
-     * @param array|string $flags  flags to set, add or remove - see $mode
-     * @param int          $from   message for items or start message if $to !== null
-     * @param int|null     $to     if null only one message ($from) is fetched, else it's the
-     *                             last message, INF means last message available
-     * @param string|null  $mode   '+' to add flags, '-' to remove flags, everything else sets the flags as given
-     * @param bool         $silent if false the return values are the new flags for the wanted messages
-     * @param int|string   $uid    set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     * @param string|null  $item   unused attribute
-     *
+     * @param  array|string  $flags  flags to set, add or remove - see $mode
+     * @param  int  $from  message for items or start message if $to !== null
+     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
+     *                        last message, INF means last message available
+     * @param  string|null  $mode  '+' to add flags, '-' to remove flags, everything else sets the flags as given
+     * @param  bool  $silent  if false the return values are the new flags for the wanted messages
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  string|null  $item  unused attribute
      * @return Response new flags if $silent is false, else true or false depending on success
      */
     public function store(array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null): Response
@@ -501,10 +496,10 @@ class LegacyProtocol extends Protocol
     /**
      * Append a new message to given folder.
      *
-     * @param string     $folder  name of target folder
-     * @param string     $message full message content
-     * @param array|null $flags   flags for new message
-     * @param mixed      $date    date for new message
+     * @param  string  $folder  name of target folder
+     * @param  string  $message  full message content
+     * @param  array|null  $flags  flags for new message
+     * @param  mixed  $date  date for new message
      */
     public function appendMessage(string $folder, string $message, ?array $flags = null, mixed $date = null): Response
     {
@@ -532,10 +527,10 @@ class LegacyProtocol extends Protocol
     /**
      * Copy message set from current folder to other folder.
      *
-     * @param string     $folder destination folder
-     * @param int|null   $to     if null only one message ($from) is fetched, else it's the
-     *                           last message, INF means last message available
-     * @param int|string $uid    set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  string  $folder  destination folder
+     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
+     *                        last message, INF means last message available
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
     public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
     {
@@ -554,10 +549,9 @@ class LegacyProtocol extends Protocol
     /**
      * Copy multiple messages to the target folder.
      *
-     * @param array      $messages List of message identifiers
-     * @param string     $folder   Destination folder
-     * @param int|string $uid      set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     *
+     * @param  array  $messages  List of message identifiers
+     * @param  string  $folder  Destination folder
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      * @return Response Tokens if operation successful, false if an error occurred
      */
     public function copyManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response
@@ -584,11 +578,10 @@ class LegacyProtocol extends Protocol
     /**
      * Move a message set from current folder to another folder.
      *
-     * @param string     $folder destination folder
-     * @param int|null   $to     if null only one message ($from) is fetched, else it's the
-     *                           last message, INF means last message available
-     * @param int|string $uid    set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     *
+     * @param  string  $folder  destination folder
+     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
+     *                        last message, INF means last message available
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      * @return Response success
      */
     public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
@@ -607,13 +600,12 @@ class LegacyProtocol extends Protocol
     /**
      * Move multiple messages to the target folder.
      *
-     * @param array      $messages List of message identifiers
-     * @param string     $folder   Destination folder
-     * @param int|string $uid      set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @param  array  $messages  List of message identifiers
+     * @param  string  $folder  Destination folder
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
+     * @return Response Tokens if operation successful, false if an error occurred
      *
      * @throws ImapBadRequestException
-     *
-     * @return Response Tokens if operation successful, false if an error occurred
      */
     public function moveManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response
     {
@@ -639,19 +631,19 @@ class LegacyProtocol extends Protocol
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     * @param null $ids
+     * @param  null  $ids
      *
      * @throws MethodNotSupportedException
      */
     public function ID($ids = null): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
      * Create a new folder (and parent folders if needed).
      *
-     * @param string $folder folder name
+     * @param  string  $folder  folder name
      */
     public function createFolder(string $folder): Response
     {
@@ -665,8 +657,8 @@ class LegacyProtocol extends Protocol
     /**
      * Rename an existing folder.
      *
-     * @param string $old old name
-     * @param string $new new name
+     * @param  string  $old  old name
+     * @param  string  $new  new name
      */
     public function renameFolder(string $old, string $new): Response
     {
@@ -680,7 +672,7 @@ class LegacyProtocol extends Protocol
     /**
      * Delete a folder.
      *
-     * @param string $folder folder name
+     * @param  string  $folder  folder name
      */
     public function deleteFolder(string $folder): Response
     {
@@ -694,25 +686,25 @@ class LegacyProtocol extends Protocol
     /**
      * Subscribe to a folder.
      *
-     * @param string $folder folder name
+     * @param  string  $folder  folder name
      *
      * @throws MethodNotSupportedException
      */
     public function subscribeFolder(string $folder): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
      * Unsubscribe from a folder.
      *
-     * @param string $folder folder name
+     * @param  string  $folder  folder name
      *
      * @throws MethodNotSupportedException
      */
     public function unsubscribeFolder(string $folder): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -734,7 +726,7 @@ class LegacyProtocol extends Protocol
      */
     public function noop(): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -744,7 +736,7 @@ class LegacyProtocol extends Protocol
      */
     public function idle()
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -754,14 +746,13 @@ class LegacyProtocol extends Protocol
      */
     public function done()
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
      * Search for matching messages.
      *
-     * @param int|string $uid set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
-     *
+     * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      * @return Response message ids
      */
     public function search(array $params, int|string $uid = IMAP::ST_UID): Response
