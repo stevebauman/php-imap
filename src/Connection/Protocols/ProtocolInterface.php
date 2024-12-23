@@ -108,7 +108,7 @@ interface ProtocolInterface
      * @throws ImapServerErrorException
      * @throws RuntimeException
      */
-    public function folderStatus(string $folder = 'INBOX', $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response;
+    public function folderStatus(string $folder = 'INBOX', array $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response;
 
     /**
      * Fetch message headers.
@@ -265,11 +265,9 @@ interface ProtocolInterface
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     * @param  null  $ids
-     *
      * @throws RuntimeException
      */
-    public function ID($ids = null): Response;
+    public function id(?array $ids = null): Response;
 
     /**
      * Create a new folder.

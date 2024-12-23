@@ -89,9 +89,11 @@ class WhereQuery extends Query
     protected function validate_criteria($criteria): string
     {
         $command = strtoupper($criteria);
+
         if (str_starts_with($command, 'CUSTOM ')) {
             return substr($criteria, 7);
         }
+
         if (in_array($command, $this->available_criteria) === false) {
             throw new InvalidWhereQueryCriteriaException("Invalid imap search criteria: $command");
         }
@@ -101,8 +103,6 @@ class WhereQuery extends Query
 
     /**
      * Register search parameters.
-     *
-     * @return $this
      *
      * @throws InvalidWhereQueryCriteriaException
      *
@@ -134,12 +134,9 @@ class WhereQuery extends Query
     /**
      * Push a given search criteria and value pair to the search query.
      *
-     * @param  $criteria  string
-     * @param  $value  mixed
-     *
      * @throws InvalidWhereQueryCriteriaException
      */
-    protected function push_search_criteria(string $criteria, mixed $value)
+    protected function push_search_criteria(string $criteria, mixed $value): void
     {
         $criteria = $this->validate_criteria($criteria);
         $value = $this->parse_value($value);

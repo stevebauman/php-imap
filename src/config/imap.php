@@ -100,7 +100,7 @@ return [
     |   -Soft fail
     |       Default FALSE - Set to TRUE if you want to ignore certain exception while fetching bulk messages
     |   -RFC822
-    |       Default TRUE - Set to FALSE to prevent the usage of \imap_rfc822_parse_headers().
+    |       Default TRUE - Set to FALSE to prevent the usage of imap_rfc822_parse_headers().
     |                      See https://github.com/Webklex/php-imap/issues/115 for more information.
     |   -Debug enable to trace communication traffic
     |   -UID cache enable the UID cache

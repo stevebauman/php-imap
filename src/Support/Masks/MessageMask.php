@@ -7,17 +7,18 @@ use Webklex\PHPIMAP\Message;
 
 class MessageMask extends Mask
 {
-    /** @var Message */
+    /**
+     * @var Message
+     */
     protected mixed $parent;
 
     /**
      * Get the message html body.
-     *
-     * @return null
      */
-    public function getHtmlBody()
+    public function getHtmlBody(): ?string
     {
         $bodies = $this->parent->getBodies();
+
         if (! isset($bodies['html'])) {
             return null;
         }
@@ -35,12 +36,14 @@ class MessageMask extends Mask
     public function getCustomHTMLBody(?callable $callback = null): ?string
     {
         $body = $this->getHtmlBody();
+
         if ($body === null) {
             return null;
         }
 
         if ($callback !== null) {
             $aAttachment = $this->parent->getAttachments();
+
             $aAttachment->each(function ($oAttachment) use (&$body, $callback) {
                 /** @var Attachment $oAttachment */
                 if (is_callable($callback)) {
@@ -55,8 +58,7 @@ class MessageMask extends Mask
     }
 
     /**
-     * Get the Message html body with embedded base64 images
-     * the resulting $body.
+     * Get the Message html body with embedded base64 images.
      */
     public function getHTMLBodyWithEmbeddedBase64Images(): ?string
     {

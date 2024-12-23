@@ -8,31 +8,44 @@ use Webklex\PHPIMAP\IMAP;
 abstract class Protocol implements ProtocolInterface
 {
     /**
-     * Default connection timeout in seconds.
-     */
-    protected int $connection_timeout = 30;
-
-    protected bool $debug = false;
-
-    protected bool $enable_uid_cache = true;
-
-    /**
+     * The stream resource.
+     *
      * @var resource
      */
-    public $stream = false;
+    public mixed $stream = false;
+
+    /**
+     * Whether to debugging is enabled.
+     */
+    protected bool $debug = false;
+
+    /**
+     * Enable or disable the uid cache.
+     */
+    protected bool $enableUidCache = true;
+
+    /**
+     * The UID cache of active folder.
+     */
+    protected array $uidCache = [];
 
     /**
      * Connection encryption method.
      */
-    protected string $encryption = '';
+    protected ?string $encryption = null;
 
     /**
-     * Set to false to ignore SSL certificate validation.
+     * Default connection timeout in seconds.
      */
-    protected bool $cert_validation = true;
+    protected int $connectionTimeout = 30;
 
     /**
-     * Proxy settings.
+     * Whether certificate validation is enabled.
+     */
+    protected bool $certValidation = true;
+
+    /**
+     * The connection proxy settings.
      */
     protected array $proxy = [
         'socket' => null,
@@ -40,11 +53,6 @@ abstract class Protocol implements ProtocolInterface
         'username' => null,
         'password' => null,
     ];
-
-    /**
-     * Cache for uid of active folder.
-     */
-    protected array $uid_cache = [];
 
     /**
      * Get an available cryptographic method.
@@ -70,7 +78,7 @@ abstract class Protocol implements ProtocolInterface
      */
     public function enableCertValidation(): Protocol
     {
-        $this->cert_validation = true;
+        $this->certValidation = true;
 
         return $this;
     }
@@ -80,19 +88,17 @@ abstract class Protocol implements ProtocolInterface
      */
     public function disableCertValidation(): Protocol
     {
-        $this->cert_validation = false;
+        $this->certValidation = false;
 
         return $this;
     }
 
     /**
      * Set SSL certificate validation.
-     *
-     * @var int
      */
-    public function setCertValidation(int $cert_validation): Protocol
+    public function setCertValidation(int $certValidation): Protocol
     {
-        $this->cert_validation = $cert_validation;
+        $this->certValidation = $certValidation;
 
         return $this;
     }
@@ -102,13 +108,11 @@ abstract class Protocol implements ProtocolInterface
      */
     public function getCertValidation(): bool
     {
-        return $this->cert_validation;
+        return $this->certValidation;
     }
 
     /**
      * Set connection proxy settings.
-     *
-     * @var array
      */
     public function setProxy(array $options): Protocol
     {
@@ -131,9 +135,6 @@ abstract class Protocol implements ProtocolInterface
 
     /**
      * Prepare socket options.
-     *
-     *
-     * @var string
      */
     private function defaultSocketOptions(string $transport): array
     {
@@ -199,15 +200,15 @@ abstract class Protocol implements ProtocolInterface
      */
     public function getConnectionTimeout(): int
     {
-        return $this->connection_timeout;
+        return $this->connectionTimeout;
     }
 
     /**
      * Set the connection timeout.
      */
-    public function setConnectionTimeout(int $connection_timeout): Protocol
+    public function setConnectionTimeout(int $connectionTimeout): Protocol
     {
-        $this->connection_timeout = $connection_timeout;
+        $this->connectionTimeout = $connectionTimeout;
 
         return $this;
     }
@@ -241,7 +242,7 @@ abstract class Protocol implements ProtocolInterface
     public function setUidCache(?array $uids)
     {
         if (is_null($uids)) {
-            $this->uid_cache = [];
+            $this->uidCache = [];
 
             return;
         }
@@ -253,7 +254,7 @@ abstract class Protocol implements ProtocolInterface
             $uid_cache[$messageNumber++] = (int) $uid;
         }
 
-        $this->uid_cache = $uid_cache;
+        $this->uidCache = $uid_cache;
     }
 
     /**
@@ -261,7 +262,7 @@ abstract class Protocol implements ProtocolInterface
      */
     public function enableUidCache(): void
     {
-        $this->enable_uid_cache = true;
+        $this->enableUidCache = true;
     }
 
     /**
@@ -269,7 +270,7 @@ abstract class Protocol implements ProtocolInterface
      */
     public function disableUidCache(): void
     {
-        $this->enable_uid_cache = false;
+        $this->enableUidCache = false;
     }
 
     /**
@@ -283,7 +284,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Get the encryption method.
      */
-    public function getEncryption(): string
+    public function getEncryption(): ?string
     {
         return $this->encryption;
     }

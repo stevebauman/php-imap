@@ -25,7 +25,7 @@ class ImapProtocolTest extends TestCase
     {
         $protocol = new ImapProtocol(false);
         self::assertSame(false, $protocol->getCertValidation());
-        self::assertSame('', $protocol->getEncryption());
+        self::assertNull($protocol->getEncryption());
 
         $protocol->setCertValidation(true);
         $protocol->setEncryption('ssl');

@@ -200,15 +200,20 @@ class Header
     {
         $headers = [];
         $imap_headers = [];
+
         if (extension_loaded('imap') && $this->config['rfc822']) {
-            $raw_imap_headers = (array) \imap_rfc822_parse_headers($raw_headers);
+            $raw_imap_headers = (array) imap_rfc822_parse_headers($raw_headers);
+
             foreach ($raw_imap_headers as $key => $values) {
                 $key = strtolower(str_replace('-', '_', $key));
                 $imap_headers[$key] = $values;
             }
         }
+
         $lines = explode("\r\n", preg_replace("/\r\n\s/", ' ', $raw_headers));
+
         $prev_header = null;
+
         foreach ($lines as $line) {
             if (str_starts_with($line, "\n")) {
                 $line = substr($line, 1);
@@ -305,7 +310,7 @@ class Header
     public function mime_header_decode(string $text): array
     {
         if (extension_loaded('imap')) {
-            $result = \imap_mime_header_decode($text);
+            $result = imap_mime_header_decode($text);
 
             return is_array($result) ? $result : [];
         }
@@ -395,7 +400,7 @@ class Header
                 if ($tempValue) {
                     $value = $tempValue;
                 } elseif (extension_loaded('imap')) {
-                    $value = \imap_utf8($value);
+                    $value = imap_utf8($value);
                 } elseif (function_exists('iconv_mime_decode')) {
                     $value = iconv_mime_decode($value, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
                 } else {

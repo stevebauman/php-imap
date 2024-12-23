@@ -2,6 +2,7 @@
 
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
+use Carbon\Carbon;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
@@ -64,7 +65,7 @@ class LegacyProtocol extends Protocol
         return $this->response()->wrap(function ($response) use ($user, $password) {
             /** @var Response $response */
             try {
-                $this->stream = \imap_open(
+                $this->stream = imap_open(
                     $this->getAddress(),
                     $user,
                     $password,
@@ -74,20 +75,20 @@ class LegacyProtocol extends Protocol
                 );
                 $response->addCommand('imap_open');
             } catch (\ErrorException $e) {
-                $errors = \imap_errors();
+                $errors = imap_errors();
                 $message = $e->getMessage().'. '.implode('; ', is_array($errors) ? $errors : []);
 
                 throw new AuthFailedException($message);
             }
 
             if (! $this->stream) {
-                $errors = \imap_errors();
+                $errors = imap_errors();
                 $message = implode('; ', is_array($errors) ? $errors : []);
 
                 throw new AuthFailedException($message);
             }
 
-            $errors = \imap_errors();
+            $errors = imap_errors();
             $response->addCommand('imap_errors');
             if (is_array($errors)) {
                 $status = $this->examineFolder();
@@ -129,7 +130,7 @@ class LegacyProtocol extends Protocol
     protected function getAddress(): string
     {
         $address = '{'.$this->host.':'.$this->port.'/'.$this->protocol;
-        if (! $this->cert_validation) {
+        if (! $this->certValidation) {
             $address .= '/novalidate-cert';
         }
         if (in_array($this->encryption, ['tls', 'notls', 'ssl'])) {
@@ -151,9 +152,9 @@ class LegacyProtocol extends Protocol
         return $this->response()->wrap(function ($response) {
             /** @var Response $response */
             if ($this->stream) {
-                $this->uid_cache = [];
+                $this->uidCache = [];
                 $response->addCommand('imap_close');
-                if (\imap_close($this->stream, IMAP::CL_EXPUNGE)) {
+                if (imap_close($this->stream, IMAP::CL_EXPUNGE)) {
                     $this->stream = false;
 
                     return [
@@ -198,10 +199,12 @@ class LegacyProtocol extends Protocol
 
         return $this->response('imap_reopen')->wrap(function ($response) use ($folder, $flags) {
             /** @var Response $response */
-            \imap_reopen($this->stream, $this->getAddress().$folder, $flags, 3);
-            $this->uid_cache = [];
+            imap_reopen($this->stream, $this->getAddress().$folder, $flags, 3);
+
+            $this->uidCache = [];
 
             $status = $this->examineFolder($folder);
+
             $response->stack($status);
 
             return $status->data();
@@ -223,7 +226,7 @@ class LegacyProtocol extends Protocol
 
         return $this->response('imap_status')->wrap(function ($response) use ($folder) {
             /** @var Response $response */
-            $status = \imap_status($this->stream, $this->getAddress().$folder, IMAP::SA_ALL);
+            $status = imap_status($this->stream, $this->getAddress().$folder, IMAP::SA_ALL);
 
             return $status ? [
                 'flags' => [],
@@ -260,7 +263,7 @@ class LegacyProtocol extends Protocol
             $uids = is_array($uids) ? $uids : [$uids];
             foreach ($uids as $id) {
                 $response->addCommand('imap_fetchbody');
-                $result[$id] = \imap_fetchbody($this->stream, $id, '', $uid === IMAP::ST_UID ? IMAP::ST_UID : IMAP::NIL);
+                $result[$id] = imap_fetchbody($this->stream, $id, '', $uid === IMAP::ST_UID ? IMAP::ST_UID : IMAP::NIL);
             }
 
             return $result;
@@ -277,10 +280,13 @@ class LegacyProtocol extends Protocol
         return $this->response()->wrap(function ($response) use ($uids, $uid) {
             /** @var Response $response */
             $result = [];
+
             $uids = is_array($uids) ? $uids : [$uids];
+
             foreach ($uids as $id) {
                 $response->addCommand('imap_fetchheader');
-                $result[$id] = \imap_fetchheader($this->stream, $id, $uid ? IMAP::ST_UID : IMAP::NIL);
+
+                $result[$id] = imap_fetchheader($this->stream, $id, $uid ? IMAP::ST_UID : IMAP::NIL);
             }
 
             return $result;
@@ -297,11 +303,16 @@ class LegacyProtocol extends Protocol
         return $this->response()->wrap(function ($response) use ($uids, $uid) {
             /** @var Response $response */
             $result = [];
+
             $uids = is_array($uids) ? $uids : [$uids];
+
             foreach ($uids as $id) {
                 $response->addCommand('imap_fetch_overview');
-                $raw_flags = \imap_fetch_overview($this->stream, $id, $uid ? IMAP::ST_UID : IMAP::NIL);
+
+                $raw_flags = imap_fetch_overview($this->stream, $id, $uid ? IMAP::ST_UID : IMAP::NIL);
+
                 $flags = [];
+
                 if (is_array($raw_flags) && isset($raw_flags[0])) {
                     $raw_flags = (array) $raw_flags[0];
                     foreach ($raw_flags as $flag => $value) {
@@ -310,6 +321,7 @@ class LegacyProtocol extends Protocol
                         }
                     }
                 }
+
                 $result[$id] = $flags;
             }
 
@@ -331,9 +343,9 @@ class LegacyProtocol extends Protocol
             $uid_text = implode("','", $uids);
             $response->addCommand('imap_fetch_overview');
             if ($uid == IMAP::ST_UID) {
-                $raw_overview = \imap_fetch_overview($this->stream, $uid_text, IMAP::FT_UID);
+                $raw_overview = imap_fetch_overview($this->stream, $uid_text, IMAP::FT_UID);
             } else {
-                $raw_overview = \imap_fetch_overview($this->stream, $uid_text);
+                $raw_overview = imap_fetch_overview($this->stream, $uid_text);
             }
             if ($raw_overview !== false) {
                 foreach ($raw_overview as $overview_element) {
@@ -357,8 +369,8 @@ class LegacyProtocol extends Protocol
         return $this->response()->wrap(function ($response) use ($id) {
             /** @var Response $response */
             if ($id === null) {
-                if ($this->enable_uid_cache && $this->uid_cache) {
-                    return $this->uid_cache;
+                if ($this->enableUidCache && $this->uidCache) {
+                    return $this->uidCache;
                 }
 
                 $overview = $this->overview('1:*');
@@ -374,7 +386,9 @@ class LegacyProtocol extends Protocol
             }
 
             $response->addCommand('imap_uid');
-            $uid = \imap_uid($this->stream, $id);
+
+            $uid = imap_uid($this->stream, $id);
+
             if ($uid) {
                 return $uid;
             }
@@ -393,7 +407,7 @@ class LegacyProtocol extends Protocol
     {
         return $this->response('imap_msgno')->wrap(function ($response) use ($id) {
             /** @var Response $response */
-            return \imap_msgno($this->stream, $id);
+            return imap_msgno($this->stream, $id);
         });
     }
 
@@ -407,7 +421,7 @@ class LegacyProtocol extends Protocol
     {
         return $this->response('imap_fetch_overview')->wrap(function ($response) use ($sequence, $uid) {
             /** @var Response $response */
-            return \imap_fetch_overview($this->stream, $sequence, $uid ? IMAP::ST_UID : IMAP::NIL) ?: [];
+            return imap_fetch_overview($this->stream, $sequence, $uid ? IMAP::ST_UID : IMAP::NIL) ?: [];
         });
     }
 
@@ -424,14 +438,15 @@ class LegacyProtocol extends Protocol
             /** @var Response $response */
             $result = [];
 
-            $items = \imap_getmailboxes($this->stream, $this->getAddress(), $reference.$folder);
+            $items = imap_getmailboxes($this->stream, $this->getAddress(), $reference.$folder);
+
             if (is_array($items)) {
                 foreach ($items as $item) {
                     $name = $this->decodeFolderName($item->name);
                     $result[$name] = ['delimiter' => $item->delimiter, 'flags' => []];
                 }
             } else {
-                throw new RuntimeException(\imap_last_error());
+                throw new RuntimeException(imap_last_error());
             }
 
             return $result;
@@ -459,10 +474,10 @@ class LegacyProtocol extends Protocol
             /** @var Response $response */
             if ($mode == '+') {
                 $response->addCommand('imap_setflag_full');
-                $status = \imap_setflag_full($this->stream, $from, $flag, $uid ? IMAP::ST_UID : IMAP::NIL);
+                $status = imap_setflag_full($this->stream, $from, $flag, $uid ? IMAP::ST_UID : IMAP::NIL);
             } else {
                 $response->addCommand('imap_clearflag_full');
-                $status = \imap_clearflag_full($this->stream, $from, $flag, $uid ? IMAP::ST_UID : IMAP::NIL);
+                $status = imap_clearflag_full($this->stream, $from, $flag, $uid ? IMAP::ST_UID : IMAP::NIL);
             }
 
             if ($silent === true) {
@@ -492,18 +507,15 @@ class LegacyProtocol extends Protocol
         return $this->response('imap_append')->wrap(function ($response) use ($folder, $message, $flags, $date) {
             /** @var Response $response */
             if ($date != null) {
-                if ($date instanceof \Carbon\Carbon) {
+                if ($date instanceof Carbon) {
                     $date = $date->format('d-M-Y H:i:s O');
                 }
-                if (\imap_append($this->stream, $this->getAddress().$folder, $message, $flags, $date)) {
-                    return [
-                        "OK Append completed (0.001 + 0.000 secs).\r\n",
-                    ];
+
+                if (imap_append($this->stream, $this->getAddress().$folder, $message, $flags, $date)) {
+                    return ["OK Append completed (0.001 + 0.000 secs).\r\n"];
                 }
-            } elseif (\imap_append($this->stream, $this->getAddress().$folder, $message, $flags)) {
-                return [
-                    "OK Append completed (0.001 + 0.000 secs).\r\n",
-                ];
+            } elseif (imap_append($this->stream, $this->getAddress().$folder, $message, $flags)) {
+                return ["OK Append completed (0.001 + 0.000 secs).\r\n"];
             }
 
             return [];
@@ -522,7 +534,7 @@ class LegacyProtocol extends Protocol
     {
         return $this->response('imap_mail_copy')->wrap(function ($response) use ($from, $folder, $uid) {
             /** @var Response $response */
-            if (\imap_mail_copy($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
+            if (imap_mail_copy($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
                 return [
                     'TAG'.$response->Noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
                 ];
@@ -573,7 +585,7 @@ class LegacyProtocol extends Protocol
     public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
     {
         return $this->response('imap_mail_move')->wrap(function ($response) use ($from, $folder, $uid) {
-            if (\imap_mail_move($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
+            if (imap_mail_move($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
                 return [
                     'TAG'.$response->Noun()." OK Move completed (0.001 + 0.000 secs).\r\n",
                 ];
@@ -617,24 +629,20 @@ class LegacyProtocol extends Protocol
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     * @param  null  $ids
-     *
      * @throws MethodNotSupportedException
      */
-    public function ID($ids = null): Response
+    public function id(?array $ids = null): Response
     {
         throw new MethodNotSupportedException;
     }
 
     /**
      * Create a new folder (and parent folders if needed).
-     *
-     * @param  string  $folder  folder name
      */
     public function createFolder(string $folder): Response
     {
         return $this->response('imap_createmailbox')->wrap(function ($response) use ($folder) {
-            return \imap_createmailbox($this->stream, $this->getAddress().$folder) ? [
+            return imap_createmailbox($this->stream, $this->getAddress().$folder) ? [
                 0 => 'TAG'.$response->Noun()." OK Create completed (0.004 + 0.000 + 0.003 secs).\r\n",
             ] : [];
         });
@@ -642,14 +650,11 @@ class LegacyProtocol extends Protocol
 
     /**
      * Rename an existing folder.
-     *
-     * @param  string  $old  old name
-     * @param  string  $new  new name
      */
     public function renameFolder(string $old, string $new): Response
     {
         return $this->response('imap_renamemailbox')->wrap(function ($response) use ($old, $new) {
-            return \imap_renamemailbox($this->stream, $this->getAddress().$old, $this->getAddress().$new) ? [
+            return imap_renamemailbox($this->stream, $this->getAddress().$old, $this->getAddress().$new) ? [
                 0 => 'TAG'.$response->Noun()." OK Move completed (0.004 + 0.000 + 0.003 secs).\r\n",
             ] : [];
         });
@@ -657,13 +662,11 @@ class LegacyProtocol extends Protocol
 
     /**
      * Delete a folder.
-     *
-     * @param  string  $folder  folder name
      */
     public function deleteFolder(string $folder): Response
     {
         return $this->response('imap_deletemailbox')->wrap(function ($response) use ($folder) {
-            return \imap_deletemailbox($this->stream, $this->getAddress().$folder) ? [
+            return imap_deletemailbox($this->stream, $this->getAddress().$folder) ? [
                 0 => "OK Delete completed (0.004 + 0.000 + 0.003 secs).\r\n",
             ] : [];
         });
@@ -671,8 +674,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Subscribe to a folder.
-     *
-     * @param  string  $folder  folder name
      *
      * @throws MethodNotSupportedException
      */
@@ -683,10 +684,6 @@ class LegacyProtocol extends Protocol
 
     /**
      * Unsubscribe from a folder.
-     *
-     * @param  string  $folder  folder name
-     *
-     * @throws MethodNotSupportedException
      */
     public function unsubscribeFolder(string $folder): Response
     {
@@ -699,7 +696,7 @@ class LegacyProtocol extends Protocol
     public function expunge(): Response
     {
         return $this->response('imap_expunge')->wrap(function ($response) {
-            return \imap_expunge($this->stream) ? [
+            return imap_expunge($this->stream) ? [
                 0 => 'TAG'.$response->Noun()." OK Expunge completed (0.001 + 0.000 secs).\r\n",
             ] : [];
         });
@@ -745,7 +742,7 @@ class LegacyProtocol extends Protocol
     {
         return $this->response('imap_search')->wrap(function ($response) use ($params, $uid) {
             $response->setCanBeEmpty(true);
-            $result = \imap_search($this->stream, $params[0], $uid ? IMAP::ST_UID : IMAP::NIL);
+            $result = imap_search($this->stream, $params[0], $uid ? IMAP::ST_UID : IMAP::NIL);
 
             return $result ?: [];
         });
@@ -791,7 +788,7 @@ class LegacyProtocol extends Protocol
     public function getQuota($username): Response
     {
         return $this->response('imap_get_quota')->wrap(function ($response) use ($username) {
-            $result = \imap_get_quota($this->stream, 'user.'.$username);
+            $result = imap_get_quota($this->stream, 'user.'.$username);
 
             return $result ?: [];
         });
@@ -803,7 +800,7 @@ class LegacyProtocol extends Protocol
     public function getQuotaRoot(string $quota_root = 'INBOX'): Response
     {
         return $this->response('imap_get_quotaroot')->wrap(function ($response) use ($quota_root) {
-            $result = \imap_get_quotaroot($this->stream, $this->getAddress().$quota_root);
+            $result = imap_get_quotaroot($this->stream, $this->getAddress().$quota_root);
 
             return $result ?: [];
         });

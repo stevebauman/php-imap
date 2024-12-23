@@ -756,7 +756,7 @@ class Client
     {
         $this->checkConnection();
 
-        return $this->connection->ID($ids)->validatedData();
+        return $this->connection->id($ids)->validatedData();
     }
 
     /**

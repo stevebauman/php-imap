@@ -267,7 +267,7 @@ class Attachment
             if (preg_match('/=\?([^?]+)\?(Q|B)\?(.+)\?=/i', $name, $matches)) {
                 $name = $this->part->getHeader()->decode($name);
             } elseif ($decoder === 'utf-8' && extension_loaded('imap')) {
-                $name = \imap_utf8($name);
+                $name = imap_utf8($name);
             }
 
             // check if $name is url encoded

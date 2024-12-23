@@ -798,7 +798,7 @@ class Message
         switch ($encoding) {
             case IMAP::MESSAGE_ENC_BINARY:
                 if (extension_loaded('imap')) {
-                    return base64_decode(\imap_binary($string));
+                    return base64_decode(imap_binary($string));
                 }
 
                 return base64_decode($string);
