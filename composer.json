@@ -36,6 +36,7 @@
         "phpunit/phpunit": "^9.5.10"
     },
     "suggest": {
+        "ext-imap": "Required for IMAP functionality",
         "symfony/mime": "Recomended for better extension support",
         "symfony/var-dumper": "Usefull tool for debugging"
     },
