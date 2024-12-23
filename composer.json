@@ -27,9 +27,9 @@
         "ext-openssl": "*",
         "ext-mbstring": "*",
         "ext-fileinfo": "*",
-        "nesbot/carbon": "^2.62.1",
-        "illuminate/pagination": "^5.0",
-        "symfony/http-foundation": "^2.8"
+        "nesbot/carbon": "^2.62",
+        "illuminate/pagination": ">=5.0",
+        "symfony/http-foundation": ">=2.8"
     },
     "require-dev": {
         "laravel/pint": "^1.18",
