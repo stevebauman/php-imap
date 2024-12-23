@@ -22,8 +22,6 @@ class Issue413Test extends LiveMailboxTestCase
     /**
      * Live server test.
      *
-     * @return void
-     *
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
@@ -39,6 +37,8 @@ class Issue413Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\MessageNotFoundException
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
+     *
+     * @return void
      */
     public function test_live_issue_email()
     {
@@ -60,8 +60,6 @@ class Issue413Test extends LiveMailboxTestCase
     /**
      * Static parsing test.
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
      * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
@@ -72,6 +70,8 @@ class Issue413Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\MessageContentFetchingException
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
+     *
+     * @return void
      */
     public function test_issue_email()
     {

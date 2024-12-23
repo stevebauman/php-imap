@@ -28,7 +28,7 @@ class ClientManagerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->cm = new ClientManager;
+        $this->cm = new ClientManager();
     }
 
     /**
@@ -78,7 +78,7 @@ class ClientManagerTest extends TestCase
             'default' => 'foo',
             'options' => [
                 'fetch' => IMAP::ST_MSGN,
-                'open' => 'foo',
+                'open'  => 'foo',
             ],
         ];
         $cm = new ClientManager($config);

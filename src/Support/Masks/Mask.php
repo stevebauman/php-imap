@@ -55,9 +55,9 @@ class Mask
     /**
      * Call dynamic attribute setter and getter methods and inherit the parent calls.
      *
-     * @return mixed
-     *
      * @throws MethodNotFoundException
+     *
+     * @return mixed
      */
     public function __call(string $method, array $arguments)
     {

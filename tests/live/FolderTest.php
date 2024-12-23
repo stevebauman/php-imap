@@ -117,7 +117,7 @@ class FolderTest extends LiveMailboxTestCase
         }
         self::assertTrue($folder->hasChildren());
 
-        $folder->setChildren(new FolderCollection);
+        $folder->setChildren(new FolderCollection());
         self::assertTrue($folder->getChildren()->isEmpty());
     }
 

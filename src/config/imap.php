@@ -48,21 +48,21 @@ return [
     'accounts' => [
 
         'default' => [// account identifier
-            'host' => 'localhost',
-            'port' => 993,
-            'protocol' => 'imap', //might also use imap, [pop3 or nntp (untested)]
-            'encryption' => 'ssl', // Supported: false, 'ssl', 'tls'
-            'validate_cert' => true,
-            'username' => 'root@example.com',
-            'password' => '',
+            'host'           => 'localhost',
+            'port'           => 993,
+            'protocol'       => 'imap', //might also use imap, [pop3 or nntp (untested)]
+            'encryption'     => 'ssl', // Supported: false, 'ssl', 'tls'
+            'validate_cert'  => true,
+            'username'       => 'root@example.com',
+            'password'       => '',
             'authentication' => null,
-            'proxy' => [
-                'socket' => null,
+            'proxy'          => [
+                'socket'          => null,
                 'request_fulluri' => false,
-                'username' => null,
-                'password' => null,
+                'username'        => null,
+                'password'        => null,
             ],
-            'timeout' => 30,
+            'timeout'    => 30,
             'extensions' => [],
         ],
 
@@ -143,29 +143,29 @@ return [
     |
     */
     'options' => [
-        'delimiter' => '/',
-        'fetch' => \Webklex\PHPIMAP\IMAP::FT_PEEK,
-        'sequence' => \Webklex\PHPIMAP\IMAP::ST_UID,
-        'fetch_body' => true,
+        'delimiter'   => '/',
+        'fetch'       => \Webklex\PHPIMAP\IMAP::FT_PEEK,
+        'sequence'    => \Webklex\PHPIMAP\IMAP::ST_UID,
+        'fetch_body'  => true,
         'fetch_flags' => true,
-        'soft_fail' => false,
-        'rfc822' => true,
-        'debug' => false,
-        'uid_cache' => true,
+        'soft_fail'   => false,
+        'rfc822'      => true,
+        'debug'       => false,
+        'uid_cache'   => true,
         // 'fallback_date' => "01.01.1970 00:00:00",
-        'boundary' => '/boundary=(.*?(?=;)|(.*))/i',
-        'message_key' => 'list',
-        'fetch_order' => 'asc',
-        'dispositions' => ['attachment', 'inline'],
+        'boundary'       => '/boundary=(.*?(?=;)|(.*))/i',
+        'message_key'    => 'list',
+        'fetch_order'    => 'asc',
+        'dispositions'   => ['attachment', 'inline'],
         'common_folders' => [
-            'root' => 'INBOX',
-            'junk' => 'INBOX/Junk',
+            'root'  => 'INBOX',
+            'junk'  => 'INBOX/Junk',
             'draft' => 'INBOX/Drafts',
-            'sent' => 'INBOX/Sent',
+            'sent'  => 'INBOX/Sent',
             'trash' => 'INBOX/Trash',
         ],
         'decoder' => [
-            'message' => 'utf-8', // mimeheader
+            'message'    => 'utf-8', // mimeheader
             'attachment' => 'utf-8', // mimeheader
         ],
         'open' => [
@@ -190,19 +190,19 @@ return [
      */
     'events' => [
         'message' => [
-            'new' => \Webklex\PHPIMAP\Events\MessageNewEvent::class,
-            'moved' => \Webklex\PHPIMAP\Events\MessageMovedEvent::class,
-            'copied' => \Webklex\PHPIMAP\Events\MessageCopiedEvent::class,
-            'deleted' => \Webklex\PHPIMAP\Events\MessageDeletedEvent::class,
+            'new'      => \Webklex\PHPIMAP\Events\MessageNewEvent::class,
+            'moved'    => \Webklex\PHPIMAP\Events\MessageMovedEvent::class,
+            'copied'   => \Webklex\PHPIMAP\Events\MessageCopiedEvent::class,
+            'deleted'  => \Webklex\PHPIMAP\Events\MessageDeletedEvent::class,
             'restored' => \Webklex\PHPIMAP\Events\MessageRestoredEvent::class,
         ],
         'folder' => [
-            'new' => \Webklex\PHPIMAP\Events\FolderNewEvent::class,
-            'moved' => \Webklex\PHPIMAP\Events\FolderMovedEvent::class,
+            'new'     => \Webklex\PHPIMAP\Events\FolderNewEvent::class,
+            'moved'   => \Webklex\PHPIMAP\Events\FolderMovedEvent::class,
             'deleted' => \Webklex\PHPIMAP\Events\FolderDeletedEvent::class,
         ],
         'flag' => [
-            'new' => \Webklex\PHPIMAP\Events\FlagNewEvent::class,
+            'new'     => \Webklex\PHPIMAP\Events\FlagNewEvent::class,
             'deleted' => \Webklex\PHPIMAP\Events\FlagDeletedEvent::class,
         ],
     ],
@@ -221,7 +221,7 @@ return [
     | The provided masks below are used as the default masks.
      */
     'masks' => [
-        'message' => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
+        'message'    => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
         'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class,
     ],
 ];

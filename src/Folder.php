@@ -101,7 +101,7 @@ class Folder
     /**
      * Folder constructor.
      *
-     * @param  string[]  $attributes
+     * @param string[] $attributes
      */
     public function __construct(Client $client, string $folder_name, string $delimiter, array $attributes)
     {
@@ -114,7 +114,7 @@ class Folder
         $this->path = $folder_name;
         $this->full_name = $this->decodeName($folder_name);
         $this->name = $this->getSimpleName($this->delimiter, $this->full_name);
-        $this->children = new FolderCollection;
+        $this->children = new FolderCollection();
         $this->has_children = false;
 
         $this->parseAttributes($attributes);
@@ -123,7 +123,7 @@ class Folder
     /**
      * Get a new search query instance.
      *
-     * @param  string[]  $extensions
+     * @param string[] $extensions
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -144,7 +144,7 @@ class Folder
     /**
      * Get a new search query instance.
      *
-     * @param  string[]  $extensions
+     * @param string[] $extensions
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -161,7 +161,7 @@ class Folder
     /**
      * Get a new search query instance.
      *
-     * @param  string[]  $extensions
+     * @param string[] $extensions
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -270,7 +270,7 @@ class Folder
     /**
      * Get a message overview.
      *
-     * @param  string|null  $sequence  uid sequence
+     * @param string|null $sequence uid sequence
      *
      * @throws ConnectionFailedException
      * @throws ImapBadRequestException
@@ -402,8 +402,8 @@ class Folder
     /**
      * Idle the current connection.
      *
-     * @param  callable  $callback  function(Message $message) gets called if a new message is received
-     * @param  int  $timeout  max 1740 seconds - recommended by rfc2177 §3. Should not be lower than the servers "* OK Still here" message interval
+     * @param callable $callback function(Message $message) gets called if a new message is received
+     * @param int      $timeout  max 1740 seconds - recommended by rfc2177 §3. Should not be lower than the servers "* OK Still here" message interval
      *
      * @throws ConnectionFailedException
      * @throws RuntimeException
@@ -417,7 +417,7 @@ class Folder
     {
         $this->client->setTimeout($timeout);
 
-        if (! in_array('IDLE', $this->client->getConnection()->getCapabilities()->validatedData())) {
+        if (!in_array('IDLE', $this->client->getConnection()->getCapabilities()->validatedData())) {
             throw new Exceptions\NotSupportedCapabilityException('IMAP server does not support IDLE');
         }
 
@@ -438,7 +438,7 @@ class Folder
                 $msgn = (int) substr($line, 2, $pos - 2);
 
                 // Check if the stream is still alive or should be considered stale
-                if (! $this->client->isConnected() || $last_action->isBefore(Carbon::now())) {
+                if (!$this->client->isConnected() || $last_action->isBefore(Carbon::now())) {
                     // Reset the connection before interacting with it. Otherwise, the resource might be stale which
                     // would result in a stuck interaction. If you know of a way of detecting a stale resource, please
                     // feel free to improve this logic. I tried a lot but nothing seem to work reliably...

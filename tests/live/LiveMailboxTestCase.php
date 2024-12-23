@@ -52,20 +52,20 @@ abstract class LiveMailboxTestCase extends TestCase
      */
     final protected function getManager(): ClientManager
     {
-        if (! isset(self::$manager)) {
+        if (!isset(self::$manager)) {
             self::$manager = new ClientManager([
                 'options' => [
                     'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
                 ],
                 'accounts' => [
                     'default' => [
-                        'host' => getenv('LIVE_MAILBOX_HOST'),
-                        'port' => getenv('LIVE_MAILBOX_PORT'),
-                        'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                        'host'          => getenv('LIVE_MAILBOX_HOST'),
+                        'port'          => getenv('LIVE_MAILBOX_PORT'),
+                        'encryption'    => getenv('LIVE_MAILBOX_ENCRYPTION'),
                         'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                        'username' => getenv('LIVE_MAILBOX_USERNAME'),
-                        'password' => getenv('LIVE_MAILBOX_PASSWORD'),
-                        'protocol' => 'imap', //might also use imap, [pop3 or nntp (untested)]
+                        'username'      => getenv('LIVE_MAILBOX_USERNAME'),
+                        'password'      => getenv('LIVE_MAILBOX_PASSWORD'),
+                        'protocol'      => 'imap', //might also use imap, [pop3 or nntp (untested)]
                     ],
                 ],
             ]);
@@ -82,7 +82,7 @@ abstract class LiveMailboxTestCase extends TestCase
      */
     final protected function getClient(): Client
     {
-        if (! getenv('LIVE_MAILBOX') ?? false) {
+        if (!getenv('LIVE_MAILBOX') ?? false) {
             $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
         }
 
@@ -140,7 +140,7 @@ abstract class LiveMailboxTestCase extends TestCase
     final protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
-        if (! isset($status['uidnext'])) {
+        if (!isset($status['uidnext'])) {
             $this->fail('No UIDNEXT returned');
         }
 
@@ -152,7 +152,7 @@ abstract class LiveMailboxTestCase extends TestCase
                 break;
             }
         }
-        if (! $valid_response) {
+        if (!$valid_response) {
             $this->fail('Failed to append message: '.implode("\n", $response));
         }
 
@@ -208,7 +208,7 @@ abstract class LiveMailboxTestCase extends TestCase
                     break;
                 }
             }
-            if (! $valid_response) {
+            if (!$valid_response) {
                 $this->fail('Failed to delete mailbox: '.implode("\n", $response));
             }
 

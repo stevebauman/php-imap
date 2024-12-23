@@ -44,15 +44,15 @@ class ClientTest extends TestCase
     protected function setUp(): void
     {
         $this->client = new Client([
-            'protocol' => 'imap',
+            'protocol'   => 'imap',
             'encryption' => 'ssl',
-            'username' => 'foo@domain.tld',
-            'password' => 'bar',
-            'proxy' => [
-                'socket' => null,
+            'username'   => 'foo@domain.tld',
+            'password'   => 'bar',
+            'proxy'      => [
+                'socket'          => null,
                 'request_fulluri' => false,
-                'username' => null,
-                'password' => null,
+                'username'        => null,
+                'password'        => null,
             ],
         ]);
     }
@@ -135,11 +135,11 @@ class ClientTest extends TestCase
                     6 => 'unknown-1',
                 ],
             ],
-            'exists' => 139,
-            'recent' => 0,
-            'unseen' => 94,
+            'exists'      => 139,
+            'recent'      => 0,
+            'unseen'      => 94,
             'uidvalidity' => 1488899637,
-            'uidnext' => 278,
+            'uidnext'     => 278,
         ]));
         self::assertNotEmpty($this->client->openFolder('INBOX'));
         self::assertSame('INBOX', $this->client->getFolderPath());
@@ -156,94 +156,94 @@ class ClientTest extends TestCase
                     6 => 'unknown-1',
                 ],
             ],
-            'exists' => 139,
-            'recent' => 0,
-            'unseen' => 94,
+            'exists'      => 139,
+            'recent'      => 0,
+            'unseen'      => 94,
             'uidvalidity' => 1488899637,
-            'uidnext' => 278,
+            'uidnext'     => 278,
         ]));
         self::assertNotEmpty($this->client->checkFolder('INBOX'));
 
         $this->protocol->expects($this->any())->method('folders')->with($this->identicalTo(''), $this->identicalTo('*'))->willReturn(Response::empty()->setResponse([
             'INBOX' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasChildren",
                 ],
             ],
             'INBOX.new' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.9AL56dEMTTgUKOAz' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.U9PsHCvXxAffYvie' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.Trash' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                     1 => "\Trash",
                 ],
             ],
             'INBOX.processing' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.Sent' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                     1 => "\Sent",
                 ],
             ],
             'INBOX.OzDWCXKV3t241koc' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.5F3bIVTtBcJEqIVe' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.8J3rll6eOBWnTxIU' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
             'INBOX.Junk' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                     1 => "\Junk",
                 ],
             ],
             'INBOX.Drafts' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                     1 => "\Drafts",
                 ],
             ],
             'INBOX.test' => [
                 'delimiter' => '.',
-                'flags' => [
+                'flags'     => [
                     0 => "\HasNoChildren",
                 ],
             ],
@@ -286,7 +286,7 @@ class ClientTest extends TestCase
         self::assertSame(993, $config['port']);
 
         $this->client->setConfig([
-            'host' => 'domain.tld',
+            'host'     => 'domain.tld',
             'password' => 'bar',
         ]);
         $config = $this->client->getConfig();

@@ -35,8 +35,8 @@ use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
  * @property ?string disposition
  * @property string img_src
  *
- * @method int getPartNumber()
- * @method int setPartNumber(integer $part_number)
+ * @method int    getPartNumber()
+ * @method int    setPartNumber(integer $part_number)
  * @method string getContent()
  * @method string setContent(string $content)
  * @method string getType()
@@ -69,18 +69,18 @@ class Attachment
      * Attribute holder.
      */
     protected array $attributes = [
-        'content' => null,
-        'hash' => null,
-        'type' => null,
-        'part_number' => 0,
+        'content'      => null,
+        'hash'         => null,
+        'type'         => null,
+        'part_number'  => 0,
         'content_type' => null,
-        'id' => null,
-        'name' => null,
-        'filename' => null,
-        'description' => null,
-        'disposition' => null,
-        'img_src' => null,
-        'size' => null,
+        'id'           => null,
+        'name'         => null,
+        'filename'     => null,
+        'description'  => null,
+        'disposition'  => null,
+        'img_src'      => null,
+        'size'         => null,
     ];
 
     /**
@@ -118,9 +118,9 @@ class Attachment
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @return mixed
-     *
      * @throws MethodNotFoundException
+     *
+     * @return mixed
      */
     public function __call(string $method, array $arguments)
     {
@@ -175,15 +175,15 @@ class Attachment
     protected function findType(): void
     {
         $this->type = match ($this->part->type) {
-            IMAP::ATTACHMENT_TYPE_MESSAGE => 'message',
+            IMAP::ATTACHMENT_TYPE_MESSAGE     => 'message',
             IMAP::ATTACHMENT_TYPE_APPLICATION => 'application',
-            IMAP::ATTACHMENT_TYPE_AUDIO => 'audio',
-            IMAP::ATTACHMENT_TYPE_IMAGE => 'image',
-            IMAP::ATTACHMENT_TYPE_VIDEO => 'video',
-            IMAP::ATTACHMENT_TYPE_MODEL => 'model',
-            IMAP::ATTACHMENT_TYPE_TEXT => 'text',
-            IMAP::ATTACHMENT_TYPE_MULTIPART => 'multipart',
-            default => 'other',
+            IMAP::ATTACHMENT_TYPE_AUDIO       => 'audio',
+            IMAP::ATTACHMENT_TYPE_IMAGE       => 'image',
+            IMAP::ATTACHMENT_TYPE_VIDEO       => 'video',
+            IMAP::ATTACHMENT_TYPE_MODEL       => 'model',
+            IMAP::ATTACHMENT_TYPE_TEXT        => 'text',
+            IMAP::ATTACHMENT_TYPE_MULTIPART   => 'multipart',
+            default                           => 'other',
         };
     }
 
@@ -236,20 +236,20 @@ class Attachment
 
         if ($this->part->type == IMAP::ATTACHMENT_TYPE_MESSAGE) {
             if ($this->part->ifdescription) {
-                if (! $this->name) {
+                if (!$this->name) {
                     $this->name = $this->part->description;
                 }
-            } elseif (! $this->name) {
+            } elseif (!$this->name) {
                 $this->name = $this->part->subtype;
             }
         }
         $this->attributes = array_merge($this->part->getHeader()->getAttributes(), $this->attributes);
 
-        if (! $this->filename) {
+        if (!$this->filename) {
             $this->filename = $this->hash;
         }
 
-        if (! $this->name && $this->filename != '') {
+        if (!$this->name && $this->filename != '') {
             $this->name = $this->filename;
         }
     }
@@ -302,7 +302,7 @@ class Attachment
      */
     public function getMimeType(): ?string
     {
-        return (new \finfo)->buffer($this->getContent(), FILEINFO_MIME_TYPE);
+        return (new \finfo())->buffer($this->getContent(), FILEINFO_MIME_TYPE);
     }
 
     /**

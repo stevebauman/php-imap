@@ -72,10 +72,10 @@ class Address
     {
         return [
             'personal' => $this->personal,
-            'mailbox' => $this->mailbox,
-            'host' => $this->host,
-            'mail' => $this->mail,
-            'full' => $this->full,
+            'mailbox'  => $this->mailbox,
+            'host'     => $this->host,
+            'mail'     => $this->mail,
+            'full'     => $this->full,
         ];
     }
 

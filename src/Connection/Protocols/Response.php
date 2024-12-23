@@ -167,7 +167,7 @@ class Response
     /**
      * Set the response.
      *
-     * @param  array  $response
+     * @param array $response
      */
     public function addResponse(mixed $response): Response
     {
@@ -303,17 +303,17 @@ class Response
     public function successful(): bool
     {
         foreach (array_merge($this->getResponse(), $this->array()) as $data) {
-            if (! $this->verify_data($data)) {
+            if (!$this->verify_data($data)) {
                 return false;
             }
         }
         foreach ($this->getStack() as $response) {
-            if (! $response->successful()) {
+            if (!$response->successful()) {
                 return false;
             }
         }
 
-        return ($this->boolean() || $this->canBeEmpty()) && ! $this->getErrors();
+        return ($this->boolean() || $this->canBeEmpty()) && !$this->getErrors();
     }
 
     /**
@@ -324,17 +324,17 @@ class Response
         if (is_array($data)) {
             foreach ($data as $line) {
                 if (is_array($line)) {
-                    if (! $this->verify_data($line)) {
+                    if (!$this->verify_data($line)) {
                         return false;
                     }
                 } else {
-                    if (! $this->verify_line((string) $line)) {
+                    if (!$this->verify_line((string) $line)) {
                         return false;
                     }
                 }
             }
         } else {
-            if (! $this->verify_line((string) $data)) {
+            if (!$this->verify_line((string) $data)) {
                 return false;
             }
         }
@@ -347,7 +347,7 @@ class Response
      */
     public function verify_line(string $line): bool
     {
-        return ! str_starts_with($line, 'TAG'.$this->noun.' BAD ') && ! str_starts_with($line, 'TAG'.$this->noun.' NO ');
+        return !str_starts_with($line, 'TAG'.$this->noun.' BAD ') && !str_starts_with($line, 'TAG'.$this->noun.' NO ');
     }
 
     /**
@@ -355,7 +355,7 @@ class Response
      */
     public function failed(): bool
     {
-        return ! $this->successful();
+        return !$this->successful();
     }
 
     /**

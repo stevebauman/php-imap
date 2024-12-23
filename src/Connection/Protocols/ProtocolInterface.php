@@ -40,8 +40,8 @@ interface ProtocolInterface
     /**
      * Open a new connection / session.
      *
-     * @param  string  $host  hostname or IP address of IMAP server
-     * @param  int|null  $port  of service server
+     * @param string   $host hostname or IP address of IMAP server
+     * @param int|null $port of service server
      *
      * @throws ErrorException
      * @throws ConnectionFailedException
@@ -52,8 +52,8 @@ interface ProtocolInterface
     /**
      * Login to a new session.
      *
-     * @param  string  $user  username
-     * @param  string  $password  password
+     * @param string $user     username
+     * @param string $password password
      *
      * @throws AuthFailedException
      * @throws ImapBadRequestException
@@ -64,8 +64,8 @@ interface ProtocolInterface
     /**
      * Authenticate your current session.
      *
-     * @param  string  $user  username
-     * @param  string  $token  access token
+     * @param string $user  username
+     * @param string $token access token
      *
      * @throws AuthFailedException
      */
@@ -89,19 +89,20 @@ interface ProtocolInterface
     /**
      * Get an array of available capabilities.
      *
-     * @return Response containing a list of capabilities
-     *
      * @throws RuntimeException
+     *
+     * @return Response containing a list of capabilities
      */
     public function getCapabilities(): Response;
 
     /**
      * Change the current folder.
      *
-     * @param  string  $folder  change to this folder
-     * @return Response see examineOrSelect()
+     * @param string $folder change to this folder
      *
      * @throws RuntimeException
+     *
+     * @return Response see examineOrSelect()
      */
     public function selectFolder(string $folder = 'INBOX'): Response;
 
@@ -116,19 +117,19 @@ interface ProtocolInterface
     /**
      * Get the status of a given folder.
      *
-     * @return Response list of STATUS items
-     *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws RuntimeException
+     *
+     * @return Response list of STATUS items
      */
     public function folderStatus(string $folder = 'INBOX', $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response;
 
     /**
      * Fetch message headers.
      *
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
+     * @param int|string $uid set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                        message numbers instead.
      *
      * @throws RuntimeException
      */
@@ -137,8 +138,8 @@ interface ProtocolInterface
     /**
      * Fetch message headers.
      *
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
+     * @param int|string $uid set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                        message numbers instead.
      *
      * @throws RuntimeException
      */
@@ -147,8 +148,8 @@ interface ProtocolInterface
     /**
      * Fetch message flags.
      *
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
+     * @param int|string $uid set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                        message numbers instead.
      *
      * @throws RuntimeException
      */
@@ -157,8 +158,8 @@ interface ProtocolInterface
     /**
      * Fetch message sizes.
      *
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
+     * @param int|string $uid set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                        message numbers instead.
      *
      * @throws RuntimeException
      */
@@ -167,59 +168,63 @@ interface ProtocolInterface
     /**
      * Get uid for a given id.
      *
-     * @param  int|null  $id  message number
-     * @return Response containing a message number for given message or all messages as array
+     * @param int|null $id message number
      *
      * @throws MessageNotFoundException
+     *
+     * @return Response containing a message number for given message or all messages as array
      */
     public function getUid(?int $id = null): Response;
 
     /**
      * Get a message number for a uid.
      *
-     * @param  string  $id  uid
-     * @return Response containing the message number
+     * @param string $id uid
      *
      * @throws MessageNotFoundException
+     *
+     * @return Response containing the message number
      */
     public function getMessageNumber(string $id): Response;
 
     /**
      * Get a list of available folders.
      *
-     * @param  string  $reference  mailbox reference for list
-     * @param  string  $folder  mailbox / folder name match with wildcards
-     * @return Response containing mailboxes that matched $folder as array(globalName => array('delim' => .., 'flags' => ..))
+     * @param string $reference mailbox reference for list
+     * @param string $folder    mailbox / folder name match with wildcards
      *
      * @throws RuntimeException
+     *
+     * @return Response containing mailboxes that matched $folder as array(globalName => array('delim' => .., 'flags' => ..))
      */
     public function folders(string $reference = '', string $folder = '*'): Response;
 
     /**
      * Set message flags.
      *
-     * @param  array|string  $flags  flags to set, add or remove
-     * @param  int  $from  message for items or start message if $to !== null
-     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
-     *                        last message, INF means last message available
-     * @param  string|null  $mode  '+' to add flags, '-' to remove flags, everything else sets the flags as given
-     * @param  bool  $silent  if false the return values are the new flags for the wanted messages
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
-     * @param  string|null  $item  command used to store a flag
-     * @return Response containing the new flags if $silent is false, else true or false depending on success
+     * @param array|string $flags  flags to set, add or remove
+     * @param int          $from   message for items or start message if $to !== null
+     * @param int|null     $to     if null only one message ($from) is fetched, else it's the
+     *                             last message, INF means last message available
+     * @param string|null  $mode   '+' to add flags, '-' to remove flags, everything else sets the flags as given
+     * @param bool         $silent if false the return values are the new flags for the wanted messages
+     * @param int|string   $uid    set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                             message numbers instead.
+     * @param string|null  $item   command used to store a flag
      *
      * @throws RuntimeException
+     *
+     * @return Response containing the new flags if $silent is false, else true or false depending on success
      */
     public function store(array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null): Response;
 
     /**
      * Append a new message to given folder.
      *
-     * @param  string  $folder  name of target folder
-     * @param  string  $message  full message content
-     * @param  array|null  $flags  flags for new message
-     * @param  string|null  $date  date for new message
+     * @param string      $folder  name of target folder
+     * @param string      $message full message content
+     * @param array|null  $flags   flags for new message
+     * @param string|null $date    date for new message
      *
      * @throws RuntimeException
      */
@@ -228,10 +233,10 @@ interface ProtocolInterface
     /**
      * Copy message set from current folder to other folder.
      *
-     * @param  string  $folder  destination folder
-     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
-     *                        last message, INF means last message available
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     * @param string     $folder destination folder
+     * @param int|null   $to     if null only one message ($from) is fetched, else it's the
+     *                           last message, INF means last message available
+     * @param int|string $uid    set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      *
      * @throws RuntimeException
@@ -241,23 +246,24 @@ interface ProtocolInterface
     /**
      * Copy multiple messages to the target folder.
      *
-     * @param  array<string>  $messages  List of message identifiers
-     * @param  string  $folder  Destination folder
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
-     * @return Response Tokens if operation successful, false if an error occurred
+     * @param array<string> $messages List of message identifiers
+     * @param string        $folder   Destination folder
+     * @param int|string    $uid      set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                                message numbers instead.
      *
      * @throws RuntimeException
+     *
+     * @return Response Tokens if operation successful, false if an error occurred
      */
     public function copyManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response;
 
     /**
      * Move a message set from current folder to another folder.
      *
-     * @param  string  $folder  destination folder
-     * @param  int|null  $to  if null only one message ($from) is fetched, else it's the
-     *                        last message, INF means last message available
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     * @param string     $folder destination folder
+     * @param int|null   $to     if null only one message ($from) is fetched, else it's the
+     *                           last message, INF means last message available
+     * @param int|string $uid    set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      */
     public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response;
@@ -265,13 +271,14 @@ interface ProtocolInterface
     /**
      * Move multiple messages to the target folder.
      *
-     * @param  array<string>  $messages  List of message identifiers
-     * @param  string  $folder  Destination folder
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
-     * @return Response Tokens if operation successful, false if an error occurred
+     * @param array<string> $messages List of message identifiers
+     * @param string        $folder   Destination folder
+     * @param int|string    $uid      set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                                message numbers instead.
      *
      * @throws RuntimeException
+     *
+     * @return Response Tokens if operation successful, false if an error occurred
      */
     public function moveManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response;
 
@@ -279,7 +286,7 @@ interface ProtocolInterface
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     * @param  null  $ids
+     * @param null $ids
      *
      * @throws RuntimeException
      */
@@ -288,7 +295,7 @@ interface ProtocolInterface
     /**
      * Create a new folder.
      *
-     * @param  string  $folder  folder name
+     * @param string $folder folder name
      *
      * @throws RuntimeException
      */
@@ -297,8 +304,8 @@ interface ProtocolInterface
     /**
      * Rename an existing folder.
      *
-     * @param  string  $old  old name
-     * @param  string  $new  new name
+     * @param string $old old name
+     * @param string $new new name
      *
      * @throws RuntimeException
      */
@@ -307,7 +314,7 @@ interface ProtocolInterface
     /**
      * Delete a folder.
      *
-     * @param  string  $folder  folder name
+     * @param string $folder folder name
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -318,7 +325,7 @@ interface ProtocolInterface
     /**
      * Subscribe to a folder.
      *
-     * @param  string  $folder  folder name
+     * @param string $folder folder name
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -329,7 +336,7 @@ interface ProtocolInterface
     /**
      * Unsubscribe from a folder.
      *
-     * @param  string  $folder  folder name
+     * @param string $folder folder name
      *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
@@ -390,20 +397,21 @@ interface ProtocolInterface
     /**
      * Do a search request.
      *
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
-     * @return Response containing the message ids
+     * @param int|string $uid set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                        message numbers instead.
      *
      * @throws RuntimeException
+     *
+     * @return Response containing the message ids
      */
     public function search(array $params, int|string $uid = IMAP::ST_UID): Response;
 
     /**
      * Get a message overview.
      *
-     * @param  string  $sequence  uid sequence
-     * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
-     *                           message numbers instead.
+     * @param string     $sequence uid sequence
+     * @param int|string $uid      set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
+     *                             message numbers instead.
      *
      * @throws RuntimeException
      * @throws MessageNotFoundException

@@ -76,7 +76,7 @@ class Query
     /**
      * Query constructor.
      *
-     * @param  string[]  $extensions
+     * @param string[] $extensions
      */
     public function __construct(Client $client, array $extensions = [])
     {
@@ -97,7 +97,7 @@ class Query
         $this->soft_fail = ClientManager::get('options.soft_fail', false);
 
         $this->setExtensions($extensions);
-        $this->query = new Collection;
+        $this->query = new Collection();
         $this->boot();
     }
 
@@ -135,7 +135,7 @@ class Query
         try {
             $date = Carbon::parse($date);
         } catch (Exception) {
-            throw new MessageSearchValidationException;
+            throw new MessageSearchValidationException();
         }
 
         return $date;
@@ -238,10 +238,10 @@ class Query
         }
 
         return [
-            'uids' => $uids,
-            'flags' => $flags,
-            'headers' => $headers,
-            'contents' => $contents,
+            'uids'       => $uids,
+            'flags'      => $flags,
+            'headers'    => $headers,
+            'contents'   => $contents,
             'extensions' => $extensions,
         ];
     }
@@ -279,9 +279,9 @@ class Query
     {
         $key = match ($message_key) {
             'number' => $message->getMessageNo(),
-            'list' => $msglist,
-            'uid' => $message->getUid(),
-            default => $message->getMessageId(),
+            'list'   => $msglist,
+            'uid'    => $message->getUid(),
+            default  => $message->getMessageId(),
         };
 
         return (string) $key;
@@ -403,9 +403,9 @@ class Query
     /**
      * Paginate the current query.
      *
-     * @param  int  $per_page  Results you which to receive per page
-     * @param  null  $page  The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
-     * @param  string  $page_name  The page name / uri parameter used for the generated links and the auto mode
+     * @param int    $per_page  Results you which to receive per page
+     * @param null   $page      The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
+     * @param string $page_name The page name / uri parameter used for the generated links and the auto mode
      *
      * @throws AuthFailedException
      * @throws GetMessagesFailedException
@@ -429,8 +429,8 @@ class Query
     /**
      * Get a new Message instance.
      *
-     * @param  null  $msglist
-     * @param  null  $sequence
+     * @param null $msglist
+     * @param null $sequence
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -452,7 +452,7 @@ class Query
     /**
      * Get a message by its message number.
      *
-     * @param  null  $msglist
+     * @param null $msglist
      *
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -510,7 +510,7 @@ class Query
         $connection = $this->getClient()->getConnection();
 
         $uids = $connection->getUid()->validatedData();
-        $available_messages = new Collection;
+        $available_messages = new Collection();
         if (is_array($uids)) {
             foreach ($uids as $id) {
                 if ($closure($id)) {
@@ -745,7 +745,7 @@ class Query
     /**
      * Set all extensions that should be used.
      *
-     * @param  string[]  $extensions
+     * @param string[] $extensions
      */
     public function setExtensions(array $extensions): Query
     {
@@ -977,6 +977,7 @@ class Query
     {
         if ($this->soft_fail === false && $this->hasError($uid)) {
             $error = $this->getError($uid);
+
             throw new GetMessagesFailedException($error->getMessage(), 0, $error);
         }
     }
