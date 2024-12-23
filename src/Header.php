@@ -673,6 +673,7 @@ class Header
             }
 
             $date = trim(rtrim($date));
+
             try {
                 if (str_contains($date, '&nbsp;')) {
                     $date = str_replace('&nbsp;', ' ', $date);
@@ -734,6 +735,7 @@ class Header
                         $date = trim(array_pop($array));
                         break;
                 }
+
                 try {
                     $parsed_date = Carbon::parse($date);
                 } catch (\Exception $_e) {

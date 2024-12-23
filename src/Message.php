@@ -546,6 +546,7 @@ class Message
         $this->flags = FlagCollection::make([]);
 
         $sequence_id = $this->getSequenceId();
+
         try {
             $flags = $this->client->getConnection()->flags([$sequence_id], $this->sequence)->validatedData();
         } catch (Exceptions\RuntimeException $e) {
@@ -577,6 +578,7 @@ class Message
         $this->client->openFolder($this->folder_path);
 
         $sequence_id = $this->getSequenceId();
+
         try {
             $contents = $this->client->getConnection()->content([$sequence_id], 'RFC822', $this->sequence)->validatedData();
         } catch (Exceptions\RuntimeException $e) {
@@ -1190,6 +1192,7 @@ class Message
         $this->client->openFolder($this->folder_path);
         $flag = '\\'.trim(is_array($flag) ? implode(' \\', $flag) : $flag);
         $sequence_id = $this->getSequenceId();
+
         try {
             $status = $this->client->getConnection()->store([$flag], $sequence_id, $sequence_id, '+', true, $this->sequence)->validatedData();
         } catch (Exceptions\RuntimeException $e) {
@@ -1222,6 +1225,7 @@ class Message
 
         $flag = '\\'.trim(is_array($flag) ? implode(' \\', $flag) : $flag);
         $sequence_id = $this->getSequenceId();
+
         try {
             $status = $this->client->getConnection()->store([$flag], $sequence_id, $sequence_id, '-', true, $this->sequence)->validatedData();
         } catch (Exceptions\RuntimeException $e) {

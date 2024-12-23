@@ -18,6 +18,4 @@ use Exception;
 /**
  * Class NotSupportedCapabilityException.
  */
-class NotSupportedCapabilityException extends Exception
-{
-}
+class NotSupportedCapabilityException extends Exception {}

@@ -78,6 +78,7 @@ class ImapProtocol extends Protocol
             }
         }
         $port = $port === null ? 143 : $port;
+
         try {
             $response = new Response(0, $this->debug);
             $this->stream = $this->createStream($transport, $host, $port, $this->connection_timeout);
@@ -538,6 +539,7 @@ class ImapProtocol extends Protocol
         }
 
         $result = null;
+
         try {
             $result = $this->requestAndResponse('LOGOUT', [], true);
             fclose($this->stream);
@@ -969,7 +971,13 @@ class ImapProtocol extends Protocol
      * @throws RuntimeException
      */
     public function store(
-        array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null
+        array|string $flags,
+        int $from,
+        ?int $to = null,
+        ?string $mode = null,
+        bool $silent = true,
+        int|string $uid = IMAP::ST_UID,
+        ?string $item = null
     ): Response {
         $flags = $this->escapeList(is_array($flags) ? $flags : [$flags]);
         $set = $this->buildSet($from, $to);

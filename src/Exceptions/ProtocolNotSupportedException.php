@@ -18,6 +18,4 @@ use Exception;
 /**
  * Class ProtocolNotSupportedException.
  */
-class ProtocolNotSupportedException extends Exception
-{
-}
+class ProtocolNotSupportedException extends Exception {}

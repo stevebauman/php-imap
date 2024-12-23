@@ -104,9 +104,7 @@ class Query
     /**
      * Instance boot method for additional functionality.
      */
-    protected function boot(): void
-    {
-    }
+    protected function boot(): void {}
 
     /**
      * Parse a given value.
@@ -977,6 +975,7 @@ class Query
     {
         if ($this->soft_fail === false && $this->hasError($uid)) {
             $error = $this->getError($uid);
+
             throw new GetMessagesFailedException($error->getMessage(), 0, $error);
         }
     }

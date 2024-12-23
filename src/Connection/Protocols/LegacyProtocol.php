@@ -90,12 +90,14 @@ class LegacyProtocol extends Protocol
             } catch (\ErrorException $e) {
                 $errors = \imap_errors();
                 $message = $e->getMessage().'. '.implode('; ', is_array($errors) ? $errors : []);
+
                 throw new AuthFailedException($message);
             }
 
             if (! $this->stream) {
                 $errors = \imap_errors();
                 $message = implode('; ', is_array($errors) ? $errors : []);
+
                 throw new AuthFailedException($message);
             }
 
@@ -106,6 +108,7 @@ class LegacyProtocol extends Protocol
                 $response->stack($status);
                 if ($status->data()['exists'] !== 0) {
                     $message = implode('; ', $errors);
+
                     throw new RuntimeException($message);
                 }
             }
@@ -538,6 +541,7 @@ class LegacyProtocol extends Protocol
                     'TAG'.$response->Noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
                 ];
             }
+
             throw new ImapBadRequestException("Invalid ID $from");
         });
     }
@@ -588,6 +592,7 @@ class LegacyProtocol extends Protocol
                     'TAG'.$response->Noun()." OK Move completed (0.001 + 0.000 secs).\r\n",
                 ];
             }
+
             throw new ImapBadRequestException("Invalid ID $from");
         });
     }

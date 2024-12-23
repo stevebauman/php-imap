@@ -18,6 +18,4 @@ use Exception;
 /**
  * Class AuthFailedException.
  */
-class AuthFailedException extends Exception
-{
-}
+class AuthFailedException extends Exception {}
