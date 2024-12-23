@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MaskNotFoundException.
  */
-class MaskNotFoundException extends Exception {}
+class MaskNotFoundException extends Exception
+{
+}

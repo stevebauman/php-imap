@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class GetMessagesFailedException.
  */
-class ImapBadRequestException extends Exception {}
+class ImapBadRequestException extends Exception
+{
+}

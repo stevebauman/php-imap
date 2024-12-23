@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MessageFlagException.
  */
-class MessageFlagException extends Exception {}
+class MessageFlagException extends Exception
+{
+}

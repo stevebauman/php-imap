@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class GetMessagesFailedException.
  */
-class GetMessagesFailedException extends Exception {}
+class GetMessagesFailedException extends Exception
+{
+}
