@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue355Test.php
 * Category: -
@@ -17,7 +18,7 @@ use Webklex\PHPIMAP\Message;
 
 class Issue275Test extends TestCase
 {
-    public function testIssueEmail1()
+    public function test_issue_email1()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-275.eml']);
         $message = Message::fromFile($filename);
@@ -26,7 +27,7 @@ class Issue275Test extends TestCase
         self::assertSame('Asdf testing123 this is a body', $message->getTextBody());
     }
 
-    public function testIssueEmail2()
+    public function test_issue_email2()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-275-2.eml']);
         $message = Message::fromFile($filename);

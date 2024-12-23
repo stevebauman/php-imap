@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     EventNotFoundException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class EventNotFoundException.
  */
-class EventNotFoundException extends Exception
-{
-}
+class EventNotFoundException extends Exception {}

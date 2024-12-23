@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue410Test.php
 * Category: -
@@ -17,7 +18,7 @@ use Webklex\PHPIMAP\Message;
 
 class Issue410Test extends TestCase
 {
-    public function testIssueEmail()
+    public function test_issue_email()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-410.eml']);
         $message = Message::fromFile($filename);
@@ -33,7 +34,7 @@ class Issue410Test extends TestCase
         self::assertSame('☆第132号　「ガーデン&エクステリア」専門店のためのＱ&Ａサロン　【月刊エクステリア・ワーク】', $attachment->name);
     }
 
-    public function testIssueEmailB()
+    public function test_issue_email_b()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-410b.eml']);
         $message = Message::fromFile($filename);

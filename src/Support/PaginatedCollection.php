@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     PaginatedCollection.php
 * Category: Collection
@@ -29,7 +30,7 @@ class PaginatedCollection extends Collection
     /**
      * Paginate the current collection.
      */
-    public function paginate(int $per_page = 15, int $page = null, string $page_name = 'page', bool $prepaginated = false): LengthAwarePaginator
+    public function paginate(int $per_page = 15, ?int $page = null, string $page_name = 'page', bool $prepaginated = false): LengthAwarePaginator
     {
         $page = $page ?: Paginator::resolveCurrentPage($page_name);
 

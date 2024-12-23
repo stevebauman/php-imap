@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MessageMask.php
 * Category: Mask
@@ -45,7 +46,7 @@ class MessageMask extends Mask
     /**
      * Get the Message html body filtered by an optional callback.
      */
-    public function getCustomHTMLBody(callable $callback = null): ?string
+    public function getCustomHTMLBody(?callable $callback = null): ?string
     {
         $body = $this->getHtmlBody();
         if ($body === null) {

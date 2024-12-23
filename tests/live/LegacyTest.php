@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: LegacyTest.php
 * Category: Test
@@ -49,7 +50,7 @@ class LegacyTest extends TestCase
     /**
      * Create a new LegacyTest instance.
      */
-    public function __construct(string $name = null, array $data = [], int|string $dataName = '')
+    public function __construct(?string $name = null, array $data = [], int|string $dataName = '')
     {
         if (! getenv('LIVE_MAILBOX') ?? false) {
             $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
@@ -92,7 +93,7 @@ class LegacyTest extends TestCase
      * @throws AuthFailedException
      * @throws MessageHeaderFetchingException
      */
-    public function testSizes(): void
+    public function test_sizes(): void
     {
         $delimiter = ClientManager::get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
@@ -123,7 +124,7 @@ class LegacyTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQuery(): void
+    public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);
@@ -230,7 +231,7 @@ class LegacyTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function deleteFolder(Folder $folder = null): bool
+    final protected function deleteFolder(?Folder $folder = null): bool
     {
         $response = $folder?->delete(false);
         if (is_array($response)) {
@@ -272,7 +273,7 @@ class LegacyTest extends TestCase
      * @throws InvalidWhereQueryCriteriaException
      * @throws MessageSearchValidationException
      */
-    public function testQueryWhere(): void
+    public function test_query_where(): void
     {
         $delimiter = ClientManager::get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'search']);
@@ -360,7 +361,7 @@ class LegacyTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testQueryWhereCriteria(): void
+    public function test_query_where_criteria(): void
     {
         self::$client->reconnect();
 
@@ -418,7 +419,7 @@ class LegacyTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string $value = null, bool $date = false): void
+    protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
         self::assertInstanceOf(WhereQuery::class, $query);

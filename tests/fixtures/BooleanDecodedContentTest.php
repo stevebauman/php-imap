@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: BooleanDecodedContentTest.php
 * Category: -
@@ -22,7 +23,7 @@ class BooleanDecodedContentTest extends FixtureTestCase
     /**
      * Test the fixture boolean_decoded_content.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('boolean_decoded_content.eml');
 

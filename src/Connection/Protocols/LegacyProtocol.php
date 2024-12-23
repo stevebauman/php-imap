@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: LegacyProtocol.php
 * Category: Protocol
@@ -53,7 +54,7 @@ class LegacyProtocol extends Protocol
     /**
      * Save the information for a nw connection.
      */
-    public function connect(string $host, int $port = null)
+    public function connect(string $host, ?int $port = null)
     {
         if ($this->encryption) {
             $encryption = strtolower($this->encryption);
@@ -185,7 +186,7 @@ class LegacyProtocol extends Protocol
      */
     public function getCapabilities(): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -254,7 +255,7 @@ class LegacyProtocol extends Protocol
      */
     public function folderStatus(string $folder = 'INBOX', $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -362,7 +363,7 @@ class LegacyProtocol extends Protocol
      * @param  int|null  $id  message number
      * @return Response message number for given message or all messages as array
      */
-    public function getUid(int $id = null): Response
+    public function getUid(?int $id = null): Response
     {
         return $this->response()->wrap(function ($response) use ($id) {
             /** @var Response $response */
@@ -461,7 +462,7 @@ class LegacyProtocol extends Protocol
      * @param  string|null  $item  unused attribute
      * @return Response new flags if $silent is false, else true or false depending on success
      */
-    public function store(array|string $flags, int $from, int $to = null, string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, string $item = null): Response
+    public function store(array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null): Response
     {
         $flag = trim(is_array($flags) ? implode(' ', $flags) : $flags);
 
@@ -497,7 +498,7 @@ class LegacyProtocol extends Protocol
      * @param  array|null  $flags  flags for new message
      * @param  mixed  $date  date for new message
      */
-    public function appendMessage(string $folder, string $message, array $flags = null, mixed $date = null): Response
+    public function appendMessage(string $folder, string $message, ?array $flags = null, mixed $date = null): Response
     {
         return $this->response('imap_append')->wrap(function ($response) use ($folder, $message, $flags, $date) {
             /** @var Response $response */
@@ -528,7 +529,7 @@ class LegacyProtocol extends Protocol
      *                        last message, INF means last message available
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      */
-    public function copyMessage(string $folder, $from, int $to = null, int|string $uid = IMAP::ST_UID): Response
+    public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
     {
         return $this->response('imap_mail_copy')->wrap(function ($response) use ($from, $folder, $uid) {
             /** @var Response $response */
@@ -579,7 +580,7 @@ class LegacyProtocol extends Protocol
      * @param  int|string  $uid  set to IMAP::ST_UID if you pass message unique identifiers instead of numbers.
      * @return Response success
      */
-    public function moveMessage(string $folder, $from, int $to = null, int|string $uid = IMAP::ST_UID): Response
+    public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
     {
         return $this->response('imap_mail_move')->wrap(function ($response) use ($from, $folder, $uid) {
             if (\imap_mail_move($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
@@ -631,7 +632,7 @@ class LegacyProtocol extends Protocol
      */
     public function ID($ids = null): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -686,7 +687,7 @@ class LegacyProtocol extends Protocol
      */
     public function subscribeFolder(string $folder): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -698,7 +699,7 @@ class LegacyProtocol extends Protocol
      */
     public function unsubscribeFolder(string $folder): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -720,7 +721,7 @@ class LegacyProtocol extends Protocol
      */
     public function noop(): Response
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -730,7 +731,7 @@ class LegacyProtocol extends Protocol
      */
     public function idle()
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**
@@ -740,7 +741,7 @@ class LegacyProtocol extends Protocol
      */
     public function done()
     {
-        throw new MethodNotSupportedException();
+        throw new MethodNotSupportedException;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MultipleNestedAttachmentsTest.php
 * Category: -
@@ -23,7 +24,7 @@ class MultipleNestedAttachmentsTest extends FixtureTestCase
     /**
      * Test the fixture multiple_nested_attachments.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('multiple_nested_attachments.eml');
 

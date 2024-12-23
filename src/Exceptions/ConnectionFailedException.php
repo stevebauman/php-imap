@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ConnectionFailedException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class ConnectionFailedException.
  */
-class ConnectionFailedException extends Exception
-{
-}
+class ConnectionFailedException extends Exception {}

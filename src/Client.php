@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     Client.php
 * Category: -
@@ -40,8 +41,6 @@ class Client
 
     /**
      * Connection resource.
-     *
-     * @var ?ProtocolInterface
      */
     public ?ProtocolInterface $connection = null;
 
@@ -103,15 +102,11 @@ class Client
 
     /**
      * Account authentication method.
-     *
-     * @var ?string
      */
     public ?string $authentication;
 
     /**
      * Active folder path.
-     *
-     * @var ?string
      */
     protected ?string $active_folder = null;
 
@@ -177,7 +172,7 @@ class Client
      */
     public function clone(): Client
     {
-        $client = new self();
+        $client = new self;
         $client->events = $this->events;
         $client->timeout = $this->timeout;
         $client->active_folder = $this->active_folder;
@@ -448,10 +443,10 @@ class Client
     {
         if ($this->authentication == 'oauth') {
             if (! $this->connection->authenticate($this->username, $this->password)->validatedData()) {
-                throw new AuthFailedException();
+                throw new AuthFailedException;
             }
         } elseif (! $this->connection->login($this->username, $this->password)->validatedData()) {
-            throw new AuthFailedException();
+            throw new AuthFailedException;
         }
     }
 
@@ -486,7 +481,7 @@ class Client
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function getFolder(string $folder_name, string $delimiter = null, bool $utf7 = false): ?Folder
+    public function getFolder(string $folder_name, ?string $delimiter = null, bool $utf7 = false): ?Folder
     {
         // Set delimiter to false to force selection via getFolderByName (maybe useful for uncommon folder names)
         $delimiter = is_null($delimiter) ? ClientManager::get('options.delimiter', '/') : $delimiter;
@@ -552,7 +547,7 @@ class Client
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function getFolders(bool $hierarchical = true, string $parent_folder = null, bool $soft_fail = false): FolderCollection
+    public function getFolders(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
         $this->checkConnection();
         $folders = FolderCollection::make([]);
@@ -596,7 +591,7 @@ class Client
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function getFoldersWithStatus(bool $hierarchical = true, string $parent_folder = null, bool $soft_fail = false): FolderCollection
+    public function getFoldersWithStatus(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
         $this->checkConnection();
         $folders = FolderCollection::make([]);
@@ -652,7 +647,7 @@ class Client
     /**
      * Set active folder.
      */
-    public function setActiveFolder(string $folder_path = null): void
+    public function setActiveFolder(?string $folder_path = null): void
     {
         $this->active_folder = $folder_path;
     }
@@ -771,7 +766,7 @@ class Client
      * @throws RuntimeException
      * @throws ResponseException
      */
-    public function Id(array $ids = null): array
+    public function Id(?array $ids = null): array
     {
         $this->checkConnection();
 

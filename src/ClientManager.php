@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ClientManager.php
 * Category: -
@@ -112,7 +113,7 @@ class ClientManager
      *
      * @throws Exceptions\MaskNotFoundException
      */
-    public function account(string $name = null): Client
+    public function account(?string $name = null): Client
     {
         $name = $name ?: $this->getDefaultAccount();
 

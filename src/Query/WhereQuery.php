@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     Query.php
 * Category: -
@@ -167,7 +168,7 @@ class WhereQuery extends Query
     /**
      * @return $this
      */
-    public function orWhere(Closure $closure = null): WhereQuery
+    public function orWhere(?Closure $closure = null): WhereQuery
     {
         $this->query->push(['OR']);
         if ($closure !== null) {
@@ -180,7 +181,7 @@ class WhereQuery extends Query
     /**
      * @return $this
      */
-    public function andWhere(Closure $closure = null): WhereQuery
+    public function andWhere(?Closure $closure = null): WhereQuery
     {
         $this->query->push(['AND']);
         if ($closure !== null) {
@@ -487,7 +488,7 @@ class WhereQuery extends Query
      *
      * @return $this|null
      */
-    public function when(mixed $value, callable $callback, callable $default = null): mixed
+    public function when(mixed $value, callable $callback, ?callable $default = null): mixed
     {
         if ($value) {
             return $callback($this, $value) ?: $this;
@@ -504,7 +505,7 @@ class WhereQuery extends Query
      *
      * @return $this|mixed
      */
-    public function unless(mixed $value, callable $callback, callable $default = null): mixed
+    public function unless(mixed $value, callable $callback, ?callable $default = null): mixed
     {
         if (! $value) {
             return $callback($this, $value) ?: $this;

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue355Test.php
 * Category: -
@@ -40,7 +41,7 @@ class Issue383Test extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testIssue(): void
+    public function test_issue(): void
     {
         $client = $this->getClient();
         $client->connect();

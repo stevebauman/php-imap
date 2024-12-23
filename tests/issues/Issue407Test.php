@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue407Test.php
 * Category: Test
@@ -36,7 +37,7 @@ class Issue407Test extends LiveMailboxTestCase
      * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
      * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
      */
-    public function testIssue()
+    public function test_issue()
     {
         $folder = $this->getFolder('INBOX');
         self::assertInstanceOf(Folder::class, $folder);

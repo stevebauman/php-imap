@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MethodNotSupportedException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class MethodNotSupportedException.
  */
-class MethodNotSupportedException extends Exception
-{
-}
+class MethodNotSupportedException extends Exception {}

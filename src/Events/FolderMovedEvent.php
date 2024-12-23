@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FolderMovedEvent.php
 * Category: Event

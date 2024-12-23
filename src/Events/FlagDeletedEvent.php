@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FlagDeletedEvent.php
 * Category: Event
@@ -15,6 +16,4 @@ namespace Webklex\PHPIMAP\Events;
 /**
  * Class FlagDeletedEvent.
  */
-class FlagDeletedEvent extends FlagNewEvent
-{
-}
+class FlagDeletedEvent extends FlagNewEvent {}

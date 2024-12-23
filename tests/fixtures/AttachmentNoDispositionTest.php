@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AttachmentNoDispositionTest.php
 * Category: -
@@ -22,7 +23,7 @@ class AttachmentNoDispositionTest extends FixtureTestCase
     /**
      * Test the fixture attachment_no_disposition.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('attachment_no_disposition.eml');
 

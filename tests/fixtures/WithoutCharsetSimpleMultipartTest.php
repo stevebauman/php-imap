@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: WithoutCharsetSimpleMultipartTest.php
 * Category: -
@@ -20,7 +21,7 @@ class WithoutCharsetSimpleMultipartTest extends FixtureTestCase
     /**
      * Test the fixture without_charset_simple_multipart.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('without_charset_simple_multipart.eml');
 

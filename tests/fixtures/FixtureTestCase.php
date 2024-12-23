@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: FixtureTestCase.php
 * Category: -
@@ -39,7 +40,7 @@ abstract class FixtureTestCase extends TestCase
     /**
      * FixtureTestCase constructor.
      */
-    final public function __construct(string $name = null, array $data = [], $dataName = '')
+    final public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ImapServerErrorException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class GetMessagesFailedException.
  */
-class ImapServerErrorException extends Exception
-{
-}
+class ImapServerErrorException extends Exception {}

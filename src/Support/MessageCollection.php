@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageCollection.php
 * Category: Collection
@@ -20,6 +21,4 @@ use Webklex\PHPIMAP\Message;
  *
  * @implements Collection<int, Message>
  */
-class MessageCollection extends PaginatedCollection
-{
-}
+class MessageCollection extends PaginatedCollection {}

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MixedFilenameTest.php
 * Category: -
@@ -22,7 +23,7 @@ class MixedFilenameTest extends FixtureTestCase
     /**
      * Test the fixture mixed_filename.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('mixed_filename.eml');
 

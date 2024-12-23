@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     InvalidMessageDateException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class InvalidMessageDateException.
  */
-class InvalidMessageDateException extends Exception
-{
-}
+class InvalidMessageDateException extends Exception {}

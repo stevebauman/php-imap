@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageCopiedEvent.php
 * Category: Event
@@ -15,6 +16,4 @@ namespace Webklex\PHPIMAP\Events;
 /**
  * Class MessageCopiedEvent.
  */
-class MessageCopiedEvent extends MessageMovedEvent
-{
-}
+class MessageCopiedEvent extends MessageMovedEvent {}

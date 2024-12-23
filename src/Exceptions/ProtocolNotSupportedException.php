@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ProtocolNotSupportedException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class ProtocolNotSupportedException.
  */
-class ProtocolNotSupportedException extends Exception
-{
-}
+class ProtocolNotSupportedException extends Exception {}

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: EmailAddressTest.php
 * Category: -
@@ -20,7 +21,7 @@ class EmailAddressTest extends FixtureTestCase
     /**
      * Test the fixture email_address.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('email_address.eml');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MissingFromTest.php
 * Category: -
@@ -20,7 +21,7 @@ class MissingFromTest extends FixtureTestCase
     /**
      * Test the fixture missing_from.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('missing_from.eml');
 

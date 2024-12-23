@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     InvalidWhereQueryCriteriaException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class InvalidWhereQueryCriteriaException.
  */
-class InvalidWhereQueryCriteriaException extends Exception
-{
-}
+class InvalidWhereQueryCriteriaException extends Exception {}

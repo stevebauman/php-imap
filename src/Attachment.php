@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     Attachment.php
 * Category: -
@@ -256,7 +257,7 @@ class Attachment
     /**
      * Save the attachment content to your filesystem.
      */
-    public function save(string $path, string $filename = null): bool
+    public function save(string $path, ?string $filename = null): bool
     {
         $filename = $filename ? $this->decodeName($filename) : $this->filename;
 
@@ -301,7 +302,7 @@ class Attachment
      */
     public function getMimeType(): ?string
     {
-        return (new \finfo())->buffer($this->getContent(), FILEINFO_MIME_TYPE);
+        return (new \finfo)->buffer($this->getContent(), FILEINFO_MIME_TYPE);
     }
 
     /**
@@ -376,7 +377,7 @@ class Attachment
      *
      * @throws MaskNotFoundException
      */
-    public function mask(string $mask = null): mixed
+    public function mask(?string $mask = null): mixed
     {
         $mask = $mask !== null ? $mask : $this->mask;
         if (class_exists($mask)) {

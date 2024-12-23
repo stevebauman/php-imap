@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue410Test.php
 * Category: -
@@ -17,7 +18,7 @@ use Webklex\PHPIMAP\Message;
 
 class Issue414Test extends TestCase
 {
-    public function testIssueEmail()
+    public function test_issue_email()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-414.eml']);
         $message = Message::fromFile($filename);

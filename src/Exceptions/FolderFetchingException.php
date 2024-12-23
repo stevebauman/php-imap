@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FolderFetchingException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class FolderFetchingException.
  */
-class FolderFetchingException extends Exception
-{
-}
+class FolderFetchingException extends Exception {}

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     MessageHeaderFetchingException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class MessageHeaderFetchingException.
  */
-class MessageHeaderFetchingException extends Exception
-{
-}
+class MessageHeaderFetchingException extends Exception {}

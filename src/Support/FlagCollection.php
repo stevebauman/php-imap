@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FlagCollection.php
 * Category: Collection
@@ -19,6 +20,4 @@ use Illuminate\Support\Collection;
  *
  * @implements Collection<string, string>
  */
-class FlagCollection extends PaginatedCollection
-{
-}
+class FlagCollection extends PaginatedCollection {}

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     AuthFailedException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class AuthFailedException.
  */
-class AuthFailedException extends Exception
-{
-}
+class AuthFailedException extends Exception {}

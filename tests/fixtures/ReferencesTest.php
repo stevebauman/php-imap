@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ReferencesTest.php
 * Category: -
@@ -20,7 +21,7 @@ class ReferencesTest extends FixtureTestCase
     /**
      * Test the fixture references.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('references.eml');
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     ResponseException.php
 * Category: Exception
@@ -25,7 +26,7 @@ class ResponseException extends Exception
      *
      * @param  false|bool  $debug
      */
-    public static function make(Response $response, bool $debug = false, Exception $exception = null): ResponseException
+    public static function make(Response $response, bool $debug = false, ?Exception $exception = null): ResponseException
     {
         $message = "Command failed to process:\n";
         $message .= "Causes:\n";

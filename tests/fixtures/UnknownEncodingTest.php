@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: UnknownEncodingTest.php
 * Category: -
@@ -20,7 +21,7 @@ class UnknownEncodingTest extends FixtureTestCase
     /**
      * Test the fixture unknown_encoding.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('unknown_encoding.eml');
 

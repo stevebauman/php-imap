@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: DateTemplateTest.php
 * Category: -
@@ -66,7 +67,7 @@ class DateTemplateTest extends FixtureTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         try {
             $message = $this->getFixture('date-template.eml');

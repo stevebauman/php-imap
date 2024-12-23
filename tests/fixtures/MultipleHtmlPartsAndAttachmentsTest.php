@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MultipleHtmlPartsAndAttachmentsTest.php
 * Category: -
@@ -23,7 +24,7 @@ class MultipleHtmlPartsAndAttachmentsTest extends FixtureTestCase
     /**
      * Test the fixture multiple_html_parts_and_attachments.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('multiple_html_parts_and_attachments.eml');
 

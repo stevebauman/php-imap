@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     RuntimeException.php
 * Category: Exception
@@ -17,6 +18,4 @@ use Exception;
 /**
  * Class NotSupportedCapabilityException.
  */
-class NotSupportedCapabilityException extends Exception
-{
-}
+class NotSupportedCapabilityException extends Exception {}

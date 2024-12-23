@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: MessageTest.php
 * Category: -
@@ -93,7 +94,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws MessageNotFoundException
      */
-    public function testConvertEncoding(): void
+    public function test_convert_encoding(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('Entwürfe+', $message->convertEncoding('Entw&APw-rfe+', 'UTF7-IMAP', 'UTF-8'));
@@ -122,7 +123,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws GetMessagesFailedException
      */
-    public function testThread(): void
+    public function test_thread(): void
     {
         $client = $this->getClient();
 
@@ -176,7 +177,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasAttachments(): void
+    public function test_has_attachments(): void
     {
         $message = $this->getDefaultMessage();
         self::assertFalse($message->hasAttachments());
@@ -212,7 +213,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchOptions(): void
+    public function test_get_fetch_options(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals(IMAP::FT_PEEK, $message->getFetchOptions());
@@ -240,7 +241,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMessageId(): void
+    public function test_get_message_id(): void
     {
         $folder = $this->getFolder('INBOX');
         $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
@@ -271,7 +272,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetReplyTo(): void
+    public function test_get_reply_to(): void
     {
         $folder = $this->getFolder('INBOX');
         $message = $this->appendMessageTemplate($folder, 'example_attachment.eml');
@@ -304,7 +305,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetSequence(): void
+    public function test_set_sequence(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
@@ -338,7 +339,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetEvent(): void
+    public function test_get_event(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -395,7 +396,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFlag(): void
+    public function test_set_flag(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -425,7 +426,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMsgn(): void
+    public function test_get_msgn(): void
     {
         $client = $this->getClient();
 
@@ -467,7 +468,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testPeek(): void
+    public function test_peek(): void
     {
         $message = $this->getDefaultMessage();
         self::assertFalse($message->getFlags()->has('seen'));
@@ -503,7 +504,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testUnsetFlag(): void
+    public function test_unset_flag(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -538,7 +539,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetSequenceId(): void
+    public function test_set_sequence_id(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
@@ -576,7 +577,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetTo(): void
+    public function test_get_to(): void
     {
         $message = $this->getDefaultMessage();
         $folder = $message->getFolder();
@@ -615,7 +616,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetUid(): void
+    public function test_set_uid(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
@@ -650,7 +651,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetUid(): void
+    public function test_get_uid(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
@@ -686,7 +687,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasTextBody(): void
+    public function test_has_text_body(): void
     {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->hasTextBody());
@@ -744,7 +745,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetDate(): void
+    public function test_get_date(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Carbon::class, $message->getDate()->toDate());
@@ -772,7 +773,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMask(): void
+    public function test_set_mask(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals(MessageMask::class, $message->getMask());
@@ -806,7 +807,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSequenceId(): void
+    public function test_get_sequence_id(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals($message->uid, $message->getSequenceId());
@@ -844,7 +845,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetConfig(): void
+    public function test_set_config(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -879,7 +880,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetEvents(): void
+    public function test_get_events(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -909,7 +910,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchOption(): void
+    public function test_set_fetch_option(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -949,7 +950,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMsglist(): void
+    public function test_get_msglist(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -978,7 +979,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testDecodeString(): void
+    public function test_decode_string(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1008,7 +1009,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAttachments(): void
+    public function test_attachments(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -1039,7 +1040,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetMask(): void
+    public function test_get_mask(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals(MessageMask::class, $message->getMask());
@@ -1073,7 +1074,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testHasHTMLBody(): void
+    public function test_has_html_body(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -1109,7 +1110,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetEvents(): void
+    public function test_set_events(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1174,7 +1175,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetHTMLBody(): void
+    public function test_get_html_body(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -1212,7 +1213,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSequence(): void
+    public function test_get_sequence(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals(IMAP::ST_UID, $message->getSequence());
@@ -1248,7 +1249,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testRestore(): void
+    public function test_restore(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1281,7 +1282,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetPriority(): void
+    public function test_get_priority(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -1311,7 +1312,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetAttachments(): void
+    public function test_set_attachments(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1342,7 +1343,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFrom(): void
+    public function test_get_from(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('from@someone.com', $message->getFrom()->first()->mail);
@@ -1370,7 +1371,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetEvent(): void
+    public function test_set_event(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1400,7 +1401,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetInReplyTo(): void
+    public function test_get_in_reply_to(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('', $message->getInReplyTo());
@@ -1436,7 +1437,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testCopy(): void
+    public function test_copy(): void
     {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
@@ -1480,7 +1481,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetBodies(): void
+    public function test_get_bodies(): void
     {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getBodies());
@@ -1509,7 +1510,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFlags(): void
+    public function test_get_flags(): void
     {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getFlags()->all());
@@ -1543,7 +1544,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testAddFlag(): void
+    public function test_add_flag(): void
     {
         $message = $this->getDefaultMessage();
         self::assertFalse($message->hasFlag('seen'));
@@ -1574,7 +1575,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSubject(): void
+    public function test_get_subject(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('Example', $message->getSubject());
@@ -1602,7 +1603,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetClient(): void
+    public function test_get_client(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Client::class, $message->getClient());
@@ -1630,7 +1631,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchFlagsOption(): void
+    public function test_set_fetch_flags_option(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1661,7 +1662,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMask(): void
+    public function test_mask(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(MessageMask::class, $message->mask());
@@ -1689,7 +1690,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMsglist(): void
+    public function test_set_msglist(): void
     {
         $message = $this->getDefaultMessage();
         $message->setMsglist('foo');
@@ -1718,7 +1719,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testFlags(): void
+    public function test_flags(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(FlagCollection::class, $message->flags());
@@ -1746,7 +1747,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetAttributes(): void
+    public function test_get_attributes(): void
     {
         $message = $this->getDefaultMessage();
         self::assertIsArray($message->getAttributes());
@@ -1775,7 +1776,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetAttachments(): void
+    public function test_get_attachments(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(AttachmentCollection::class, $message->getAttachments());
@@ -1803,7 +1804,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetRawBody(): void
+    public function test_get_raw_body(): void
     {
         $message = $this->getDefaultMessage();
         self::assertIsString($message->getRawBody());
@@ -1831,7 +1832,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testIs(): void
+    public function test_is(): void
     {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->is($message));
@@ -1859,10 +1860,10 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFlags(): void
+    public function test_set_flags(): void
     {
         $message = $this->getDefaultMessage();
-        $message->setFlags(new FlagCollection());
+        $message->setFlags(new FlagCollection);
         self::assertFalse($message->hasFlag('recent'));
 
         // Cleanup
@@ -1887,7 +1888,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws ReflectionException
      */
-    public function testMake(): void
+    public function test_make(): void
     {
         $folder = $this->getFolder('INBOX');
         $folder->getClient()->openFolder($folder->path);
@@ -1923,7 +1924,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetAvailableFlags(): void
+    public function test_set_available_flags(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -1954,7 +1955,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSender(): void
+    public function test_get_sender(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -1982,7 +1983,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testFromFile(): void
+    public function test_from_file(): void
     {
         $this->getManager();
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']);
@@ -2009,7 +2010,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetStructure(): void
+    public function test_get_structure(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Structure::class, $message->getStructure());
@@ -2038,7 +2039,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws MessageSizeFetchingException
      */
-    public function testGet(): void
+    public function test_get(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('Example', $message->get('subject'));
@@ -2066,7 +2067,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetSize(): void
+    public function test_get_size(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals(214, $message->getSize());
@@ -2094,7 +2095,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetHeader(): void
+    public function test_get_header(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Header::class, $message->getHeader());
@@ -2122,7 +2123,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetReferences(): void
+    public function test_get_references(): void
     {
         $folder = $this->getFolder('INBOX');
 
@@ -2153,7 +2154,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFolderPath(): void
+    public function test_set_folder_path(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -2187,7 +2188,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetTextBody(): void
+    public function test_get_text_body(): void
     {
         $message = $this->getDefaultMessage();
         self::assertIsString($message->getTextBody());
@@ -2215,7 +2216,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testMove(): void
+    public function test_move(): void
     {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
@@ -2258,7 +2259,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolderPath(): void
+    public function test_get_folder_path(): void
     {
         $message = $this->getDefaultMessage();
         self::assertEquals('INBOX', $message->getFolderPath());
@@ -2286,7 +2287,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolder(): void
+    public function test_get_folder(): void
     {
         $message = $this->getDefaultMessage();
         self::assertInstanceOf(Folder::class, $message->getFolder());
@@ -2314,7 +2315,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchBodyOption(): void
+    public function test_get_fetch_body_option(): void
     {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->getFetchBodyOption());
@@ -2342,7 +2343,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetFetchBodyOption(): void
+    public function test_set_fetch_body_option(): void
     {
         $message = $this->getDefaultMessage();
 
@@ -2372,7 +2373,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFetchFlagsOption(): void
+    public function test_get_fetch_flags_option(): void
     {
         $message = $this->getDefaultMessage();
         self::assertTrue($message->getFetchFlagsOption());
@@ -2428,7 +2429,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetClient(): void
+    public function test_set_client(): void
     {
         $message = $this->getDefaultMessage();
         $client = $message->getClient();
@@ -2463,7 +2464,7 @@ class MessageTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testSetMsgn(): void
+    public function test_set_msgn(): void
     {
         $message = $this->getDefaultMessage();
 

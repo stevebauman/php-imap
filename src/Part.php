@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Part.php
 * Category: -
@@ -36,8 +37,6 @@ class Part
 
     /**
      * Part subtype.
-     *
-     * @var ?string
      */
     public ?string $subtype = null;
 
@@ -58,8 +57,6 @@ class Part
 
     /**
      * Indicates if the part is an attachment.
-     *
-     * @var ?string
      */
     public ?string $disposition = null;
 
@@ -70,29 +67,21 @@ class Part
 
     /**
      * Part description if available.
-     *
-     * @var ?string
      */
     public ?string $description = null;
 
     /**
      * Part filename if available.
-     *
-     * @var ?string
      */
     public ?string $filename = null;
 
     /**
      * Part name if available.
-     *
-     * @var ?string
      */
     public ?string $name = null;
 
     /**
      * Part id if available.
-     *
-     * @var ?string
      */
     public ?string $id = null;
 
@@ -111,9 +100,6 @@ class Part
      */
     public ?string $content_type = null;
 
-    /**
-     * @var ?Header
-     */
     private ?Header $header;
 
     /**
@@ -122,7 +108,7 @@ class Part
      *
      * @throws InvalidMessageDateException
      */
-    public function __construct($raw_part, Header $header = null, int $part_number = 0)
+    public function __construct($raw_part, ?Header $header = null, int $part_number = 0)
     {
         $this->raw = $raw_part;
         $this->header = $header;
@@ -196,8 +182,6 @@ class Part
 
     /**
      * Try to parse the subtype if any is present.
-     *
-     * @return ?string
      */
     private function parseSubtype($content_type): ?string
     {

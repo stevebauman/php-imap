@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: Issue355Test.php
 * Category: -
@@ -49,7 +50,7 @@ class Issue379Test extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testIssue(): void
+    public function test_issue(): void
     {
         $folder = $this->getFolder('INBOX');
 

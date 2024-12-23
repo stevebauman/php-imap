@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ClientTest.php
 * Category: -
@@ -44,7 +45,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws MaskNotFoundException
      */
-    public function testConnect(): void
+    public function test_connect(): void
     {
         self::assertNotNull($this->getClient()->connect());
     }
@@ -61,7 +62,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testIsConnected(): void
+    public function test_is_connected(): void
     {
         $client = $this->getClient()->connect();
 
@@ -80,7 +81,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testDisconnect(): void
+    public function test_disconnect(): void
     {
         $client = $this->getClient()->connect();
 
@@ -100,7 +101,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws RuntimeException
      * @throws FolderFetchingException
      */
-    public function testGetFolder(): void
+    public function test_get_folder(): void
     {
         $client = $this->getClient()->connect();
 
@@ -121,7 +122,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolderByName(): void
+    public function test_get_folder_by_name(): void
     {
         $client = $this->getClient()->connect();
 
@@ -142,7 +143,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolderByPath(): void
+    public function test_get_folder_by_path(): void
     {
         $client = $this->getClient()->connect();
 
@@ -163,7 +164,7 @@ class ClientTest extends LiveMailboxTestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function testGetFolders(): void
+    public function test_get_folders(): void
     {
         $client = $this->getClient()->connect();
 
@@ -171,7 +172,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue($folders->count() > 0);
     }
 
-    public function testGetFoldersWithStatus(): void
+    public function test_get_folders_with_status(): void
     {
         $client = $this->getClient()->connect();
 
@@ -179,7 +180,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue($folders->count() > 0);
     }
 
-    public function testOpenFolder(): void
+    public function test_open_folder(): void
     {
         $client = $this->getClient()->connect();
 
@@ -191,7 +192,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue(($status['exists'] ?? -1) >= 0);
     }
 
-    public function testCreateFolder(): void
+    public function test_create_folder(): void
     {
         $client = $this->getClient()->connect();
 
@@ -220,7 +221,7 @@ class ClientTest extends LiveMailboxTestCase
         }
     }
 
-    public function testCheckFolder(): void
+    public function test_check_folder(): void
     {
         $client = $this->getClient()->connect();
 
@@ -232,7 +233,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue(($status['exists'] ?? -1) >= 0);
     }
 
-    public function testGetFolderPath(): void
+    public function test_get_folder_path(): void
     {
         $client = $this->getClient()->connect();
 
@@ -240,7 +241,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertEquals('INBOX', $client->getFolderPath());
     }
 
-    public function testId(): void
+    public function test_id(): void
     {
         $client = $this->getClient()->connect();
 
@@ -256,7 +257,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue($valid);
     }
 
-    public function testGetQuotaRoot(): void
+    public function test_get_quota_root(): void
     {
         if (! getenv('LIVE_MAILBOX_QUOTA_SUPPORT')) {
             $this->markTestSkipped('Quota support is not enabled');
@@ -274,7 +275,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue($quota[1][2][2] > 0);
     }
 
-    public function testSetTimeout(): void
+    public function test_set_timeout(): void
     {
         $client = $this->getClient()->connect();
 
@@ -282,7 +283,7 @@ class ClientTest extends LiveMailboxTestCase
         self::assertEquals(57, $client->getTimeout());
     }
 
-    public function testExpunge(): void
+    public function test_expunge(): void
     {
         $client = $this->getClient()->connect();
 
@@ -294,21 +295,21 @@ class ClientTest extends LiveMailboxTestCase
         self::assertEquals('OK', $status[0][0]);
     }
 
-    public function testGetDefaultMessageMask(): void
+    public function test_get_default_message_mask(): void
     {
         $client = $this->getClient();
 
         self::assertEquals(MessageMask::class, $client->getDefaultMessageMask());
     }
 
-    public function testGetDefaultEvents(): void
+    public function test_get_default_events(): void
     {
         $client = $this->getClient();
 
         self::assertIsArray($client->getDefaultEvents('message'));
     }
 
-    public function testSetDefaultMessageMask(): void
+    public function test_set_default_message_mask(): void
     {
         $client = $this->getClient();
 
@@ -318,14 +319,14 @@ class ClientTest extends LiveMailboxTestCase
         $client->setDefaultMessageMask(MessageMask::class);
     }
 
-    public function testGetDefaultAttachmentMask(): void
+    public function test_get_default_attachment_mask(): void
     {
         $client = $this->getClient();
 
         self::assertEquals(AttachmentMask::class, $client->getDefaultAttachmentMask());
     }
 
-    public function testSetDefaultAttachmentMask(): void
+    public function test_set_default_attachment_mask(): void
     {
         $client = $this->getClient();
 

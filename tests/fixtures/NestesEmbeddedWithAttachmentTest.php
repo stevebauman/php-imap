@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: NestesEmbeddedWithAttachmentTest.php
 * Category: -
@@ -23,7 +24,7 @@ class NestesEmbeddedWithAttachmentTest extends FixtureTestCase
     /**
      * Test the fixture nestes_embedded_with_attachment.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('nestes_embedded_with_attachment.eml');
 

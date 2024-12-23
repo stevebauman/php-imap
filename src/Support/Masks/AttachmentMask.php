@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: AttachmentMask.php
 * Category: Mask

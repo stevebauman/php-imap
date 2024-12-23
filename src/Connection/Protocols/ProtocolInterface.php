@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: ImapProtocol.php
 * Category: Protocol
@@ -46,7 +47,7 @@ interface ProtocolInterface
      * @throws ConnectionFailedException
      * @throws RuntimeException
      */
-    public function connect(string $host, int $port = null);
+    public function connect(string $host, ?int $port = null);
 
     /**
      * Login to a new session.
@@ -171,7 +172,7 @@ interface ProtocolInterface
      *
      * @throws MessageNotFoundException
      */
-    public function getUid(int $id = null): Response;
+    public function getUid(?int $id = null): Response;
 
     /**
      * Get a message number for a uid.
@@ -210,7 +211,7 @@ interface ProtocolInterface
      *
      * @throws RuntimeException
      */
-    public function store(array|string $flags, int $from, int $to = null, string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, string $item = null): Response;
+    public function store(array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null): Response;
 
     /**
      * Append a new message to given folder.
@@ -222,7 +223,7 @@ interface ProtocolInterface
      *
      * @throws RuntimeException
      */
-    public function appendMessage(string $folder, string $message, array $flags = null, string $date = null): Response;
+    public function appendMessage(string $folder, string $message, ?array $flags = null, ?string $date = null): Response;
 
     /**
      * Copy message set from current folder to other folder.
@@ -235,7 +236,7 @@ interface ProtocolInterface
      *
      * @throws RuntimeException
      */
-    public function copyMessage(string $folder, $from, int $to = null, int|string $uid = IMAP::ST_UID): Response;
+    public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response;
 
     /**
      * Copy multiple messages to the target folder.
@@ -259,7 +260,7 @@ interface ProtocolInterface
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      */
-    public function moveMessage(string $folder, $from, int $to = null, int|string $uid = IMAP::ST_UID): Response;
+    public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response;
 
     /**
      * Move multiple messages to the target folder.

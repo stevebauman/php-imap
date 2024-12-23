@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: BccTest.php
 * Category: -
@@ -20,7 +21,7 @@ class BccTest extends FixtureTestCase
     /**
      * Test the fixture bcc.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('bcc.eml');
 

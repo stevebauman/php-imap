@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     EncodingAliases.php
 * Category: -
@@ -466,7 +467,7 @@ class EncodingAliases
     /**
      * Returns proper encoding mapping, if exists. If it doesn't, return unchanged $encoding.
      */
-    public static function get(?string $encoding, string $fallback = null): string
+    public static function get(?string $encoding, ?string $fallback = null): string
     {
         if (isset(self::$aliases[strtolower($encoding ?? '')])) {
             return self::$aliases[strtolower($encoding ?? '')];

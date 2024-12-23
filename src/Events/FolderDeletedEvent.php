@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File:     FolderDeletedEvent.php
 * Category: Event
@@ -15,6 +16,4 @@ namespace Webklex\PHPIMAP\Events;
 /**
  * Class FolderDeletedEvent.
  */
-class FolderDeletedEvent extends FolderNewEvent
-{
-}
+class FolderDeletedEvent extends FolderNewEvent {}

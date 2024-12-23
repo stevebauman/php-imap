@@ -1,4 +1,5 @@
 <?php
+
 /*
 * File: FourNestedEmailsTest.php
 * Category: -
@@ -22,7 +23,7 @@ class FourNestedEmailsTest extends FixtureTestCase
     /**
      * Test the fixture four_nested_emails.eml.
      */
-    public function testFixture(): void
+    public function test_fixture(): void
     {
         $message = $this->getFixture('four_nested_emails.eml');
 
