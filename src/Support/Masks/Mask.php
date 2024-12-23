@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File: Mask.php
-* Category: Mask
-* Author: M.Goldenbaum
-* Created: 14.03.19 20:49
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Support\Masks;
 
 use Illuminate\Support\Str;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
-/**
- * Class Mask.
- */
 class Mask
 {
     /**

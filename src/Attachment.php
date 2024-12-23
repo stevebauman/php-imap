@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File:     Attachment.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  16.03.18 19:37
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use Illuminate\Support\Str;
@@ -19,9 +8,6 @@ use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 
 /**
- * Class Attachment.
- *
- *
  * @property int part_number
  * @property int size
  * @property string content

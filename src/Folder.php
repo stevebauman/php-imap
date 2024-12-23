@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File:     Folder.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  19.01.17 22:21
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
@@ -30,9 +19,6 @@ use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
 use Webklex\PHPIMAP\Traits\HasEvents;
 
-/**
- * Class Folder.
- */
 class Folder
 {
     use HasEvents;

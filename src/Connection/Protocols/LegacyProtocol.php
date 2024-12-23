@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: LegacyProtocol.php
-* Category: Protocol
-* Author: M.Goldenbaum
-* Created: 16.09.20 18:27
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Webklex\PHPIMAP\ClientManager;
@@ -20,9 +9,6 @@ use Webklex\PHPIMAP\Exceptions\MethodNotSupportedException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\IMAP;
 
-/**
- * Class LegacyProtocol.
- */
 class LegacyProtocol extends Protocol
 {
     protected string $protocol = 'imap';

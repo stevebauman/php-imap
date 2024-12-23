@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File: Structure.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 17.09.20 20:38
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 
-/**
- * Class Structure.
- */
 class Structure
 {
     /**

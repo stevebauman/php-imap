@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File: MessageMask.php
-* Category: Mask
-* Author: M.Goldenbaum
-* Created: 14.03.19 20:49
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Support\Masks;
 
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Message;
 
-/**
- * Class MessageMask.
- */
 class MessageMask extends Mask
 {
     /** @var Message */

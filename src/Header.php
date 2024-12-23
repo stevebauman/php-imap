@@ -1,25 +1,11 @@
 <?php
 
-/*
-* File: Header.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 17.09.20 20:38
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
-/**
- * Class Header.
- */
 class Header
 {
     /**

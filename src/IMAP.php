@@ -1,23 +1,7 @@
 <?php
 
-/*
-* File: IMAP.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 14.03.19 18:22
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
-/**
- * Class IMAP.
- *
- * Independent imap const holder
- */
 class IMAP
 {
     /**

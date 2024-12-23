@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File:     Attribute.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  01.01.21 20:17
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use ArrayAccess;
 use Carbon\Carbon;
 
-/**
- * Class Attribute.
- */
 class Attribute implements ArrayAccess
 {
     protected string $name;

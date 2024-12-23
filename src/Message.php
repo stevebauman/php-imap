@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File:     Message.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  19.01.17 22:21
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
 use Illuminate\Support\Str;
@@ -40,9 +29,6 @@ use Webklex\PHPIMAP\Support\MessageCollection;
 use Webklex\PHPIMAP\Traits\HasEvents;
 
 /**
- * Class Message.
- *
- *
  * @property int msglist
  * @property int uid
  * @property int msgn

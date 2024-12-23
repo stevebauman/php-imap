@@ -1,21 +1,7 @@
 <?php
 
-/*
-* File:     Address.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  01.01.21 21:17
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP;
 
-/**
- * Class Address.
- */
 class Address
 {
     /**

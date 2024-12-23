@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File:     Query.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  21.07.18 18:54
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Query;
 
 use Carbon\Carbon;
@@ -38,9 +27,6 @@ use Webklex\PHPIMAP\IMAP;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Support\MessageCollection;
 
-/**
- * Class Query.
- */
 class Query
 {
     protected Collection $query;

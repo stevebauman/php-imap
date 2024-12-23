@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File:     Query.php
-* Category: -
-* Author:   M. Goldenbaum
-* Created:  21.07.18 18:54
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Query;
 
 use Closure;
@@ -20,9 +9,6 @@ use Webklex\PHPIMAP\Exceptions\MessageSearchValidationException;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
 /**
- * Class WhereQuery.
- *
- *
  * @method WhereQuery all()
  * @method WhereQuery answered()
  * @method WhereQuery deleted()

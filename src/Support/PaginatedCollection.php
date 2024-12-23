@@ -1,25 +1,11 @@
 <?php
 
-/*
-* File:     PaginatedCollection.php
-* Category: Collection
-* Author:   M. Goldenbaum
-* Created:  16.03.18 03:13
-* Updated:  -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Support;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
-/**
- * Class PaginatedCollection.
- */
 class PaginatedCollection extends Collection
 {
     /**

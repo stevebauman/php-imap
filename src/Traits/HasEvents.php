@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File: HasEvents.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 21.09.20 22:46
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Traits;
 
 use Webklex\PHPIMAP\Events\Event;
 use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
 
-/**
- * Trait HasEvents.
- */
 trait HasEvents
 {
     /**

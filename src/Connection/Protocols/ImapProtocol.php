@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: ImapProtocol.php
-* Category: Protocol
-* Author: M.Goldenbaum
-* Created: 16.09.20 18:27
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Exception;
@@ -26,9 +15,7 @@ use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
 
 /**
- * Class ImapProtocol.
- *
- * @reference https://www.rfc-editor.org/rfc/rfc2087.txt
+ * @see https://www.rfc-editor.org/rfc/rfc2087.txt
  */
 class ImapProtocol extends Protocol
 {

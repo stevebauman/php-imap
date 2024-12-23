@@ -1,22 +1,7 @@
 <?php
 
-/*
-* File:     EncodingAliases.php
-* Category: -
-* Author:   S. Todorov (https://github.com/todorowww)
-* Created:  23.04.18 14:16
-* Updated:  -
-*
-* Description:
-*  Contains email encoding aliases, thta can occur when fetching emails. These sometimes can break icvon()
-*  This file attempts to correct this by using a list of aliases and their mappings to supported iconv() encodings
-*/
-
 namespace Webklex\PHPIMAP;
 
-/**
- * Class EncodingAliases.
- */
 class EncodingAliases
 {
     /**

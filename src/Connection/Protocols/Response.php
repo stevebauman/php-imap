@@ -1,23 +1,9 @@
 <?php
 
-/*
-* File: Response.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 30.12.22 19:46
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 
-/**
- * Class Response.
- */
 class Response
 {
     /**

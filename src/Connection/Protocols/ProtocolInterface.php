@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: ImapProtocol.php
-* Category: Protocol
-* Author: M.Goldenbaum
-* Created: 16.09.20 18:27
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use ErrorException;
@@ -23,9 +12,6 @@ use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\IMAP;
 
-/**
- * Interface ProtocolInterface.
- */
 interface ProtocolInterface
 {
     /**

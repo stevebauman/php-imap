@@ -1,24 +1,10 @@
 <?php
 
-/*
-* File: ImapProtocol.php
-* Category: Protocol
-* Author: M.Goldenbaum
-* Created: 16.09.20 18:27
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\IMAP;
 
-/**
- * Class Protocol.
- */
 abstract class Protocol implements ProtocolInterface
 {
     /**
