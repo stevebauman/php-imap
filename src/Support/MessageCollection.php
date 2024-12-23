@@ -21,4 +21,6 @@ use Webklex\PHPIMAP\Message;
  *
  * @implements Collection<int, Message>
  */
-class MessageCollection extends PaginatedCollection {}
+class MessageCollection extends PaginatedCollection
+{
+}

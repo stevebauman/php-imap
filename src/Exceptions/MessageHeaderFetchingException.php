@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MessageHeaderFetchingException.
  */
-class MessageHeaderFetchingException extends Exception {}
+class MessageHeaderFetchingException extends Exception
+{
+}
