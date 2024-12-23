@@ -48,7 +48,9 @@ class Mask
     /**
      * Boot method made to be used by any custom mask.
      */
-    protected function boot(): void {}
+    protected function boot(): void
+    {
+    }
 
     /**
      * Call dynamic attribute setter and getter methods and inherit the parent calls.

@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MessageNotFoundException.
  */
-class MessageNotFoundException extends Exception {}
+class MessageNotFoundException extends Exception
+{
+}

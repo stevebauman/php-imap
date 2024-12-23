@@ -18,4 +18,6 @@ use Exception;
 /**
  * Class MessageSearchValidationException.
  */
-class MessageSearchValidationException extends Exception {}
+class MessageSearchValidationException extends Exception
+{
+}
