@@ -16,6 +16,4 @@ namespace Webklex\PHPIMAP\Events;
 /**
  * Class FlagDeletedEvent.
  */
-class FlagDeletedEvent extends FlagNewEvent
-{
-}
+class FlagDeletedEvent extends FlagNewEvent {}
