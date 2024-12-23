@@ -20,18 +20,19 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "ext-openssl": "*",
+        "ext-zip": "*",
         "ext-json": "*",
-        "ext-mbstring": "*",
         "ext-iconv": "*",
         "ext-libxml": "*",
-        "ext-zip": "*",
+        "ext-openssl": "*",
+        "ext-mbstring": "*",
         "ext-fileinfo": "*",
         "nesbot/carbon": "^2.62.1",
-        "symfony/http-foundation": ">=2.8.0",
-        "illuminate/pagination": ">=5.0.0"
+        "illuminate/pagination": "^5.0",
+        "symfony/http-foundation": "^2.8"
     },
     "require-dev": {
+        "laravel/pint": "^1.18",
         "phpunit/phpunit": "^9.5.10"
     },
     "suggest": {
