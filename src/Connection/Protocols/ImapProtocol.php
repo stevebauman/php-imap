@@ -88,10 +88,12 @@ class ImapProtocol extends Protocol
      * @throws ImapServerErrorException
      * @throws RuntimeException
      */
-    protected function enableStartTls()
+    protected function enableStartTls(): void
     {
         $response = $this->requestAndResponse('STARTTLS');
+
         $result = $response->successful() && stream_socket_enable_crypto($this->stream, true, $this->getCryptoMethod());
+
         if (! $result) {
             throw new ConnectionFailedException('failed to enable TLS');
         }
@@ -113,6 +115,7 @@ class ImapProtocol extends Protocol
         }
 
         $response->addResponse($line);
+
         if ($this->debug) {
             echo '<< '.$line;
         }
@@ -367,7 +370,6 @@ class ImapProtocol extends Protocol
     /**
      * Write data to the current stream.
      *
-     *
      * @throws RuntimeException
      */
     public function write(Response $response, string $data): void
@@ -398,7 +400,10 @@ class ImapProtocol extends Protocol
     public function requestAndResponse(string $command, array $tokens = [], bool $dontParse = false): Response
     {
         $response = $this->sendRequest($command, $tokens, $tag);
-        $response->setResult($this->readResponse($response, $tag, $dontParse));
+
+        $response->setResult(
+            $this->readResponse($response, $tag, $dontParse)
+        );
 
         return $response;
     }
@@ -419,7 +424,9 @@ class ImapProtocol extends Protocol
                 return '"'.str_replace(['\\', '"'], ['\\\\', '\\"'], $string).'"';
             }
         }
+
         $result = [];
+
         foreach (func_get_args() as $string) {
             $result[] = $this->escapeString($string);
         }
@@ -436,6 +443,7 @@ class ImapProtocol extends Protocol
     public function escapeList(array $list): string
     {
         $result = [];
+
         foreach ($list as $v) {
             if (! is_array($v)) {
                 $result[] = $v;
@@ -482,6 +490,7 @@ class ImapProtocol extends Protocol
     {
         try {
             $authenticateParams = ['XOAUTH2', base64_encode("user=$user\1auth=Bearer $token\1\1")];
+
             $response = $this->sendRequest('AUTHENTICATE', $authenticateParams);
 
             while (true) {
@@ -583,7 +592,7 @@ class ImapProtocol extends Protocol
         $result = [];
         $tokens = []; // define $tokens variable before first use
 
-        while (! $this->readLine($response, $tokens, $tag, false)) {
+        while (! $this->readLine($response, $tokens, $tag)) {
             if ($tokens[0] == 'FLAGS') {
                 array_shift($tokens);
                 $result['flags'] = $tokens;
@@ -1257,9 +1266,10 @@ class ImapProtocol extends Protocol
      *
      * @throws RuntimeException
      */
-    public function idle()
+    public function idle(): void
     {
         $response = $this->sendRequest('IDLE');
+
         if (! $this->assumedNextLine($response, '+ ')) {
             throw new RuntimeException('idle failed');
         }

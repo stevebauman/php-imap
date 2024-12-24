@@ -566,16 +566,23 @@ class Message
         $sequence_id = $this->getSequenceId();
 
         try {
-            $contents = $this->client->getConnection()->content([$sequence_id], 'RFC822', $this->sequence)->validatedData();
+            $contents = $this->client->getConnection()->content(
+                [$sequence_id],
+                'RFC822',
+                $this->sequence
+            )->validatedData();
         } catch (Exceptions\RuntimeException $e) {
-            throw new MessageContentFetchingException('failed to fetch content', 0);
+            throw new MessageContentFetchingException('failed to fetch content', 0, previous: $e);
         }
+
         if (! isset($contents[$sequence_id])) {
             throw new MessageContentFetchingException('no content found', 0);
         }
+
         $content = $contents[$sequence_id];
 
         $body = $this->parseRawBody($content);
+
         $this->peek();
 
         return $body;
@@ -595,7 +602,9 @@ class Message
     private function fetchSize(): void
     {
         $sequence_id = $this->getSequenceId();
+
         $sizes = $this->client->getConnection()->sizes([$sequence_id], $this->sequence)->validatedData();
+
         if (! isset($sizes[$sequence_id])) {
             throw new MessageSizeFetchingException('sizes did not set an array entry for the supplied sequence_id', 0);
         }

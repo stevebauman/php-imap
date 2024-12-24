@@ -239,7 +239,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Set the uid cache of current active folder.
      */
-    public function setUidCache(?array $uids)
+    public function setUidCache(?array $uids): void
     {
         if (is_null($uids)) {
             $this->uidCache = [];
@@ -250,6 +250,7 @@ abstract class Protocol implements ProtocolInterface
         $messageNumber = 1;
 
         $uid_cache = [];
+
         foreach ($uids as $uid) {
             $uid_cache[$messageNumber++] = (int) $uid;
         }

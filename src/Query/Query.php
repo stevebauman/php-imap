@@ -685,9 +685,9 @@ class Query
     /**
      * Set the fetch body flag.
      */
-    public function fetchBody(bool $fetch_body): Query
+    public function fetchBody(bool $fetchBody): Query
     {
-        return $this->setFetchBody($fetch_body);
+        return $this->setFetchBody($fetchBody);
     }
 
     /**

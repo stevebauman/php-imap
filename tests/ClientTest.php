@@ -295,7 +295,7 @@ class ClientTest extends TestCase
         self::assertSame(true, $config['validate_cert']);
     }
 
-    protected function createNewProtocolMockup()
+    protected function createNewProtocolMockup(): void
     {
         $this->protocol = $this->createMock(ImapProtocol::class);
 

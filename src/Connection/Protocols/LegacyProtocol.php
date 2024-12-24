@@ -41,15 +41,18 @@ class LegacyProtocol extends Protocol
     /**
      * Save the information for a nw connection.
      */
-    public function connect(string $host, ?int $port = null)
+    public function connect(string $host, ?int $port = null): void
     {
         if ($this->encryption) {
             $encryption = strtolower($this->encryption);
+
             if ($encryption == 'ssl') {
                 $port = $port === null ? 993 : $port;
             }
         }
+
         $port = $port === null ? 143 : $port;
+
         $this->host = $host;
         $this->port = $port;
     }
@@ -751,7 +754,7 @@ class LegacyProtocol extends Protocol
     /**
      * Enable the debug mode.
      */
-    public function enableDebug()
+    public function enableDebug(): void
     {
         $this->debug = true;
     }
@@ -759,7 +762,7 @@ class LegacyProtocol extends Protocol
     /**
      * Disable the debug mode.
      */
-    public function disableDebug()
+    public function disableDebug(): void
     {
         $this->debug = false;
     }
