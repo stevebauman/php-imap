@@ -17,40 +17,20 @@ use Carbon\Carbon;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
 use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageSearchValidationException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
-/**
- * Class QueryTest.
- */
 class QueryTest extends LiveMailboxTestCase
 {
     /**
      * Try to create a new query instance.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public function test_query(): void
     {
@@ -64,24 +44,6 @@ class QueryTest extends LiveMailboxTestCase
 
     /**
      * Try to create a new query instance with a where clause.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws GetMessagesFailedException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MessageSearchValidationException
      */
     public function test_query_where(): void
     {

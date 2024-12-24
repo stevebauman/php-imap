@@ -6,7 +6,9 @@ use Webklex\PHPIMAP\Attachment;
 
 class AttachmentMask extends Mask
 {
-    /** @var Attachment */
+    /**
+     * @var Attachment
+     */
     protected mixed $parent;
 
     /**

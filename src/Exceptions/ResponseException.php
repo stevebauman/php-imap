@@ -9,8 +9,6 @@ class ResponseException extends Exception
 {
     /**
      * Make a new ResponseException instance.
-     *
-     * @param  false|bool  $debug
      */
     public static function make(Response $response, bool $debug = false, ?Exception $exception = null): ResponseException
     {
@@ -42,7 +40,9 @@ class ResponseException extends Exception
     protected static function debug_message(Response $response): string
     {
         $commands = $response->getCommands();
+
         $message = "Commands send:\n";
+
         if ($commands) {
             foreach ($commands as $command) {
                 $message .= "\t".str_replace("\r\n", '\\r\\n', $command)."\n";
@@ -52,7 +52,9 @@ class ResponseException extends Exception
         }
 
         $responses = $response->getResponse();
+
         $message .= "Responses received:\n";
+
         if ($responses) {
             foreach ($responses as $_response) {
                 if (is_array($_response)) {

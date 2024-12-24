@@ -4,9 +4,9 @@ namespace Webklex\PHPIMAP\Query;
 
 use Closure;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
-use Webklex\PHPIMAP\Exceptions\MessageSearchValidationException;
-use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
 /**
  * @method WhereQuery all()
@@ -41,7 +41,13 @@ use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
  */
 class WhereQuery extends Query
 {
-    protected array $available_criteria = [
+    use Conditionable;
+    use ForwardsCalls;
+
+    /**
+     * All the available search criteria.
+     */
+    protected array $availableCriteria = [
         'OR', 'AND',
         'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
         'NEW', 'NOT', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
@@ -50,13 +56,8 @@ class WhereQuery extends Query
 
     /**
      * Magic method in order to allow alias usage of all "where" methods in an optional connection with "NOT".
-     *
-     * @return mixed
-     *
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MethodNotFoundException
      */
-    public function __call(string $name, ?array $arguments)
+    public function __call(string $name, ?array $arguments): mixed
     {
         $that = $this;
 
@@ -73,20 +74,13 @@ class WhereQuery extends Query
             $method = lcfirst($name);
         }
 
-        if (method_exists($this, $method) === true) {
-            return call_user_func_array([$that, $method], $arguments);
-        }
-
-        throw new MethodNotFoundException('Method '.self::class.'::'.$method.'() is not supported');
+        return $this->forwardCallTo($that, $method, $arguments);
     }
 
     /**
      * Validate a given criteria.
-     *
-     *
-     * @throws InvalidWhereQueryCriteriaException
      */
-    protected function validate_criteria($criteria): string
+    protected function validateCriteria($criteria): string
     {
         $command = strtoupper($criteria);
 
@@ -94,7 +88,7 @@ class WhereQuery extends Query
             return substr($criteria, 7);
         }
 
-        if (in_array($command, $this->available_criteria) === false) {
+        if (in_array($command, $this->availableCriteria) === false) {
             throw new InvalidWhereQueryCriteriaException("Invalid imap search criteria: $command");
         }
 
@@ -103,8 +97,6 @@ class WhereQuery extends Query
 
     /**
      * Register search parameters.
-     *
-     * @throws InvalidWhereQueryCriteriaException
      *
      * Examples:
      * $query->from("someone@email.tld")->seen();
@@ -125,7 +117,7 @@ class WhereQuery extends Query
                 }
             }
         } else {
-            $this->push_search_criteria($criteria, $value);
+            $this->pushSearchCriteria($criteria, $value);
         }
 
         return $this;
@@ -133,12 +125,10 @@ class WhereQuery extends Query
 
     /**
      * Push a given search criteria and value pair to the search query.
-     *
-     * @throws InvalidWhereQueryCriteriaException
      */
-    protected function push_search_criteria(string $criteria, mixed $value): void
+    protected function pushSearchCriteria(string $criteria, mixed $value): void
     {
-        $criteria = $this->validate_criteria($criteria);
+        $criteria = $this->validateCriteria($criteria);
         $value = $this->parse_value($value);
 
         if ($value === '') {
@@ -149,7 +139,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return $this
+     * Add an "OR" clause to the query.
      */
     public function orWhere(?Closure $closure = null): WhereQuery
     {
@@ -162,11 +152,12 @@ class WhereQuery extends Query
     }
 
     /**
-     * @return $this
+     * Add an "AND" clause to the query.
      */
     public function andWhere(?Closure $closure = null): WhereQuery
     {
         $this->query->push(['AND']);
+
         if ($closure !== null) {
             $closure($this);
         }
@@ -175,7 +166,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where all clause to the query.
      */
     public function whereAll(): WhereQuery
     {
@@ -183,7 +174,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where answered clause to the query.
      */
     public function whereAnswered(): WhereQuery
     {
@@ -191,7 +182,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where bcc clause to the query.
      */
     public function whereBcc(string $value): WhereQuery
     {
@@ -199,8 +190,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MessageSearchValidationException
+     * Add a where before clause to the query.
      */
     public function whereBefore(mixed $value): WhereQuery
     {
@@ -210,7 +200,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where body clause to the query.
      */
     public function whereBody(string $value): WhereQuery
     {
@@ -218,7 +208,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where cc clause to the query.
      */
     public function whereCc(string $value): WhereQuery
     {
@@ -226,7 +216,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where deleted clause to the query.
      */
     public function whereDeleted(): WhereQuery
     {
@@ -234,7 +224,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where flagged clause to the query.
      */
     public function whereFlagged(string $value): WhereQuery
     {
@@ -242,7 +232,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where from clause to the query.
      */
     public function whereFrom(string $value): WhereQuery
     {
@@ -250,7 +240,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where keyword clause to the query.
      */
     public function whereKeyword(string $value): WhereQuery
     {
@@ -258,7 +248,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where new clause to the query.
      */
     public function whereNew(): WhereQuery
     {
@@ -266,7 +256,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where not clause to the query.
      */
     public function whereNot(): WhereQuery
     {
@@ -274,7 +264,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where old clause to the query.
      */
     public function whereOld(): WhereQuery
     {
@@ -282,8 +272,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws MessageSearchValidationException
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where on clause to the query.
      */
     public function whereOn(mixed $value): WhereQuery
     {
@@ -293,7 +282,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where recent clause to the query.
      */
     public function whereRecent(): WhereQuery
     {
@@ -301,7 +290,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where seen clause to the query.
      */
     public function whereSeen(): WhereQuery
     {
@@ -309,8 +298,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws MessageSearchValidationException
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where since clause to the query.
      */
     public function whereSince(mixed $value): WhereQuery
     {
@@ -320,7 +308,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where subject clause to the query.
      */
     public function whereSubject(string $value): WhereQuery
     {
@@ -328,7 +316,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where text clause to the query.
      */
     public function whereText(string $value): WhereQuery
     {
@@ -336,7 +324,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where to clause to the query.
      */
     public function whereTo(string $value): WhereQuery
     {
@@ -344,7 +332,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where unkeyword clause to the query.
      */
     public function whereUnkeyword(string $value): WhereQuery
     {
@@ -352,7 +340,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where undeleted clause to the query.
      */
     public function whereUnanswered(): WhereQuery
     {
@@ -360,7 +348,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where undeleted clause to the query.
      */
     public function whereUndeleted(): WhereQuery
     {
@@ -368,7 +356,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where unflagged clause to the query.
      */
     public function whereUnflagged(): WhereQuery
     {
@@ -376,7 +364,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where unseen clause to the query.
      */
     public function whereUnseen(): WhereQuery
     {
@@ -384,7 +372,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where is not spam clause to the query.
      */
     public function whereNoXSpam(): WhereQuery
     {
@@ -392,7 +380,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where is spam clause to the query.
      */
     public function whereIsXSpam(): WhereQuery
     {
@@ -400,10 +388,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * Search for a specific header value.
-     *
-     *
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where header clause to the query.
      */
     public function whereHeader($header, $value): WhereQuery
     {
@@ -411,10 +396,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * Search for a specific message id.
-     *
-     *
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where message id clause to the query.
      */
     public function whereMessageId($messageId): WhereQuery
     {
@@ -422,10 +404,7 @@ class WhereQuery extends Query
     }
 
     /**
-     * Search for a specific message id.
-     *
-     *
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where in reply to clause to the query.
      */
     public function whereInReplyTo($messageId): WhereQuery
     {
@@ -433,18 +412,15 @@ class WhereQuery extends Query
     }
 
     /**
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where language clause to the query.
      */
-    public function whereLanguage($country_code): WhereQuery
+    public function whereLanguage($countryCode): WhereQuery
     {
-        return $this->where("Content-Language $country_code");
+        return $this->where("Content-Language $countryCode");
     }
 
     /**
-     * Get message be it UID.
-     *
-     *
-     * @throws InvalidWhereQueryCriteriaException
+     * Add a where UID clause to the query.
      */
     public function whereUid(int|string $uid): WhereQuery
     {
@@ -455,48 +431,10 @@ class WhereQuery extends Query
      * Get messages by their UIDs.
      *
      * @param  array<int, int>  $uids
-     *
-     * @throws InvalidWhereQueryCriteriaException
      */
     public function whereUidIn(array $uids): WhereQuery
     {
-        $uids = implode(',', $uids);
-
-        return $this->where('UID', $uids);
-    }
-
-    /**
-     * Apply the callback if the given "value" is truthy.
-     * copied from @url https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Traits/Conditionable.php.
-     *
-     * @return $this|null
-     */
-    public function when(mixed $value, callable $callback, ?callable $default = null): mixed
-    {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Apply the callback if the given "value" is falsy.
-     * copied from @url https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Traits/Conditionable.php.
-     *
-     * @return $this|mixed
-     */
-    public function unless(mixed $value, callable $callback, ?callable $default = null): mixed
-    {
-        if (! $value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
-
-        return $this;
+        return $this->where('UID', implode(',', $uids));
     }
 
     /**
@@ -506,6 +444,6 @@ class WhereQuery extends Query
      */
     public function getAvailableCriteria(): array
     {
-        return $this->available_criteria;
+        return $this->availableCriteria;
     }
 }

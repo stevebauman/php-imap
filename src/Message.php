@@ -1217,6 +1217,7 @@ class Message
         } catch (Exceptions\RuntimeException $e) {
             throw new MessageFlagException('flag could not be removed', 0, $e);
         }
+
         $this->parseFlags();
 
         $event = $this->getEvent('flag', 'deleted');

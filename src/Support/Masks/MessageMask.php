@@ -44,8 +44,7 @@ class MessageMask extends Mask
         if ($callback !== null) {
             $aAttachment = $this->parent->getAttachments();
 
-            $aAttachment->each(function ($oAttachment) use (&$body, $callback) {
-                /** @var Attachment $oAttachment */
+            $aAttachment->each(function (Attachment $oAttachment) use (&$body, $callback) {
                 if (is_callable($callback)) {
                     $body = $callback($body, $oAttachment);
                 } elseif (is_string($callback)) {
@@ -62,8 +61,7 @@ class MessageMask extends Mask
      */
     public function getHTMLBodyWithEmbeddedBase64Images(): ?string
     {
-        return $this->getCustomHTMLBody(function ($body, $oAttachment) {
-            /** @var Attachment $oAttachment */
+        return $this->getCustomHTMLBody(function (string $body, Attachment $oAttachment) {
             if ($oAttachment->id) {
                 $body = str_replace('cid:'.$oAttachment->id, 'data:'.$oAttachment->getContentType().';base64, '.base64_encode($oAttachment->getContent()), $body);
             }

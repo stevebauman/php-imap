@@ -2,19 +2,33 @@
 
 namespace Webklex\PHPIMAP;
 
-class Address
+use Stringable;
+
+class Address implements Stringable
 {
     /**
-     * Address attributes.
+     * The address personal.
      */
     public string $personal = '';
 
+    /**
+     * The address mailbox.
+     */
     public string $mailbox = '';
 
+    /**
+     * The address host.
+     */
     public string $host = '';
 
+    /**
+     * The address mail.
+     */
     public string $mail = '';
 
+    /**
+     * The full address.
+     */
     public string $full = '';
 
     /**
@@ -40,21 +54,9 @@ class Address
     }
 
     /**
-     * Return the stringified address.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->full ?: '';
-    }
-
-    /**
      * Return the serialized address.
-     *
-     * @return array
      */
-    public function __serialize()
+    public function __serialize(): array
     {
         return [
             'personal' => $this->personal,
@@ -66,7 +68,7 @@ class Address
     }
 
     /**
-     * Convert instance to array.
+     * Transform the instance to an array.
      */
     public function toArray(): array
     {
@@ -74,10 +76,18 @@ class Address
     }
 
     /**
-     * Return the stringified attribute.
+     * Transform the instance to a string.
      */
     public function toString(): string
     {
         return $this->__toString();
+    }
+
+    /**
+     * Transform the instance to a string.
+     */
+    public function __toString(): string
+    {
+        return $this->full ?: '';
     }
 }

@@ -39,13 +39,11 @@ class PaginatedCollection extends Collection
     }
 
     /**
-     * Get and set the total amount.
-     *
-     * @param  null  $total
+     * Get or set the total amount.
      */
-    public function total($total = null): ?int
+    public function total(?int $total = null): ?int
     {
-        if ($total === null) {
+        if (is_null($total)) {
             return $this->total;
         }
 

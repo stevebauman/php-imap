@@ -6,16 +6,18 @@ use Webklex\PHPIMAP\Message;
 
 class FlagNewEvent extends Event
 {
+    /**
+     * The message instance.
+     */
     public Message $message;
 
+    /**
+     * The flag that was set.
+     */
     public string $flag;
 
     /**
-     * Create a new event instance.
-     *
-     * @var array
-     *
-     * @return void
+     * Constructor.
      */
     public function __construct(array $arguments)
     {
