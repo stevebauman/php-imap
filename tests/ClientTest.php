@@ -305,7 +305,7 @@ class ClientTest extends TestCase
         $this->protocol
             ->expects($this->any())
             ->method('createStream')
-            //->will($this->onConsecutiveCalls(true));
+            // ->will($this->onConsecutiveCalls(true));
             ->willReturn(true);
 
         $this->client->connection = $this->protocol;
