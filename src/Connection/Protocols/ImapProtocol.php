@@ -306,9 +306,9 @@ class ImapProtocol extends Protocol
         $original = is_array($original) ? $original : [$original];
 
         // Last line has response code.
-        if (head($tokens) == 'OK') {
+        if ($tokens[0] == 'OK') {
             return $lines ?: [true];
-        } elseif ($tokens[0] == 'NO' || $tokens[0] == 'BAD' || $tokens[0] == 'BYE') {
+        } elseif (in_array($tokens[0], ['NO', 'BAD', 'BYE'])) {
             throw ImapServerErrorException::fromResponseTokens($original);
         }
 
