@@ -382,6 +382,7 @@ class Client
     public function connect(): Client
     {
         $this->disconnect();
+
         $protocol = strtolower($this->protocol);
 
         if (in_array($protocol, ['imap', 'imap4', 'imap4rev1'])) {
@@ -390,12 +391,15 @@ class Client
             $this->connection->setProxy($this->proxy);
         } else {
             if (extension_loaded('imap') === false) {
-                throw new ConnectionFailedException('connection setup failed', 0, new ProtocolNotSupportedException($protocol.' is an unsupported protocol'));
+                throw new ConnectionFailedException('Connection setup failed', 0, new ProtocolNotSupportedException($protocol.' is an unsupported protocol'));
             }
+
             $this->connection = new LegacyProtocol($this->validate_cert, $this->encryption);
+
             if (str_starts_with($protocol, 'legacy-')) {
                 $protocol = substr($protocol, 7);
             }
+
             $this->connection->setProtocol($protocol);
         }
 
@@ -412,6 +416,7 @@ class Client
         } catch (ErrorException|RuntimeException $e) {
             throw new ConnectionFailedException('connection setup failed', 0, $e);
         }
+
         $this->authenticate();
 
         return $this;
