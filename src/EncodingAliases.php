@@ -390,7 +390,7 @@ class EncodingAliases
         'iso-ir-157' => 'ISO-8859-10',
         'l6' => 'ISO-8859-10',
         // Currently .properties cannot handle : in key",
-        //iso_8859-10:1992" => "ISO-8859-10",
+        // iso_8859-10:1992" => "ISO-8859-10",
         'csisolatin6' => 'ISO-8859-10',
         //
         // Aliases for ISO-8859-15",
