@@ -111,7 +111,7 @@ interface ProtocolInterface
     public function folderStatus(string $folder = 'INBOX', array $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response;
 
     /**
-     * Fetch message headers.
+     * Fetch message content.
      *
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
