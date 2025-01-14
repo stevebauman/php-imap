@@ -3,7 +3,6 @@
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Exceptions\NotSupportedCapabilityException;
 use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
@@ -107,15 +106,15 @@ class Folder
      */
     public function query(array $extensions = []): WhereQuery
     {
-        $this->getClient()->checkConnection();
+        $this->client->checkConnection();
 
-        $this->getClient()->openFolder($this->path);
+        $this->client->openFolder($this->path);
 
         $extensions = count($extensions) > 0
             ? $extensions
-            : $this->getClient()->extensions;
+            : $this->client->extensions;
 
-        return new WhereQuery($this->getClient(), $extensions);
+        return new WhereQuery($this->client, $extensions);
     }
 
     /**
@@ -325,57 +324,26 @@ class Folder
 
         $this->client->setTimeout($timeout);
 
-        $idleClient = $this->client->clone();
-
-        $idleClient->connect();
-        $idleClient->openFolder($this->path, true);
-        $idleClient->getConnection()->idle();
-
-        $lastAction = Carbon::now()->addSeconds($timeout);
-
-        $sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
-
-        while (true) {
-            // This polymorphic call is fine - Protocol::idle() will throw an exception beforehand
-            $line = $idleClient->getConnection()->nextLine(Response::empty());
-
-            if (($pos = strpos($line, 'EXISTS')) !== false) {
-                $msgn = (int) substr($line, 2, $pos - 2);
-
-                // Check if the stream is still alive or should be considered stale
-                if (! $this->client->isConnected() || $lastAction->isBefore(Carbon::now())) {
-                    // Reset the connection before interacting with it. Otherwise, the resource might be stale which
-                    // would result in a stuck interaction. If you know of a way of detecting a stale resource, please
-                    // feel free to improve this logic. I tried a lot but nothing seem to work reliably...
-                    // Things that didn't work:
-                    //      - Closing the resource with fclose()
-                    //      - Verifying the resource with stream_get_meta_data()
-                    //      - Bool validating the resource stream (e.g.: (bool)$stream)
-                    //      - Sending a NOOP command
-                    //      - Sending a null package
-                    //      - Reading a null package
-                    //      - Catching the fs warning
-
-                    // This polymorphic call is fine - Protocol::idle() will throw an exception beforehand
-                    $this->client->getConnection()->reset();
-
-                    // Establish a new connection
-                    $this->client->connect();
-                }
-
-                $lastAction = Carbon::now()->addSeconds($timeout);
-
-                // Always reopen the folder - otherwise the new message number isn't known to the current remote session
-                $this->client->openFolder($this->path, true);
-
-                $message = $this->query()->getMessageByMsgn($msgn);
-                $message->setSequence($sequence);
-                $callback($message);
-
-                $event = $this->getEvent('message', 'new');
-                $event::dispatch($message);
+        (new Idle($this))->await(function (int $msgn, int $sequence, Carbon $timeout) use ($callback) {
+            // Reconnect the main client if the connection is lost or considered stale.
+            if (! $this->client->isConnected() || $timeout->isBefore(Carbon::now())) {
+                $this->client->getConnection()->reset();
+                $this->client->connect();
             }
-        }
+
+            // Always reopen the folder on the main client. Otherwise, the new
+            // message number isn't known to the current remote session.
+            $this->client->openFolder($this->path, true);
+
+            $message = $this->query()->getMessageByMsgn($msgn);
+
+            $message->setSequence($sequence);
+
+            $callback($message);
+
+            $event = $this->getEvent('message', 'new');
+            $event::dispatch($message);
+        });
     }
 
     /**
