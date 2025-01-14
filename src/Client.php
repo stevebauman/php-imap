@@ -205,6 +205,7 @@ class Client
         } elseif (isset($default_config[$key])) {
             $value = $default_config[$key];
         }
+
         $this->$key = $value;
     }
 
@@ -240,7 +241,6 @@ class Client
 
     /**
      * Look for a possible mask in any available config.
-     *
      *
      * @throws MaskNotFoundException
      */
@@ -410,6 +410,7 @@ class Client
         if ($this->isConnected()) {
             $this->connection->logout();
         }
+
         $this->active_folder = null;
 
         return $this;
@@ -437,7 +438,9 @@ class Client
      */
     public function getFolderByName($folder_name, bool $soft_fail = false): ?Folder
     {
-        return $this->getFolders(false, null, $soft_fail)->where('name', $folder_name)->first();
+        return $this->getFolders(false, null, $soft_fail)
+            ->where('name', $folder_name)
+            ->first();
     }
 
     /**
@@ -451,7 +454,9 @@ class Client
             $folder_path = EncodingAliases::convert($folder_path, 'utf-8', 'utf7-imap');
         }
 
-        return $this->getFolders(false, null, $soft_fail)->where('path', $folder_path)->first();
+        return $this->getFolders(false, null, $soft_fail)
+            ->where('path', $folder_path)
+            ->first();
     }
 
     /**
@@ -484,7 +489,7 @@ class Client
 
             return $folders;
         } elseif (! $soft_fail) {
-            throw new FolderFetchingException('failed to fetch any folders');
+            throw new FolderFetchingException('Failed to fetch any folders');
         }
 
         return $folders;
@@ -521,7 +526,7 @@ class Client
 
             return $folders;
         } elseif (! $soft_fail) {
-            throw new FolderFetchingException('failed to fetch any folders');
+            throw new FolderFetchingException('Failed to fetch any folders');
         }
 
         return $folders;
