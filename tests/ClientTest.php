@@ -38,7 +38,6 @@ class ClientTest extends TestCase
     /**
      * Setup the test environment.
      *
-     *
      * @throws MaskNotFoundException
      */
     protected function setUp(): void
