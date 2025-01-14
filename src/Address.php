@@ -39,15 +39,19 @@ class Address implements Stringable
         if (property_exists($object, 'personal')) {
             $this->personal = $object->personal ?? '';
         }
+
         if (property_exists($object, 'mailbox')) {
             $this->mailbox = $object->mailbox ?? '';
         }
+
         if (property_exists($object, 'host')) {
             $this->host = $object->host ?? '';
         }
+
         if (property_exists($object, 'mail')) {
             $this->mail = $object->mail ?? '';
         }
+
         if (property_exists($object, 'full')) {
             $this->full = $object->full ?? '';
         }
