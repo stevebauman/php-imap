@@ -322,9 +322,7 @@ class Folder
             throw new NotSupportedCapabilityException('IMAP server does not support IDLE');
         }
 
-        $this->client->setTimeout($timeout);
-
-        (new Idle($this))->await(function (int $msgn, int $sequence, Carbon $timeout) use ($callback) {
+        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence, Carbon $timeout) use ($callback) {
             // Reconnect the main client if the connection is lost or considered stale.
             if (! $this->client->isConnected() || $timeout->isBefore(Carbon::now())) {
                 $this->client->getConnection()->reset();

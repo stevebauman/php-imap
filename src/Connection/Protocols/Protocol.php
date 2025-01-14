@@ -40,6 +40,11 @@ abstract class Protocol implements ProtocolInterface
     protected int $connectionTimeout = 30;
 
     /**
+     * Default stream timeout in seconds.
+     */
+    protected int $streamTimeout = 60;
+
+    /**
      * Whether certificate validation is enabled.
      */
     protected bool $certValidation = true;
@@ -139,6 +144,7 @@ abstract class Protocol implements ProtocolInterface
     private function defaultSocketOptions(string $transport): array
     {
         $options = [];
+
         if ($this->encryption) {
             $options['ssl'] = [
                 'verify_peer_name' => $this->getCertValidation(),
@@ -167,19 +173,18 @@ abstract class Protocol implements ProtocolInterface
      *
      * @param  string  $host  hostname or IP address of IMAP server
      * @param  int  $port  of IMAP server, default is 143 (993 for ssl)
-     * @param  int  $timeout  timeout in seconds for initiating session
+     * @param  int  $connectionTimeout  timeout in seconds for initiating session
      * @return resource The socket created.
      *
      * @throws ConnectionFailedException
      */
-    public function createStream($transport, string $host, int $port, int $timeout)
+    public function createStream(string $transport, string $host, int $port, int $connectionTimeout, int $streamTimeout): mixed
     {
-        $socket = "$transport://$host:$port";
         $stream = stream_socket_client(
-            $socket,
+            "$transport://$host:$port",
             $errno,
             $errstr,
-            $timeout,
+            $connectionTimeout,
             STREAM_CLIENT_CONNECT,
             stream_context_create($this->defaultSocketOptions($transport))
         );
@@ -188,7 +193,7 @@ abstract class Protocol implements ProtocolInterface
             throw new ConnectionFailedException($errstr, $errno);
         }
 
-        if (stream_set_timeout($stream, $timeout) === false) {
+        if (stream_set_timeout($stream, $streamTimeout) === false) {
             throw new ConnectionFailedException('Failed to set stream timeout');
         }
 
@@ -214,6 +219,24 @@ abstract class Protocol implements ProtocolInterface
     }
 
     /**
+     * Get the current stream timeout.
+     */
+    public function getStreamTimeout(): int
+    {
+        return $this->streamTimeout;
+    }
+
+    /**
+     * Set the stream timeout.
+     */
+    public function setStreamTimeout(int $streamTimeout): Protocol
+    {
+        $this->streamTimeout = $streamTimeout;
+
+        return $this;
+    }
+
+    /**
      * Get the UID key string.
      */
     public function getUIDKey(int|string $uid): string
@@ -221,6 +244,7 @@ abstract class Protocol implements ProtocolInterface
         if ($uid == IMAP::ST_UID || $uid == IMAP::FT_UID) {
             return 'UID';
         }
+
         if (strlen($uid) > 0 && ! is_numeric($uid)) {
             return (string) $uid;
         }

@@ -70,7 +70,13 @@ class ImapProtocol extends Protocol
         try {
             $response = new Response(0, $this->debug);
 
-            $this->stream = $this->createStream($transport, $host, $port, $this->connectionTimeout);
+            $this->stream = $this->createStream(
+                $transport,
+                $host,
+                $port,
+                $this->connectionTimeout,
+                $this->streamTimeout,
+            );
 
             if (! $this->stream || ! $this->assumedNextLine($response, '* OK')) {
                 throw new ConnectionFailedException('Connection refused');
@@ -205,6 +211,7 @@ class ImapProtocol extends Protocol
                     while (strlen($token) < $chars) {
                         $token .= $this->nextLine($response);
                     }
+
                     $line = '';
 
                     if (strlen($token) > $chars) {

@@ -20,6 +20,7 @@ class Idle
      */
     public function __construct(
         protected Folder $folder,
+        protected int $timeout,
     ) {
         $this->client = $folder->getClient()->clone();
     }
@@ -29,19 +30,21 @@ class Idle
      */
     public function await(callable $callback): void
     {
+        $this->client->getConnection()->setStreamTimeout($this->timeout);
+
         $this->connect();
 
-        $timeout = $this->getNextTimeout();
+        $ttl = $this->getNextTimeout();
 
         $sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
 
         while (true) {
             try {
-                $line = $this->client->getConnection()->nextLine(Response::empty());
+                $line = $this->getNextLine();
             } catch (ConnectionTimedOutException|ConnectionClosedException) {
                 $this->reconnect();
 
-                $timeout = $this->getNextTimeout();
+                $ttl = $this->getNextTimeout();
 
                 continue;
             }
@@ -49,12 +52,12 @@ class Idle
             if (($pos = strpos($line, 'EXISTS')) !== false) {
                 $msgn = (int) substr($line, 2, $pos - 2);
 
-                $callback($msgn, $sequence, $timeout);
+                $callback($msgn, $sequence, $ttl);
 
-                $timeout = $this->getNextTimeout();
+                $ttl = $this->getNextTimeout();
             }
 
-            if (! Carbon::now()->greaterThanOrEqualTo($timeout)) {
+            if (! Carbon::now()->greaterThanOrEqualTo($ttl)) {
                 continue;
             }
 
@@ -71,8 +74,8 @@ class Idle
 
             $this->reconnect();
 
-            // Reset the timeout.
-            $timeout = $this->getNextTimeout();
+            // Reset the time-to-live.
+            $ttl = $this->getNextTimeout();
         }
     }
 
@@ -99,12 +102,20 @@ class Idle
     }
 
     /**
+     * Get the next line from the connection.
+     *
+     * @throws ConnectionTimedOutException|ConnectionClosedException
+     */
+    protected function getNextLine(): string
+    {
+        return $this->client->getConnection()->nextLine(Response::empty());
+    }
+
+    /**
      * Get the next timeout.
      */
     protected function getNextTimeout(): Carbon
     {
-        return Carbon::now()->addSeconds(
-            $this->client->getTimeout()
-        );
+        return Carbon::now()->addSeconds($this->timeout);
     }
 }
