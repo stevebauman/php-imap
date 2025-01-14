@@ -8,8 +8,6 @@ use ReflectionException;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
 use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
@@ -17,7 +15,6 @@ use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageFlagException;
 use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
 use Webklex\PHPIMAP\Exceptions\MessageSizeFetchingException;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
@@ -101,6 +98,9 @@ class Message
      */
     public ?int $fetch_options = null;
 
+    /**
+     * Sequence type.
+     */
     protected int $sequence = IMAP::NIL;
 
     /**
@@ -113,6 +113,9 @@ class Message
      */
     public bool $fetch_flags = true;
 
+    /**
+     * Message header.
+     */
     public ?Header $header = null;
 
     /**
@@ -130,8 +133,14 @@ class Message
      */
     public array $bodies = [];
 
+    /**
+     * Message attachments.
+     */
     public AttachmentCollection $attachments;
 
+    /**
+     * Message flags.
+     */
     public FlagCollection $flags;
 
     /**
@@ -141,28 +150,17 @@ class Message
 
     /**
      * Message constructor.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function __construct(int $uid, ?int $msglist, Client $client, ?int $fetch_options = null, bool $fetch_body = false, bool $fetch_flags = false, ?int $sequence = null)
     {
         $this->boot();
 
         $default_mask = $client->getDefaultMessageMask();
+
         if ($default_mask != null) {
             $this->mask = $default_mask;
         }
+
         $this->events['message'] = $client->getDefaultEvents('message');
         $this->events['flag'] = $client->getDefaultEvents('flag');
 
@@ -219,13 +217,17 @@ class Message
         $instance->boot();
 
         $default_mask = $client->getDefaultMessageMask();
+
         if ($default_mask != null) {
             $instance->setMask($default_mask);
         }
+
         $instance->setEvents([
             'message' => $client->getDefaultEvents('message'),
             'flag' => $client->getDefaultEvents('flag'),
+
         ]);
+
         $instance->setFolderPath($client->getFolderPath());
         $instance->setSequence($sequence);
         $instance->setFetchOption($fetch_options);
@@ -243,17 +245,6 @@ class Message
 
     /**
      * Create a new message instance by reading and loading a file or remote location.
-     *
-     * @throws RuntimeException
-     * @throws MessageContentFetchingException
-     * @throws ResponseException
-     * @throws ImapBadRequestException
-     * @throws InvalidMessageDateException
-     * @throws ConnectionFailedException
-     * @throws ImapServerErrorException
-     * @throws ReflectionException
-     * @throws AuthFailedException
-     * @throws MaskNotFoundException
      */
     public static function fromFile($filename): Message
     {
@@ -267,27 +258,17 @@ class Message
 
     /**
      * Create a new message instance by reading and loading a string.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws ReflectionException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public static function fromString(string $blob): Message
     {
         $reflection = new ReflectionClass(self::class);
+
         /** @var Message $instance */
         $instance = $reflection->newInstanceWithoutConstructor();
         $instance->boot();
 
         $default_mask = ClientManager::getMask('message');
+
         if ($default_mask != '') {
             $instance->setMask($default_mask);
         } else {
@@ -297,6 +278,7 @@ class Message
         if (! str_contains($blob, "\r\n")) {
             $blob = str_replace("\n", "\r\n", $blob);
         }
+
         $raw_header = substr($blob, 0, strpos($blob, "\r\n\r\n"));
         $raw_body = substr($blob, strlen($raw_header) + 4);
 
@@ -324,20 +306,8 @@ class Message
 
     /**
      * Call dynamic attribute setter and getter methods.
-     *
-     * @return mixed
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageNotFoundException
-     * @throws MethodNotFoundException
-     * @throws MessageSizeFetchingException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $arguments): mixed
     {
         if (strtolower(substr($method, 0, 3)) === 'get') {
             $name = Str::snake(substr($method, 3));
@@ -356,31 +326,16 @@ class Message
 
     /**
      * Magic setter.
-     *
-     * @return mixed
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $this->attributes[$name] = $value;
-
-        return $this->attributes[$name];
     }
 
     /**
      * Magic getter.
-     *
-     * @return Attribute|mixed|null
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageNotFoundException
-     * @throws MessageSizeFetchingException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
-    public function __get($name)
+    public function __get($name): mixed
     {
         return $this->get($name);
     }
@@ -388,16 +343,7 @@ class Message
     /**
      * Get an available message or message header attribute.
      *
-     * @return Attribute|mixed|null
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageNotFoundException
-     * @throws RuntimeException
-     * @throws ResponseException
-     * @throws MessageSizeFetchingException
+     * @return Attribute|mixed
      */
     public function get($name): mixed
     {
@@ -467,15 +413,6 @@ class Message
 
     /**
      * Parse all defined headers.
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws InvalidMessageDateException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
      */
     private function parseHeader(): void
     {
@@ -507,7 +444,9 @@ class Message
             if (str_starts_with($flag, '\\')) {
                 $flag = substr($flag, 1);
             }
+
             $flag_key = strtolower($flag);
+
             if ($this->available_flags === null || in_array($flag_key, $this->available_flags)) {
                 $this->flags->put($flag_key, $flag);
             }
@@ -546,18 +485,6 @@ class Message
 
     /**
      * Parse the Message body.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function parseBody(): Message
     {
@@ -590,14 +517,6 @@ class Message
 
     /**
      * Fetches the size for this message.
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageSizeFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     private function fetchSize(): void
     {
@@ -613,15 +532,6 @@ class Message
 
     /**
      * Handle auto "Seen" flag handling.
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function peek(): void
     {
@@ -636,16 +546,6 @@ class Message
 
     /**
      * Parse a given message body.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function parseRawBody(string $raw_body): Message
     {
@@ -657,14 +557,6 @@ class Message
 
     /**
      * Fetch the Message structure.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     private function fetchStructure(Structure $structure): void
     {
@@ -889,15 +781,6 @@ class Message
 
     /**
      * Get the messages folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getFolder(): ?Folder
     {
@@ -906,22 +789,16 @@ class Message
 
     /**
      * Create a message thread based on the current message.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws GetMessagesFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function thread(?Folder $sent_folder = null, ?MessageCollection &$thread = null, ?Folder $folder = null): MessageCollection
     {
         $thread = $thread ?: MessageCollection::make([]);
+
         $folder = $folder ?: $this->getFolder();
-        $sent_folder = $sent_folder ?: $this->client->getFolderByPath(ClientManager::get('options.common_folders.sent', 'INBOX/Sent'));
+
+        $sent_folder = $sent_folder ?: $this->client->getFolderByPath(
+            ClientManager::get('options.common_folders.sent', 'INBOX/Sent')
+        );
 
         /** @var Message $message */
         foreach ($thread as $message) {
@@ -929,6 +806,7 @@ class Message
                 return $thread;
             }
         }
+
         $thread->push($this);
 
         $this->fetchThreadByInReplyTo($thread, $this->message_id, $folder, $folder, $sent_folder);
@@ -944,16 +822,6 @@ class Message
 
     /**
      * Fetch a partial thread by message id.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws GetMessagesFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     protected function fetchThreadByInReplyTo(MessageCollection &$thread, string $in_reply_to, Folder $primary_folder, Folder $secondary_folder, Folder $sent_folder): void
     {
@@ -967,16 +835,6 @@ class Message
 
     /**
      * Fetch a partial thread by message id.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws GetMessagesFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     protected function fetchThreadByMessageId(MessageCollection &$thread, string $message_id, Folder $primary_folder, Folder $secondary_folder, Folder $sent_folder): void
     {
@@ -990,21 +848,6 @@ class Message
 
     /**
      * Copy the current Messages to a mailbox.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function copy(string $folder_path, bool $expunge = false): ?Message
     {
@@ -1013,6 +856,7 @@ class Message
 
         if (isset($status['uidnext'])) {
             $next_uid = $status['uidnext'];
+
             if ((int) $next_uid <= 0) {
                 return null;
             }
@@ -1021,6 +865,7 @@ class Message
             $folder = $this->client->getFolderByPath($folder_path);
 
             $this->client->openFolder($this->folder_path);
+
             if ($this->client->getConnection()->copyMessage($folder->path, $this->getSequenceId(), null, $this->sequence)->validatedData()) {
                 return $this->fetchNewMail($folder, $next_uid, 'copied', $expunge);
             }
@@ -1031,21 +876,6 @@ class Message
 
     /**
      * Move the current Messages to a mailbox.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function move(string $folder_path, bool $expunge = false): ?Message
     {
@@ -1072,20 +902,6 @@ class Message
 
     /**
      * Fetch a new message and fire a given event.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     protected function fetchNewMail(Folder $folder, int $next_uid, string $event, bool $expunge): Message
     {
@@ -1110,21 +926,6 @@ class Message
 
     /**
      * Delete the current Message.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function delete(bool $expunge = true, ?string $trash_path = null, bool $force_move = false): bool
     {
@@ -1145,20 +946,11 @@ class Message
 
     /**
      * Restore a deleted Message.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function restore(bool $expunge = true): bool
     {
         $status = $this->unsetFlag('Deleted');
+
         if ($expunge) {
             $this->client->expunge();
         }
@@ -1171,16 +963,6 @@ class Message
 
     /**
      * Set a given flag.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function setFlag(array|string $flag): bool
     {
@@ -1193,6 +975,7 @@ class Message
         } catch (Exceptions\RuntimeException $e) {
             throw new MessageFlagException('flag could not be set', 0, $e);
         }
+
         $this->parseFlags();
 
         $event = $this->getEvent('flag', 'new');
@@ -1203,16 +986,6 @@ class Message
 
     /**
      * Unset a given flag.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function unsetFlag(array|string $flag): bool
     {
@@ -1237,16 +1010,6 @@ class Message
 
     /**
      * Set a given flag.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function addFlag(array|string $flag): bool
     {
@@ -1255,16 +1018,6 @@ class Message
 
     /**
      * Unset a given flag.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function removeFlag(array|string $flag): bool
     {
@@ -1435,12 +1188,12 @@ class Message
     /**
      * Get a masked instance by providing a mask name.
      *
-     *
      * @throws MaskNotFoundException
      */
     public function mask(mixed $mask = null): mixed
     {
         $mask = $mask !== null ? $mask : $this->mask;
+
         if (class_exists($mask)) {
             return new $mask($this);
         }
@@ -1524,14 +1277,6 @@ class Message
 
     /**
      * Set the client.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function setClient($client): Message
     {

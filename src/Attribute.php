@@ -7,6 +7,9 @@ use Carbon\Carbon;
 
 class Attribute implements ArrayAccess
 {
+    /**
+     * Attribute name.
+     */
     protected string $name;
 
     /**
@@ -220,8 +223,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get the first value if possible.
-     *
-     * @return mixed|null
      */
     public function first(): mixed
     {
@@ -230,8 +231,6 @@ class Attribute implements ArrayAccess
 
     /**
      * Get the last value if possible.
-     *
-     * @return mixed|null
      */
     public function last(): mixed
     {
@@ -278,6 +277,9 @@ class Attribute implements ArrayAccess
         $this->remove($offset);
     }
 
+    /**
+     * Run a callback over all the values.
+     */
     public function map(callable $callback): array
     {
         return array_map($callback, $this->values);

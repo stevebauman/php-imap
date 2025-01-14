@@ -33,7 +33,6 @@ class Header
     /**
      * Header constructor.
      *
-     *
      * @throws InvalidMessageDateException
      */
     public function __construct(string $raw_header)
@@ -65,10 +64,8 @@ class Header
 
     /**
      * Magic getter.
-     *
-     * @return Attribute|null
      */
-    public function __get($name)
+    public function __get($name): Attribute
     {
         return $this->get($name);
     }
@@ -79,6 +76,7 @@ class Header
     public function get($name): Attribute
     {
         $name = str_replace(['-', ' '], '_', strtolower($name));
+
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
         }
@@ -114,8 +112,6 @@ class Header
 
     /**
      * Perform a regex match all on the raw header and return the first result.
-     *
-     * @return mixed|null
      */
     public function find($pattern): mixed
     {
@@ -167,21 +163,26 @@ class Header
         if (property_exists($header, 'subject')) {
             $this->set('subject', $this->decode($header->subject));
         }
+
         if (property_exists($header, 'references')) {
             $this->set('references', array_map(function ($item) {
                 return str_replace(['<', '>'], '', $item);
             }, explode(' ', $header->references)));
         }
+
         if (property_exists($header, 'message_id')) {
             $this->set('message_id', str_replace(['<', '>'], '', $header->message_id));
         }
+
         if (property_exists($header, 'in_reply_to')) {
             $this->set('in_reply_to', str_replace(['<', '>'], '', $header->in_reply_to));
         }
 
         $this->parseDate($header);
+
         foreach ($header as $key => $value) {
             $key = trim(rtrim(strtolower($key)));
+
             if (! isset($this->attributes[$key])) {
                 $this->set($key, $value);
             }
@@ -314,6 +315,7 @@ class Header
 
             return is_array($result) ? $result : [];
         }
+
         $charset = $this->getEncoding($text);
 
         return [(object) [
@@ -387,6 +389,7 @@ class Header
         if (is_array($value)) {
             return $this->decodeArray($value);
         }
+
         $original_value = $value;
         $decoder = $this->config['decoder']['message'];
 
@@ -533,9 +536,11 @@ class Header
             if (! property_exists($address, 'mailbox')) {
                 $address->mailbox = false;
             }
+
             if (! property_exists($address, 'host')) {
                 $address->host = false;
             }
+
             if (! property_exists($address, 'personal')) {
                 $address->personal = false;
             } else {
@@ -554,6 +559,7 @@ class Header
             if ($address->host == '.SYNTAX-ERROR.') {
                 $address->host = '';
             }
+
             if ($address->mailbox == 'UNEXPECTED_DATA_AFTER_ADDRESS') {
                 $address->mailbox = '';
             }

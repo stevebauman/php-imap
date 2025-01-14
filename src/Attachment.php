@@ -42,14 +42,20 @@ use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
  */
 class Attachment
 {
+    /**
+     * Message instance.
+     */
     protected Message $oMessage;
+
+    /**
+     * Part instance.
+     */
+    protected Part $part;
 
     /**
      * Used config.
      */
     protected array $config = [];
-
-    protected Part $part;
 
     /**
      * Attribute holder.
@@ -87,11 +93,13 @@ class Attachment
 
         if ($this->oMessage->getClient()) {
             $default_mask = $this->oMessage->getClient()?->getDefaultAttachmentMask();
+
             if ($default_mask != null) {
                 $this->mask = $default_mask;
             }
         } else {
             $default_mask = ClientManager::getMask('attachment');
+
             if ($default_mask != '') {
                 $this->mask = $default_mask;
             }
@@ -104,11 +112,9 @@ class Attachment
     /**
      * Call dynamic attribute setter and getter methods.
      *
-     * @return mixed
-     *
      * @throws MethodNotFoundException
      */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $arguments): mixed
     {
         if (strtolower(substr($method, 0, 3)) === 'get') {
             $name = Str::snake(substr($method, 3));
@@ -130,7 +136,7 @@ class Attachment
     }
 
     /**
-     * Magic setter.
+     * Handle setting attributes on the instance.
      *
      * @return mixed
      */
@@ -142,7 +148,7 @@ class Attachment
     }
 
     /**
-     * magic getter.
+     * Handle getting attributes on the instance.
      *
      * @return mixed|null
      */
@@ -297,12 +303,15 @@ class Attachment
     public function getExtension(): ?string
     {
         $extension = null;
+
         $guesser = "\Symfony\Component\Mime\MimeTypes";
+
         if (class_exists($guesser) !== false) {
-            /** @var Symfony\Component\Mime\MimeTypes $guesser */
+            /** @var \Symfony\Component\Mime\MimeTypes $guesser */
             $extensions = $guesser::getDefault()->getExtensions($this->getMimeType());
             $extension = $extensions[0] ?? null;
         }
+
         if ($extension === null) {
             $deprecated_guesser = "\Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser";
             if (class_exists($deprecated_guesser) !== false) {
@@ -310,10 +319,12 @@ class Attachment
                 $extension = $deprecated_guesser::getInstance()->guess($this->getMimeType());
             }
         }
+
         if ($extension === null) {
             $parts = explode('.', $this->filename);
             $extension = count($parts) > 1 ? end($parts) : null;
         }
+
         if ($extension === null) {
             $parts = explode('.', $this->name);
             $extension = count($parts) > 1 ? end($parts) : null;
@@ -330,6 +341,9 @@ class Attachment
         return $this->attributes;
     }
 
+    /**
+     * Get the message instance.
+     */
     public function getMessage(): Message
     {
         return $this->oMessage;
@@ -337,8 +351,6 @@ class Attachment
 
     /**
      * Set the default mask.
-     *
-     * @return $this
      */
     public function setMask($mask): Attachment
     {
@@ -360,12 +372,12 @@ class Attachment
     /**
      * Get a masked instance by providing a mask name.
      *
-     *
      * @throws MaskNotFoundException
      */
     public function mask(?string $mask = null): mixed
     {
         $mask = $mask !== null ? $mask : $this->mask;
+
         if (class_exists($mask)) {
             return new $mask($this);
         }

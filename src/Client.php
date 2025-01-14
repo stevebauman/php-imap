@@ -3,18 +3,15 @@
 namespace Webklex\PHPIMAP;
 
 use ErrorException;
+use Throwable;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\LegacyProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\ProtocolInterface;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ProtocolNotSupportedException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Support\FolderCollection;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
@@ -130,9 +127,6 @@ class Client
 
     /**
      * Client constructor.
-     *
-     *
-     * @throws MaskNotFoundException
      */
     public function __construct(array $config = [])
     {
@@ -143,10 +137,6 @@ class Client
 
     /**
      * Client destructor.
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function __destruct()
     {
@@ -194,6 +184,7 @@ class Client
     public function getConfig(): array
     {
         $config = [];
+
         foreach ($this->default_account_config as $key => $value) {
             $config[$key] = $this->$key;
         }
@@ -207,6 +198,7 @@ class Client
     private function setAccountConfig(string $key, array $config, array $default_config): void
     {
         $value = $this->default_account_config[$key];
+
         if (isset($config[$key])) {
             $value = $config[$key];
         } elseif (isset($default_config[$key])) {
@@ -221,6 +213,7 @@ class Client
     public function getAccountConfig(): array
     {
         $config = [];
+
         foreach ($this->default_account_config as $key => $value) {
             if (property_exists($this, $key)) {
                 $config[$key] = $this->$key;
@@ -236,6 +229,7 @@ class Client
     protected function setEventsFromConfig($config): void
     {
         $this->events = ClientManager::get('events');
+
         if (isset($config['events'])) {
             foreach ($config['events'] as $section => $events) {
                 $this->events[$section] = array_merge($this->events[$section], $events);
@@ -299,14 +293,6 @@ class Client
 
     /**
      * Get the current imap resource.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getConnection(): ProtocolInterface
     {
@@ -325,14 +311,6 @@ class Client
 
     /**
      * Determine if connection was established and connect if not.
-     * Returns true if the connection was closed and has been reopened.
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function checkConnection(): bool
     {
@@ -342,7 +320,7 @@ class Client
 
                 return true;
             }
-        } catch (\Throwable) {
+        } catch (Throwable) {
             $this->connect();
         }
 
@@ -351,33 +329,18 @@ class Client
 
     /**
      * Force the connection to reconnect.
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function reconnect(): void
     {
         if ($this->isConnected()) {
             $this->disconnect();
         }
+
         $this->connect();
     }
 
     /**
      * Connect to server.
-     *
-     * @return $this
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function connect(): Client
     {
@@ -424,11 +387,6 @@ class Client
 
     /**
      * Authenticate the current session.
-     *
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
      */
     protected function authenticate(): void
     {
@@ -443,12 +401,6 @@ class Client
 
     /**
      * Disconnect from server.
-     *
-     * @return $this
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function disconnect(): Client
     {
@@ -462,15 +414,6 @@ class Client
 
     /**
      * Get a folder instance by a folder name.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public function getFolder(string $folder_name, ?string $delimiter = null, bool $utf7 = false): ?Folder
     {
@@ -488,14 +431,6 @@ class Client
      * Get a folder instance by a folder name.
      *
      * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
-     *
-     * @throws FolderFetchingException
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getFolderByName($folder_name, bool $soft_fail = false): ?Folder
     {
@@ -506,14 +441,6 @@ class Client
      * Get a folder instance by a folder path.
      *
      * @param  bool  $soft_fail  If true, it will return null instead of throwing an exception
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public function getFolderByPath($folder_path, bool $utf7 = false, bool $soft_fail = false): ?Folder
     {
@@ -529,14 +456,6 @@ class Client
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
      * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public function getFolders(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
@@ -573,14 +492,6 @@ class Client
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
      * @param  bool  $soft_fail  If true, it will return an empty collection instead of throwing an exception
-     *
-     * @throws FolderFetchingException
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getFoldersWithStatus(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
@@ -615,21 +526,15 @@ class Client
 
     /**
      * Open a given folder.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function openFolder(string $folder_path, bool $force_select = false): array
     {
         if ($this->active_folder == $folder_path && $this->isConnected() && $force_select === false) {
             return [];
         }
+
         $this->checkConnection();
+
         $this->active_folder = $folder_path;
 
         return $this->connection->selectFolder($folder_path)->validatedData();
@@ -653,16 +558,6 @@ class Client
 
     /**
      * Create a new Folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
      */
     public function createFolder(string $folder_path, bool $expunge = true, bool $utf7 = false): Folder
     {
@@ -679,6 +574,7 @@ class Client
         }
 
         $folder = $this->getFolderByPath($folder_path, true);
+
         if ($status && $folder) {
             $event = $this->getEvent('folder', 'new');
             $event::dispatch($folder);
@@ -689,26 +585,19 @@ class Client
 
     /**
      * Delete a given folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function deleteFolder(string $folder_path, bool $expunge = true): array
     {
         $this->checkConnection();
 
         $folder = $this->getFolderByPath($folder_path);
+
         if ($this->active_folder == $folder->path) {
             $this->active_folder = null;
         }
+
         $status = $this->getConnection()->deleteFolder($folder->path)->validatedData();
+
         if ($expunge) {
             $this->expunge();
         }
@@ -721,14 +610,6 @@ class Client
 
     /**
      * Check a given folder.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function checkFolder(string $folder_path): array
     {
@@ -747,15 +628,8 @@ class Client
 
     /**
      * Exchange identification information
-     * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
      *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
+     * @see https://datatracker.ietf.org/doc/html/rfc2971
      */
     public function Id(?array $ids = null): array
     {
@@ -766,14 +640,6 @@ class Client
 
     /**
      * Retrieve the quota level settings, and usage statics per mailbox.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getQuota(): array
     {
@@ -784,14 +650,6 @@ class Client
 
     /**
      * Retrieve the quota settings per user.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getQuotaRoot(string $quota_root = 'INBOX'): array
     {
@@ -802,14 +660,6 @@ class Client
 
     /**
      * Delete all messages marked for deletion.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws AuthFailedException
-     * @throws ResponseException
      */
     public function expunge(): array
     {
@@ -820,20 +670,14 @@ class Client
 
     /**
      * Set the connection timeout.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function setTimeout(int $timeout): ProtocolInterface
     {
         $this->timeout = $timeout;
+
         if ($this->isConnected()) {
             $this->connection->setConnectionTimeout($timeout);
+
             $this->reconnect();
         }
 
@@ -842,14 +686,6 @@ class Client
 
     /**
      * Get the connection timeout.
-     *
-     *
-     * @throws ConnectionFailedException
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getTimeout(): int
     {
@@ -881,8 +717,6 @@ class Client
     /**
      * Set the default message mask.
      *
-     * @return $this
-     *
      * @throws MaskNotFoundException
      */
     public function setDefaultMessageMask(string $mask): Client
@@ -906,8 +740,6 @@ class Client
 
     /**
      * Set the default attachment mask.
-     *
-     * @return $this
      *
      * @throws MaskNotFoundException
      */

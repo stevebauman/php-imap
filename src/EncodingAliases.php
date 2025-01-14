@@ -2,6 +2,8 @@
 
 namespace Webklex\PHPIMAP;
 
+use Exception;
+
 class EncodingAliases
 {
     /**
@@ -497,7 +499,7 @@ class EncodingAliases
             }
 
             return mb_convert_encoding($str, $to, $from);
-        } catch (\Exception $e) {
+        } catch (Exception) {
             if (str_contains($from, '-')) {
                 $from = str_replace('-', '', $from);
 
@@ -524,6 +526,7 @@ class EncodingAliases
                 'IMAP-UTF-7',
             ]);
         }), true);
+
         if ($encoding === false) {
             $encoding = 'UTF-8';
         }
@@ -537,6 +540,7 @@ class EncodingAliases
     public static function getEncodings(): array
     {
         $encodings = [];
+
         foreach (self::$aliases as $encoding) {
             if (! in_array($encoding, $encodings)) {
                 $encodings[] = $encoding;

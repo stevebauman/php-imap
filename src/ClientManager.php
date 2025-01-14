@@ -9,6 +9,9 @@ class ClientManager
      */
     public static array $config = [];
 
+    /**
+     * The array of resolved accounts.
+     */
     protected array $accounts = [];
 
     /**
@@ -22,11 +25,9 @@ class ClientManager
     /**
      * Dynamically pass calls to the default account.
      *
-     * @return mixed
-     *
      * @throws Exceptions\MaskNotFoundException
      */
-    public function __call(string $method, array $parameters)
+    public function __call(string $method, array $parameters): mixed
     {
         $callable = [$this->account(), $method];
 
@@ -35,9 +36,6 @@ class ClientManager
 
     /**
      * Safely create a new client instance which is not listed in accounts.
-     *
-     *
-     * @throws Exceptions\MaskNotFoundException
      */
     public function make(array $config): Client
     {
@@ -46,14 +44,13 @@ class ClientManager
 
     /**
      * Get a dotted config parameter.
-     *
-     * @param  null  $default
-     * @return mixed|null
      */
-    public static function get(string $key, $default = null): mixed
+    public static function get(string $key, mixed $default = null): mixed
     {
         $parts = explode('.', $key);
+
         $value = null;
+
         foreach ($parts as $part) {
             if ($value === null) {
                 if (isset(self::$config[$part])) {
@@ -81,6 +78,7 @@ class ClientManager
     public static function getMask(string $section): ?string
     {
         $default_masks = ClientManager::get('masks');
+
         if (isset($default_masks[$section])) {
             if (class_exists($default_masks[$section])) {
                 return $default_masks[$section];
@@ -92,7 +90,6 @@ class ClientManager
 
     /**
      * Resolve a account instance.
-     *
      *
      * @throws Exceptions\MaskNotFoundException
      */
@@ -112,9 +109,6 @@ class ClientManager
 
     /**
      * Resolve an account.
-     *
-     *
-     * @throws Exceptions\MaskNotFoundException
      */
     protected function resolve(string $name): Client
     {
@@ -131,6 +125,7 @@ class ClientManager
         if ($name === null || $name === 'null' || $name === '') {
             return ['driver' => 'null'];
         }
+
         $account = self::$config['accounts'][$name] ?? [];
 
         return is_array($account) ? $account : [];
@@ -158,8 +153,6 @@ class ClientManager
      * The default account identifier will be used as default for any missing account parameters.
      * If however the default account is missing a parameter the package default account parameter will be used.
      * This can be disabled by setting imap.default in your config file to 'false'
-     *
-     * @return $this
      */
     public function setConfig(array|string $config): ClientManager
     {

@@ -86,6 +86,9 @@ class Part
      */
     public ?string $content_type = null;
 
+    /**
+     * Part header.
+     */
     private ?Header $header;
 
     /**
@@ -99,6 +102,7 @@ class Part
         $this->raw = $raw_part;
         $this->header = $header;
         $this->part_number = $part_number;
+
         $this->parse();
     }
 
@@ -135,6 +139,7 @@ class Part
         }
 
         $content_types = $this->header->get('content_type')->all();
+
         if (! empty($content_types)) {
             $this->subtype = $this->parseSubtype($content_types);
             $content_type = $content_types[0];
@@ -155,9 +160,11 @@ class Part
     private function findHeaders(): string
     {
         $body = $this->raw;
+
         while (($pos = strpos($body, "\r\n")) > 0) {
             $body = substr($body, $pos + 2);
         }
+
         $headers = substr($this->raw, 0, strlen($body) * -1);
         $body = substr($body, 0, -2);
 
@@ -193,6 +200,7 @@ class Part
     private function parseDisposition(): void
     {
         $content_disposition = $this->header->get('content_disposition')->first();
+
         if ($content_disposition) {
             $this->ifdisposition = true;
             $this->disposition = (is_array($content_disposition)) ? implode(' ', $content_disposition) : explode(';', $content_disposition)[0];
@@ -205,6 +213,7 @@ class Part
     private function parseDescription(): void
     {
         $content_description = $this->header->get('content_description')->first();
+
         if ($content_description) {
             $this->ifdescription = true;
             $this->description = $content_description;
@@ -217,6 +226,7 @@ class Part
     private function parseEncoding(): void
     {
         $encoding = $this->header->get('content_transfer_encoding')->first();
+
         if ($encoding) {
             $this->encoding = match (strtolower($encoding)) {
                 'quoted-printable' => IMAP::MESSAGE_ENC_QUOTED_PRINTABLE,
