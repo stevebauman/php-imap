@@ -4,6 +4,7 @@ namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Exceptions\NotSupportedCapabilityException;
 use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
 use Webklex\PHPIMAP\Traits\HasEvents;
@@ -171,6 +172,7 @@ class Folder
     protected function decodeName($name): string|array|bool|null
     {
         $parts = [];
+
         foreach (explode($this->delimiter, $name) as $item) {
             $parts[] = EncodingAliases::convert($item, 'UTF7-IMAP', 'UTF-8');
         }
@@ -207,7 +209,9 @@ class Folder
     {
         $this->client->checkConnection();
 
-        $status = $this->client->getConnection()->renameFolder($this->full_name, $new_name)->validatedData();
+        $status = $this->client->getConnection()
+            ->renameFolder($this->full_name, $new_name)
+            ->validatedData();
 
         if ($expunge) {
             $this->client->expunge();
@@ -250,7 +254,9 @@ class Folder
             $internal_date = $internal_date->format('d-M-Y H:i:s O');
         }
 
-        return $this->client->getConnection()->appendMessage($this->path, $message, $options, $internal_date)->validatedData();
+        return $this->client->getConnection()
+            ->appendMessage($this->path, $message, $options, $internal_date)
+            ->validatedData();
     }
 
     /**
@@ -266,7 +272,10 @@ class Folder
      */
     public function delete(bool $expunge = true): array
     {
-        $status = $this->client->getConnection()->deleteFolder($this->path)->validatedData();
+        $status = $this->client->getConnection()
+            ->deleteFolder($this->path)
+            ->validatedData();
+
         if ($this->client->getActiveFolder() == $this->path) {
             $this->client->setActiveFolder(null);
         }
@@ -288,7 +297,9 @@ class Folder
     {
         $this->client->openFolder($this->path);
 
-        return $this->client->getConnection()->subscribeFolder($this->path)->validatedData();
+        return $this->client->getConnection()
+            ->subscribeFolder($this->path)
+            ->validatedData();
     }
 
     /**
@@ -298,7 +309,9 @@ class Folder
     {
         $this->client->openFolder($this->path);
 
-        return $this->client->getConnection()->unsubscribeFolder($this->path)->validatedData();
+        return $this->client->getConnection()
+            ->unsubscribeFolder($this->path)
+            ->validatedData();
     }
 
     /**
@@ -306,30 +319,31 @@ class Folder
      */
     public function idle(callable $callback, int $timeout = 300): void
     {
-        $this->client->setTimeout($timeout);
-
-        if (! in_array('IDLE', $this->client->getConnection()->getCapabilities()->validatedData())) {
-            throw new Exceptions\NotSupportedCapabilityException('IMAP server does not support IDLE');
+        if (! $this->hasIdleSupport()) {
+            throw new NotSupportedCapabilityException('IMAP server does not support IDLE');
         }
 
-        $idle_client = $this->client->clone();
-        $idle_client->connect();
-        $idle_client->openFolder($this->path, true);
-        $idle_client->getConnection()->idle();
+        $this->client->setTimeout($timeout);
 
-        $last_action = Carbon::now()->addSeconds($timeout);
+        $idleClient = $this->client->clone();
+
+        $idleClient->connect();
+        $idleClient->openFolder($this->path, true);
+        $idleClient->getConnection()->idle();
+
+        $lastAction = Carbon::now()->addSeconds($timeout);
 
         $sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
 
         while (true) {
             // This polymorphic call is fine - Protocol::idle() will throw an exception beforehand
-            $line = $idle_client->getConnection()->nextLine(Response::empty());
+            $line = $idleClient->getConnection()->nextLine(Response::empty());
 
             if (($pos = strpos($line, 'EXISTS')) !== false) {
                 $msgn = (int) substr($line, 2, $pos - 2);
 
                 // Check if the stream is still alive or should be considered stale
-                if (! $this->client->isConnected() || $last_action->isBefore(Carbon::now())) {
+                if (! $this->client->isConnected() || $lastAction->isBefore(Carbon::now())) {
                     // Reset the connection before interacting with it. Otherwise, the resource might be stale which
                     // would result in a stuck interaction. If you know of a way of detecting a stale resource, please
                     // feel free to improve this logic. I tried a lot but nothing seem to work reliably...
@@ -344,10 +358,12 @@ class Folder
 
                     // This polymorphic call is fine - Protocol::idle() will throw an exception beforehand
                     $this->client->getConnection()->reset();
+
                     // Establish a new connection
                     $this->client->connect();
                 }
-                $last_action = Carbon::now()->addSeconds($timeout);
+
+                $lastAction = Carbon::now()->addSeconds($timeout);
 
                 // Always reopen the folder - otherwise the new message number isn't known to the current remote session
                 $this->client->openFolder($this->path, true);
@@ -367,7 +383,9 @@ class Folder
      */
     public function status(): array
     {
-        return $this->client->getConnection()->folderStatus($this->path)->validatedData();
+        return $this->client->getConnection()
+            ->folderStatus($this->path)
+            ->validatedData();
     }
 
     /**
@@ -395,7 +413,9 @@ class Folder
      */
     public function examine(): array
     {
-        return $this->client->getConnection()->examineFolder($this->path)->validatedData();
+        return $this->client->getConnection()
+            ->examineFolder($this->path)
+            ->validatedData();
     }
 
     /**
@@ -403,7 +423,9 @@ class Folder
      */
     public function select(): array
     {
-        return $this->client->getConnection()->selectFolder($this->path)->validatedData();
+        return $this->client->getConnection()
+            ->selectFolder($this->path)
+            ->validatedData();
     }
 
     /**
@@ -424,5 +446,23 @@ class Folder
         }
 
         $this->delimiter = $delimiter;
+    }
+
+    /**
+     * Determine if the current connection has IDLE support.
+     */
+    protected function hasIdleSupport(): bool
+    {
+        return in_array('IDLE', $this->getConnectionCapabilities());
+    }
+
+    /**
+     * Get the connection's capabilities.
+     */
+    protected function getConnectionCapabilities(): array
+    {
+        return $this->client->getConnection()
+            ->getCapabilities()
+            ->validatedData();
     }
 }
