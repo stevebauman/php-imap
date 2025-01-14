@@ -149,16 +149,17 @@ class Client
     public function clone(): Client
     {
         $client = new self;
+
         $client->events = $this->events;
         $client->timeout = $this->timeout;
         $client->active_folder = $this->active_folder;
-        $client->default_account_config = $this->default_account_config;
-        $config = $this->getAccountConfig();
-        foreach ($config as $key => $value) {
-            $client->setAccountConfig($key, $config, $this->default_account_config);
-        }
         $client->default_message_mask = $this->default_message_mask;
         $client->default_attachment_mask = $this->default_message_mask;
+        $client->default_account_config = $this->default_account_config;
+
+        foreach ($config = $this->getAccountConfig() as $key => $value) {
+            $client->setAccountConfig($key, $config, $this->default_account_config);
+        }
 
         return $client;
     }
@@ -168,11 +169,11 @@ class Client
      */
     public function setConfig(array $config): Client
     {
-        $default_account = ClientManager::get('default');
-        $default_config = ClientManager::get("accounts.$default_account");
+        $defaultAccount = ClientManager::get('default');
+        $defaultConfig = ClientManager::get("accounts.$defaultAccount");
 
         foreach ($this->default_account_config as $key => $value) {
-            $this->setAccountConfig($key, $config, $default_config);
+            $this->setAccountConfig($key, $config, $defaultConfig);
         }
 
         return $this;
@@ -354,7 +355,9 @@ class Client
             $this->connection->setProxy($this->proxy);
         } else {
             if (extension_loaded('imap') === false) {
-                throw new ConnectionFailedException('Connection setup failed', 0, new ProtocolNotSupportedException($protocol.' is an unsupported protocol'));
+                throw new ConnectionFailedException(
+                    'Connection setup failed', 0, new ProtocolNotSupportedException($protocol.' is an unsupported protocol')
+                );
             }
 
             $this->connection = new LegacyProtocol($this->validate_cert, $this->encryption);
