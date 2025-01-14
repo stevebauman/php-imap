@@ -5,7 +5,9 @@ namespace Webklex\PHPIMAP\Connection\Protocols;
 use Exception;
 use Throwable;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
+use Webklex\PHPIMAP\Exceptions\ConnectionClosedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
+use Webklex\PHPIMAP\Exceptions\ConnectionTimedOutException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
 use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
@@ -106,7 +108,13 @@ class ImapProtocol extends Protocol
         $line = fgets($this->stream);
 
         if ($line === false) {
-            throw new RuntimeException('No response');
+            $meta = $this->meta();
+
+            throw match (true) {
+                $meta['timed_out'] ?? false => new ConnectionTimedOutException('Stream timed out, no response'),
+                $meta['eof'] ?? false => new ConnectionClosedException('Server closed the connection (EOF)'),
+                default => new RuntimeException('Unknown read error, no response: '.json_encode($meta)),
+            };
         }
 
         $response->addResponse($line);
