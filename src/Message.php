@@ -2,6 +2,7 @@
 
 namespace Webklex\PHPIMAP;
 
+use Exception;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionException;
@@ -655,6 +656,7 @@ class Message
             $this->sequence = $sequence;
         } elseif (is_null($sequence)) {
             $config = ClientManager::get('options.sequence', IMAP::ST_MSGN);
+
             $this->sequence = is_int($config) ? $config : IMAP::ST_MSGN;
         }
 
@@ -670,6 +672,7 @@ class Message
             $this->fetch_body = $option;
         } elseif (is_null($option)) {
             $config = ClientManager::get('options.fetch_body', true);
+
             $this->fetch_body = is_bool($config) ? $config : true;
         }
 
@@ -685,6 +688,7 @@ class Message
             $this->fetch_flags = $option;
         } elseif (is_null($option)) {
             $config = ClientManager::get('options.fetch_flags', true);
+
             $this->fetch_flags = is_bool($config) ? $config : true;
         }
 
@@ -747,7 +751,7 @@ class Message
         if (function_exists('iconv') && ! EncodingAliases::isUtf7($from) && ! EncodingAliases::isUtf7($to)) {
             try {
                 return iconv($from, $to.'//IGNORE', $str);
-            } catch (\Exception $e) {
+            } catch (Exception) {
                 return @iconv($from, $to, $str);
             }
         } else {

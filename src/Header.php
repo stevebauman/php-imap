@@ -3,6 +3,7 @@
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
+use Exception;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
@@ -679,7 +680,7 @@ class Header
                     $date = str_replace(' UT ', ' UTC ', $date);
                 }
                 $parsed_date = Carbon::parse($date);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 switch (true) {
                     case preg_match('/([0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}\-[0-9]{1,2}\.[0-9]{1,2}.[0-9]{1,2})+$/i', $date) > 0:
                         $date = Carbon::createFromFormat('Y.m.d-H.i.s', $date);
@@ -735,7 +736,7 @@ class Header
 
                 try {
                     $parsed_date = Carbon::parse($date);
-                } catch (\Exception $_e) {
+                } catch (Exception $_e) {
                     if (! isset($this->config['fallback_date'])) {
                         throw new InvalidMessageDateException('Invalid message date. ID:'.$this->get('message_id').' Date:'.$header->date.'/'.$date, 1100, $e);
                     } else {

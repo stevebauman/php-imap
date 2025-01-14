@@ -3,6 +3,7 @@
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Carbon\Carbon;
+use ErrorException;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
@@ -78,7 +79,7 @@ class LegacyProtocol extends Protocol
                     ClientManager::get('options.open')
                 );
                 $response->addCommand('imap_open');
-            } catch (\ErrorException $e) {
+            } catch (ErrorException $e) {
                 $errors = imap_errors();
                 $message = $e->getMessage().'. '.implode('; ', is_array($errors) ? $errors : []);
 
