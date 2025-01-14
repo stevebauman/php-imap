@@ -1,16 +1,16 @@
+<h1 align="center">PHP IMAP</h1>
+    
+<p align="center">Integrate IMAP into your PHP application.</p>
 
-# IMAP Library for PHP
-
-[![Latest release on Packagist][ico-release]][link-packagist]
-[![Latest prerelease on Packagist][ico-prerelease]][link-packagist]
-[![Software License][ico-license]][link-license]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Hits][ico-hits]][link-hits]
-[![Discord][ico-discord]][link-discord]
-[![Snyk][ico-snyk]][link-snyk]
-
+<p align="center">
+<a href="https://github.com/stevebauman/php-imap/actions"><img src="https://img.shields.io/github/actions/workflow/status/stevebauman/php-imap/run-tests.yml?branch=master&style=flat-square"></a>
+<a href="https://packagist.org/packages/stevebauman/php-imap"><img src="https://img.shields.io/packagist/dt/stevebauman/php-imap.svg?style=flat-square"></a>
+<a href="https://packagist.org/packages/stevebauman/php-imap"><img src="https://img.shields.io/packagist/v/stevebauman/php-imap.svg?style=flat-square"></a>
+<a href="https://packagist.org/packages/stevebauman/php-imap"><img src="https://img.shields.io/packagist/l/stevebauman/php-imap.svg?style=flat-square"></a>
+</p>
 
 ## Description
+
 PHP-IMAP is a wrapper for common IMAP communication without the need to have the php-imap module installed / enabled.
 The protocol is completely integrated and therefore supports IMAP IDLE operation and the "new" oAuth authentication
 process as well.
@@ -36,11 +36,9 @@ Discord: [discord.gg/rd4cN9h6][link-discord]
 - [Credits](#credits)
 - [License](#license)
 
-
 ## Documentations
 - Legacy (< v2.0.0): [legacy documentation](https://github.com/Webklex/php-imap/tree/1.4.5)
 - Core documentation: [php-imap.com](https://www.php-imap.com/)
-
 
 ## Compatibility
 | Version | PHP 5.6 | PHP 7 | PHP 8 |
@@ -100,7 +98,6 @@ foreach($folders as $folder){
 ## Sponsors
 [![Feline][ico-sponsor-feline]][link-sponsor-feline]
 
-
 ## Testing
 To run the tests, please execute the following command:
 ```bash
@@ -154,12 +151,10 @@ Stop the docker image:
 docker stop imap-server
 ```
 
-
 ### Known issues
 | Error                                                                      | Solution                                                                                |
 |:---------------------------------------------------------------------------|:----------------------------------------------------------------------------------------|
 | Kerberos error: No credentials cache file found (try running kinit) (...)  | Uncomment "DISABLE_AUTHENTICATOR" inside your config and use the `legacy-imap` protocol |
-
 
 ## Support
 If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/php-imap/issues).
@@ -167,7 +162,6 @@ However, please be aware that it might take some time to get an answer.
 Off-topic, rude or abusive issues will be deleted without any notice.
 
 If you need **commercial** support, feel free to send me a mail at github@webklex.com.
-
 
 ##### A little notice
 If you write source code in your issue, please consider to format it correctly. This makes it so much nicer to read  
@@ -184,30 +178,24 @@ will turn into:
 echo 'your php code...'; 
 ``` 
 
-
 ## Features & pull requests
 Everyone can contribute to this project. Every pull request will be considered, but it can also happen to be declined.  
 To prevent unnecessary work, please consider to create a [feature issue](https://github.com/Webklex/php-imap/issues/new?template=feature_request.md)  
 first, if you're planning to do bigger changes. Of course, you can also create a new [feature issue](https://github.com/Webklex/php-imap/issues/new?template=feature_request.md)
 if you're just wishing a feature ;)
 
-
 ## Change log
 Please see [CHANGELOG][link-changelog] for more information what has changed recently.
 
-
 ## Security
 If you discover any security related issues, please email github@webklex.com instead of using the issue tracker.
-
 
 ## Credits
 - [Webklex][link-author]
 - [All Contributors][link-contributors]
 
-
 ## License
 The MIT License (MIT). Please see [License File][link-license] for more information.
-
 
 [ico-release]: https://img.shields.io/packagist/v/Webklex/php-imap.svg?style=flat-square&label=version
 [ico-prerelease]: https://img.shields.io/github/v/release/webklex/php-imap?include_prereleases&style=flat-square&label=pre-release
