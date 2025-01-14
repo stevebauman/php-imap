@@ -307,7 +307,7 @@ class Client
      */
     public function isConnected(): bool
     {
-        return $this->connection && $this->connection->connected();
+        return $this->connection?->connected();
     }
 
     /**
