@@ -1,6 +1,6 @@
 <h1 align="center">PHP IMAP</h1>
     
-<p align="center">Integrate IMAP into your PHP application.</p>
+<p align="center">Integrate IMAP into your PHP application. A fork of the <a href="https://github.com/Webklex/php-imap" target="_blank">webklex/php-imap</a> library.</p>
 
 <p align="center">
 <a href="https://github.com/stevebauman/php-imap/actions"><img src="https://img.shields.io/github/actions/workflow/status/stevebauman/php-imap/run-tests.yml?branch=master&style=flat-square"></a>
