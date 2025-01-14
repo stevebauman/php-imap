@@ -106,15 +106,15 @@ class Folder
      */
     public function query(array $extensions = []): WhereQuery
     {
-        $this->getClient()->checkConnection();
+        $this->client->checkConnection();
 
-        $this->getClient()->openFolder($this->path);
+        $this->client->openFolder($this->path);
 
         $extensions = count($extensions) > 0
             ? $extensions
-            : $this->getClient()->extensions;
+            : $this->client->extensions;
 
-        return new WhereQuery($this->getClient(), $extensions);
+        return new WhereQuery($this->client, $extensions);
     }
 
     /**
@@ -333,7 +333,7 @@ class Folder
 
             // Always reopen the folder on the main client. Otherwise, the new
             // message number isn't known to the current remote session.
-            $this->getClient()->openFolder($this->path, true);
+            $this->client->openFolder($this->path, true);
 
             $message = $this->query()->getMessageByMsgn($msgn);
 
