@@ -27,6 +27,7 @@ class LegacyProtocol extends Protocol
     public function __construct(bool $cert_validation = true, mixed $encryption = false)
     {
         $this->setCertValidation($cert_validation);
+
         $this->encryption = $encryption;
     }
 
@@ -133,9 +134,11 @@ class LegacyProtocol extends Protocol
     protected function getAddress(): string
     {
         $address = '{'.$this->host.':'.$this->port.'/'.$this->protocol;
+
         if (! $this->certValidation) {
             $address .= '/novalidate-cert';
         }
+
         if (in_array($this->encryption, ['tls', 'notls', 'ssl'])) {
             $address .= '/'.$this->encryption;
         } elseif ($this->encryption === 'starttls') {
@@ -156,7 +159,9 @@ class LegacyProtocol extends Protocol
             /** @var Response $response */
             if ($this->stream) {
                 $this->uidCache = [];
+
                 $response->addCommand('imap_close');
+
                 if (imap_close($this->stream, IMAP::CL_EXPUNGE)) {
                     $this->stream = false;
 
@@ -165,6 +170,7 @@ class LegacyProtocol extends Protocol
                         1 => 'TAG'.$response->Noun()." OK Logout completed (0.001 + 0.000 secs).\r\n",
                     ];
                 }
+
                 $this->stream = false;
             }
 
@@ -814,6 +820,7 @@ class LegacyProtocol extends Protocol
         if (($pos = strpos($protocol, 'legacy')) > 0) {
             $protocol = substr($protocol, 0, ($pos + 2) * -1);
         }
+
         $this->protocol = $protocol;
 
         return $this;
