@@ -170,7 +170,7 @@ class Client
     public function setConfig(array $config): Client
     {
         $defaultAccount = ClientManager::get('default');
-        $defaultConfig = ClientManager::get("accounts.$defaultAccount");
+        $defaultConfig = ClientManager::get("accounts.$defaultAccount", []);
 
         foreach ($this->default_account_config as $key => $value) {
             $this->setAccountConfig($key, $config, $defaultConfig);
@@ -228,7 +228,7 @@ class Client
     /**
      * Look for a possible events in any available config.
      */
-    protected function setEventsFromConfig($config): void
+    protected function setEventsFromConfig(array $config): void
     {
         $this->events = ClientManager::get('events');
 
@@ -244,7 +244,7 @@ class Client
      *
      * @throws MaskNotFoundException
      */
-    protected function setMaskFromConfig($config): void
+    protected function setMaskFromConfig(array $config): void
     {
         if (isset($config['masks'])) {
             if (isset($config['masks']['message'])) {
@@ -261,6 +261,7 @@ class Client
                     throw new MaskNotFoundException('Unknown message mask provided');
                 }
             }
+
             if (isset($config['masks']['attachment'])) {
                 if (class_exists($config['masks']['attachment'])) {
                     $this->default_attachment_mask = $config['masks']['attachment'];
