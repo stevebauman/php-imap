@@ -40,7 +40,7 @@ abstract class FixtureTestCase extends TestCase
     /**
      * FixtureTestCase constructor.
      */
-    final public function __construct(?string $name = null, array $data = [], $dataName = '')
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -67,7 +67,6 @@ abstract class FixtureTestCase extends TestCase
     /**
      * Get a fixture message.
      *
-     *
      * @throws ReflectionException
      * @throws AuthFailedException
      * @throws ConnectionFailedException
@@ -79,7 +78,7 @@ abstract class FixtureTestCase extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final public function getFixture(string $template): Message
+    public function getFixture(string $template): Message
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..',  'messages', $template]);
         $message = Message::fromFile($filename);

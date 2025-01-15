@@ -147,7 +147,7 @@ class LegacyTest extends TestCase
      * @throws RuntimeException
      * @throws FolderFetchingException
      */
-    final protected function getFolder(string $folder_path = 'INDEX'): Folder
+    protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $folder = self::$client->getFolderByPath($folder_path);
         self::assertInstanceOf(Folder::class, $folder);
@@ -171,7 +171,7 @@ class LegacyTest extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function appendMessage(Folder $folder, string $message): Message
+    protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
         if (! isset($status['uidnext'])) {

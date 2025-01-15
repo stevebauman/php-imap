@@ -50,7 +50,7 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Get the client manager.
      */
-    final protected function getManager(): ClientManager
+    protected function getManager(): ClientManager
     {
         if (! isset(self::$manager)) {
             self::$manager = new ClientManager([
@@ -80,7 +80,7 @@ abstract class LiveMailboxTestCase extends TestCase
      *
      * @throws MaskNotFoundException
      */
-    final protected function getClient(): Client
+    protected function getClient(): Client
     {
         if (! getenv('LIVE_MAILBOX') ?? false) {
             $this->markTestSkipped('This test requires a live mailbox. Please set the LIVE_MAILBOX environment variable to run this test.');
@@ -92,7 +92,7 @@ abstract class LiveMailboxTestCase extends TestCase
     /**
      * Get special chars.
      */
-    final protected function getSpecialChars(): string
+    protected function getSpecialChars(): string
     {
         return self::SPECIAL_CHARS;
     }
@@ -110,7 +110,7 @@ abstract class LiveMailboxTestCase extends TestCase
      * @throws RuntimeException
      * @throws FolderFetchingException
      */
-    final protected function getFolder(string $folder_path = 'INDEX'): Folder
+    protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $client = $this->getClient();
         self::assertInstanceOf(Client::class, $client->connect());
@@ -137,7 +137,7 @@ abstract class LiveMailboxTestCase extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function appendMessage(Folder $folder, string $message): Message
+    protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
         if (! isset($status['uidnext'])) {
@@ -178,7 +178,7 @@ abstract class LiveMailboxTestCase extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function appendMessageTemplate(Folder $folder, string $template): Message
+    protected function appendMessageTemplate(Folder $folder, string $template): Message
     {
         $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', $template]));
 
@@ -197,7 +197,7 @@ abstract class LiveMailboxTestCase extends TestCase
      * @throws ResponseException
      * @throws RuntimeException
      */
-    final protected function deleteFolder(?Folder $folder = null): bool
+    protected function deleteFolder(?Folder $folder = null): bool
     {
         $response = $folder?->delete(false);
         if (is_array($response)) {
