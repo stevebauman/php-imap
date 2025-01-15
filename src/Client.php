@@ -312,6 +312,20 @@ class Client
     }
 
     /**
+     * Determine if the connection is closed.
+     */
+    public function isClosed(): bool
+    {
+        if (! $this->isConnected()) {
+            return true;
+        }
+
+        $meta = $this->connection->meta();
+
+        return $meta['timed_out'] || $meta['eof'];
+    }
+
+    /**
      * Determine if connection was established and connect if not.
      */
     public function checkConnection(): bool
