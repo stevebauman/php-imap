@@ -3,7 +3,7 @@
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
-use Throwable;
+use Exception;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Exceptions\ConnectionClosedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionTimedOutException;
@@ -34,6 +34,8 @@ class Idle
 
         $this->connect();
 
+        $this->idle();
+
         $ttl = $this->getNextTimeout();
 
         $sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
@@ -41,7 +43,13 @@ class Idle
         while (true) {
             try {
                 $line = $this->getNextLine();
-            } catch (ConnectionTimedOutException|ConnectionClosedException) {
+            } catch (ConnectionTimedOutException) {
+                $this->reidle();
+
+                $ttl = $this->getNextTimeout();
+
+                continue;
+            } catch (ConnectionClosedException) {
                 $this->reconnect();
 
                 $ttl = $this->getNextTimeout();
@@ -66,13 +74,14 @@ class Idle
             try {
                 // End current IDLE by sending DONE. Some servers
                 // require this to avoid a forced disconnect.
-                $this->client->getConnection()->done();
-            } catch (Throwable) {
+                $this->done();
+            } catch (Exception) {
                 // If done fails, we're likely already disconnected.
                 // We'll attempt to reconnect and re-issue IDLE.
+                $this->reconnect();
             }
 
-            $this->reconnect();
+            $this->idle();
 
             // Reset the time-to-live.
             $ttl = $this->getNextTimeout();
@@ -97,7 +106,31 @@ class Idle
         $this->client->connect();
 
         $this->client->openFolder($this->folder->path, true);
+    }
 
+    /**
+     * End the current IDLE session and start a new one.
+     */
+    protected function reidle(): void
+    {
+        $this->done();
+
+        $this->idle();
+    }
+
+    /**
+     * End the current IDLE session.
+     */
+    protected function done(): void
+    {
+        $this->client->getConnection()->done();
+    }
+
+    /**
+     * Being a new IDLE session.
+     */
+    protected function idle(): void
+    {
         $this->client->getConnection()->idle();
     }
 
