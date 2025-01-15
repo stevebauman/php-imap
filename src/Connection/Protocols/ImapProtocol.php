@@ -75,12 +75,13 @@ class ImapProtocol extends Protocol
                 $host,
                 $port,
                 $this->connectionTimeout,
-                $this->streamTimeout,
             );
 
             if (! $this->stream || ! $this->assumedNextLine($response, '* OK')) {
                 throw new ConnectionFailedException('Connection refused');
             }
+
+            $this->setStreamTimeout($this->connectionTimeout);
 
             if ($encryption == 'starttls') {
                 $this->enableStartTls();

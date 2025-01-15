@@ -40,11 +40,6 @@ abstract class Protocol implements ProtocolInterface
     protected int $connectionTimeout = 30;
 
     /**
-     * Default stream timeout in seconds.
-     */
-    protected int $streamTimeout = 60;
-
-    /**
      * Whether certificate validation is enabled.
      */
     protected bool $certValidation = true;
@@ -178,7 +173,7 @@ abstract class Protocol implements ProtocolInterface
      *
      * @throws ConnectionFailedException
      */
-    public function createStream(string $transport, string $host, int $port, int $connectionTimeout, int $streamTimeout): mixed
+    public function createStream(string $transport, string $host, int $port, int $connectionTimeout): mixed
     {
         $stream = stream_socket_client(
             "$transport://$host:$port",
@@ -191,10 +186,6 @@ abstract class Protocol implements ProtocolInterface
 
         if (! $stream) {
             throw new ConnectionFailedException($errstr, $errno);
-        }
-
-        if (stream_set_timeout($stream, $streamTimeout) === false) {
-            throw new ConnectionFailedException('Failed to set stream timeout');
         }
 
         return $stream;
@@ -219,19 +210,13 @@ abstract class Protocol implements ProtocolInterface
     }
 
     /**
-     * Get the current stream timeout.
-     */
-    public function getStreamTimeout(): int
-    {
-        return $this->streamTimeout;
-    }
-
-    /**
      * Set the stream timeout.
      */
     public function setStreamTimeout(int $streamTimeout): Protocol
     {
-        $this->streamTimeout = $streamTimeout;
+        if (stream_set_timeout($this->stream, $streamTimeout) === false) {
+            throw new ConnectionFailedException('Failed to set stream timeout');
+        }
 
         return $this;
     }
