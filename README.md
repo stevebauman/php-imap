@@ -27,7 +27,7 @@ Original Documentation: [php-imap.com](https://www.php-imap.com/)
 
 ## Usage
 
-### Connecting to an IMAP Server
+### Connecting
 
 ```php
 use Webklex\PHPIMAP\ClientManager;
@@ -54,7 +54,7 @@ $client = $manager->account('default');
 $client->connect();
 ```
 
-### Fetch Messages
+### Fetching Messages
 
 To fetch messages from a folder, you may use the `messages` method:
 
@@ -82,7 +82,7 @@ foreach($messages as $message) {
 }
 ```
 
-### Await New Messages (Idle)
+### Awaiting New Messages (Idle)
 
 To await new messages, you may use the `idle` method:
 
