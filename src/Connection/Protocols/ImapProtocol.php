@@ -1231,8 +1231,18 @@ class ImapProtocol extends Protocol
     {
         $response = $this->sendRequest('IDLE');
 
-        if (! $this->assumedNextLine($response, '+ ')) {
-            throw new RuntimeException('Idle failed');
+        while (true) {
+            $line = $this->nextLine($response);
+
+            if (str_starts_with($line, '+ ')) {
+                return;
+            }
+
+            if (preg_match('/^\* OK /i', $line) || preg_match('/^TAG\d+ OK /i', $line)) {
+                continue;
+            }
+
+            throw new RuntimeException('Idle failed - unexpected response: '.trim($line));
         }
     }
 
