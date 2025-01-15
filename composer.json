@@ -27,7 +27,7 @@
         "ext-openssl": "*",
         "ext-mbstring": "*",
         "ext-fileinfo": "*",
-        "nesbot/carbon": "^2.62",
+        "nesbot/carbon": ">=2.0",
         "illuminate/pagination": ">=5.0",
         "symfony/http-foundation": ">=2.8"
     },
