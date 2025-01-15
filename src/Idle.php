@@ -119,7 +119,11 @@ class Idle
      */
     protected function reidle(): void
     {
-        $this->done();
+        try {
+            $this->done();
+        } catch (RuntimeException) {
+            $this->reconnect();
+        }
 
         $this->idle();
     }
