@@ -69,21 +69,20 @@ class Idle
                 continue;
             }
 
-            // If we've been idle too long, politely send DONE & re-issue IDLE.
-            // This keeps the server from killing the connection behind our back.
+            // If we've been idle too long, we'll send a DONE and re-IDLE.
+            // This will keep the server from killing the connection.
             try {
                 // End current IDLE by sending DONE. Some servers
                 // require this to avoid a forced disconnect.
                 $this->done();
             } catch (Exception) {
                 // If done fails, we're likely already disconnected.
-                // We'll attempt to reconnect and re-issue IDLE.
+                // We'll attempt to reconnect and restart the IDLE.
                 $this->reconnect();
             }
 
             $this->idle();
 
-            // Reset the time-to-live.
             $ttl = $this->getNextTimeout();
         }
     }
