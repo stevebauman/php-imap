@@ -4,6 +4,7 @@ namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Webklex\PHPIMAP\Exceptions\NotSupportedCapabilityException;
+use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
 use Webklex\PHPIMAP\Traits\HasEvents;
@@ -319,12 +320,7 @@ class Folder
             throw new NotSupportedCapabilityException('IMAP server does not support IDLE');
         }
 
-        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence) use ($callback) {
-            // Connect the client if the connection is closed.
-            if ($this->client->isClosed()) {
-                $this->client->connect();
-            }
-
+        $fetch = function (int $msgn, int $sequence) {
             // Always reopen the folder on the main client.
             // Otherwise, the new message number isn't
             // known to the current remote session.
@@ -333,6 +329,25 @@ class Folder
             $message = $this->query()->getMessageByMsgn($msgn);
 
             $message->setSequence($sequence);
+
+            return $message;
+        };
+
+        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence) use ($callback, $fetch) {
+            // Connect the client if the connection is closed.
+            if ($this->client->isClosed()) {
+                $this->client->connect();
+            }
+
+            try {
+                $message = $fetch($msgn, $sequence);
+            } catch (RuntimeException) {
+                // If fetching the message fails, we'll attempt
+                // reconnecting and re-fetching the message.
+                $this->client->reconnect();
+
+                $message = $fetch($msgn, $sequence);
+            }
 
             $callback($message);
 
