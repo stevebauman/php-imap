@@ -156,7 +156,7 @@ class ClientManager
      */
     public function setConfig(array|string $config): ClientManager
     {
-        if (is_array($config) === false) {
+        if (is_string($config)) {
             $config = require $config;
         }
 
@@ -164,12 +164,14 @@ class ClientManager
         $path = __DIR__.'/config/'.$config_key.'.php';
 
         $vendor_config = require $path;
+
         $config = $this->array_merge_recursive_distinct($vendor_config, $config);
 
         if (is_array($config)) {
             if (isset($config['default'])) {
                 if (isset($config['accounts']) && $config['default']) {
                     $default_config = $vendor_config['accounts']['default'];
+
                     if (isset($config['accounts'][$config['default']])) {
                         $default_config = array_merge($default_config, $config['accounts'][$config['default']]);
                     }
