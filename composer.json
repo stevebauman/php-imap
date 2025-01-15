@@ -28,7 +28,7 @@
         "ext-mbstring": "*",
         "ext-fileinfo": "*",
         "nesbot/carbon": ">=2.0",
-        "illuminate/conditionable": "*",
+        "illuminate/support": ">=5.0",
         "illuminate/pagination": ">=5.0",
         "symfony/http-foundation": ">=2.8"
     },
@@ -37,9 +37,7 @@
         "phpunit/phpunit": "^9.5.10"
     },
     "suggest": {
-        "ext-imap": "Required for IMAP functionality",
-        "symfony/mime": "Recomended for better extension support",
-        "symfony/var-dumper": "Usefull tool for debugging"
+        "symfony/mime": "Recomended for better extension support"
     },
     "autoload": {
         "psr-4": {
