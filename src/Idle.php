@@ -30,7 +30,7 @@ class Idle
      */
     public function await(callable $callback): void
     {
-        $this->client->getConnection()->setStreamTimeout($this->timeout);
+        $this->setStreamTimeout($this->timeout);
 
         $this->connect();
 
@@ -132,6 +132,14 @@ class Idle
     protected function idle(): void
     {
         $this->client->getConnection()->idle();
+    }
+
+    /**
+     * Set the stream timeout on the connection.
+     */
+    protected function setStreamTimeout(int $timeout): void
+    {
+        $this->client->getConnection()->setStreamTimeout($timeout);
     }
 
     /**
