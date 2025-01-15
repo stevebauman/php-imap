@@ -4,6 +4,7 @@ namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Webklex\PHPIMAP\Exceptions\NotSupportedCapabilityException;
+use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
@@ -341,7 +342,7 @@ class Folder
 
             try {
                 $message = $fetch($msgn, $sequence);
-            } catch (RuntimeException) {
+            } catch (RuntimeException|ResponseException) {
                 // If fetching the message fails, we'll attempt
                 // reconnecting and re-fetching the message.
                 $this->client->reconnect();
