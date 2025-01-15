@@ -13,6 +13,11 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Steve Bauman",
+            "email": "steven_bauman@outlook.com",
+            "role": "Developer"
+        },
+        {
             "name": "Malte Goldenbaum",
             "email": "github@webklex.com",
             "role": "Developer"
@@ -37,7 +42,7 @@
         "phpunit/phpunit": "^9.5.10"
     },
     "suggest": {
-        "symfony/mime": "Recomended for better extension support"
+        "symfony/mime": "Recommended for better extension support"
     },
     "autoload": {
         "psr-4": {
@@ -51,12 +56,5 @@
     },
     "scripts": {
         "test": "phpunit"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
