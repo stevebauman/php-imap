@@ -38,8 +38,6 @@ class Idle
      */
     public function await(callable $callback): void
     {
-        $this->setStreamTimeout($this->timeout);
-
         $this->connect();
 
         $this->idle();
@@ -112,6 +110,8 @@ class Idle
         $this->client->connect();
 
         $this->client->openFolder($this->folder->path, true);
+
+        $this->client->getConnection()->setStreamTimeout($this->timeout);
     }
 
     /**
@@ -138,14 +138,6 @@ class Idle
     protected function idle(): void
     {
         $this->client->getConnection()->idle();
-    }
-
-    /**
-     * Set the stream timeout on the connection.
-     */
-    protected function setStreamTimeout(int $timeout): void
-    {
-        $this->client->getConnection()->setStreamTimeout($timeout);
     }
 
     /**
