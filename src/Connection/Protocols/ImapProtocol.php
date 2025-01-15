@@ -1203,10 +1203,7 @@ class ImapProtocol extends Protocol
      */
     public function getQuota($username): Response
     {
-        $command = 'GETQUOTA';
-        $params = ['"#user/'.$username.'"'];
-
-        return $this->requestAndResponse($command, $params);
+        return $this->requestAndResponse('GETQUOTA', ['"#user/'.$username.'"']);
     }
 
     /**
@@ -1216,10 +1213,7 @@ class ImapProtocol extends Protocol
      */
     public function getQuotaRoot(string $quota_root = 'INBOX'): Response
     {
-        $command = 'GETQUOTAROOT';
-        $params = [$quota_root];
-
-        return $this->requestAndResponse($command, $params);
+        return $this->requestAndResponse('GETQUOTAROOT', [$quota_root]);
     }
 
     /**
