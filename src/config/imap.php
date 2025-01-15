@@ -36,7 +36,7 @@ return [
     */
     'accounts' => [
 
-        'default' => [// account identifier
+        'default' => [ // account identifier
             'host' => 'localhost',
             'port' => 993,
             'protocol' => 'imap', // might also use imap, [pop3 or nntp (untested)]
