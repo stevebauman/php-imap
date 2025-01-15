@@ -27,6 +27,8 @@ Original Documentation: [php-imap.com](https://www.php-imap.com/)
 
 ## Usage
 
+### Connecting to an IMAP Server
+
 ```php
 use Webklex\PHPIMAP\ClientManager;
 
@@ -50,32 +52,48 @@ $client = $manager->account('default');
 
 // Connect to the IMAP Server.
 $client->connect();
+```
 
-// Get all Mailboxes.
-/** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-$folders = $client->getFolders();
+### Fetch Messages
 
-// Loop through every Mailbox.
+To fetch messages from a folder, you may use the `messages` method:
+
+```php
 /** @var \Webklex\PHPIMAP\Folder $folder */
-foreach($folders as $folder) {
-    // Get all Messages of the current Mailbox $folder.
-    /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-    $messages = $folder->messages()->all()->get();
+$inbox = $client->getFolder('INBOX');
+
+/** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+$messages = $folder->messages()->all()->get();
+
+/** @var \Webklex\PHPIMAP\Message $message */
+foreach($messages as $message) {
+    echo $message->getSubject().'<br />';
     
-    /** @var \Webklex\PHPIMAP\Message $message */
-    foreach($messages as $message) {
-        echo $message->getSubject().'<br />';
-        echo 'Attachments: '.$message->getAttachments()->count().'<br />';
-        echo $message->getHTMLBody();
-        
-        // Move the current Message to 'INBOX.read'.
-        if ($message->move('INBOX.read') == true) {
-            echo 'Message has been moved';
-        } else {
-            echo 'Message could not be moved';
-        }
+    echo 'Attachments: '.$message->getAttachments()->count().'<br />';
+    
+    echo $message->getHTMLBody();
+    
+    // Move the current Message to 'INBOX.read'.
+    if ($message->move('INBOX.read') == true) {
+        echo 'Message has been moved';
+    } else {
+        echo 'Message could not be moved';
     }
 }
+```
+
+### Await New Messages (Idle)
+
+To await new messages, you may use the `idle` method:
+
+> This method will listen for new messages indefinitely.
+
+```php
+use Webklex\PHPIMAP\Message;
+
+$client->getFolder('INBOX')->idle(function (Message $message) {
+    // Do something with the new message.
+}, timeout: 60); // in seconds
 ```
 
 ## Tests
