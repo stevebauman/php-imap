@@ -41,7 +41,7 @@ jobs:
           extensions: openssl, json, mbstring, iconv, fileinfo, libxml, zip
           coverage: none
 
-      - name: Install Composer dependencies
+      - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - run: "sh .github/docker/dovecot_setup.sh"
