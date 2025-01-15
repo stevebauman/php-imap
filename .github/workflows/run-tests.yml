@@ -31,7 +31,7 @@ jobs:
       LIVE_MAILBOX_QUOTA_SUPPORT: true
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Setup PHP
@@ -46,5 +46,5 @@ jobs:
 
       - run: "sh .github/docker/dovecot_setup.sh"
 
-      - name: Execute tests
+      - name: Execute Tests
         run: vendor/bin/phpunit
