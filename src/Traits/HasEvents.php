@@ -13,6 +13,16 @@ trait HasEvents
     protected array $events = [];
 
     /**
+     * Dispatch a specific event.
+     */
+    public function dispatch(string $section, string $event, mixed ...$args): void
+    {
+        $event = $this->getEvent($section, $event);
+
+        $event::dispatch(...$args);
+    }
+
+    /**
      * Set a specific event.
      */
     public function setEvent(string $section, string $event, mixed $class): void
@@ -32,7 +42,6 @@ trait HasEvents
 
     /**
      * Get a specific event callback.
-     *
      *
      * @throws EventNotFoundException
      */

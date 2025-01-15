@@ -599,8 +599,7 @@ class Client
         $folder = $this->getFolderByPath($folder_path, true);
 
         if ($status && $folder) {
-            $event = $this->getEvent('folder', 'new');
-            $event::dispatch($folder);
+            $this->dispatch('folder', 'new', $folder);
         }
 
         return $folder;
@@ -625,8 +624,7 @@ class Client
             $this->expunge();
         }
 
-        $event = $this->getEvent('folder', 'deleted');
-        $event::dispatch($folder);
+        $this->dispatch('folder', 'deleted', $folder);
 
         return $status;
     }

@@ -218,9 +218,7 @@ class Folder
 
         $folder = $this->client->getFolder($new_name);
 
-        $event = $this->getEvent('folder', 'moved');
-
-        $event::dispatch($this, $folder);
+        $this->dispatch('folder', 'moved', $this, $folder);
 
         return $status;
     }
@@ -283,8 +281,7 @@ class Folder
             $this->client->expunge();
         }
 
-        $event = $this->getEvent('folder', 'deleted');
-        $event::dispatch($this);
+        $this->dispatch('folder', 'deleted', $this);
 
         return $status;
     }
@@ -339,8 +336,7 @@ class Folder
 
             $callback($message);
 
-            $event = $this->getEvent('message', 'new');
-            $event::dispatch($message);
+            $this->dispatch('message', 'new', $message);
         });
     }
 
