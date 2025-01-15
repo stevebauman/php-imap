@@ -60,7 +60,6 @@ interface ProtocolInterface
     /**
      * Logout of the current server session.
      *
-     *
      * @throws ImapBadRequestException
      * @throws ImapServerErrorException
      * @throws RuntimeException

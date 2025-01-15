@@ -3,10 +3,10 @@
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
-use Exception;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Exceptions\ConnectionClosedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionTimedOutException;
+use Webklex\PHPIMAP\Exceptions\RuntimeException;
 
 class Idle
 {
@@ -23,6 +23,14 @@ class Idle
         protected int $timeout,
     ) {
         $this->client = $folder->getClient()->clone();
+    }
+
+    /**
+     * Destructor.
+     */
+    public function __destruct()
+    {
+        $this->client->disconnect();
     }
 
     /**
@@ -69,13 +77,12 @@ class Idle
                 continue;
             }
 
-            // If we've been idle too long, we'll send a DONE and re-IDLE.
-            // This will keep the server from killing the connection.
             try {
-                // End current IDLE by sending DONE. Some servers
-                // require this to avoid a forced disconnect.
+                // If we've been idle too long, we'll send a DONE and re-IDLE.
+                // This will keep the server from killing the connection.
+                // Some Servers require this to avoid disconnection.
                 $this->done();
-            } catch (Exception) {
+            } catch (RuntimeException) {
                 // If done fails, we're likely already disconnected.
                 // We'll attempt to reconnect and restart the IDLE.
                 $this->reconnect();
