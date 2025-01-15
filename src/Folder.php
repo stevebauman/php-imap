@@ -322,15 +322,15 @@ class Folder
             throw new NotSupportedCapabilityException('IMAP server does not support IDLE');
         }
 
-        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence, Carbon $timeout) use ($callback) {
-            // Reconnect the main client if the connection is lost or considered stale.
-            if (! $this->client->isConnected() || $timeout->isBefore(Carbon::now())) {
-                $this->client->getConnection()->reset();
+        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence) use ($callback) {
+            // Connect the client if the connection is closed.
+            if ($this->client->isClosed()) {
                 $this->client->connect();
             }
 
-            // Always reopen the folder on the main client. Otherwise, the new
-            // message number isn't known to the current remote session.
+            // Always reopen the folder on the main client.
+            // Otherwise, the new message number isn't
+            // known to the current remote session.
             $this->client->openFolder($this->path, true);
 
             $message = $this->query()->getMessageByMsgn($msgn);

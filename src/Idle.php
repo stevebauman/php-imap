@@ -60,7 +60,7 @@ class Idle
             if (($pos = strpos($line, 'EXISTS')) !== false) {
                 $msgn = (int) substr($line, 2, $pos - 2);
 
-                $callback($msgn, $sequence, $ttl);
+                $callback($msgn, $sequence);
 
                 $ttl = $this->getNextTimeout();
             }
