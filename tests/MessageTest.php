@@ -4,25 +4,12 @@ namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageSizeFetchingException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\IMAP;
 use Webklex\PHPIMAP\Message;
 
