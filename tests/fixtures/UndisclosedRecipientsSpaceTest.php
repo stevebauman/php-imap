@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class UndisclosedRecipientsSpaceTest.
- */
 class UndisclosedRecipientsSpaceTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture undisclosed_recipients_space.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('undisclosed_recipients_space.eml');

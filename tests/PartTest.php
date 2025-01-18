@@ -3,7 +3,6 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
 use Webklex\PHPIMAP\Part;

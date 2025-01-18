@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class EmailAddressTest.
- */
 class EmailAddressTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture email_address.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('email_address.eml');

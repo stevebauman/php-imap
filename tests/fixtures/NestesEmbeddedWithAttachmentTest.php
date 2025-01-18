@@ -16,14 +16,8 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 
-/**
- * Class NestesEmbeddedWithAttachmentTest.
- */
 class NestesEmbeddedWithAttachmentTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture nestes_embedded_with_attachment.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('nestes_embedded_with_attachment.eml');

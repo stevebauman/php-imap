@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class PlainOnlyTest.
- */
 class PlainOnlyTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture plain_only.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('plain_only.eml');

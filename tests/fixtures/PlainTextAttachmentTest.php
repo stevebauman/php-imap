@@ -15,14 +15,8 @@ namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class PlainTextAttachmentTest.
- */
 class PlainTextAttachmentTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture plain_text_attachment.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('plain_text_attachment.eml');

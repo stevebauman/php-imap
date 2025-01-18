@@ -16,14 +16,8 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 
-/**
- * Class PecTest.
- */
 class PecTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture pec.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('pec.eml');

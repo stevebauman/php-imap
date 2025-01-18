@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class WithoutCharsetPlainOnlyTest.
- */
 class WithoutCharsetPlainOnlyTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture without_charset_plain_only.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('without_charset_plain_only.eml');

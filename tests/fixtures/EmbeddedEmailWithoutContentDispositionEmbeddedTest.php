@@ -6,9 +6,6 @@ use Webklex\PHPIMAP\Attachment;
 
 class EmbeddedEmailWithoutContentDispositionEmbeddedTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture embedded_email_without_content_disposition-embedded.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('embedded_email_without_content_disposition-embedded.eml');

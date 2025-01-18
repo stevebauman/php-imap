@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class NullContentCharsetTest.
- */
 class NullContentCharsetTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture null_content_charset.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('null_content_charset.eml');

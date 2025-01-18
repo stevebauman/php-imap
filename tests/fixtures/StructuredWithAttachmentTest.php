@@ -15,14 +15,8 @@ namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class StructuredWithAttachmentTest.
- */
 class StructuredWithAttachmentTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture structured_with_attachment.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('structured_with_attachment.eml');

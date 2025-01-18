@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class MissingFromTest.
- */
 class MissingFromTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture missing_from.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('missing_from.eml');

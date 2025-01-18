@@ -4,9 +4,6 @@ namespace Tests\fixtures;
 
 class ImapMimeHeaderDecodeReturnsFalseTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture imap_mime_header_decode_returns_false.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('imap_mime_header_decode_returns_false.eml');

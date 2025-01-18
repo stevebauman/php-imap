@@ -1,37 +1,9 @@
 <?php
 
-/*
-* File: MessageTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 07.03.23 20:21
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use Carbon\Carbon;
-use ReflectionException;
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageSizeFetchingException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
@@ -42,29 +14,8 @@ use Webklex\PHPIMAP\Support\FlagCollection;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 use Webklex\PHPIMAP\Support\Masks\MessageMask;
 
-/**
- * Class MessageTest.
- */
 class MessageTest extends LiveMailboxTestCase
 {
-    /**
-     * Get the default message.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function getDefaultMessage(): Message
     {
         $folder = $this->getFolder('INBOX');
@@ -75,25 +26,6 @@ class MessageTest extends LiveMailboxTestCase
         return $message;
     }
 
-    /**
-     * Test Message::convertEncoding().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws MessageNotFoundException
-     */
     public function test_convert_encoding(): void
     {
         $message = $this->getDefaultMessage();
@@ -103,26 +35,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::thread().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws GetMessagesFailedException
-     */
     public function test_thread(): void
     {
         $client = $this->getClient();
@@ -158,25 +70,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($this->deleteFolder($folder));
     }
 
-    /**
-     * Test Message::hasAttachments().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_has_attachments(): void
     {
         $message = $this->getDefaultMessage();
@@ -194,25 +87,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFetchOptions().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_fetch_options(): void
     {
         $message = $this->getDefaultMessage();
@@ -222,25 +96,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getMessageId().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_message_id(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -253,25 +108,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getReplyTo().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_reply_to(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -286,25 +122,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setSequence().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_sequence(): void
     {
         $message = $this->getDefaultMessage();
@@ -320,25 +137,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getEvent().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_event(): void
     {
         $message = $this->getDefaultMessage();
@@ -350,25 +148,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::__construct().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test__construct(): void
     {
         $message = $this->getDefaultMessage();
@@ -377,25 +156,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFlag().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_flag(): void
     {
         $message = $this->getDefaultMessage();
@@ -407,25 +167,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getMsgn().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_msgn(): void
     {
         $client = $this->getClient();
@@ -449,25 +190,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($this->deleteFolder($folder));
     }
 
-    /**
-     * Test Message::peek().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_peek(): void
     {
         $message = $this->getDefaultMessage();
@@ -485,25 +207,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::unsetFlag().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_unset_flag(): void
     {
         $message = $this->getDefaultMessage();
@@ -520,25 +223,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setSequenceId().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_sequence_id(): void
     {
         $message = $this->getDefaultMessage();
@@ -558,25 +242,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getTo().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_to(): void
     {
         $message = $this->getDefaultMessage();
@@ -597,25 +262,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setUid().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_uid(): void
     {
         $message = $this->getDefaultMessage();
@@ -632,25 +278,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getUid().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_uid(): void
     {
         $message = $this->getDefaultMessage();
@@ -668,25 +295,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::hasTextBody().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_has_text_body(): void
     {
         $message = $this->getDefaultMessage();
@@ -696,25 +304,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::__get().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test__get(): void
     {
         $message = $this->getDefaultMessage();
@@ -726,25 +315,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getDate().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_date(): void
     {
         $message = $this->getDefaultMessage();
@@ -754,25 +324,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setMask().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_mask(): void
     {
         $message = $this->getDefaultMessage();
@@ -788,25 +339,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getSequenceId().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_sequence_id(): void
     {
         $message = $this->getDefaultMessage();
@@ -826,25 +358,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setConfig().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_config(): void
     {
         $message = $this->getDefaultMessage();
@@ -861,25 +374,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getEvents().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_events(): void
     {
         $message = $this->getDefaultMessage();
@@ -891,25 +385,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFetchOption().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_fetch_option(): void
     {
         $message = $this->getDefaultMessage();
@@ -931,25 +406,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getMsglist().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_msglist(): void
     {
         $message = $this->getDefaultMessage();
@@ -960,25 +416,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::decodeString().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_decode_string(): void
     {
         $message = $this->getDefaultMessage();
@@ -990,25 +427,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::attachments().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_attachments(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1021,25 +439,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getMask().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_mask(): void
     {
         $message = $this->getDefaultMessage();
@@ -1055,25 +454,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::hasHTMLBody().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_has_html_body(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1091,25 +471,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setEvents().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_events(): void
     {
         $message = $this->getDefaultMessage();
@@ -1126,25 +487,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::__set().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test__set(): void
     {
         $message = $this->getDefaultMessage();
@@ -1156,25 +498,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getHTMLBody().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_html_body(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1194,25 +517,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getSequence().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_sequence(): void
     {
         $message = $this->getDefaultMessage();
@@ -1230,25 +534,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::restore().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_restore(): void
     {
         $message = $this->getDefaultMessage();
@@ -1263,25 +548,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getPriority().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_priority(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1293,25 +559,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setAttachments().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_attachments(): void
     {
         $message = $this->getDefaultMessage();
@@ -1324,25 +571,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFrom().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_from(): void
     {
         $message = $this->getDefaultMessage();
@@ -1352,25 +580,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setEvent().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_event(): void
     {
         $message = $this->getDefaultMessage();
@@ -1382,25 +591,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getInReplyTo().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_in_reply_to(): void
     {
         $message = $this->getDefaultMessage();
@@ -1418,25 +608,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::copy().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_copy(): void
     {
         $message = $this->getDefaultMessage();
@@ -1462,25 +633,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($new_message->delete());
     }
 
-    /**
-     * Test Message::getBodies().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_bodies(): void
     {
         $message = $this->getDefaultMessage();
@@ -1491,25 +643,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFlags().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_flags(): void
     {
         $message = $this->getDefaultMessage();
@@ -1525,25 +658,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::addFlag().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_add_flag(): void
     {
         $message = $this->getDefaultMessage();
@@ -1556,25 +670,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getSubject().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_subject(): void
     {
         $message = $this->getDefaultMessage();
@@ -1584,25 +679,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getClient().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_client(): void
     {
         $message = $this->getDefaultMessage();
@@ -1612,25 +688,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFetchFlagsOption().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_fetch_flags_option(): void
     {
         $message = $this->getDefaultMessage();
@@ -1643,25 +700,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::mask().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_mask(): void
     {
         $message = $this->getDefaultMessage();
@@ -1671,25 +709,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setMsglist().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_msglist(): void
     {
         $message = $this->getDefaultMessage();
@@ -1700,25 +719,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::flags().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_flags(): void
     {
         $message = $this->getDefaultMessage();
@@ -1728,25 +728,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getAttributes().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_attributes(): void
     {
         $message = $this->getDefaultMessage();
@@ -1757,25 +738,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getAttachments().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_attachments(): void
     {
         $message = $this->getDefaultMessage();
@@ -1785,25 +747,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getRawBody().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_raw_body(): void
     {
         $message = $this->getDefaultMessage();
@@ -1813,25 +756,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::is().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_is(): void
     {
         $message = $this->getDefaultMessage();
@@ -1841,25 +765,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFlags().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_flags(): void
     {
         $message = $this->getDefaultMessage();
@@ -1870,24 +775,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::make().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws ReflectionException
-     */
     public function test_make(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1905,25 +792,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertInstanceOf(Message::class, $message);
     }
 
-    /**
-     * Test Message::setAvailableFlags().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_available_flags(): void
     {
         $message = $this->getDefaultMessage();
@@ -1936,25 +804,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getSender().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_sender(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -1968,21 +817,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::fromFile().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws ReflectionException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_from_file(): void
     {
         $this->getManager();
@@ -1991,25 +825,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertInstanceOf(Message::class, $message);
     }
 
-    /**
-     * Test Message::getStructure().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_structure(): void
     {
         $message = $this->getDefaultMessage();
@@ -2019,26 +834,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::get().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws MessageSizeFetchingException
-     */
     public function test_get(): void
     {
         $message = $this->getDefaultMessage();
@@ -2048,25 +843,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getSize().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_size(): void
     {
         $message = $this->getDefaultMessage();
@@ -2076,25 +852,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getHeader().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_header(): void
     {
         $message = $this->getDefaultMessage();
@@ -2104,25 +861,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getReferences().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_references(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -2135,25 +873,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFolderPath().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_folder_path(): void
     {
         $message = $this->getDefaultMessage();
@@ -2169,25 +888,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getTextBody().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_text_body(): void
     {
         $message = $this->getDefaultMessage();
@@ -2197,25 +897,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::move().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_move(): void
     {
         $message = $this->getDefaultMessage();
@@ -2240,25 +921,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFolderPath().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_folder_path(): void
     {
         $message = $this->getDefaultMessage();
@@ -2268,25 +930,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFolder().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_folder(): void
     {
         $message = $this->getDefaultMessage();
@@ -2296,25 +939,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFetchBodyOption().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_fetch_body_option(): void
     {
         $message = $this->getDefaultMessage();
@@ -2324,25 +948,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setFetchBodyOption().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_fetch_body_option(): void
     {
         $message = $this->getDefaultMessage();
@@ -2354,25 +959,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::getFetchFlagsOption().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_fetch_flags_option(): void
     {
         $message = $this->getDefaultMessage();
@@ -2382,25 +968,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::__call().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test__call(): void
     {
         $message = $this->getDefaultMessage();
@@ -2410,25 +977,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setClient().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_client(): void
     {
         $message = $this->getDefaultMessage();
@@ -2445,25 +993,6 @@ class MessageTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Message::setMsgn().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_msgn(): void
     {
         $message = $this->getDefaultMessage();

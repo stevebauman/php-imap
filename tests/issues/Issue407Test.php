@@ -19,23 +19,6 @@ use Webklex\PHPIMAP\Message;
 
 class Issue407Test extends LiveMailboxTestCase
 {
-    /**
-     * @return void
-     *
-     * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\FolderFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapBadRequestException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapServerErrorException
-     * @throws \Webklex\PHPIMAP\Exceptions\InvalidMessageDateException
-     * @throws \Webklex\PHPIMAP\Exceptions\MaskNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageContentFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageFlagException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
-     * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
-     */
     public function test_issue()
     {
         $folder = $this->getFolder('INBOX');

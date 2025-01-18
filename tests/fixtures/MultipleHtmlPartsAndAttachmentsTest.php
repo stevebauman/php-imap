@@ -16,14 +16,8 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 
-/**
- * Class MultipleHtmlPartsAndAttachmentsTest.
- */
 class MultipleHtmlPartsAndAttachmentsTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture multiple_html_parts_and_attachments.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('multiple_html_parts_and_attachments.eml');

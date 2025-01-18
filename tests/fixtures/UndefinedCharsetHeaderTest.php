@@ -15,14 +15,8 @@ namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Address;
 
-/**
- * Class UndefinedCharsetHeaderTest.
- */
 class UndefinedCharsetHeaderTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture undefined_charset_header.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('undefined_charset_header.eml');

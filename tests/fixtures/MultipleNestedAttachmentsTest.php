@@ -16,14 +16,8 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 
-/**
- * Class MultipleNestedAttachmentsTest.
- */
 class MultipleNestedAttachmentsTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture multiple_nested_attachments.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('multiple_nested_attachments.eml');

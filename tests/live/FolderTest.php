@@ -1,56 +1,15 @@
 <?php
 
-/*
-* File: FolderTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 04.03.23 03:52
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
 
-/**
- * Class FolderTest.
- */
 class FolderTest extends LiveMailboxTestCase
 {
-    /**
-     * Try to create a new query instance.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -61,20 +20,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertInstanceOf(WhereQuery::class, $folder->messages());
     }
 
-    /**
-     * Test Folder::hasChildren().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws EventNotFoundException
-     */
     public function test_has_children(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -90,20 +35,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertTrue($folder->hasChildren());
     }
 
-    /**
-     * Test Folder::setChildren().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_children(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -121,20 +52,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertTrue($folder->getChildren()->isEmpty());
     }
 
-    /**
-     * Test Folder::getChildren().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_children(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -153,20 +70,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertFalse($folder->getChildren()->isEmpty());
     }
 
-    /**
-     * Test Folder::move().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_move(): void
     {
         $client = $this->getClient();
@@ -195,20 +98,6 @@ class FolderTest extends LiveMailboxTestCase
         }
     }
 
-    /**
-     * Test Folder::delete().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_delete(): void
     {
         $client = $this->getClient();
@@ -227,25 +116,6 @@ class FolderTest extends LiveMailboxTestCase
         }
     }
 
-    /**
-     * Test Folder::overview().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     */
     public function test_overview(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -270,25 +140,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertTrue($message->delete());
     }
 
-    /**
-     * Test Folder::appendMessage().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_append_message(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -305,19 +156,6 @@ class FolderTest extends LiveMailboxTestCase
         $this->assertTrue($message->delete());
     }
 
-    /**
-     * Test Folder::subscribe().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_subscribe(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -331,19 +169,6 @@ class FolderTest extends LiveMailboxTestCase
         $folder->unsubscribe();
     }
 
-    /**
-     * Test Folder::unsubscribe().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_unsubscribe(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -356,19 +181,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertTrue(str_starts_with($status[0], 'OK'));
     }
 
-    /**
-     * Test Folder::status().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_status(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -382,19 +194,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertGreaterThan(0, $status['uidvalidity']);
     }
 
-    /**
-     * Test Folder::examine().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_examine(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -408,19 +207,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertTrue(($status['exists'] ?? -1) >= 0);
     }
 
-    /**
-     * Test Folder::getClient().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_client(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -428,19 +214,6 @@ class FolderTest extends LiveMailboxTestCase
         self::assertInstanceOf(Client::class, $folder->getClient());
     }
 
-    /**
-     * Test Folder::setDelimiter().
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_set_delimiter(): void
     {
         $folder = $this->getFolder('INBOX');

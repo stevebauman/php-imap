@@ -1,32 +1,13 @@
 <?php
 
-/*
-* File: StructureTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 28.12.22 18:11
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\Structure;
 
 class StructureTest extends TestCase
 {
-    /**
-     * Test parsing email headers.
-     *
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     */
     public function test_structure_parsing(): void
     {
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));

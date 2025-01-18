@@ -19,27 +19,6 @@ use Webklex\PHPIMAP\Message;
 
 class Issue413Test extends LiveMailboxTestCase
 {
-    /**
-     * Live server test.
-     *
-     * @return void
-     *
-     * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\EventNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\FolderFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\GetMessagesFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapBadRequestException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapServerErrorException
-     * @throws \Webklex\PHPIMAP\Exceptions\InvalidMessageDateException
-     * @throws \Webklex\PHPIMAP\Exceptions\MaskNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageContentFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageFlagException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
-     * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
-     */
     public function test_live_issue_email()
     {
         $folder = $this->getFolder('INBOX');
@@ -57,22 +36,6 @@ class Issue413Test extends LiveMailboxTestCase
         $message->delete();
     }
 
-    /**
-     * Static parsing test.
-     *
-     * @return void
-     *
-     * @throws \ReflectionException
-     * @throws \Webklex\PHPIMAP\Exceptions\AuthFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\ConnectionFailedException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapBadRequestException
-     * @throws \Webklex\PHPIMAP\Exceptions\ImapServerErrorException
-     * @throws \Webklex\PHPIMAP\Exceptions\InvalidMessageDateException
-     * @throws \Webklex\PHPIMAP\Exceptions\MaskNotFoundException
-     * @throws \Webklex\PHPIMAP\Exceptions\MessageContentFetchingException
-     * @throws \Webklex\PHPIMAP\Exceptions\ResponseException
-     * @throws \Webklex\PHPIMAP\Exceptions\RuntimeException
-     */
     public function test_issue_email()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-413.eml']);

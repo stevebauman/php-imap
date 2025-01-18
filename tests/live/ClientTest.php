@@ -1,67 +1,21 @@
 <?php
 
-/*
-* File: ClientTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 04.03.23 03:52
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\Connection\Protocols\ProtocolInterface;
 use Webklex\PHPIMAP\EncodingAliases;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 use Webklex\PHPIMAP\Support\Masks\MessageMask;
 
-/**
- * Class ClientTest.
- */
 class ClientTest extends LiveMailboxTestCase
 {
-    /**
-     * Test if the connection is working.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws MaskNotFoundException
-     */
     public function test_connect(): void
     {
         self::assertNotNull($this->getClient()->connect());
     }
 
-    /**
-     * Test if the connection is working.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_is_connected(): void
     {
         $client = $this->getClient()->connect();
@@ -69,18 +23,6 @@ class ClientTest extends LiveMailboxTestCase
         self::assertTrue($client->isConnected());
     }
 
-    /**
-     * Test if the connection state can be determined.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_disconnect(): void
     {
         $client = $this->getClient()->connect();
@@ -88,19 +30,6 @@ class ClientTest extends LiveMailboxTestCase
         self::assertFalse($client->disconnect()->isConnected());
     }
 
-    /**
-     * Test to get the default inbox folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws FolderFetchingException
-     */
     public function test_get_folder(): void
     {
         $client = $this->getClient()->connect();
@@ -109,19 +38,6 @@ class ClientTest extends LiveMailboxTestCase
         self::assertInstanceOf(Folder::class, $folder);
     }
 
-    /**
-     * Test to get the default inbox folder by name.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_folder_by_name(): void
     {
         $client = $this->getClient()->connect();
@@ -130,19 +46,6 @@ class ClientTest extends LiveMailboxTestCase
         self::assertInstanceOf(Folder::class, $folder);
     }
 
-    /**
-     * Test to get the default inbox folder by path.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_folder_by_path(): void
     {
         $client = $this->getClient()->connect();
@@ -151,19 +54,6 @@ class ClientTest extends LiveMailboxTestCase
         self::assertInstanceOf(Folder::class, $folder);
     }
 
-    /**
-     * Test to get all folders.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_folders(): void
     {
         $client = $this->getClient()->connect();

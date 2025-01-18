@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class MissingDateTest.
- */
 class MissingDateTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture missing_date.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('missing_date.eml');

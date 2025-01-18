@@ -4,9 +4,6 @@ namespace Tests\fixtures;
 
 class KsC56011987HeadersTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture ks_c_5601-1987_headers.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('ks_c_5601-1987_headers.eml');

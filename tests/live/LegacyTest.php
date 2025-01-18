@@ -17,39 +17,14 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageSearchValidationException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
-/**
- * Class LegacyTest.
- */
 class LegacyTest extends TestCase
 {
-    /**
-     * Client.
-     */
     protected static Client $client;
 
-    /**
-     * Create a new LegacyTest instance.
-     */
     public function __construct(?string $name = null, array $data = [], int|string $dataName = '')
     {
         if (! getenv('LIVE_MAILBOX') ?? false) {
@@ -78,21 +53,6 @@ class LegacyTest extends TestCase
         self::assertInstanceOf(Client::class, self::$client->connect());
     }
 
-    /**
-     * @throws RuntimeException
-     * @throws MessageFlagException
-     * @throws MessageContentFetchingException
-     * @throws ResponseException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ConnectionFailedException
-     * @throws InvalidMessageDateException
-     * @throws AuthFailedException
-     * @throws MessageHeaderFetchingException
-     */
     public function test_sizes(): void
     {
         $delimiter = ClientManager::get('options.delimiter');
@@ -111,19 +71,6 @@ class LegacyTest extends TestCase
         self::assertEquals(214, self::$client->getConnection()->sizes($message->uid)->array()[$message->uid]);
     }
 
-    /**
-     * Try to create a new query instance.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -134,19 +81,6 @@ class LegacyTest extends TestCase
         self::assertInstanceOf(WhereQuery::class, $folder->messages());
     }
 
-    /**
-     * Get a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws FolderFetchingException
-     */
     protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $folder = self::$client->getFolderByPath($folder_path);
@@ -155,22 +89,6 @@ class LegacyTest extends TestCase
         return $folder;
     }
 
-    /**
-     * Append a message to a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
@@ -196,22 +114,6 @@ class LegacyTest extends TestCase
         return $message;
     }
 
-    /**
-     * Append a message template to a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     final protected function appendMessageTemplate(Folder $folder, string $template): Message
     {
         $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', $template]));
@@ -219,19 +121,7 @@ class LegacyTest extends TestCase
         return $this->appendMessage($folder, $content);
     }
 
-    /**
-     * Delete a folder if it is given.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
-    final protected function deleteFolder(?Folder $folder = null): bool
+    protected function deleteFolder(?Folder $folder = null): bool
     {
         $response = $folder?->delete(false);
         if (is_array($response)) {
@@ -252,27 +142,6 @@ class LegacyTest extends TestCase
         return false;
     }
 
-    /**
-     * Try to create a new query instance with a where clause.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws GetMessagesFailedException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MessageSearchValidationException
-     */
     public function test_query_where(): void
     {
         $delimiter = ClientManager::get('options.delimiter');
@@ -347,20 +216,6 @@ class LegacyTest extends TestCase
         self::assertTrue($this->deleteFolder($folder));
     }
 
-    /**
-     * Test query where criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_query_where_criteria(): void
     {
         self::$client->reconnect();
@@ -407,18 +262,6 @@ class LegacyTest extends TestCase
         $this->assertWhereSearchCriteria($folder, 'SINCE', Carbon::now()->subDays(), true);
     }
 
-    /**
-     * Assert where search criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
@@ -443,18 +286,6 @@ class LegacyTest extends TestCase
         self::assertSame($expected, $item);
     }
 
-    /**
-     * Assert header search criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
     {
         $query = $folder->query()->whereHeader($criteria, $value);

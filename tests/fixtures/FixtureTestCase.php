@@ -3,29 +3,13 @@
 namespace Tests\fixtures;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Message;
 
 abstract class FixtureTestCase extends TestCase
 {
-    /**
-     * Client manager.
-     */
     protected static ClientManager $manager;
 
-    /**
-     * FixtureTestCase constructor.
-     */
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -50,20 +34,6 @@ abstract class FixtureTestCase extends TestCase
         return self::$manager;
     }
 
-    /**
-     * Get a fixture message.
-     *
-     * @throws ReflectionException
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function getFixture(string $template): Message
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..',  'messages', $template]);

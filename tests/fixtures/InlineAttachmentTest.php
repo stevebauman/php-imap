@@ -16,14 +16,8 @@ namespace Tests\fixtures;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 
-/**
- * Class InlineAttachmentTest.
- */
 class InlineAttachmentTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture inline_attachment.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('inline_attachment.eml');

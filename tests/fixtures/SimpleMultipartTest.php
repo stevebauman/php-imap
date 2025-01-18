@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class SimpleMultipartTest.
- */
 class SimpleMultipartTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture simple_multipart.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('simple_multipart.eml');

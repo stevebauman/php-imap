@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class MultipartWithoutBodyTest.
- */
 class MultipartWithoutBodyTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture multipart_without_body.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('multipart_without_body.eml');

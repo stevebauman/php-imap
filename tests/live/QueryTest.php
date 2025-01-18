@@ -15,23 +15,11 @@ namespace Tests\live;
 
 use Carbon\Carbon;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
 class QueryTest extends LiveMailboxTestCase
 {
-    /**
-     * Try to create a new query instance.
-     */
     public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -42,9 +30,6 @@ class QueryTest extends LiveMailboxTestCase
         self::assertInstanceOf(WhereQuery::class, $folder->messages());
     }
 
-    /**
-     * Try to create a new query instance with a where clause.
-     */
     public function test_query_where(): void
     {
         $client = $this->getClient();
@@ -121,20 +106,6 @@ class QueryTest extends LiveMailboxTestCase
         self::assertTrue($this->deleteFolder($folder));
     }
 
-    /**
-     * Test query where criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws FolderFetchingException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_query_where_criteria(): void
     {
         $folder = $this->getFolder('INBOX');
@@ -179,18 +150,6 @@ class QueryTest extends LiveMailboxTestCase
         $this->assertWhereSearchCriteria($folder, 'SINCE', Carbon::now()->subDays(), true);
     }
 
-    /**
-     * Assert where search criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
@@ -215,18 +174,6 @@ class QueryTest extends LiveMailboxTestCase
         self::assertSame($expected, $item);
     }
 
-    /**
-     * Assert header search criteria.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidWhereQueryCriteriaException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
     {
         $query = $folder->query()->whereHeader($criteria, $value);

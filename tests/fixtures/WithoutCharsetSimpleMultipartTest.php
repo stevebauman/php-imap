@@ -13,14 +13,8 @@
 
 namespace Tests\fixtures;
 
-/**
- * Class WithoutCharsetSimpleMultipartTest.
- */
 class WithoutCharsetSimpleMultipartTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture without_charset_simple_multipart.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('without_charset_simple_multipart.eml');

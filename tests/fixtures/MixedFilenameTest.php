@@ -15,14 +15,8 @@ namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class MixedFilenameTest.
- */
 class MixedFilenameTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture mixed_filename.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('mixed_filename.eml');

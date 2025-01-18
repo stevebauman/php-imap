@@ -1,33 +1,16 @@
 <?php
 
-/*
-* File: HeaderTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 28.12.22 18:11
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Address;
 use Webklex\PHPIMAP\Attribute;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
 
 class HeaderTest extends TestCase
 {
-    /**
-     * Test parsing email headers.
-     *
-     * @throws InvalidMessageDateException
-     */
     public function test_header_parsing(): void
     {
         $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']));
