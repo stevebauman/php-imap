@@ -19,22 +19,22 @@ use Webklex\PHPIMAP\Support\MessageCollection;
 use Webklex\PHPIMAP\Traits\HasEvents;
 
 /**
- * @property int msglist
- * @property int uid
- * @property int msgn
- * @property int size
- * @property Attribute subject
- * @property Attribute message_id
- * @property Attribute message_no
- * @property Attribute references
- * @property Attribute date
- * @property Attribute from
- * @property Attribute to
- * @property Attribute cc
- * @property Attribute bcc
- * @property Attribute reply_to
- * @property Attribute in_reply_to
- * @property Attribute sender
+ * @property int $msglist
+ * @property int $uid
+ * @property int $msgn
+ * @property int $size
+ * @property Attribute $subject
+ * @property Attribute $message_id
+ * @property Attribute $message_no
+ * @property Attribute $references
+ * @property Attribute $date
+ * @property Attribute $from
+ * @property Attribute $to
+ * @property Attribute $cc
+ * @property Attribute $bcc
+ * @property Attribute $reply_to
+ * @property Attribute $in_reply_to
+ * @property Attribute $sender
  *
  * @method int getMsglist()
  * @method int setMsglist($msglist)

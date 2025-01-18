@@ -8,18 +8,18 @@ use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 
 /**
- * @property int part_number
- * @property int size
- * @property string content
- * @property string type
- * @property string content_type
- * @property string id
- * @property string hash
- * @property string name
- * @property string description
- * @property string filename
- * @property ?string disposition
- * @property string img_src
+ * @property int $part_number
+ * @property int $size
+ * @property string $content
+ * @property string $type
+ * @property string $content_type
+ * @property string $id
+ * @property string $hash
+ * @property string $name
+ * @property string $description
+ * @property string $filename
+ * @property ?string $disposition
+ * @property string $img_src
  *
  * @method int getPartNumber()
  * @method int setPartNumber(integer $part_number)
