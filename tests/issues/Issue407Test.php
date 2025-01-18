@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: Issue407Test.php
-* Category: Test
-* Author: M.Goldenbaum
-* Created: 23.06.23 21:40
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\issues;
 
 use Tests\live\LiveMailboxTestCase;

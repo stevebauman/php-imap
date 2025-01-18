@@ -1,29 +1,12 @@
 <?php
 
-/*
-* File: custom_message_mask.php
-* Category: Example
-* Author: M.Goldenbaum
-* Created: 14.03.19 18:47
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask
 {
-    /**
-     * New custom method which can be called through a mask.
-     */
     public function token(): string
     {
         return implode('-', [$this->message_id, $this->uid, $this->message_no]);
     }
 
-    /**
-     * Get number of message attachments.
-     */
     public function getAttachmentCount(): int
     {
         return $this->getAttachments()->count();

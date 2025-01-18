@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: Issue410Test.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 23.06.23 20:41
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\issues;
 
 use PHPUnit\Framework\TestCase;

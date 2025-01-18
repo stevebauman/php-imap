@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: ReferencesTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 class ReferencesTest extends FixtureTestCase

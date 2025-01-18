@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: QueryTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 04.03.23 03:52
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use Carbon\Carbon;

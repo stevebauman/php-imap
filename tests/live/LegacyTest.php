@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: LegacyTest.php
-* Category: Test
-* Author: M.Goldenbaum
-* Created: 23.06.23 18:25
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use Carbon\Carbon;

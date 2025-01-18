@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: StructuredWithAttachmentTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;

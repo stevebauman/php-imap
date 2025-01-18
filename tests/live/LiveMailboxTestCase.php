@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: LiveMailboxTestCase.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 04.03.23 03:43
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\live;
 
 use PHPUnit\Framework\TestCase;
