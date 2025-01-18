@@ -5,20 +5,12 @@ namespace Webklex\PHPIMAP;
 use Exception;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use ReflectionException;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageFlagException;
 use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageSizeFetchingException;
 use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 use Webklex\PHPIMAP\Support\FlagCollection;
@@ -194,27 +186,14 @@ class Message
 
     /**
      * Create a new instance without fetching the message header and providing them raw instead.
-     *
-     * @param  null  $fetch_options
-     * @param  null  $sequence
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws ReflectionException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public static function make(int $uid, ?int $msglist, Client $client, string $raw_header, string $raw_body, array $raw_flags, $fetch_options = null, $sequence = null): Message
     {
         $reflection = new ReflectionClass(self::class);
+
         /** @var Message $instance */
         $instance = $reflection->newInstanceWithoutConstructor();
+
         $instance->boot();
 
         $default_mask = $client->getDefaultMessageMask();
@@ -248,8 +227,7 @@ class Message
      */
     public static function fromFile($filename): Message
     {
-        $blob = file_get_contents($filename);
-        if ($blob === false) {
+        if ($blob = file_get_contents($filename) === false) {
             throw new RuntimeException('Unable to read file');
         }
 
@@ -265,6 +243,7 @@ class Message
 
         /** @var Message $instance */
         $instance = $reflection->newInstanceWithoutConstructor();
+
         $instance->boot();
 
         $default_mask = ClientManager::getMask('message');
@@ -353,11 +332,17 @@ class Message
 
         switch ($name) {
             case 'uid':
-                $this->attributes[$name] = $this->client->getConnection()->getUid($this->msgn)->validate()->integer();
+                $this->attributes[$name] = $this->client->getConnection()
+                    ->getUid($this->msgn)
+                    ->validate()
+                    ->integer();
 
                 return $this->attributes[$name];
             case 'msgn':
-                $this->attributes[$name] = $this->client->getConnection()->getMessageNumber($this->uid)->validate()->integer();
+                $this->attributes[$name] = $this->client->getConnection()
+                    ->getMessageNumber($this->uid)
+                    ->validate()
+                    ->integer();
 
                 return $this->attributes[$name];
             case 'size':
@@ -417,7 +402,11 @@ class Message
     private function parseHeader(): void
     {
         $sequence_id = $this->getSequenceId();
-        $headers = $this->client->getConnection()->headers([$sequence_id], 'RFC822', $this->sequence)->validatedData();
+
+        $headers = $this->client->getConnection()
+            ->headers([$sequence_id], 'RFC822', $this->sequence)
+            ->validatedData();
+
         if (! isset($headers[$sequence_id])) {
             throw new MessageHeaderFetchingException('no headers found', 0);
         }
@@ -426,7 +415,7 @@ class Message
     }
 
     /**
-     * @throws InvalidMessageDateException
+     * Parse and set the header of the message.
      */
     public function parseRawHeader(string $raw_header): void
     {
@@ -434,11 +423,11 @@ class Message
     }
 
     /**
-     * Parse additional raw flags.
+     * Parse and set the flags of the message.
      */
     public function parseRawFlags(array $raw_flags): void
     {
-        $this->flags = FlagCollection::make([]);
+        $this->flags = FlagCollection::make();
 
         foreach ($raw_flags as $flag) {
             if (str_starts_with($flag, '\\')) {
@@ -455,15 +444,6 @@ class Message
 
     /**
      * Parse additional flags.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageFlagException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     private function parseFlags(): void
     {
@@ -473,7 +453,9 @@ class Message
         $sequence_id = $this->getSequenceId();
 
         try {
-            $flags = $this->client->getConnection()->flags([$sequence_id], $this->sequence)->validatedData();
+            $flags = $this->client->getConnection()
+                ->flags([$sequence_id], $this->sequence)
+                ->validatedData();
         } catch (Exceptions\RuntimeException $e) {
             throw new MessageFlagException('flag could not be fetched', 0, $e);
         }
@@ -522,7 +504,9 @@ class Message
     {
         $sequence_id = $this->getSequenceId();
 
-        $sizes = $this->client->getConnection()->sizes([$sequence_id], $this->sequence)->validatedData();
+        $sizes = $this->client->getConnection()
+            ->sizes([$sequence_id], $this->sequence)
+            ->validatedData();
 
         if (! isset($sizes[$sequence_id])) {
             throw new MessageSizeFetchingException('sizes did not set an array entry for the supplied sequence_id', 0);
@@ -895,6 +879,7 @@ class Message
             $folder = $this->client->getFolderByPath($folder_path);
 
             $this->client->openFolder($this->folder_path);
+
             if ($this->client->getConnection()->moveMessage($folder->path, $this->getSequenceId(), null, $this->sequence)->validatedData()) {
                 return $this->fetchNewMail($folder, $next_uid, 'moved', $expunge);
             }
@@ -917,7 +902,9 @@ class Message
         if ($this->sequence === IMAP::ST_UID) {
             $sequence_id = $next_uid;
         } else {
-            $sequence_id = $this->client->getConnection()->getMessageNumber($next_uid)->validatedData();
+            $sequence_id = $this->client->getConnection()
+                ->getMessageNumber($next_uid)
+                ->validatedData();
         }
 
         $message = $folder->query()->getMessage($sequence_id, null, $this->sequence);
@@ -933,10 +920,13 @@ class Message
     public function delete(bool $expunge = true, ?string $trash_path = null, bool $force_move = false): bool
     {
         $status = $this->setFlag('Deleted');
+
         if ($force_move) {
             $trash_path = $trash_path === null ? $this->config['common_folders']['trash'] : $trash_path;
+
             $this->move($trash_path);
         }
+
         if ($expunge) {
             $this->client->expunge();
         }
@@ -995,7 +985,9 @@ class Message
         $sequence_id = $this->getSequenceId();
 
         try {
-            $status = $this->client->getConnection()->store([$flag], $sequence_id, $sequence_id, '-', true, $this->sequence)->validatedData();
+            $status = $this->client->getConnection()
+                ->store([$flag], $sequence_id, $sequence_id, '-', true, $this->sequence)
+                ->validatedData();
         } catch (Exceptions\RuntimeException $e) {
             throw new MessageFlagException('flag could not be removed', 0, $e);
         }
