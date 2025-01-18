@@ -225,7 +225,7 @@ class Message
     /**
      * Create a new message instance by reading and loading a file or remote location.
      */
-    public static function fromFile($filename): Message
+    public static function fromFile(string $filename): Message
     {
         $blob = file_get_contents($filename);
 
