@@ -114,14 +114,18 @@ class Header
     /**
      * Perform a regex match all on the raw header and return the first result.
      */
-    public function find($pattern): mixed
+    public function find(string $pattern): ?string
     {
-        if (preg_match_all($pattern, $this->raw, $matches)) {
-            if (isset($matches[1])) {
-                if (count($matches[1]) > 0) {
-                    return $matches[1][0];
-                }
-            }
+        if (! preg_match_all($pattern, $this->raw, $matches)) {
+            return null;
+        }
+
+        if (! isset($matches[1])) {
+            return null;
+        }
+
+        if (count($matches[1]) > 0) {
+            return $matches[1][0];
         }
 
         return null;
@@ -133,13 +137,12 @@ class Header
     public function getBoundary(): ?string
     {
         $regex = $this->config['boundary'] ?? '/boundary=(.*?(?=;)|(.*))/i';
-        $boundary = $this->find($regex);
 
-        if ($boundary === null) {
-            return null;
+        if ($boundary = $this->find($regex)) {
+            return $this->clearBoundaryString($boundary);
         }
 
-        return $this->clearBoundaryString($boundary);
+        return null;
     }
 
     /**
