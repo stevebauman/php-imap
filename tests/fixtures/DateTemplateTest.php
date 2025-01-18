@@ -16,11 +16,6 @@ use Webklex\PHPIMAP\Message;
 
 class DateTemplateTest extends FixtureTestCase
 {
-    /**
-     * Test if the date is parsed correctly.
-     *
-     * @var array|string[]
-     */
     protected array $dates = [
         'Fri, 5 Apr 2019 12:10:49 +0200' => '2019-04-05 10:10:49',
         '04 Jan 2018 10:12:47 UT' => '2018-01-04 10:12:47',
@@ -38,21 +33,6 @@ class DateTemplateTest extends FixtureTestCase
         'Di., 15 Feb. 2022 06:52:44 +0100 (MEZ)/Di., 15 Feb. 2022 06:52:44 +0100 (MEZ)' => '2022-02-15 05:52:44',
     ];
 
-    /**
-     * Test the fixture date-template.eml.
-     *
-     *
-     * @throws InvalidMessageDateException
-     * @throws ReflectionException
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_fixture(): void
     {
         try {

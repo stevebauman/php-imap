@@ -8,9 +8,6 @@ use Webklex\PHPIMAP\Attribute;
 
 class AttributeTest extends TestCase
 {
-    /**
-     * String Attribute test.
-     */
     public function test_string_attribute(): void
     {
         $attribute = new Attribute('foo', 'bar');
@@ -20,9 +17,6 @@ class AttributeTest extends TestCase
         self::assertSame('foos', $attribute->setName('foos')->getName());
     }
 
-    /**
-     * Date Attribute test.
-     */
     public function test_date_attribute(): void
     {
         $attribute = new Attribute('foo', '2022-12-26 08:07:14 GMT-0800');
@@ -31,9 +25,6 @@ class AttributeTest extends TestCase
         self::assertSame('2022-12-26 08:07:14 GMT-0800', $attribute->toDate()->format('Y-m-d H:i:s T'));
     }
 
-    /**
-     * Array Attribute test.
-     */
     public function test_array_attribute(): void
     {
         $attribute = new Attribute('foo', ['bar']);

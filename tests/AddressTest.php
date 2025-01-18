@@ -7,11 +7,6 @@ use Webklex\PHPIMAP\Address;
 
 class AddressTest extends TestCase
 {
-    /**
-     * Test data.
-     *
-     * @var array|string[]
-     */
     protected array $data = [
         'personal' => 'Username',
         'mailbox' => 'info',
@@ -20,9 +15,6 @@ class AddressTest extends TestCase
         'full' => 'Username <info@domain.tld>',
     ];
 
-    /**
-     * Address test.
-     */
     public function test_address(): void
     {
         $address = new Address((object) $this->data);
@@ -34,9 +26,6 @@ class AddressTest extends TestCase
         self::assertSame('Username <info@domain.tld>', $address->full);
     }
 
-    /**
-     * Test Address to string conversion.
-     */
     public function test_address_to_string_conversion(): void
     {
         $address = new Address((object) $this->data);
@@ -44,9 +33,6 @@ class AddressTest extends TestCase
         self::assertSame('Username <info@domain.tld>', (string) $address);
     }
 
-    /**
-     * Test Address serialization.
-     */
     public function test_address_serialization(): void
     {
         $address = new Address((object) $this->data);

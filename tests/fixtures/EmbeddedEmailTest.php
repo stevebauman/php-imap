@@ -6,9 +6,6 @@ use Webklex\PHPIMAP\Attachment;
 
 class EmbeddedEmailTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture embedded_email.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('embedded_email.eml');

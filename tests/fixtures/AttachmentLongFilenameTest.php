@@ -6,9 +6,6 @@ use Webklex\PHPIMAP\Attachment;
 
 class AttachmentLongFilenameTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture attachment_long_filename.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('attachment_long_filename.eml');

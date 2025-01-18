@@ -1,28 +1,11 @@
 <?php
 
-/*
-* File: EmbeddedEmailWithoutContentDispositionTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class EmbeddedEmailWithoutContentDispositionTest.
- */
 class EmbeddedEmailWithoutContentDispositionTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture embedded_email_without_content_disposition.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('embedded_email_without_content_disposition.eml');

@@ -12,17 +12,11 @@ class ClientManagerTest extends TestCase
 {
     protected ClientManager $cm;
 
-    /**
-     * Setup the test environment.
-     */
     protected function setUp(): void
     {
         $this->cm = new ClientManager;
     }
 
-    /**
-     * Test if the config can be accessed.
-     */
     public function test_config_accessor_account(): void
     {
         self::assertSame('default', ClientManager::get('default'));
@@ -31,21 +25,11 @@ class ClientManagerTest extends TestCase
         self::assertSame([], ClientManager::get('options.open'));
     }
 
-    /**
-     * Test creating a client instance.
-     *
-     * @throws MaskNotFoundException
-     */
     public function test_make_client(): void
     {
         self::assertInstanceOf(Client::class, $this->cm->make([]));
     }
 
-    /**
-     * Test accessing accounts.
-     *
-     * @throws MaskNotFoundException
-     */
     public function test_account_accessor(): void
     {
         self::assertSame('default', $this->cm->getDefaultAccount());
@@ -56,11 +40,6 @@ class ClientManagerTest extends TestCase
         $this->cm->setDefaultAccount('default');
     }
 
-    /**
-     * Test setting a config.
-     *
-     * @throws MaskNotFoundException
-     */
     public function test_set_config(): void
     {
         $config = [
