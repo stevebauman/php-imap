@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: DateTemplateTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 use ReflectionException;
@@ -25,9 +14,6 @@ use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Message;
 
-/**
- * Class DateTemplateTest.
- */
 class DateTemplateTest extends FixtureTestCase
 {
     /**

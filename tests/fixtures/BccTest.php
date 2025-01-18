@@ -1,26 +1,9 @@
 <?php
 
-/*
-* File: BccTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
-/**
- * Class BccTest.
- */
 class BccTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture bcc.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('bcc.eml');
