@@ -114,7 +114,7 @@ class Header
     /**
      * Perform a regex match all on the raw header and return the first result.
      */
-    public function find($pattern): mixed
+    public function find(string $pattern): ?string
     {
         if (preg_match_all($pattern, $this->raw, $matches)) {
             if (isset($matches[1])) {
@@ -260,7 +260,9 @@ class Header
             if (isset($imap_headers[$key])) {
                 continue;
             }
+
             $value = null;
+
             switch ((string) $key) {
                 case 'from':
                 case 'to':
@@ -294,6 +296,7 @@ class Header
                     }
                     break;
             }
+
             $headers[$key] = $value;
         }
 
@@ -398,9 +401,11 @@ class Header
             if ($decoder === 'utf-8') {
                 $decoded_values = $this->mime_header_decode($value);
                 $tempValue = '';
+
                 foreach ($decoded_values as $decoded_value) {
                     $tempValue .= $this->convertEncoding($decoded_value->text, $decoded_value->charset);
                 }
+
                 if ($tempValue) {
                     $value = $tempValue;
                 } elseif (extension_loaded('imap')) {
