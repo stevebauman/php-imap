@@ -1,26 +1,9 @@
 <?php
 
-/*
-* File: HtmlOnlyTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
-/**
- * Class HtmlOnlyTest.
- */
 class HtmlOnlyTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture html_only.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('html_only.eml');

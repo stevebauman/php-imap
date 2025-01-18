@@ -1,26 +1,9 @@
 <?php
 
-/*
-* File: GbkCharsetTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
-/**
- * Class GbkCharsetTest.
- */
 class GbkCharsetTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture gbk_charset.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('gbk_charset.eml');

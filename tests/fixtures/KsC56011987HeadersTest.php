@@ -1,21 +1,7 @@
 <?php
 
-/*
-* File: KsC56011987HeadersTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
-/**
- * Class KsC56011987HeadersTest.
- */
 class KsC56011987HeadersTest extends FixtureTestCase
 {
     /**

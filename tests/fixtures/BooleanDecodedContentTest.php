@@ -1,28 +1,11 @@
 <?php
 
-/*
-* File: BooleanDecodedContentTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class BooleanDecodedContentTest.
- */
 class BooleanDecodedContentTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture boolean_decoded_content.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('boolean_decoded_content.eml');
