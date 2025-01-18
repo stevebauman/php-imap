@@ -114,7 +114,7 @@ class Header
     /**
      * Perform a regex match all on the raw header and return the first result.
      */
-    public function find(string $pattern): ?string
+    public function find($pattern): mixed
     {
         if (preg_match_all($pattern, $this->raw, $matches)) {
             if (isset($matches[1])) {
