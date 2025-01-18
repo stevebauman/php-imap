@@ -41,6 +41,12 @@ jobs:
           extensions: openssl, json, mbstring, iconv, fileinfo, libxml, zip
           coverage: none
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
       - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
