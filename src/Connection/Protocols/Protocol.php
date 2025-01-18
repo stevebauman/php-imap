@@ -136,7 +136,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Prepare socket options.
      */
-    private function defaultSocketOptions(string $transport): array
+    protected function defaultSocketOptions(string $transport): array
     {
         $options = [];
 

@@ -62,7 +62,7 @@ class Message
     /**
      * Client instance.
      */
-    private ?Client $client = null;
+    protected ?Client $client = null;
 
     /**
      * Default mask.
@@ -139,7 +139,7 @@ class Message
     /**
      * A list of all available and supported flags.
      */
-    private ?array $available_flags = null;
+    protected ?array $available_flags = null;
 
     /**
      * Message constructor.
@@ -399,7 +399,7 @@ class Message
     /**
      * Parse all defined headers.
      */
-    private function parseHeader(): void
+    protected function parseHeader(): void
     {
         $sequence_id = $this->getSequenceId();
 
@@ -445,7 +445,7 @@ class Message
     /**
      * Parse additional flags.
      */
-    private function parseFlags(): void
+    protected function parseFlags(): void
     {
         $this->client->openFolder($this->folder_path);
         $this->flags = FlagCollection::make([]);
@@ -500,7 +500,7 @@ class Message
     /**
      * Fetches the size for this message.
      */
-    private function fetchSize(): void
+    protected function fetchSize(): void
     {
         $sequence_id = $this->getSequenceId();
 
@@ -542,7 +542,7 @@ class Message
     /**
      * Fetch the Message structure.
      */
-    private function fetchStructure(Structure $structure): void
+    protected function fetchStructure(Structure $structure): void
     {
         $this->client?->openFolder($this->folder_path);
 
@@ -554,7 +554,7 @@ class Message
     /**
      * Fetch a given part.
      */
-    private function fetchPart(Part $part): void
+    protected function fetchPart(Part $part): void
     {
         if ($part->isAttachment()) {
             $this->fetchAttachment($part);

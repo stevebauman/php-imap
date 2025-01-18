@@ -145,7 +145,7 @@ class Header
     /**
      * Remove all unwanted chars from a given boundary.
      */
-    private function clearBoundaryString(string $str): string
+    protected function clearBoundaryString(string $str): string
     {
         return str_replace(['"', '\r', '\n', "\n", "\r", ';', "\s"], '', $str);
     }
@@ -331,7 +331,7 @@ class Header
     /**
      * Check if a given pair of strings has been decoded.
      */
-    private function notDecoded($encoded, $decoded): bool
+    protected function notDecoded($encoded, $decoded): bool
     {
         return str_starts_with($decoded, '=?')
             && strlen($decoded) - 2 === strpos($decoded, '?=')
@@ -380,7 +380,7 @@ class Header
     /**
      * Test if a given value is utf-8 encoded.
      */
-    private function is_uft8($value): bool
+    protected function is_uft8($value): bool
     {
         return str_starts_with(strtolower($value), '=?utf-8?');
     }
@@ -432,7 +432,7 @@ class Header
     /**
      * Decode a given array.
      */
-    private function decodeArray(array $values): array
+    protected function decodeArray(array $values): array
     {
         foreach ($values as $key => $value) {
             $values[$key] = $this->decode($value);
@@ -444,7 +444,7 @@ class Header
     /**
      * Try to extract the priority from a given raw header string.
      */
-    private function findPriority(): void
+    protected function findPriority(): void
     {
         $priority = $this->get('x_priority');
 
@@ -463,7 +463,7 @@ class Header
     /**
      * Extract a given part as address array from a given header.
      */
-    private function decodeAddresses($values): array
+    protected function decodeAddresses($values): array
     {
         $addresses = [];
 
@@ -516,7 +516,7 @@ class Header
     /**
      * Extract a given part as address array from a given header.
      */
-    private function extractAddresses(object $header): void
+    protected function extractAddresses(object $header): void
     {
         foreach (['from', 'to', 'cc', 'bcc', 'reply_to', 'sender'] as $key) {
             if (property_exists($header, $key)) {
@@ -528,7 +528,7 @@ class Header
     /**
      * Parse Addresses.
      */
-    private function parseAddresses($list): array
+    protected function parseAddresses($list): array
     {
         $addresses = [];
 
@@ -582,7 +582,7 @@ class Header
     /**
      * Search and extract potential header extensions.
      */
-    private function extractHeaderExtensions(): void
+    protected function extractHeaderExtensions(): void
     {
         foreach ($this->attributes as $key => $value) {
             if (is_array($value)) {
@@ -666,7 +666,7 @@ class Header
      *
      * @throws InvalidMessageDateException
      */
-    private function parseDate(object $header): void
+    protected function parseDate(object $header): void
     {
         if (property_exists($header, 'date')) {
             $date = $header->date;

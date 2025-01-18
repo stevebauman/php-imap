@@ -9,7 +9,7 @@ class EncodingAliases
     /**
      * Contains email encoding mappings.
      */
-    private static array $aliases = [
+    protected static array $aliases = [
         /*
         |--------------------------------------------------------------------------
         | Email encoding aliases

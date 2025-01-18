@@ -206,7 +206,7 @@ class ClientManager
      *
      * @author Mark Roduner <mark.roduner@gmail.com>
      */
-    private function array_merge_recursive_distinct(): mixed
+    protected function array_merge_recursive_distinct(): mixed
     {
         $arrays = func_get_args();
         $base = array_shift($arrays);

@@ -15,7 +15,7 @@ class Structure
     /**
      * Header instance.
      */
-    private Header $header;
+    protected Header $header;
 
     /**
      * Message type (if multipart or not).
@@ -76,7 +76,7 @@ class Structure
      *
      * @throws InvalidMessageDateException
      */
-    private function parsePart(string $context, int $part_number = 0): array
+    protected function parsePart(string $context, int $part_number = 0): array
     {
         $body = $context;
 
@@ -99,7 +99,7 @@ class Structure
     /**
      * Detect all available parts.
      */
-    private function detectParts(string $boundary, string $context, int $part_number = 0): array
+    protected function detectParts(string $boundary, string $context, int $part_number = 0): array
     {
         $base_parts = explode($boundary, $context);
 

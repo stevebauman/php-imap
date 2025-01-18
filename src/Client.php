@@ -196,7 +196,7 @@ class Client
     /**
      * Set a specific account config.
      */
-    private function setAccountConfig(string $key, array $config, array $default_config): void
+    protected function setAccountConfig(string $key, array $config, array $default_config): void
     {
         $value = $this->default_account_config[$key];
 

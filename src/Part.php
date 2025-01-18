@@ -89,7 +89,7 @@ class Part
     /**
      * Part header.
      */
-    private ?Header $header;
+    protected ?Header $header;
 
     /**
      * Part constructor.
@@ -157,7 +157,7 @@ class Part
      *
      * @throws InvalidMessageDateException
      */
-    private function findHeaders(): string
+    protected function findHeaders(): string
     {
         $body = $this->raw;
 
@@ -176,7 +176,7 @@ class Part
     /**
      * Try to parse the subtype if any is present.
      */
-    private function parseSubtype($content_type): ?string
+    protected function parseSubtype($content_type): ?string
     {
         if (is_array($content_type)) {
             foreach ($content_type as $part) {
@@ -197,7 +197,7 @@ class Part
     /**
      * Try to parse the disposition if any is present.
      */
-    private function parseDisposition(): void
+    protected function parseDisposition(): void
     {
         $content_disposition = $this->header->get('content_disposition')->first();
 
@@ -210,7 +210,7 @@ class Part
     /**
      * Try to parse the description if any is present.
      */
-    private function parseDescription(): void
+    protected function parseDescription(): void
     {
         $content_description = $this->header->get('content_description')->first();
 
@@ -223,7 +223,7 @@ class Part
     /**
      * Try to parse the encoding if any is present.
      */
-    private function parseEncoding(): void
+    protected function parseEncoding(): void
     {
         $encoding = $this->header->get('content_transfer_encoding')->first();
 
