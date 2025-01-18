@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: FixtureTestCase.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 09.03.23 02:24
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests\fixtures;
 
 use PHPUnit\Framework\TestCase;
@@ -27,9 +16,6 @@ use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Message;
 
-/**
- * Class FixtureTestCase.
- */
 abstract class FixtureTestCase extends TestCase
 {
     /**

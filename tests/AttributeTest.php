@@ -1,16 +1,5 @@
 <?php
 
-/*
-* File: AttributeTest.php
-* Category: -
-* Author: M.Goldenbaum
-* Created: 28.12.22 18:11
-* Updated: -
-*
-* Description:
-*  -
-*/
-
 namespace Tests;
 
 use Carbon\Carbon;
