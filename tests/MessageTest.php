@@ -35,12 +35,6 @@ class MessageTest extends TestCase
     /** @var MockObject ImapProtocol mockup */
     protected MockObject $protocol;
 
-    /**
-     * Setup the test environment.
-     *
-     *
-     * @throws MaskNotFoundException
-     */
     protected function setUp(): void
     {
         $this->client = new Client([
@@ -57,24 +51,6 @@ class MessageTest extends TestCase
         ]);
     }
 
-    /**
-     * Message test.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageNotFoundException
-     * @throws MessageSizeFetchingException
-     * @throws ReflectionException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_message(): void
     {
         $this->createNewProtocolMockup();
@@ -114,18 +90,6 @@ class MessageTest extends TestCase
         self::assertSame(IMAP::MESSAGE_PRIORITY_UNKNOWN, (int) $message->get('priority')());
     }
 
-    /**
-     * Test getMessageNumber.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MessageNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_get_message_number(): void
     {
         $this->createNewProtocolMockup();
@@ -141,23 +105,6 @@ class MessageTest extends TestCase
         }
     }
 
-    /**
-     * Test loadMessageFromFile.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws MessageNotFoundException
-     * @throws ReflectionException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws MessageSizeFetchingException
-     */
     public function test_load_message_from_file(): void
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', '1366671050@github.com.eml']);
@@ -214,22 +161,6 @@ class MessageTest extends TestCase
         self::assertSame('text/plain', $attachment->getMimeType());
     }
 
-    /**
-     * Test issue #348.
-     *
-     * @return void
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MaskNotFoundException
-     * @throws MessageContentFetchingException
-     * @throws ReflectionException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     public function test_issue348()
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, 'messages', 'issue-348.eml']);
@@ -252,9 +183,6 @@ class MessageTest extends TestCase
         self::assertSame('application/pdf', $attachment->getMimeType());
     }
 
-    /**
-     * Create a new protocol mockup.
-     */
     protected function createNewProtocolMockup(): void
     {
         $this->protocol = $this->createMock(ImapProtocol::class);

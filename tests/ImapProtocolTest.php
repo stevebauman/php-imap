@@ -7,9 +7,6 @@ use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 
 class ImapProtocolTest extends TestCase
 {
-    /**
-     * ImapProtocol test.
-     */
     public function test_imap_protocol(): void
     {
         $protocol = new ImapProtocol(false);

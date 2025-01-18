@@ -24,11 +24,6 @@ class ClientTest extends TestCase
     /** @var MockObject ImapProtocol mockup */
     protected MockObject $protocol;
 
-    /**
-     * Setup the test environment.
-     *
-     * @throws MaskNotFoundException
-     */
     protected function setUp(): void
     {
         $this->client = new Client([
@@ -45,16 +40,6 @@ class ClientTest extends TestCase
         ]);
     }
 
-    /**
-     * Client test.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     */
     public function test_client(): void
     {
         $this->createNewProtocolMockup();

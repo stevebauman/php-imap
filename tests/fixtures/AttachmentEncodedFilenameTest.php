@@ -4,14 +4,8 @@ namespace Tests\fixtures;
 
 use Webklex\PHPIMAP\Attachment;
 
-/**
- * Class AttachmentEncodedFilenameTest.
- */
 class AttachmentEncodedFilenameTest extends FixtureTestCase
 {
-    /**
-     * Test the fixture attachment_encoded_filename.eml.
-     */
     public function test_fixture(): void
     {
         $message = $this->getFixture('attachment_encoded_filename.eml');

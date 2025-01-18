@@ -10,11 +10,6 @@ use Webklex\PHPIMAP\Part;
 
 class PartTest extends TestCase
 {
-    /**
-     * Test parsing a text Part.
-     *
-     * @throws InvalidMessageDateException
-     */
     public function test_text_part(): void
     {
         $raw_headers = "Content-Type: text/plain;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n";
@@ -34,11 +29,6 @@ class PartTest extends TestCase
         self::assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
-    /**
-     * Test parsing a html Part.
-     *
-     * @throws InvalidMessageDateException
-     */
     public function test_html_part(): void
     {
         $raw_headers = "Content-Type: text/html;\r\n charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n";
@@ -58,11 +48,6 @@ class PartTest extends TestCase
         self::assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
-    /**
-     * Test parsing a html Part.
-     *
-     * @throws InvalidMessageDateException
-     */
     public function test_base64_part(): void
     {
         $raw_headers = "Content-Type: application/octet-stream; name=6mfFxiU5Yhv9WYJx.txt\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=6mfFxiU5Yhv9WYJx.txt\r\n";
