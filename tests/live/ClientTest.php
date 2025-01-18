@@ -265,7 +265,7 @@ class ClientTest extends LiveMailboxTestCase
 
         $client = $this->getClient()->connect();
 
-        $quota = $client->getQuotaRoot('INBOX');
+        $quota = $client->getQuotaRoot();
         self::assertIsArray($quota);
         self::assertTrue(count($quota) > 1);
         self::assertIsArray($quota[0]);

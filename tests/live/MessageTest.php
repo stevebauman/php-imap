@@ -97,7 +97,7 @@ class MessageTest extends LiveMailboxTestCase
     public function test_convert_encoding(): void
     {
         $message = $this->getDefaultMessage();
-        self::assertEquals('Entwürfe+', $message->convertEncoding('Entw&APw-rfe+', 'UTF7-IMAP', 'UTF-8'));
+        self::assertEquals('Entwürfe+', $message->convertEncoding('Entw&APw-rfe+', 'UTF7-IMAP'));
 
         // Cleanup
         self::assertTrue($message->delete());

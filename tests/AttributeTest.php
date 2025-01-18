@@ -55,13 +55,13 @@ class AttributeTest extends TestCase
         self::assertSame(true, $attribute->has(1));
         self::assertSame('bars', $attribute->get(1));
         self::assertSame(true, $attribute->contains('bars'));
-        self::assertSame('foo, bars', $attribute->set('foo', 0)->toString());
+        self::assertSame('foo, bars', $attribute->set('foo')->toString());
 
-        $attribute->remove(0);
+        $attribute->remove();
         self::assertSame('bars', $attribute->toString());
 
         self::assertSame('bars, foos', $attribute->merge(['foos', 'bars'], true)->toString());
-        self::assertSame('bars, foos, foos, donk', $attribute->merge(['foos', 'donk'], false)->toString());
+        self::assertSame('bars, foos, foos, donk', $attribute->merge(['foos', 'donk'])->toString());
 
         self::assertSame(4, $attribute->count());
 

@@ -172,11 +172,11 @@ class QueryTest extends LiveMailboxTestCase
         $this->assertWhereSearchCriteria($folder, 'OR');
         $this->assertWhereSearchCriteria($folder, 'AND');
         $this->assertWhereSearchCriteria($folder, 'BEFORE', '01-Jan-2020', true);
-        $this->assertWhereSearchCriteria($folder, 'BEFORE', Carbon::now()->subDays(1), true);
+        $this->assertWhereSearchCriteria($folder, 'BEFORE', Carbon::now()->subDays(), true);
         $this->assertWhereSearchCriteria($folder, 'ON', '01-Jan-2020', true);
-        $this->assertWhereSearchCriteria($folder, 'ON', Carbon::now()->subDays(1), true);
+        $this->assertWhereSearchCriteria($folder, 'ON', Carbon::now()->subDays(), true);
         $this->assertWhereSearchCriteria($folder, 'SINCE', '01-Jan-2020', true);
-        $this->assertWhereSearchCriteria($folder, 'SINCE', Carbon::now()->subDays(1), true);
+        $this->assertWhereSearchCriteria($folder, 'SINCE', Carbon::now()->subDays(), true);
     }
 
     /**

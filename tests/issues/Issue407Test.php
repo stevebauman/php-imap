@@ -15,7 +15,6 @@ namespace Tests\issues;
 
 use Tests\live\LiveMailboxTestCase;
 use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\IMAP;
 use Webklex\PHPIMAP\Message;
 
 class Issue407Test extends LiveMailboxTestCase
@@ -47,7 +46,7 @@ class Issue407Test extends LiveMailboxTestCase
 
         $message->setFlag('Seen');
 
-        $flags = $this->getClient()->getConnection()->flags($message->uid, IMAP::ST_UID)->validatedData();
+        $flags = $this->getClient()->getConnection()->flags($message->uid)->validatedData();
 
         self::assertIsArray($flags);
         self::assertSame(1, count($flags));

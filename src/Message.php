@@ -279,8 +279,8 @@ class Message
         $this->config = ClientManager::get('options');
         $this->available_flags = ClientManager::get('flags');
 
-        $this->attachments = AttachmentCollection::make([]);
-        $this->flags = FlagCollection::make([]);
+        $this->attachments = AttachmentCollection::make();
+        $this->flags = FlagCollection::make();
     }
 
     /**
@@ -448,7 +448,7 @@ class Message
     protected function parseFlags(): void
     {
         $this->client->openFolder($this->folder_path);
-        $this->flags = FlagCollection::make([]);
+        $this->flags = FlagCollection::make();
 
         $sequence_id = $this->getSequenceId();
 
@@ -779,7 +779,7 @@ class Message
      */
     public function thread(?Folder $sent_folder = null, ?MessageCollection &$thread = null, ?Folder $folder = null): MessageCollection
     {
-        $thread = $thread ?: MessageCollection::make([]);
+        $thread = $thread ?: MessageCollection::make();
 
         $folder = $folder ?: $this->getFolder();
 

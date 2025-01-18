@@ -175,7 +175,7 @@ class Folder
         $parts = [];
 
         foreach (explode($this->delimiter, $name) as $item) {
-            $parts[] = EncodingAliases::convert($item, 'UTF7-IMAP', 'UTF-8');
+            $parts[] = EncodingAliases::convert($item, 'UTF7-IMAP');
         }
 
         return implode($this->delimiter, $parts);
@@ -276,7 +276,7 @@ class Folder
             ->validatedData();
 
         if ($this->client->getActiveFolder() == $this->path) {
-            $this->client->setActiveFolder(null);
+            $this->client->setActiveFolder();
         }
 
         if ($expunge) {

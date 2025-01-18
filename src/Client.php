@@ -483,7 +483,7 @@ class Client
     public function getFolders(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
         $this->checkConnection();
-        $folders = FolderCollection::make([]);
+        $folders = FolderCollection::make();
 
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
         $items = $this->connection->folders('', $pattern)->validatedData();
@@ -519,7 +519,7 @@ class Client
     public function getFoldersWithStatus(bool $hierarchical = true, ?string $parent_folder = null, bool $soft_fail = false): FolderCollection
     {
         $this->checkConnection();
-        $folders = FolderCollection::make([]);
+        $folders = FolderCollection::make();
 
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
         $items = $this->connection->folders('', $pattern)->validatedData();

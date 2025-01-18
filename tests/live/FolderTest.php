@@ -302,7 +302,7 @@ class FolderTest extends LiveMailboxTestCase
         self::assertEquals('from@someone.com', $message->from);
 
         // Clean up
-        $this->assertTrue($message->delete(true));
+        $this->assertTrue($message->delete());
     }
 
     /**

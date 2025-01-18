@@ -258,7 +258,7 @@ class Query
                 return $this->populate($available_messages);
             }
 
-            return MessageCollection::make([]);
+            return MessageCollection::make();
         } catch (Exception $e) {
             throw new GetMessagesFailedException($e->getMessage(), 0, $e);
         }
@@ -269,7 +269,7 @@ class Query
      */
     protected function populate(Collection $available_messages): MessageCollection
     {
-        $messages = MessageCollection::make([]);
+        $messages = MessageCollection::make();
 
         $messages->total($available_messages->count());
 
