@@ -227,7 +227,9 @@ class Message
      */
     public static function fromFile($filename): Message
     {
-        if ($blob = file_get_contents($filename) === false) {
+        $blob = file_get_contents($filename);
+
+        if ($blob === false) {
             throw new RuntimeException('Unable to read file');
         }
 
