@@ -16,40 +16,15 @@ namespace Tests\live;
 use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
-use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
-use Webklex\PHPIMAP\Exceptions\MessageFlagException;
-use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
-/**
- * Class LiveMailboxTestCase.
- */
 abstract class LiveMailboxTestCase extends TestCase
 {
-    /**
-     * Special chars.
-     */
     const SPECIAL_CHARS = 'A_\\|!"£$%&()=?àèìòùÀÈÌÒÙ<>-@#[]_ß_б_π_€_✔_你_يد_Z_';
 
-    /**
-     * Client manager.
-     */
     protected static ClientManager $manager;
 
-    /**
-     * Get the client manager.
-     */
     protected function getManager(): ClientManager
     {
         if (! isset(self::$manager)) {
@@ -74,12 +49,6 @@ abstract class LiveMailboxTestCase extends TestCase
         return self::$manager;
     }
 
-    /**
-     * Get the client.
-     *
-     *
-     * @throws MaskNotFoundException
-     */
     protected function getClient(): Client
     {
         if (! getenv('LIVE_MAILBOX') ?? false) {
@@ -89,27 +58,11 @@ abstract class LiveMailboxTestCase extends TestCase
         return $this->getManager()->account('default');
     }
 
-    /**
-     * Get special chars.
-     */
     protected function getSpecialChars(): string
     {
         return self::SPECIAL_CHARS;
     }
 
-    /**
-     * Get a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws MaskNotFoundException
-     * @throws ResponseException
-     * @throws RuntimeException
-     * @throws FolderFetchingException
-     */
     protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $client = $this->getClient();
@@ -121,22 +74,6 @@ abstract class LiveMailboxTestCase extends TestCase
         return $folder;
     }
 
-    /**
-     * Append a message to a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
@@ -162,22 +99,6 @@ abstract class LiveMailboxTestCase extends TestCase
         return $message;
     }
 
-    /**
-     * Append a message template to a folder.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws InvalidMessageDateException
-     * @throws MessageContentFetchingException
-     * @throws MessageFlagException
-     * @throws MessageHeaderFetchingException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function appendMessageTemplate(Folder $folder, string $template): Message
     {
         $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', $template]));
@@ -185,18 +106,6 @@ abstract class LiveMailboxTestCase extends TestCase
         return $this->appendMessage($folder, $content);
     }
 
-    /**
-     * Delete a folder if it is given.
-     *
-     *
-     * @throws AuthFailedException
-     * @throws ConnectionFailedException
-     * @throws EventNotFoundException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws ResponseException
-     * @throws RuntimeException
-     */
     protected function deleteFolder(?Folder $folder = null): bool
     {
         $response = $folder?->delete(false);
