@@ -62,7 +62,9 @@ class Response
      */
     public static function make(int $noun, array $commands = [], array $responses = [], bool $debug = false): Response
     {
-        return (new self($noun, $debug))->setCommands($commands)->setResponse($responses);
+        return (new self($noun, $debug))
+            ->setCommands($commands)
+            ->setResponse($responses);
     }
 
     /**
@@ -123,6 +125,7 @@ class Response
     public function getErrors(): array
     {
         $errors = $this->errors;
+
         foreach ($this->getStack() as $response) {
             $errors = array_merge($errors, $response->getErrors());
         }
@@ -293,6 +296,7 @@ class Response
                 return false;
             }
         }
+
         foreach ($this->getStack() as $response) {
             if (! $response->successful()) {
                 return false;
@@ -347,7 +351,7 @@ class Response
     /**
      * Get the Response noun.
      */
-    public function Noun(): int
+    public function noun(): int
     {
         return $this->noun;
     }

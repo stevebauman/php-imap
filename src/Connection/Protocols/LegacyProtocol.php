@@ -106,7 +106,7 @@ class LegacyProtocol extends Protocol
             }
 
             if ($this->stream !== false) {
-                return ['TAG'.$response->Noun()." OK [] Logged in\r\n"];
+                return ['TAG'.$response->noun()." OK [] Logged in\r\n"];
             }
 
             $response->addError('failed to login');
@@ -168,7 +168,7 @@ class LegacyProtocol extends Protocol
 
                     return [
                         0 => "BYE Logging out\r\n",
-                        1 => 'TAG'.$response->Noun()." OK Logout completed (0.001 + 0.000 secs).\r\n",
+                        1 => 'TAG'.$response->noun()." OK Logout completed (0.001 + 0.000 secs).\r\n",
                     ];
                 }
 
@@ -493,7 +493,7 @@ class LegacyProtocol extends Protocol
             if ($silent === true) {
                 if ($status) {
                     return [
-                        'TAG'.$response->Noun()." OK Store completed (0.001 + 0.000 secs).\r\n",
+                        'TAG'.$response->noun()." OK Store completed (0.001 + 0.000 secs).\r\n",
                     ];
                 }
 
@@ -546,7 +546,7 @@ class LegacyProtocol extends Protocol
             /** @var Response $response */
             if (imap_mail_copy($this->stream, $from, $this->getAddress().$folder, $uid ? IMAP::ST_UID : IMAP::NIL)) {
                 return [
-                    'TAG'.$response->Noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
+                    'TAG'.$response->noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
                 ];
             }
 
@@ -571,14 +571,14 @@ class LegacyProtocol extends Protocol
                 $response->stack($copy_response);
                 if (empty($copy_response->data())) {
                     return [
-                        'TAG'.$response->Noun()." BAD Copy failed (0.001 + 0.000 secs).\r\n",
+                        'TAG'.$response->noun()." BAD Copy failed (0.001 + 0.000 secs).\r\n",
                         "Invalid ID $msg\r\n",
                     ];
                 }
             }
 
             return [
-                'TAG'.$response->Noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
+                'TAG'.$response->noun()." OK Copy completed (0.001 + 0.000 secs).\r\n",
             ];
         });
     }

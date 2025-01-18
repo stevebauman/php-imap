@@ -796,6 +796,7 @@ class ImapProtocol extends Protocol
                     return $response->setResult($data);
                 }
             }
+
             if ($uid === IMAP::ST_UID) {
                 $result[$tokens[2][$uidKey]] = $data;
             } else {

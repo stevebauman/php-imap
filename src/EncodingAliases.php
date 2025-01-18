@@ -494,6 +494,7 @@ class EncodingAliases
             if (function_exists('iconv') && ! self::isUtf7($from) && ! self::isUtf7($to)) {
                 return iconv($from, $to, $str);
             }
+
             if (! $from) {
                 return mb_convert_encoding($str, $to);
             }
