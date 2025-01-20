@@ -97,7 +97,7 @@ class EncodingAliases
         'big5' => 'Big5',
         'euc-jp' => 'EUC-JP',
         'euc-kr' => 'EUC-KR',
-        'gb2312' => 'GB2312',
+        'gb2312' => 'GB18030', //https://www.php.net/manual/en/function.mb-convert-encoding.php
         'gb18030' => 'gb18030',
         'viscii' => 'VISCII',
         'koi8-r' => 'KOI8-R',
@@ -284,14 +284,15 @@ class EncodingAliases
         // Aliases for GB2312",
         //
         // The following are really not aliases GB2312, add them only for MS FrontPage",
-        'gb_2312-80' => 'GB2312',
-        'iso-ir-58' => 'GB2312',
-        'chinese' => 'GB2312',
-        'csiso58gb231280' => 'GB2312',
-        'csgb2312' => 'GB2312',
-        'zh_cn.euc' => 'GB2312',
+        // As per https://www.php.net/manual/en/function.mb-convert-encoding.php repointed to GB18030
+        'gb_2312-80' => 'GB18030',
+        'iso-ir-58' => 'GB18030',
+        'chinese' => 'GB18030',
+        'csiso58gb231280' => 'GB18030',
+        'csgb2312' => 'GB18030',
+        'zh_cn.euc' => 'GB18030',
         // Sun Solaris",
-        'gb_2312' => 'GB2312',
+        'gb_2312' => 'GB18030',
         //
         // Aliases for windows-125x ",
         //
