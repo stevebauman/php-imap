@@ -39,7 +39,6 @@ return [
         'default' => [ // account identifier
             'host' => 'localhost',
             'port' => 993,
-            'protocol' => 'imap', // might also use imap, [pop3 or nntp (untested)]
             'encryption' => 'ssl', // Supported: false, 'ssl', 'tls'
             'validate_cert' => true,
             'username' => 'root@example.com',
