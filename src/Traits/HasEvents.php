@@ -8,7 +8,7 @@ use Webklex\PHPIMAP\Exceptions\EventNotFoundException;
 trait HasEvents
 {
     /**
-     * Event holder.
+     * The available events.
      */
     protected array $events = [];
 
@@ -42,8 +42,6 @@ trait HasEvents
 
     /**
      * Get a specific event callback.
-     *
-     * @throws EventNotFoundException
      */
     public function getEvent(string $section, string $event): Event|string
     {
@@ -55,7 +53,7 @@ trait HasEvents
     }
 
     /**
-     * Get all events.
+     * Get all available events.
      */
     public function getEvents(): array
     {
