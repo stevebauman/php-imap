@@ -2,19 +2,40 @@
 
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
+use Illuminate\Support\Arr;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 
 class Response
 {
+    /**
+     * The sequence number to identify the response.
+     */
+    protected int $sequence = 0;
+
+    /**
+     * Whether debugging is enabled.
+     */
+    protected bool $debug = false;
+
+    /**
+     * The result to be returned.
+     */
+    protected mixed $result = null;
+
     /**
      * The commands used to fetch or manipulate data.
      */
     protected array $commands = [];
 
     /**
-     * The original response received.
+     * The original response.
      */
     protected array $response = [];
+
+    /**
+     * The stack of other related responses.
+     */
+    protected array $responses = [];
 
     /**
      * Errors that have occurred while fetching or parsing the response.
@@ -22,49 +43,35 @@ class Response
     protected array $errors = [];
 
     /**
-     * Result to be returned.
-     *
-     * @var mixed|null
+     * Whether to allow empty responses.
      */
-    protected mixed $result = null;
+    protected bool $canBeEmpty = false;
 
     /**
-     * Noun to identify the request / response.
+     * Constructor.
      */
-    protected int $noun = 0;
-
-    /**
-     * Other related responses.
-     */
-    protected array $response_stack = [];
-
-    /**
-     * Debug flag.
-     */
-    protected bool $debug = false;
-
-    /**
-     * Can the response be empty?
-     */
-    protected bool $can_be_empty = false;
-
-    /**
-     * Create a new Response instance.
-     */
-    public function __construct(int $noun, bool $debug = false)
+    public function __construct(int $sequence = 0, bool $debug = false)
     {
         $this->debug = $debug;
-        $this->noun = $noun > 0 ? $noun : (int) str_replace('.', '', (string) microtime(true));
+        $this->sequence = $sequence > 0 ? $sequence : (int) str_replace('.', '', (string) microtime(true));
     }
 
     /**
      * Make a new response instance.
      */
-    public static function make(int $noun, array $commands = [], array $responses = [], bool $debug = false): Response
+    public static function make(int $sequence = 0, array $commands = [], array $responses = [], bool $debug = false): Response
     {
-        return (new self($noun, $debug))
+        return (new self($sequence, $debug))
             ->setCommands($commands)
             ->setResponse($responses);
+    }
+
+    /**
+     * Get a unique sequence number.
+     */
+    protected function getUniqueSequence(): int
+    {
+        return (int) str_replace('.', '', (string) microtime(true));
     }
 
     /**
@@ -76,23 +83,23 @@ class Response
     }
 
     /**
-     * Stack another response.
+     * Add a new response to the stack.
      */
-    public function stack(Response $response): void
+    public function addResponse(Response $response): void
     {
-        $this->response_stack[] = $response;
+        $this->responses[] = $response;
     }
 
     /**
-     * Get the associated response stack.
+     * Get the response stack.
      */
-    public function getStack(): array
+    public function getResponses(): array
     {
-        return $this->response_stack;
+        return $this->responses;
     }
 
     /**
-     * Get all assigned commands.
+     * Get all the commands from the response.
      */
     public function getCommands(): array
     {
@@ -100,7 +107,7 @@ class Response
     }
 
     /**
-     * Add a new command.
+     * Add a new command to the response.
      */
     public function addCommand(string $command): Response
     {
@@ -110,7 +117,7 @@ class Response
     }
 
     /**
-     * Set and overwrite all commands.
+     * Set the commands on the response.
      */
     public function setCommands(array $commands): Response
     {
@@ -120,13 +127,13 @@ class Response
     }
 
     /**
-     * Get all set errors.
+     * Get all errors from the response.
      */
     public function getErrors(): array
     {
         $errors = $this->errors;
 
-        foreach ($this->getStack() as $response) {
+        foreach ($this->getResponses() as $response) {
             $errors = array_merge($errors, $response->getErrors());
         }
 
@@ -134,7 +141,7 @@ class Response
     }
 
     /**
-     * Set and overwrite all existing errors.
+     * Set errors on the response.
      */
     public function setErrors(array $errors): Response
     {
@@ -144,7 +151,7 @@ class Response
     }
 
     /**
-     * Set the response.
+     * Add an error to the response.
      */
     public function addError(string $error): Response
     {
@@ -154,11 +161,11 @@ class Response
     }
 
     /**
-     * Set the response.
+     * Push an IMAP response.
      *
      * @param  array  $response
      */
-    public function addResponse(mixed $response): Response
+    public function push(mixed $response): Response
     {
         $this->response[] = $response;
 
@@ -176,7 +183,7 @@ class Response
     }
 
     /**
-     * Get the assigned response.
+     * Get the response.
      */
     public function getResponse(): array
     {
@@ -184,7 +191,7 @@ class Response
     }
 
     /**
-     * Set the result data.
+     * Set the result on the response.
      */
     public function setResult(mixed $result): Response
     {
@@ -194,21 +201,11 @@ class Response
     }
 
     /**
-     * Wrap a result bearing action.
-     */
-    public function wrap(callable $callback): Response
-    {
-        $this->result = call_user_func($callback, $this);
-
-        return $this;
-    }
-
-    /**
      * Get the response data.
      */
     public function data(): mixed
     {
-        if ($this->result !== null) {
+        if (! is_null($this->result)) {
             return $this->result;
         }
 
@@ -220,12 +217,7 @@ class Response
      */
     public function array(): array
     {
-        $data = $this->data();
-        if (is_array($data)) {
-            return $data;
-        }
-
-        return [$data];
+        return Arr::wrap($this->data());
     }
 
     /**
@@ -233,12 +225,7 @@ class Response
      */
     public function string(): string
     {
-        $data = $this->data();
-        if (is_array($data)) {
-            return implode(' ', $data);
-        }
-
-        return (string) $data;
+        return implode(' ', $this->array());
     }
 
     /**
@@ -247,6 +234,7 @@ class Response
     public function integer(): int
     {
         $data = $this->data();
+
         if (is_array($data) && isset($data[0])) {
             return (int) $data[0];
         }
@@ -264,18 +252,14 @@ class Response
 
     /**
      * Validate and retrieve the response data.
-     *
-     * @throws ResponseException
      */
-    public function validatedData(): mixed
+    public function getValidatedData(): mixed
     {
         return $this->validate()->data();
     }
 
     /**
-     * Validate the response date.
-     *
-     * @throws ResponseException
+     * Validate the response data or throw an exception.
      */
     public function validate(): Response
     {
@@ -287,17 +271,17 @@ class Response
     }
 
     /**
-     * Check if the Response can be considered successful.
+     * Check if the response can be considered successful.
      */
     public function successful(): bool
     {
-        foreach (array_merge($this->getResponse(), $this->array()) as $data) {
-            if (! $this->verify_data($data)) {
+        foreach (array_merge($this->getResponse(), $this->array()) as $lines) {
+            if (! $this->isSuccessful($lines)) {
                 return false;
             }
         }
 
-        foreach ($this->getStack() as $response) {
+        foreach ($this->getResponses() as $response) {
             if (! $response->successful()) {
                 return false;
             }
@@ -307,24 +291,20 @@ class Response
     }
 
     /**
-     * Check if the Response can be considered failed.
+     * Determine if the given lines are successful.
      */
-    public function verify_data(mixed $data): bool
+    protected function isSuccessful(mixed $lines): bool
     {
-        if (is_array($data)) {
-            foreach ($data as $line) {
-                if (is_array($line)) {
-                    if (! $this->verify_data($line)) {
-                        return false;
-                    }
-                } else {
-                    if (! $this->verify_line((string) $line)) {
-                        return false;
-                    }
-                }
-            }
-        } else {
-            if (! $this->verify_line((string) $data)) {
+        if (! is_array($lines)) {
+            return static::isLineSuccessful($this->sequence, (string) $lines);
+        }
+
+        foreach ($lines as $line) {
+            $successful = is_array($line)
+                ? $this->isSuccessful($line)
+                : static::isLineSuccessful($this->sequence, (string) $line);
+
+            if (! $successful) {
                 return false;
             }
         }
@@ -333,15 +313,21 @@ class Response
     }
 
     /**
-     * Verify a single line.
+     * Determine if the given line is successful.
      */
-    public function verify_line(string $line): bool
+    public static function isLineSuccessful(int $sequence, string $line): bool
     {
-        return ! str_starts_with($line, 'TAG'.$this->noun.' BAD ') && ! str_starts_with($line, 'TAG'.$this->noun.' NO ');
+        foreach (['BAD', 'NO'] as $error) {
+            if (preg_match("/^TAG{$sequence}\s*{$error}\b/i", $line)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Check if the Response can be considered failed.
+     * Check if the response contains failures.
      */
     public function failed(): bool
     {
@@ -349,30 +335,28 @@ class Response
     }
 
     /**
-     * Get the Response noun.
+     * Get the response sequence.
      */
-    public function noun(): int
+    public function sequence(): int
     {
-        return $this->noun;
+        return $this->sequence;
     }
 
     /**
-     * Set the Response to be allowed to be empty.
-     *
-     * @return $this
+     * Set whether the response can be empty.
      */
-    public function setCanBeEmpty(bool $can_be_empty): Response
+    public function setCanBeEmpty(bool $canBeEmpty): Response
     {
-        $this->can_be_empty = $can_be_empty;
+        $this->canBeEmpty = $canBeEmpty;
 
         return $this;
     }
 
     /**
-     * Check if the Response can be empty.
+     * Determine if the response can be empty.
      */
     public function canBeEmpty(): bool
     {
-        return $this->can_be_empty;
+        return $this->canBeEmpty;
     }
 }
