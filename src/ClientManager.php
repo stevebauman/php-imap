@@ -2,10 +2,15 @@
 
 namespace Webklex\PHPIMAP;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\ForwardsCalls;
+
 class ClientManager
 {
+    use ForwardsCalls;
+
     /**
-     * All library config.
+     * The singleton configuration array.
      */
     public static array $config = [];
 
@@ -23,15 +28,11 @@ class ClientManager
     }
 
     /**
-     * Dynamically pass calls to the default account.
-     *
-     * @throws Exceptions\MaskNotFoundException
+     * Handle dynamic method calls on the manager.
      */
     public function __call(string $method, array $parameters): mixed
     {
-        $callable = [$this->account(), $method];
-
-        return call_user_func_array($callable, $parameters);
+        return $this->forwardCallTo($this->account(), $method, $parameters);
     }
 
     /**
@@ -43,31 +44,11 @@ class ClientManager
     }
 
     /**
-     * Get a dotted config parameter.
+     * Get a config value using dot notation.
      */
     public static function get(string $key, mixed $default = null): mixed
     {
-        $parts = explode('.', $key);
-
-        $value = null;
-
-        foreach ($parts as $part) {
-            if ($value === null) {
-                if (isset(self::$config[$part])) {
-                    $value = self::$config[$part];
-                } else {
-                    break;
-                }
-            } else {
-                if (isset($value[$part])) {
-                    $value = $value[$part];
-                } else {
-                    break;
-                }
-            }
-        }
-
-        return $value === null ? $default : $value;
+        return Arr::get(self::$config, $key, $default);
     }
 
     /**
@@ -77,34 +58,27 @@ class ClientManager
      */
     public static function getMask(string $section): ?string
     {
-        $default_masks = ClientManager::get('masks');
+        $defaultMasks = ClientManager::get('masks');
 
-        if (isset($default_masks[$section])) {
-            if (class_exists($default_masks[$section])) {
-                return $default_masks[$section];
-            }
+        if (! isset($defaultMasks[$section])) {
+            return null;
+        }
+
+        if (class_exists($defaultMasks[$section])) {
+            return $defaultMasks[$section];
         }
 
         return null;
     }
 
     /**
-     * Resolve a account instance.
-     *
-     * @throws Exceptions\MaskNotFoundException
+     * Resolve an account instance.
      */
     public function account(?string $name = null): Client
     {
         $name = $name ?: $this->getDefaultAccount();
 
-        // If the connection has not been resolved we will resolve it now as all
-        // the connections are resolved when they are actually needed, so we do
-        // not make any unnecessary connection to the various queue end-points.
-        if (! isset($this->accounts[$name])) {
-            $this->accounts[$name] = $this->resolve($name);
-        }
-
-        return $this->accounts[$name];
+        return $this->accounts[$name] ??= $this->resolve($name);
     }
 
     /**
@@ -112,9 +86,7 @@ class ClientManager
      */
     protected function resolve(string $name): Client
     {
-        $config = $this->getClientConfig($name);
-
-        return new Client($config);
+        return new Client($this->getClientConfig($name));
     }
 
     /**
@@ -200,15 +172,12 @@ class ClientManager
      * Numeric entries are appended, not replaced, but only if they are
      * unique
      *
-     * @return array|mixed
-     *
      * @link   http://www.php.net/manual/en/function.array-merge-recursive.php#96201
      *
      * @author Mark Roduner <mark.roduner@gmail.com>
      */
-    protected function array_merge_recursive_distinct(): mixed
+    protected function array_merge_recursive_distinct(array ...$arrays): array
     {
-        $arrays = func_get_args();
         $base = array_shift($arrays);
 
         // From https://stackoverflow.com/a/173479
