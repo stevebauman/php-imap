@@ -2,18 +2,17 @@
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\IMAP;
 
 class ClientManagerTest extends TestCase
 {
-    protected ClientManager $cm;
+    protected ClientManager $manager;
 
     protected function setUp(): void
     {
-        $this->cm = new ClientManager;
+        $this->manager = new ClientManager;
     }
 
     public function test_config_accessor_account(): void
@@ -26,17 +25,17 @@ class ClientManagerTest extends TestCase
 
     public function test_make_client(): void
     {
-        self::assertInstanceOf(Client::class, $this->cm->make([]));
+        self::assertInstanceOf(Client::class, $this->manager->make([]));
     }
 
     public function test_account_accessor(): void
     {
-        self::assertSame('default', $this->cm->getDefaultAccount());
-        self::assertNotEmpty($this->cm->account('default'));
+        self::assertSame('default', $this->manager->getDefaultAccount());
+        self::assertNotEmpty($this->manager->account('default'));
 
-        $this->cm->setDefaultAccount('foo');
-        self::assertSame('foo', $this->cm->getDefaultAccount());
-        $this->cm->setDefaultAccount('default');
+        $this->manager->setDefaultAccount('foo');
+        self::assertSame('foo', $this->manager->getDefaultAccount());
+        $this->manager->setDefaultAccount('default');
     }
 
     public function test_set_config(): void
@@ -48,6 +47,7 @@ class ClientManagerTest extends TestCase
                 'open' => 'foo',
             ],
         ];
+
         $cm = new ClientManager($config);
 
         self::assertSame('foo', $cm->getDefaultAccount());

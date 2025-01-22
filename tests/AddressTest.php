@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Address;
 
 class AddressTest extends TestCase

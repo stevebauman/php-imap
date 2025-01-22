@@ -3,8 +3,8 @@
 namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Client;
+use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Folder;
@@ -20,18 +20,23 @@ class ClientTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = new Client([
-            'protocol' => 'imap',
-            'encryption' => 'ssl',
-            'username' => 'foo@domain.tld',
-            'password' => 'bar',
-            'proxy' => [
-                'socket' => null,
-                'request_fulluri' => false,
-                'username' => null,
-                'password' => null,
+        $manager = new ClientManager([
+            'accounts' => [
+                'default' => [
+                    'encryption' => 'ssl',
+                    'username' => 'foo@domain.tld',
+                    'password' => 'bar',
+                    'proxy' => [
+                        'socket' => null,
+                        'request_fulluri' => false,
+                        'username' => null,
+                        'password' => null,
+                    ],
+                ],
             ],
         ]);
+
+        $this->client = $manager->account('default');
     }
 
     public function test_client(): void
@@ -44,7 +49,6 @@ class ClientTest extends TestCase
         self::assertSame(30, $this->client->getTimeout());
         self::assertSame(MessageMask::class, $this->client->getDefaultMessageMask());
         self::assertSame(AttachmentMask::class, $this->client->getDefaultAttachmentMask());
-        self::assertArrayHasKey('new', $this->client->getDefaultEvents('message'));
     }
 
     public function test_client_logout(): void

@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Attribute;
 
 class AttributeTest extends TestCase

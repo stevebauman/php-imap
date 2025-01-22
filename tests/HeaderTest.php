@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Address;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Header;

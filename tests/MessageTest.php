@@ -3,10 +3,10 @@
 namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Client;
+use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
@@ -24,18 +24,23 @@ class MessageTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = new Client([
-            'protocol' => 'imap',
-            'encryption' => 'ssl',
-            'username' => 'foo@domain.tld',
-            'password' => 'bar',
-            'proxy' => [
-                'socket' => null,
-                'request_fulluri' => false,
-                'username' => null,
-                'password' => null,
+        $manager = new ClientManager([
+            'accounts' => [
+                'default' => [
+                    'encryption' => 'ssl',
+                    'username' => 'foo@domain.tld',
+                    'password' => 'bar',
+                    'proxy' => [
+                        'socket' => null,
+                        'request_fulluri' => false,
+                        'username' => null,
+                        'password' => null,
+                    ],
+                ],
             ],
         ]);
+
+        $this->client = $manager->account('default');
     }
 
     public function test_message(): void
@@ -85,7 +90,7 @@ class MessageTest extends TestCase
         self::assertNotEmpty($this->client->openFolder('INBOX'));
 
         try {
-            $this->client->getConnection()->getMessageNumber(21)->validatedData();
+            $this->client->getConnection()->getMessageNumber(21)->getValidatedData();
             $this->fail('Message number should not exist');
         } catch (ResponseException $e) {
             self::assertTrue(true);

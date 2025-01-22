@@ -2,7 +2,7 @@
 
 namespace Tests\live;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Folder;
@@ -29,7 +29,6 @@ abstract class LiveMailboxTestCase extends TestCase
                         'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
                         'username' => getenv('LIVE_MAILBOX_USERNAME'),
                         'password' => getenv('LIVE_MAILBOX_PASSWORD'),
-                        'protocol' => 'imap', // might also use imap, [pop3 or nntp (untested)]
                     ],
                 ],
             ]);

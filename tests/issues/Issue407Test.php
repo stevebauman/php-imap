@@ -18,7 +18,7 @@ class Issue407Test extends LiveMailboxTestCase
 
         $message->setFlag('Seen');
 
-        $flags = $this->getClient()->getConnection()->flags($message->uid)->validatedData();
+        $flags = $this->getClient()->getConnection()->flags($message->uid)->getValidatedData();
 
         self::assertIsArray($flags);
         self::assertSame(1, count($flags));
