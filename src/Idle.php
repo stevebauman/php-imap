@@ -22,7 +22,7 @@ class Idle
         protected Folder $folder,
         protected int $timeout,
     ) {
-        $this->client = $folder->getClient()->clone();
+        $this->client = clone $folder->getClient();
     }
 
     /**

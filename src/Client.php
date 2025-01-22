@@ -118,7 +118,7 @@ class Client
     public ?ProtocolInterface $connection = null;
 
     /**
-     * Client constructor.
+     * Constructor.
      */
     public function __construct(array $config = [])
     {
@@ -128,7 +128,7 @@ class Client
     }
 
     /**
-     * Client destructor.
+     * Destructor.
      */
     public function __destruct()
     {
@@ -136,24 +136,11 @@ class Client
     }
 
     /**
-     * Clone the current Client instance.
+     * Clone the instance.
      */
-    public function clone(): Client
+    public function __clone()
     {
-        $client = new self;
-
-        $client->events = $this->events;
-        $client->timeout = $this->timeout;
-        $client->activeFolder = $this->activeFolder;
-        $client->defaultMessageMask = $this->defaultMessageMask;
-        $client->defaultAttachmentMask = $this->defaultMessageMask;
-        $client->defaultAccountConfig = $this->defaultAccountConfig;
-
-        foreach ($config = $this->getAccountConfig() as $key => $value) {
-            $client->setAccountConfig($key, $config, $this->defaultAccountConfig);
-        }
-
-        return $client;
+        $this->connection = null;
     }
 
     /**
