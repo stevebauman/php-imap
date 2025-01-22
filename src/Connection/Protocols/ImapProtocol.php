@@ -22,9 +22,9 @@ use Webklex\PHPIMAP\IMAP;
 class ImapProtocol extends Protocol
 {
     /**
-     * Request noun.
+     * The request sequence.
      */
-    protected int $noun = 0;
+    protected int $sequence = 0;
 
     /**
      * Constructor.
@@ -61,11 +61,11 @@ class ImapProtocol extends Protocol
 
             if (in_array($encryption, ['ssl', 'tls'])) {
                 $transport = $encryption;
-                $port = $port === null ? 993 : $port;
+                $port ??= 993;
             }
         }
 
-        $port = $port === null ? 143 : $port;
+        $port ??= 143;
 
         try {
             $response = new Response(0, $this->debug);
@@ -124,7 +124,7 @@ class ImapProtocol extends Protocol
             };
         }
 
-        $response->addResponse($line);
+        $response->push($line);
 
         if ($this->debug) {
             echo '<< '.$line;
@@ -342,13 +342,13 @@ class ImapProtocol extends Protocol
     public function sendRequest(string $command, array $tokens = [], ?string &$tag = null): Response
     {
         if (! $tag) {
-            $this->noun++;
-            $tag = 'TAG'.$this->noun;
+            $this->sequence++;
+            $tag = 'TAG'.$this->sequence;
         }
 
         $line = $tag.' '.$command;
 
-        $response = new Response($this->noun, $this->debug);
+        $response = new Response($this->sequence, $this->debug);
 
         foreach ($tokens as $token) {
             if (is_array($token)) {
@@ -491,7 +491,7 @@ class ImapProtocol extends Protocol
                     error_log("got an extra server challenge: $tokens");
 
                     // Respond with an empty response.
-                    $response->stack($this->sendRequest(''));
+                    $response->addResponse($this->sendRequest(''));
                 } else {
                     if (preg_match('/^NO /i', $tokens) ||
                         preg_match('/^BAD /i', $tokens)) {
@@ -565,7 +565,7 @@ class ImapProtocol extends Protocol
             return $response;
         }
 
-        return $response->setResult($response->validatedData()[0]);
+        return $response->setResult($response->getValidatedData()[0]);
     }
 
     /**
@@ -662,7 +662,7 @@ class ImapProtocol extends Protocol
             $this->escapeList($arguments),
         ]);
 
-        $data = $response->validatedData();
+        $data = $response->getValidatedData();
 
         if (! isset($data[0]) || ! isset($data[0][2])) {
             throw new RuntimeException('Folder status could not be fetched');
@@ -704,10 +704,12 @@ class ImapProtocol extends Protocol
      */
     public function fetch(array|string $items, array|int $from, mixed $to = null, int|string $uid = IMAP::ST_UID): Response
     {
-        if (is_array($from)) {
+        if (is_array($from) && count($from) > 1) {
             $set = implode(',', $from);
+        } elseif (is_array($from) && count($from) === 1) {
+            $set = $from[0].':'.$from[0];
         } elseif ($to === null) {
-            $set = $from;
+            $set = $from.':'.$from;
         } elseif ($to == INF) {
             $set = $from.':*';
         } else {
@@ -1248,7 +1250,7 @@ class ImapProtocol extends Protocol
      */
     public function done(): bool
     {
-        $response = new Response($this->noun, $this->debug);
+        $response = new Response($this->sequence, $this->debug);
 
         $this->write($response, 'DONE');
 
@@ -1310,7 +1312,7 @@ class ImapProtocol extends Protocol
         if (! empty($ids)) {
             $headers = $this->headers($ids, 'RFC822', $uid);
 
-            $response->stack($headers);
+            $response->addResponse($headers);
 
             foreach ($headers->data() as $id => $raw_header) {
                 $result[$id] = (new Header($raw_header))->getAttributes();
