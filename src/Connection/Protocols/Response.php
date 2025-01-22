@@ -53,7 +53,7 @@ class Response
     public function __construct(int $sequence = 0, bool $debug = false)
     {
         $this->debug = $debug;
-        $this->sequence = $sequence > 0 ? $sequence : (int) str_replace('.', '', (string) microtime(true));
+        $this->sequence = $sequence > 0 ? $sequence : $this->getUniqueSequence();
     }
 
     /**
