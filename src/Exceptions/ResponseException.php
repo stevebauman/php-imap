@@ -27,7 +27,7 @@ class ResponseException extends Exception
             $message .= self::debug_message($response);
         }
 
-        foreach ($response->getStack() as $_response) {
+        foreach ($response->getResponses() as $_response) {
             $exception = self::make($_response, $debug, $exception);
         }
 

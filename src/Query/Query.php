@@ -156,7 +156,7 @@ class Query
         try {
             $available_messages = $this->client->getConnection()
                 ->search([$this->getRawQuery()], $this->sequence)
-                ->validatedData();
+                ->getValidatedData();
 
             return new Collection($available_messages);
         } catch (RuntimeException|ConnectionFailedException $e) {
@@ -186,17 +186,17 @@ class Query
         $extensions = $this->getExtensions();
 
         if (empty($extensions) === false && method_exists($this->client->getConnection(), 'fetch')) {
-            $extensions = $this->client->getConnection()->fetch($extensions, $uids, null, $this->sequence)->validatedData();
+            $extensions = $this->client->getConnection()->fetch($extensions, $uids, null, $this->sequence)->getValidatedData();
         }
 
-        $flags = $this->client->getConnection()->flags($uids, $this->sequence)->validatedData();
+        $flags = $this->client->getConnection()->flags($uids, $this->sequence)->getValidatedData();
 
-        $headers = $this->client->getConnection()->headers($uids, 'RFC822', $this->sequence)->validatedData();
+        $headers = $this->client->getConnection()->headers($uids, 'RFC822', $this->sequence)->getValidatedData();
 
         $contents = [];
 
         if ($this->getFetchBody()) {
-            $contents = $this->client->getConnection()->content($uids, 'RFC822', $this->sequence)->validatedData();
+            $contents = $this->client->getConnection()->content($uids, 'RFC822', $this->sequence)->getValidatedData();
         }
 
         return [
@@ -402,7 +402,7 @@ class Query
     {
         $connection = $this->getClient()->getConnection();
 
-        $uids = $connection->getUid()->validatedData();
+        $uids = $connection->getUid()->getValidatedData();
 
         $available_messages = new Collection;
 

@@ -212,7 +212,7 @@ class Folder
 
         $status = $this->client->getConnection()
             ->renameFolder($this->full_name, $new_name)
-            ->validatedData();
+            ->getValidatedData();
 
         if ($expunge) {
             $this->client->expunge();
@@ -238,7 +238,7 @@ class Folder
 
         $response = $this->client->getConnection()->overview($sequence, $uid);
 
-        return $response->validatedData();
+        return $response->getValidatedData();
     }
 
     /**
@@ -255,7 +255,7 @@ class Folder
 
         return $this->client->getConnection()
             ->appendMessage($this->path, $message, $options, $internal_date)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -273,7 +273,7 @@ class Folder
     {
         $status = $this->client->getConnection()
             ->deleteFolder($this->path)
-            ->validatedData();
+            ->getValidatedData();
 
         if ($this->client->getActiveFolder() == $this->path) {
             $this->client->setActiveFolder();
@@ -297,7 +297,7 @@ class Folder
 
         return $this->client->getConnection()
             ->subscribeFolder($this->path)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -309,7 +309,7 @@ class Folder
 
         return $this->client->getConnection()
             ->unsubscribeFolder($this->path)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -363,7 +363,7 @@ class Folder
     {
         return $this->client->getConnection()
             ->folderStatus($this->path)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -393,7 +393,7 @@ class Folder
     {
         return $this->client->getConnection()
             ->examineFolder($this->path)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -403,7 +403,7 @@ class Folder
     {
         return $this->client->getConnection()
             ->selectFolder($this->path)
-            ->validatedData();
+            ->getValidatedData();
     }
 
     /**
@@ -441,6 +441,6 @@ class Folder
     {
         return $this->client->getConnection()
             ->getCapabilities()
-            ->validatedData();
+            ->getValidatedData();
     }
 }
