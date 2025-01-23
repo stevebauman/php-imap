@@ -24,8 +24,10 @@ class HeaderTest extends TestCase
         $rawHeader = substr($email, 0, strpos($email, "\r\n\r\n"));
 
         $header = new Header($rawHeader);
+
         $subject = $header->get('subject');
         $returnPath = $header->get('Return-Path');
+
         /** @var Carbon $date */
         $date = $header->get('date')->first();
         /** @var Address $from */
@@ -34,6 +36,7 @@ class HeaderTest extends TestCase
         $to = $header->get('to')->first();
 
         $this->assertSame($rawHeader, $header->raw);
+        $this->assertSame($returnPath, $header->return_path);
         $this->assertInstanceOf(Attribute::class, $subject);
         $this->assertSame('Re: [Webklex/php-imap] Read all folders? (Issue #349)', $subject->toString());
         $this->assertSame('Re: [Webklex/php-imap] Read all folders? (Issue #349)', (string) $header->subject);
