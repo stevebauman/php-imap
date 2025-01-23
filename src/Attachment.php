@@ -2,9 +2,10 @@
 
 namespace Webklex\PHPIMAP;
 
+use finfo;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
-use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 
 /**
@@ -42,6 +43,8 @@ use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
  */
 class Attachment
 {
+    use ForwardsCalls;
+
     /**
      * Message instance.
      */
@@ -110,13 +113,11 @@ class Attachment
     }
 
     /**
-     * Call dynamic attribute setter and getter methods.
-     *
-     * @throws MethodNotFoundException
+     * Handle dynamic method calls on the instance.
      */
     public function __call(string $method, array $arguments): mixed
     {
-        if (strtolower(substr($method, 0, 3)) === 'get') {
+        if (str_starts_with($method, 'get')) {
             $name = Str::snake(substr($method, 3));
 
             if (isset($this->attributes[$name])) {
@@ -124,7 +125,9 @@ class Attachment
             }
 
             return null;
-        } elseif (strtolower(substr($method, 0, 3)) === 'set') {
+        }
+
+        if (str_starts_with($method, 'set')) {
             $name = Str::snake(substr($method, 3));
 
             $this->attributes[$name] = array_pop($arguments);
@@ -132,7 +135,7 @@ class Attachment
             return $this->attributes[$name];
         }
 
-        throw new MethodNotFoundException('Method '.self::class.'::'.$method.'() is not supported');
+        static::throwBadMethodCallException($method);
     }
 
     /**
@@ -294,7 +297,7 @@ class Attachment
      */
     public function getMimeType(): ?string
     {
-        return (new \finfo)->buffer($this->getContent(), FILEINFO_MIME_TYPE);
+        return (new finfo)->buffer($this->getContent(), FILEINFO_MIME_TYPE);
     }
 
     /**
