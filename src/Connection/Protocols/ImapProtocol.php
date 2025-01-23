@@ -14,6 +14,7 @@ use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Support\Escape;
 
 /**
  * @see https://www.rfc-editor.org/rfc/rfc2087.txt
@@ -21,7 +22,7 @@ use Webklex\PHPIMAP\IMAP;
 class ImapProtocol extends Protocol
 {
     /**
-     * The request sequence.
+     * The current request sequence.
      */
     protected int $sequence = 0;
 
@@ -131,7 +132,7 @@ class ImapProtocol extends Protocol
     }
 
     /**
-     * Get the next line and split the tag.
+     * Get the next tagged line along with the containing tag.
      */
     protected function nextTaggedLine(Response $response, ?string &$tag): string
     {
@@ -321,7 +322,9 @@ class ImapProtocol extends Protocol
         // Last line has response code.
         if ($tokens[0] == 'OK') {
             return $lines ?: [true];
-        } elseif (in_array($tokens[0], ['NO', 'BAD', 'BYE'])) {
+        }
+
+        if (in_array($tokens[0], ['NO', 'BAD', 'BYE'])) {
             throw ImapServerErrorException::fromResponseTokens($original);
         }
 
@@ -385,7 +388,6 @@ class ImapProtocol extends Protocol
     /**
      * Send a request and get response at once.
      *
-     * @param  array  $tokens  parameters as in sendRequest()
      * @param  bool  $dontParse  if true unparsed lines are returned instead of tokens
      * @return Response response as in readResponse()
      */
@@ -398,55 +400,6 @@ class ImapProtocol extends Protocol
         );
 
         return $response;
-    }
-
-    /**
-     * Escape one or more literals i.e. for sendRequest.
-     *
-     * @param  array|string  $string  the literal/-s
-     * @return string|array escape literals, literals with newline ar returned
-     *                      as array('{size}', 'string');
-     */
-    public function escapeString(array|string $string): array|string
-    {
-        if (func_num_args() < 2) {
-            if (str_contains($string, "\n")) {
-                return ['{'.strlen($string).'}', $string];
-            } else {
-                return '"'.str_replace(['\\', '"'], ['\\\\', '\\"'], $string).'"';
-            }
-        }
-
-        $result = [];
-
-        foreach (func_get_args() as $string) {
-            $result[] = $this->escapeString($string);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Escape a list with literals or lists.
-     *
-     * @param  array  $list  list with literals or lists as PHP array
-     * @return string escaped list for imap
-     */
-    public function escapeList(array $list): string
-    {
-        $result = [];
-
-        foreach ($list as $v) {
-            if (! is_array($v)) {
-                $result[] = $v;
-
-                continue;
-            }
-
-            $result[] = $this->escapeList($v);
-        }
-
-        return '('.implode(' ', $result).')';
     }
 
     /**
@@ -604,10 +557,7 @@ class ImapProtocol extends Protocol
     }
 
     /**
-     * Change the current folder.
-     *
-     * @param  string  $folder  change to this folder
-     * @return Response see examineOrSelect()
+     * Select the current folder.
      */
     public function selectFolder(string $folder = 'INBOX'): Response
     {
@@ -617,7 +567,7 @@ class ImapProtocol extends Protocol
     }
 
     /**
-     * Examine a given folder.
+     * Examine the given folder.
      */
     public function examineFolder(string $folder = 'INBOX'): Response
     {
@@ -1307,5 +1257,21 @@ class ImapProtocol extends Protocol
         }
 
         return $set;
+    }
+
+    /**
+     * Escape one or more literals i.e. for sendRequest.
+     */
+    protected function escapeString(array|string ...$string): array|string
+    {
+        return Escape::string($string);
+    }
+
+    /**
+     * Escape a list with literals or lists.
+     */
+    protected function escapeList(array $list): string
+    {
+        return Escape::list($list);
     }
 }
