@@ -491,7 +491,9 @@ class ImapProtocol extends Protocol
             return $response;
         }
 
-        return $response->setResult($response->getValidatedData()[0]);
+        return $response->setResult(
+            $response->getValidatedData()[0]
+        );
     }
 
     /**
@@ -1052,7 +1054,7 @@ class ImapProtocol extends Protocol
                 continue;
             }
 
-            throw new RuntimeException('Idle failed - unexpected response: '.trim($line));
+            throw new RuntimeException('Idle failed. Unexpected response: '.trim($line));
         }
     }
 
