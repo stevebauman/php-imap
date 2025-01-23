@@ -21,18 +21,18 @@ class StructureTest extends TestCase
         $header = new Header($raw_header);
         $structure = new Structure($raw_body, $header);
 
-        self::assertSame(2, count($structure->parts));
+        $this->assertSame(2, count($structure->parts));
 
         $textPart = $structure->parts[0];
 
-        self::assertSame('UTF-8', $textPart->charset);
-        self::assertSame('text/plain', $textPart->content_type);
-        self::assertSame(278, $textPart->bytes);
+        $this->assertSame('UTF-8', $textPart->charset);
+        $this->assertSame('text/plain', $textPart->content_type);
+        $this->assertSame(278, $textPart->bytes);
 
         $htmlPart = $structure->parts[1];
 
-        self::assertSame('UTF-8', $htmlPart->charset);
-        self::assertSame('text/html', $htmlPart->content_type);
-        self::assertSame(1478, $htmlPart->bytes);
+        $this->assertSame('UTF-8', $htmlPart->charset);
+        $this->assertSame('text/html', $htmlPart->content_type);
+        $this->assertSame(1478, $htmlPart->bytes);
     }
 }

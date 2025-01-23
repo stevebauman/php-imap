@@ -9,13 +9,13 @@ class ImapProtocolTest extends TestCase
     public function test_imap_protocol(): void
     {
         $protocol = new ImapProtocol(false);
-        self::assertSame(false, $protocol->getCertValidation());
-        self::assertNull($protocol->getEncryption());
+        $this->assertSame(false, $protocol->getCertValidation());
+        $this->assertNull($protocol->getEncryption());
 
         $protocol->setCertValidation(true);
         $protocol->setEncryption('ssl');
 
-        self::assertSame(true, $protocol->getCertValidation());
-        self::assertSame('ssl', $protocol->getEncryption());
+        $this->assertSame(true, $protocol->getCertValidation());
+        $this->assertSame('ssl', $protocol->getEncryption());
     }
 }

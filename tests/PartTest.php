@@ -16,15 +16,15 @@ class PartTest extends TestCase
         $headers = new Header($raw_headers);
         $part = new Part($raw_body, $headers, 0);
 
-        self::assertSame('UTF-8', $part->charset);
-        self::assertSame('text/plain', $part->content_type);
-        self::assertSame(12, $part->bytes);
-        self::assertSame(0, $part->part_number);
-        self::assertSame(false, $part->ifdisposition);
-        self::assertSame(false, $part->isAttachment());
-        self::assertSame('Any updates?', $part->content);
-        self::assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        self::assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
+        $this->assertSame('UTF-8', $part->charset);
+        $this->assertSame('text/plain', $part->content_type);
+        $this->assertSame(12, $part->bytes);
+        $this->assertSame(0, $part->part_number);
+        $this->assertSame(false, $part->ifdisposition);
+        $this->assertSame(false, $part->isAttachment());
+        $this->assertSame('Any updates?', $part->content);
+        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
     public function test_html_part(): void
@@ -35,15 +35,15 @@ class PartTest extends TestCase
         $headers = new Header($raw_headers);
         $part = new Part($raw_body, $headers, 0);
 
-        self::assertSame('UTF-8', $part->charset);
-        self::assertSame('text/html', $part->content_type);
-        self::assertSame(39, $part->bytes);
-        self::assertSame(0, $part->part_number);
-        self::assertSame(false, $part->ifdisposition);
-        self::assertSame(false, $part->isAttachment());
-        self::assertSame("<p></p>\r\n<p dir=\"auto\">Any updates?</p>", $part->content);
-        self::assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        self::assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
+        $this->assertSame('UTF-8', $part->charset);
+        $this->assertSame('text/html', $part->content_type);
+        $this->assertSame(39, $part->bytes);
+        $this->assertSame(0, $part->part_number);
+        $this->assertSame(false, $part->ifdisposition);
+        $this->assertSame(false, $part->isAttachment());
+        $this->assertSame("<p></p>\r\n<p dir=\"auto\">Any updates?</p>", $part->content);
+        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
     public function test_base64_part(): void
@@ -54,17 +54,17 @@ class PartTest extends TestCase
         $headers = new Header($raw_headers);
         $part = new Part($raw_body, $headers, 0);
 
-        self::assertSame('', $part->charset);
-        self::assertSame('application/octet-stream', $part->content_type);
-        self::assertSame(90, $part->bytes);
-        self::assertSame(0, $part->part_number);
-        self::assertSame('znk551MP3TP3WPp9Kl1gnLErrWEgkJFAtvaKqkTgrk3dKI8dX38YT8BaVxRcOERN', base64_decode($part->content));
-        self::assertSame(true, $part->ifdisposition);
-        self::assertSame('attachment', $part->disposition);
-        self::assertSame('6mfFxiU5Yhv9WYJx.txt', $part->name);
-        self::assertSame('6mfFxiU5Yhv9WYJx.txt', $part->filename);
-        self::assertSame(true, $part->isAttachment());
-        self::assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        self::assertSame(IMAP::MESSAGE_ENC_BASE64, $part->encoding);
+        $this->assertSame('', $part->charset);
+        $this->assertSame('application/octet-stream', $part->content_type);
+        $this->assertSame(90, $part->bytes);
+        $this->assertSame(0, $part->part_number);
+        $this->assertSame('znk551MP3TP3WPp9Kl1gnLErrWEgkJFAtvaKqkTgrk3dKI8dX38YT8BaVxRcOERN', base64_decode($part->content));
+        $this->assertSame(true, $part->ifdisposition);
+        $this->assertSame('attachment', $part->disposition);
+        $this->assertSame('6mfFxiU5Yhv9WYJx.txt', $part->name);
+        $this->assertSame('6mfFxiU5Yhv9WYJx.txt', $part->filename);
+        $this->assertSame(true, $part->isAttachment());
+        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(IMAP::MESSAGE_ENC_BASE64, $part->encoding);
     }
 }

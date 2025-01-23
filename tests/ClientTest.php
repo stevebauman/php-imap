@@ -43,12 +43,12 @@ class ClientTest extends TestCase
     {
         $this->createNewProtocolMockup();
 
-        self::assertInstanceOf(ImapProtocol::class, $this->client->getConnection());
-        self::assertSame(true, $this->client->isConnected());
-        self::assertSame(false, $this->client->checkConnection());
-        self::assertSame(30, $this->client->getTimeout());
-        self::assertSame(MessageMask::class, $this->client->getDefaultMessageMask());
-        self::assertSame(AttachmentMask::class, $this->client->getDefaultAttachmentMask());
+        $this->assertInstanceOf(ImapProtocol::class, $this->client->getConnection());
+        $this->assertSame(true, $this->client->isConnected());
+        $this->assertSame(false, $this->client->checkConnection());
+        $this->assertSame(30, $this->client->getTimeout());
+        $this->assertSame(MessageMask::class, $this->client->getDefaultMessageMask());
+        $this->assertSame(AttachmentMask::class, $this->client->getDefaultAttachmentMask());
     }
 
     public function test_client_logout(): void
@@ -59,7 +59,7 @@ class ClientTest extends TestCase
             0 => "BYE Logging out\r\n",
             1 => "OK Logout completed (0.001 + 0.000 secs).\r\n",
         ]));
-        self::assertInstanceOf(Client::class, $this->client->disconnect());
+        $this->assertInstanceOf(Client::class, $this->client->disconnect());
     }
 
     public function test_client_expunge(): void
@@ -76,7 +76,7 @@ class ClientTest extends TestCase
                 3 => 'secs).',
             ],
         ]));
-        self::assertNotEmpty($this->client->expunge());
+        $this->assertNotEmpty($this->client->expunge());
     }
 
     public function test_client_folders(): void
@@ -112,8 +112,8 @@ class ClientTest extends TestCase
             'uidvalidity' => 1488899637,
             'uidnext' => 278,
         ]));
-        self::assertNotEmpty($this->client->openFolder('INBOX'));
-        self::assertSame('INBOX', $this->client->getFolderPath());
+        $this->assertNotEmpty($this->client->openFolder('INBOX'));
+        $this->assertSame('INBOX', $this->client->getFolderPath());
 
         $this->protocol->expects($this->any())->method('examineFolder')->willReturn(Response::empty()->setResponse([
             'flags' => [
@@ -133,7 +133,7 @@ class ClientTest extends TestCase
             'uidvalidity' => 1488899637,
             'uidnext' => 278,
         ]));
-        self::assertNotEmpty($this->client->checkFolder('INBOX'));
+        $this->assertNotEmpty($this->client->checkFolder('INBOX'));
 
         $this->protocol->expects($this->any())->method('folders')->with($this->identicalTo(''), $this->identicalTo('*'))->willReturn(Response::empty()->setResponse([
             'INBOX' => [
@@ -223,17 +223,17 @@ class ClientTest extends TestCase
         $this->protocol->expects($this->any())->method('createFolder')->willReturn(Response::empty()->setResponse([
             0 => "OK Create completed (0.004 + 0.000 + 0.003 secs).\r\n",
         ]));
-        self::assertNotEmpty($this->client->createFolder('INBOX.new'));
+        $this->assertNotEmpty($this->client->createFolder('INBOX.new'));
 
         $this->protocol->expects($this->any())->method('deleteFolder')->willReturn(Response::empty()->setResponse([
             0 => "OK Delete completed (0.007 + 0.000 + 0.006 secs).\r\n",
         ]));
-        self::assertNotEmpty($this->client->deleteFolder('INBOX.new'));
+        $this->assertNotEmpty($this->client->deleteFolder('INBOX.new'));
 
-        self::assertInstanceOf(Folder::class, $this->client->getFolderByPath('INBOX.new'));
-        self::assertInstanceOf(Folder::class, $this->client->getFolderByName('new'));
-        self::assertInstanceOf(Folder::class, $this->client->getFolder('INBOX.new', '.'));
-        self::assertInstanceOf(Folder::class, $this->client->getFolder('new'));
+        $this->assertInstanceOf(Folder::class, $this->client->getFolderByPath('INBOX.new'));
+        $this->assertInstanceOf(Folder::class, $this->client->getFolderByName('new'));
+        $this->assertInstanceOf(Folder::class, $this->client->getFolder('INBOX.new', '.'));
+        $this->assertInstanceOf(Folder::class, $this->client->getFolder('new'));
     }
 
     public function test_client_id(): void
@@ -244,26 +244,26 @@ class ClientTest extends TestCase
             1 => "OK ID completed (0.001 + 0.000 secs).\r\n",
 
         ]));
-        self::assertSame("ID (\"name\" \"Dovecot\")\r\n", $this->client->Id()[0]);
+        $this->assertSame("ID (\"name\" \"Dovecot\")\r\n", $this->client->Id()[0]);
     }
 
     public function test_client_config(): void
     {
         $config = $this->client->getConfig();
-        self::assertSame('foo@domain.tld', $config['username']);
-        self::assertSame('bar', $config['password']);
-        self::assertSame('localhost', $config['host']);
-        self::assertSame(true, $config['validate_cert']);
-        self::assertSame(993, $config['port']);
+        $this->assertSame('foo@domain.tld', $config['username']);
+        $this->assertSame('bar', $config['password']);
+        $this->assertSame('localhost', $config['host']);
+        $this->assertSame(true, $config['validate_cert']);
+        $this->assertSame(993, $config['port']);
 
         $this->client->setConfig([
             'host' => 'domain.tld',
             'password' => 'bar',
         ]);
         $config = $this->client->getConfig();
-        self::assertSame('bar', $config['password']);
-        self::assertSame('domain.tld', $config['host']);
-        self::assertSame(true, $config['validate_cert']);
+        $this->assertSame('bar', $config['password']);
+        $this->assertSame('domain.tld', $config['host']);
+        $this->assertSame(true, $config['validate_cert']);
     }
 
     protected function createNewProtocolMockup(): void

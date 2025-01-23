@@ -8,11 +8,11 @@ class MissingDateTest extends FixtureTestCase
     {
         $message = $this->getFixture('missing_date.eml');
 
-        self::assertEquals('Nuu', $message->getSubject());
-        self::assertEquals('Hi', $message->getTextBody());
-        self::assertFalse($message->hasHTMLBody());
-        self::assertFalse($message->date->first());
-        self::assertEquals('from@here.com', $message->from->first()->mail);
-        self::assertEquals('to@here.com', $message->to->first()->mail);
+        $this->assertEquals('Nuu', $message->getSubject());
+        $this->assertEquals('Hi', $message->getTextBody());
+        $this->assertFalse($message->hasHTMLBody());
+        $this->assertFalse($message->date->first());
+        $this->assertEquals('from@here.com', $message->from->first()->mail);
+        $this->assertEquals('to@here.com', $message->to->first()->mail);
     }
 }

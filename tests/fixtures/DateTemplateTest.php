@@ -30,7 +30,7 @@ class DateTemplateTest extends FixtureTestCase
             $message = $this->getFixture('date-template.eml');
             $this->fail('Expected InvalidMessageDateException');
         } catch (InvalidMessageDateException $e) {
-            self::assertTrue(true);
+            $this->assertTrue(true);
         }
 
         self::$manager->setConfig([
@@ -40,13 +40,13 @@ class DateTemplateTest extends FixtureTestCase
         ]);
         $message = $this->getFixture('date-template.eml');
 
-        self::assertEquals('test', $message->subject);
-        self::assertEquals('1.0', $message->mime_version);
-        self::assertEquals('Hi!', $message->getTextBody());
-        self::assertFalse($message->hasHTMLBody());
-        self::assertEquals('2021-01-01 00:00:00', $message->date->first()->timezone('UTC')->format('Y-m-d H:i:s'));
-        self::assertEquals('from@there.com', (string) $message->from);
-        self::assertEquals('to@here.com', $message->to);
+        $this->assertEquals('test', $message->subject);
+        $this->assertEquals('1.0', $message->mime_version);
+        $this->assertEquals('Hi!', $message->getTextBody());
+        $this->assertFalse($message->hasHTMLBody());
+        $this->assertEquals('2021-01-01 00:00:00', $message->date->first()->timezone('UTC')->format('Y-m-d H:i:s'));
+        $this->assertEquals('from@there.com', (string) $message->from);
+        $this->assertEquals('to@here.com', $message->to);
 
         self::$manager->setConfig([
             'options' => [
@@ -56,17 +56,17 @@ class DateTemplateTest extends FixtureTestCase
 
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..',  'messages', 'date-template.eml']);
         $blob = file_get_contents($filename);
-        self::assertNotFalse($blob);
+        $this->assertNotFalse($blob);
 
         foreach ($this->dates as $date => $expected) {
             $message = Message::fromString(str_replace('%date_raw_header%', $date, $blob));
-            self::assertEquals('test', $message->subject);
-            self::assertEquals('1.0', $message->mime_version);
-            self::assertEquals('Hi!', $message->getTextBody());
-            self::assertFalse($message->hasHTMLBody());
-            self::assertEquals($expected, $message->date->first()->timezone('UTC')->format('Y-m-d H:i:s'), "Date \"$date\" should be \"$expected\"");
-            self::assertEquals('from@there.com', (string) $message->from);
-            self::assertEquals('to@here.com', $message->to);
+            $this->assertEquals('test', $message->subject);
+            $this->assertEquals('1.0', $message->mime_version);
+            $this->assertEquals('Hi!', $message->getTextBody());
+            $this->assertFalse($message->hasHTMLBody());
+            $this->assertEquals($expected, $message->date->first()->timezone('UTC')->format('Y-m-d H:i:s'), "Date \"$date\" should be \"$expected\"");
+            $this->assertEquals('from@there.com', (string) $message->from);
+            $this->assertEquals('to@here.com', $message->to);
         }
     }
 }

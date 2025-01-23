@@ -14,10 +14,10 @@ class Issue382Test extends TestCase
 
         $from = $message->from->first();
 
-        self::assertSame('Mail Delivery System', $from->personal);
-        self::assertSame('MAILER-DAEMON', $from->mailbox);
-        self::assertSame('mta-09.someserver.com', $from->host);
-        self::assertSame('MAILER-DAEMON@mta-09.someserver.com', $from->mail);
-        self::assertSame('Mail Delivery System <MAILER-DAEMON@mta-09.someserver.com>', $from->full);
+        $this->assertSame('Mail Delivery System', $from->personal);
+        $this->assertSame('MAILER-DAEMON', $from->mailbox);
+        $this->assertSame('mta-09.someserver.com', $from->host);
+        $this->assertSame('MAILER-DAEMON@mta-09.someserver.com', $from->mail);
+        $this->assertSame('Mail Delivery System <MAILER-DAEMON@mta-09.someserver.com>', $from->full);
     }
 }

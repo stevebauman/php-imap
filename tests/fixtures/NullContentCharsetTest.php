@@ -8,13 +8,13 @@ class NullContentCharsetTest extends FixtureTestCase
     {
         $message = $this->getFixture('null_content_charset.eml');
 
-        self::assertEquals('test', $message->getSubject());
-        self::assertEquals('Hi!', $message->getTextBody());
-        self::assertEquals('1.0', $message->mime_version);
-        self::assertFalse($message->hasHTMLBody());
+        $this->assertEquals('test', $message->getSubject());
+        $this->assertEquals('Hi!', $message->getTextBody());
+        $this->assertEquals('1.0', $message->mime_version);
+        $this->assertFalse($message->hasHTMLBody());
 
-        self::assertEquals('2017-09-27 10:48:51', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
-        self::assertEquals('from@there.com', $message->from->first()->mail);
-        self::assertEquals('to@here.com', $message->to->first()->mail);
+        $this->assertEquals('2017-09-27 10:48:51', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
+        $this->assertEquals('from@there.com', $message->from->first()->mail);
+        $this->assertEquals('to@here.com', $message->to->first()->mail);
     }
 }

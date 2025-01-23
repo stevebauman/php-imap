@@ -10,51 +10,51 @@ class AttachmentLongFilenameTest extends FixtureTestCase
     {
         $message = $this->getFixture('attachment_long_filename.eml');
 
-        self::assertEquals('', $message->subject);
-        self::assertEquals('multipart/mixed', $message->content_type->last());
-        self::assertFalse($message->hasTextBody());
-        self::assertFalse($message->hasHTMLBody());
+        $this->assertEquals('', $message->subject);
+        $this->assertEquals('multipart/mixed', $message->content_type->last());
+        $this->assertFalse($message->hasTextBody());
+        $this->assertFalse($message->hasHTMLBody());
 
         $attachments = $message->attachments();
-        self::assertCount(3, $attachments);
+        $this->assertCount(3, $attachments);
 
         $attachment = $attachments[0];
-        self::assertInstanceOf(Attachment::class, $attachment);
-        self::assertEquals('Buchungsbestätigung- Rechnung-Geschäftsbedingungen-Nr.B123-45 - XXXX xxxxxxxxxxxxxxxxx XxxX, Lüdxxxxxxxx - VM Klaus XXXXXX - xxxxxxxx.pdf', $attachment->name);
-        self::assertEquals('Buchungsbestätigung- Rechnung-Geschäftsbedingungen-Nr.B123-45 - XXXXX xxxxxxxxxxxxxxxxx XxxX, Lüxxxxxxxxxx - VM Klaus XXXXXX - xxxxxxxx.pdf', $attachment->filename);
-        self::assertEquals('text', $attachment->type);
-        self::assertEquals('pdf', $attachment->getExtension());
-        self::assertEquals('text/plain', $attachment->content_type);
-        self::assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
-        self::assertEquals(4, $attachment->size);
-        self::assertEquals(0, $attachment->part_number);
-        self::assertEquals('attachment', $attachment->disposition);
-        self::assertNotEmpty($attachment->id);
+        $this->assertInstanceOf(Attachment::class, $attachment);
+        $this->assertEquals('Buchungsbestätigung- Rechnung-Geschäftsbedingungen-Nr.B123-45 - XXXX xxxxxxxxxxxxxxxxx XxxX, Lüdxxxxxxxx - VM Klaus XXXXXX - xxxxxxxx.pdf', $attachment->name);
+        $this->assertEquals('Buchungsbestätigung- Rechnung-Geschäftsbedingungen-Nr.B123-45 - XXXXX xxxxxxxxxxxxxxxxx XxxX, Lüxxxxxxxxxx - VM Klaus XXXXXX - xxxxxxxx.pdf', $attachment->filename);
+        $this->assertEquals('text', $attachment->type);
+        $this->assertEquals('pdf', $attachment->getExtension());
+        $this->assertEquals('text/plain', $attachment->content_type);
+        $this->assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
+        $this->assertEquals(4, $attachment->size);
+        $this->assertEquals(0, $attachment->part_number);
+        $this->assertEquals('attachment', $attachment->disposition);
+        $this->assertNotEmpty($attachment->id);
 
         $attachment = $attachments[1];
-        self::assertInstanceOf(Attachment::class, $attachment);
-        self::assertEquals('01_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->name);
-        self::assertEquals('f7b5181985862431bfc443d26e3af2371e20a0afd676eeb9b9595a26d42e0b73', hash('sha256', $attachment->filename));
-        self::assertEquals('text', $attachment->type);
-        self::assertEquals('txt', $attachment->getExtension());
-        self::assertEquals('text/plain', $attachment->content_type);
-        self::assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
-        self::assertEquals(4, $attachment->size);
-        self::assertEquals(1, $attachment->part_number);
-        self::assertEquals('attachment', $attachment->disposition);
-        self::assertNotEmpty($attachment->id);
+        $this->assertInstanceOf(Attachment::class, $attachment);
+        $this->assertEquals('01_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->name);
+        $this->assertEquals('f7b5181985862431bfc443d26e3af2371e20a0afd676eeb9b9595a26d42e0b73', hash('sha256', $attachment->filename));
+        $this->assertEquals('text', $attachment->type);
+        $this->assertEquals('txt', $attachment->getExtension());
+        $this->assertEquals('text/plain', $attachment->content_type);
+        $this->assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
+        $this->assertEquals(4, $attachment->size);
+        $this->assertEquals(1, $attachment->part_number);
+        $this->assertEquals('attachment', $attachment->disposition);
+        $this->assertNotEmpty($attachment->id);
 
         $attachment = $attachments[2];
-        self::assertInstanceOf(Attachment::class, $attachment);
-        self::assertEquals('02_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->name);
-        self::assertEquals('02_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->filename);
-        self::assertEquals('text', $attachment->type);
-        self::assertEquals('text/plain', $attachment->content_type);
-        self::assertEquals('txt', $attachment->getExtension());
-        self::assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
-        self::assertEquals(4, $attachment->size);
-        self::assertEquals(2, $attachment->part_number);
-        self::assertEquals('attachment', $attachment->disposition);
-        self::assertNotEmpty($attachment->id);
+        $this->assertInstanceOf(Attachment::class, $attachment);
+        $this->assertEquals('02_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->name);
+        $this->assertEquals('02_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->filename);
+        $this->assertEquals('text', $attachment->type);
+        $this->assertEquals('text/plain', $attachment->content_type);
+        $this->assertEquals('txt', $attachment->getExtension());
+        $this->assertEquals('ca51ce1fb15acc6d69b8a5700256172fcc507e02073e6f19592e341bd6508ab8', hash('sha256', $attachment->content));
+        $this->assertEquals(4, $attachment->size);
+        $this->assertEquals(2, $attachment->part_number);
+        $this->assertEquals('attachment', $attachment->disposition);
+        $this->assertNotEmpty($attachment->id);
     }
 }

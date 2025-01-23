@@ -11,16 +11,16 @@ class Issue413Test extends LiveMailboxTestCase
     public function test_live_issue_email()
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         /** @var Message $message */
         $_message = $this->appendMessageTemplate($folder, 'issue-413.eml');
 
         $message = $folder->messages()->getMessageByMsgn($_message->msgn);
-        self::assertEquals($message->uid, $_message->uid);
+        $this->assertEquals($message->uid, $_message->uid);
 
-        self::assertSame('Test Message', (string) $message->subject);
-        self::assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
+        $this->assertSame('Test Message', (string) $message->subject);
+        $this->assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
 
         $message->delete();
     }
@@ -30,7 +30,7 @@ class Issue413Test extends LiveMailboxTestCase
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-413.eml']);
         $message = Message::fromFile($filename);
 
-        self::assertSame('Test Message', (string) $message->subject);
-        self::assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
+        $this->assertSame('Test Message', (string) $message->subject);
+        $this->assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());
     }
 }

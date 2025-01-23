@@ -54,10 +54,10 @@ abstract class LiveMailboxTestCase extends TestCase
     protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $client = $this->getClient();
-        self::assertInstanceOf(Client::class, $client->connect());
+        $this->assertInstanceOf(Client::class, $client->connect());
 
         $folder = $client->getFolderByPath($folder_path);
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         return $folder;
     }
@@ -82,7 +82,7 @@ abstract class LiveMailboxTestCase extends TestCase
         }
 
         $message = $folder->messages()->getMessageByUid($status['uidnext']);
-        self::assertInstanceOf(Message::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
 
         return $message;
     }

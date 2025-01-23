@@ -10,26 +10,26 @@ class StructuredWithAttachmentTest extends FixtureTestCase
     {
         $message = $this->getFixture('structured_with_attachment.eml');
 
-        self::assertEquals('Test', $message->getSubject());
-        self::assertEquals('Test', $message->getTextBody());
-        self::assertFalse($message->hasHTMLBody());
+        $this->assertEquals('Test', $message->getSubject());
+        $this->assertEquals('Test', $message->getTextBody());
+        $this->assertFalse($message->hasHTMLBody());
 
-        self::assertEquals('2017-09-29 08:55:23', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
-        self::assertEquals('from@there.com', $message->from->first()->mail);
-        self::assertEquals('to@here.com', $message->to->first()->mail);
+        $this->assertEquals('2017-09-29 08:55:23', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
+        $this->assertEquals('from@there.com', $message->from->first()->mail);
+        $this->assertEquals('to@here.com', $message->to->first()->mail);
 
-        self::assertCount(1, $message->attachments());
+        $this->assertCount(1, $message->attachments());
 
         $attachment = $message->attachments()->first();
-        self::assertInstanceOf(Attachment::class, $attachment);
-        self::assertEquals('MyFile.txt', $attachment->name);
-        self::assertEquals('txt', $attachment->getExtension());
-        self::assertEquals('text', $attachment->type);
-        self::assertEquals('text/plain', $attachment->content_type);
-        self::assertEquals('MyFileContent', $attachment->content);
-        self::assertEquals(20, $attachment->size);
-        self::assertEquals(2, $attachment->part_number);
-        self::assertEquals('attachment', $attachment->disposition);
-        self::assertNotEmpty($attachment->id);
+        $this->assertInstanceOf(Attachment::class, $attachment);
+        $this->assertEquals('MyFile.txt', $attachment->name);
+        $this->assertEquals('txt', $attachment->getExtension());
+        $this->assertEquals('text', $attachment->type);
+        $this->assertEquals('text/plain', $attachment->content_type);
+        $this->assertEquals('MyFileContent', $attachment->content);
+        $this->assertEquals(20, $attachment->size);
+        $this->assertEquals(2, $attachment->part_number);
+        $this->assertEquals('attachment', $attachment->disposition);
+        $this->assertNotEmpty($attachment->id);
     }
 }

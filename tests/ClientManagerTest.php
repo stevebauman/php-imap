@@ -17,24 +17,24 @@ class ClientManagerTest extends TestCase
 
     public function test_config_accessor_account(): void
     {
-        self::assertSame('default', ClientManager::get('default'));
-        self::assertSame('d-M-Y', ClientManager::get('date_format'));
-        self::assertSame(IMAP::FT_PEEK, ClientManager::get('options.fetch'));
-        self::assertSame([], ClientManager::get('options.open'));
+        $this->assertSame('default', ClientManager::get('default'));
+        $this->assertSame('d-M-Y', ClientManager::get('date_format'));
+        $this->assertSame(IMAP::FT_PEEK, ClientManager::get('options.fetch'));
+        $this->assertSame([], ClientManager::get('options.open'));
     }
 
     public function test_make_client(): void
     {
-        self::assertInstanceOf(Client::class, $this->manager->make([]));
+        $this->assertInstanceOf(Client::class, $this->manager->make([]));
     }
 
     public function test_account_accessor(): void
     {
-        self::assertSame('default', $this->manager->getDefaultAccount());
-        self::assertNotEmpty($this->manager->account('default'));
+        $this->assertSame('default', $this->manager->getDefaultAccount());
+        $this->assertNotEmpty($this->manager->account('default'));
 
         $this->manager->setDefaultAccount('foo');
-        self::assertSame('foo', $this->manager->getDefaultAccount());
+        $this->assertSame('foo', $this->manager->getDefaultAccount());
         $this->manager->setDefaultAccount('default');
     }
 
@@ -50,9 +50,9 @@ class ClientManagerTest extends TestCase
 
         $cm = new ClientManager($config);
 
-        self::assertSame('foo', $cm->getDefaultAccount());
-        self::assertInstanceOf(Client::class, $cm->account('foo'));
-        self::assertSame(IMAP::ST_MSGN, $cm->get('options.fetch'));
-        self::assertSame(false, is_array($cm->get('options.open')));
+        $this->assertSame('foo', $cm->getDefaultAccount());
+        $this->assertInstanceOf(Client::class, $cm->account('foo'));
+        $this->assertSame(IMAP::ST_MSGN, $cm->get('options.fetch'));
+        $this->assertSame(false, is_array($cm->get('options.open')));
     }
 }

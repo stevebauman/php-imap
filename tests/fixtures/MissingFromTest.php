@@ -8,11 +8,11 @@ class MissingFromTest extends FixtureTestCase
     {
         $message = $this->getFixture('missing_from.eml');
 
-        self::assertEquals('Nuu', $message->getSubject());
-        self::assertEquals('Hi', $message->getTextBody());
-        self::assertFalse($message->hasHTMLBody());
-        self::assertEquals('2017-09-13 11:05:45', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
-        self::assertFalse($message->from->first());
-        self::assertEquals('to@here.com', $message->to->first()->mail);
+        $this->assertEquals('Nuu', $message->getSubject());
+        $this->assertEquals('Hi', $message->getTextBody());
+        $this->assertFalse($message->hasHTMLBody());
+        $this->assertEquals('2017-09-13 11:05:45', $message->date->first()->setTimezone('UTC')->format('Y-m-d H:i:s'));
+        $this->assertFalse($message->from->first());
+        $this->assertEquals('to@here.com', $message->to->first()->mail);
     }
 }

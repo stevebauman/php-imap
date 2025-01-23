@@ -19,13 +19,13 @@ class Issue393Test extends LiveMailboxTestCase
         $this->deleteFolder($folder);
 
         $folders = $client->getFolders(true, $pattern, true);
-        self::assertCount(0, $folders);
+        $this->assertCount(0, $folders);
 
         try {
             $client->getFolders(true, $pattern);
             $this->fail('Expected FolderFetchingException::class exception not thrown');
         } catch (FolderFetchingException $e) {
-            self::assertInstanceOf(FolderFetchingException::class, $e);
+            $this->assertInstanceOf(FolderFetchingException::class, $e);
         }
     }
 }

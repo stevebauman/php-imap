@@ -19,10 +19,10 @@ class Issue383Test extends LiveMailboxTestCase
         $this->deleteFolder($folder);
 
         $folder = $client->createFolder($folder_path, false);
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $folder = $this->getFolder($folder_path);
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $this->assertEquals('Entwürfe+', $folder->name);
         $this->assertEquals($folder_path, $folder->full_name);

@@ -10,26 +10,26 @@ class FourNestedEmailsTest extends FixtureTestCase
     {
         $message = $this->getFixture('four_nested_emails.eml');
 
-        self::assertEquals('3-third-subject', $message->subject);
-        self::assertEquals('3-third-content', $message->getTextBody());
-        self::assertFalse($message->hasHTMLBody());
-        self::assertFalse($message->date->first());
-        self::assertEquals('test@example.com', $message->from->first()->mail);
-        self::assertEquals('test@example.com', $message->to->first()->mail);
+        $this->assertEquals('3-third-subject', $message->subject);
+        $this->assertEquals('3-third-content', $message->getTextBody());
+        $this->assertFalse($message->hasHTMLBody());
+        $this->assertFalse($message->date->first());
+        $this->assertEquals('test@example.com', $message->from->first()->mail);
+        $this->assertEquals('test@example.com', $message->to->first()->mail);
 
         $attachments = $message->getAttachments();
-        self::assertCount(1, $attachments);
+        $this->assertCount(1, $attachments);
 
         $attachment = $attachments[0];
-        self::assertInstanceOf(Attachment::class, $attachment);
-        self::assertEquals('2-second-email.eml', $attachment->name);
-        self::assertEquals('text', $attachment->type);
-        self::assertEquals('eml', $attachment->getExtension());
-        self::assertEquals('message/rfc822', $attachment->content_type);
-        self::assertEquals('85012e6a26d064a0288ee62618b3192687385adb4a4e27e48a28f738a325ca46', hash('sha256', $attachment->content));
-        self::assertEquals(1376, $attachment->size);
-        self::assertEquals(2, $attachment->part_number);
-        self::assertEquals('attachment', $attachment->disposition);
-        self::assertNotEmpty($attachment->id);
+        $this->assertInstanceOf(Attachment::class, $attachment);
+        $this->assertEquals('2-second-email.eml', $attachment->name);
+        $this->assertEquals('text', $attachment->type);
+        $this->assertEquals('eml', $attachment->getExtension());
+        $this->assertEquals('message/rfc822', $attachment->content_type);
+        $this->assertEquals('85012e6a26d064a0288ee62618b3192687385adb4a4e27e48a28f738a325ca46', hash('sha256', $attachment->content));
+        $this->assertEquals(1376, $attachment->size);
+        $this->assertEquals(2, $attachment->part_number);
+        $this->assertEquals('attachment', $attachment->disposition);
+        $this->assertNotEmpty($attachment->id);
     }
 }

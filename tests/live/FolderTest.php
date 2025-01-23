@@ -13,17 +13,17 @@ class FolderTest extends LiveMailboxTestCase
     public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
-        self::assertInstanceOf(WhereQuery::class, $folder->query());
-        self::assertInstanceOf(WhereQuery::class, $folder->search());
-        self::assertInstanceOf(WhereQuery::class, $folder->messages());
+        $this->assertInstanceOf(WhereQuery::class, $folder->query());
+        $this->assertInstanceOf(WhereQuery::class, $folder->search());
+        $this->assertInstanceOf(WhereQuery::class, $folder->messages());
     }
 
     public function test_has_children(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
@@ -32,13 +32,13 @@ class FolderTest extends LiveMailboxTestCase
             $folder = $this->getFolder('INBOX');
         }
 
-        self::assertTrue($folder->hasChildren());
+        $this->assertTrue($folder->hasChildren());
     }
 
     public function test_set_children(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
@@ -46,16 +46,16 @@ class FolderTest extends LiveMailboxTestCase
             $folder->getClient()->createFolder($child_path, false);
             $folder = $this->getFolder('INBOX');
         }
-        self::assertTrue($folder->hasChildren());
+        $this->assertTrue($folder->hasChildren());
 
         $folder->setChildren(new FolderCollection);
-        self::assertTrue($folder->getChildren()->isEmpty());
+        $this->assertTrue($folder->getChildren()->isEmpty());
     }
 
     public function test_get_children(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
@@ -64,10 +64,10 @@ class FolderTest extends LiveMailboxTestCase
         }
 
         $folder = $folder->getClient()->getFolders()->where('name', 'INBOX')->first();
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
-        self::assertTrue($folder->hasChildren());
-        self::assertFalse($folder->getChildren()->isEmpty());
+        $this->assertTrue($folder->hasChildren());
+        $this->assertFalse($folder->getChildren()->isEmpty());
     }
 
     public function test_move(): void
@@ -86,12 +86,12 @@ class FolderTest extends LiveMailboxTestCase
         $new_folder?->delete(false);
 
         $status = $folder->move($new_folder_path, false);
-        self::assertIsArray($status);
-        self::assertTrue(str_starts_with($status[0], 'OK'));
+        $this->assertIsArray($status);
+        $this->assertTrue(str_starts_with($status[0], 'OK'));
 
         $new_folder = $client->getFolder($new_folder_path);
-        self::assertEquals($new_folder_path, $new_folder->path);
-        self::assertEquals('other', $new_folder->name);
+        $this->assertEquals($new_folder_path, $new_folder->path);
+        $this->assertEquals('other', $new_folder->name);
 
         if ($this->deleteFolder($new_folder) === false) {
             $this->fail('Could not delete folder: '.$new_folder->path);
@@ -109,7 +109,7 @@ class FolderTest extends LiveMailboxTestCase
         if ($folder === null) {
             $folder = $client->createFolder($folder_path, false);
         }
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         if ($this->deleteFolder($folder) === false) {
             $this->fail('Could not delete folder: '.$folder->path);
@@ -119,38 +119,38 @@ class FolderTest extends LiveMailboxTestCase
     public function test_overview(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $folder->select();
 
         // Test empty overview
         $overview = $folder->overview();
-        self::assertIsArray($overview);
-        self::assertCount(0, $overview);
+        $this->assertIsArray($overview);
+        $this->assertCount(0, $overview);
 
         $message = $this->appendMessageTemplate($folder, 'plain.eml');
 
         $overview = $folder->overview();
 
-        self::assertIsArray($overview);
-        self::assertCount(1, $overview);
+        $this->assertIsArray($overview);
+        $this->assertCount(1, $overview);
 
-        self::assertEquals($message->from->first()->full, end($overview)['from']->toString());
+        $this->assertEquals($message->from->first()->full, end($overview)['from']->toString());
 
-        self::assertTrue($message->delete());
+        $this->assertTrue($message->delete());
     }
 
     public function test_append_message(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $message = $this->appendMessageTemplate($folder, 'plain.eml');
-        self::assertInstanceOf(Message::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
 
-        self::assertEquals('Example', $message->subject);
-        self::assertEquals('to@someone-else.com', $message->to);
-        self::assertEquals('from@someone.com', $message->from);
+        $this->assertEquals('Example', $message->subject);
+        $this->assertEquals('to@someone-else.com', $message->to);
+        $this->assertEquals('from@someone.com', $message->from);
 
         // Clean up
         $this->assertTrue($message->delete());
@@ -159,11 +159,11 @@ class FolderTest extends LiveMailboxTestCase
     public function test_subscribe(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $status = $folder->subscribe();
-        self::assertIsArray($status);
-        self::assertTrue(str_starts_with($status[0], 'OK'));
+        $this->assertIsArray($status);
+        $this->assertTrue(str_starts_with($status[0], 'OK'));
 
         // Clean up
         $folder->unsubscribe();
@@ -172,61 +172,61 @@ class FolderTest extends LiveMailboxTestCase
     public function test_unsubscribe(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $folder->subscribe();
 
         $status = $folder->subscribe();
-        self::assertIsArray($status);
-        self::assertTrue(str_starts_with($status[0], 'OK'));
+        $this->assertIsArray($status);
+        $this->assertTrue(str_starts_with($status[0], 'OK'));
     }
 
     public function test_status(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $status = $folder->status();
-        self::assertEquals(0, $status['messages']);
-        self::assertEquals(0, $status['recent']);
-        self::assertEquals(0, $status['unseen']);
-        self::assertGreaterThan(0, $status['uidnext']);
-        self::assertGreaterThan(0, $status['uidvalidity']);
+        $this->assertEquals(0, $status['messages']);
+        $this->assertEquals(0, $status['recent']);
+        $this->assertEquals(0, $status['unseen']);
+        $this->assertGreaterThan(0, $status['uidnext']);
+        $this->assertGreaterThan(0, $status['uidvalidity']);
     }
 
     public function test_examine(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $status = $folder->examine();
-        self::assertTrue(isset($status['flags']) && count($status['flags']) > 0);
-        self::assertTrue(($status['uidnext'] ?? 0) > 0);
-        self::assertTrue(($status['uidvalidity'] ?? 0) > 0);
-        self::assertTrue(($status['recent'] ?? -1) >= 0);
-        self::assertTrue(($status['exists'] ?? -1) >= 0);
+        $this->assertTrue(isset($status['flags']) && count($status['flags']) > 0);
+        $this->assertTrue(($status['uidnext'] ?? 0) > 0);
+        $this->assertTrue(($status['uidvalidity'] ?? 0) > 0);
+        $this->assertTrue(($status['recent'] ?? -1) >= 0);
+        $this->assertTrue(($status['exists'] ?? -1) >= 0);
     }
 
     public function test_get_client(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
-        self::assertInstanceOf(Client::class, $folder->getClient());
+        $this->assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Client::class, $folder->getClient());
     }
 
     public function test_set_delimiter(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $folder->setDelimiter('/');
-        self::assertEquals('/', $folder->delimiter);
+        $this->assertEquals('/', $folder->delimiter);
 
         $folder->setDelimiter('.');
-        self::assertEquals('.', $folder->delimiter);
+        $this->assertEquals('.', $folder->delimiter);
 
         $default_delimiter = $this->getManager()->get('options.delimiter', '/');
         $folder->setDelimiter(null);
-        self::assertEquals($default_delimiter, $folder->delimiter);
+        $this->assertEquals($default_delimiter, $folder->delimiter);
     }
 }

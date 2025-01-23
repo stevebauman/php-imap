@@ -12,11 +12,11 @@ class QueryTest extends LiveMailboxTestCase
     public function test_query(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
-        self::assertInstanceOf(WhereQuery::class, $folder->query());
-        self::assertInstanceOf(WhereQuery::class, $folder->search());
-        self::assertInstanceOf(WhereQuery::class, $folder->messages());
+        $this->assertInstanceOf(WhereQuery::class, $folder->query());
+        $this->assertInstanceOf(WhereQuery::class, $folder->search());
+        $this->assertInstanceOf(WhereQuery::class, $folder->messages());
     }
 
     public function test_query_where(): void
@@ -28,7 +28,7 @@ class QueryTest extends LiveMailboxTestCase
 
         $folder = $client->getFolder($folder_path);
         if ($folder !== null) {
-            self::assertTrue($this->deleteFolder($folder));
+            $this->assertTrue($this->deleteFolder($folder));
         }
         $folder = $client->createFolder($folder_path, false);
 
@@ -84,21 +84,21 @@ class QueryTest extends LiveMailboxTestCase
         $folder->getClient()->expunge();
 
         $query = $folder->query()->all();
-        self::assertEquals(count($messages), $query->count());
+        $this->assertEquals(count($messages), $query->count());
 
         $query = $folder->query()->whereSubject('test');
-        self::assertEquals(11, $query->count());
+        $this->assertEquals(11, $query->count());
 
         $query = $folder->query()->whereOn(Carbon::now());
-        self::assertEquals(count($messages), $query->count());
+        $this->assertEquals(count($messages), $query->count());
 
-        self::assertTrue($this->deleteFolder($folder));
+        $this->assertTrue($this->deleteFolder($folder));
     }
 
     public function test_query_where_criteria(): void
     {
         $folder = $this->getFolder('INBOX');
-        self::assertInstanceOf(Folder::class, $folder);
+        $this->assertInstanceOf(Folder::class, $folder);
 
         $this->assertWhereSearchCriteria($folder, 'SUBJECT', 'Test');
         $this->assertWhereSearchCriteria($folder, 'BODY', 'Test');
@@ -142,7 +142,7 @@ class QueryTest extends LiveMailboxTestCase
     protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
-        self::assertInstanceOf(WhereQuery::class, $query);
+        $this->assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
         $criteria = str_replace('CUSTOM ', '', $criteria);
@@ -152,27 +152,27 @@ class QueryTest extends LiveMailboxTestCase
             $expected[1] = $value->format($date_format);
         }
 
-        self::assertIsArray($item);
-        self::assertIsString($item[0]);
+        $this->assertIsArray($item);
+        $this->assertIsString($item[0]);
         if ($value !== null) {
-            self::assertCount(2, $item);
-            self::assertIsString($item[1]);
+            $this->assertCount(2, $item);
+            $this->assertIsString($item[1]);
         } else {
-            self::assertCount(1, $item);
+            $this->assertCount(1, $item);
         }
-        self::assertSame($expected, $item);
+        $this->assertSame($expected, $item);
     }
 
     protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
     {
         $query = $folder->query()->whereHeader($criteria, $value);
-        self::assertInstanceOf(WhereQuery::class, $query);
+        $this->assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
 
-        self::assertIsArray($item);
-        self::assertIsString($item[0]);
-        self::assertCount(1, $item);
-        self::assertSame(['HEADER '.$criteria.' '.$value], $item);
+        $this->assertIsArray($item);
+        $this->assertIsString($item[0]);
+        $this->assertCount(1, $item);
+        $this->assertSame(['HEADER '.$criteria.' '.$value], $item);
     }
 }

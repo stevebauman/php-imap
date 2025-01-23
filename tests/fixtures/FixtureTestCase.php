@@ -37,7 +37,7 @@ abstract class FixtureTestCase extends TestCase
     {
         $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..',  'messages', $template]);
         $message = Message::fromFile($filename);
-        self::assertInstanceOf(Message::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
 
         return $message;
     }
