@@ -83,7 +83,7 @@ class HeaderTest extends TestCase
         $expected->content_transfer_encoding = 'quoted-printable';
         $expected->content_disposition = 'attachment; filename*0="TH_Is_a_F ile name example 20221013.c"; filename*1="sv"';
 
-        $this->assertEquals($expected, $mock->rfc822_parse_headers($mockHeader));
+        $this->assertEquals($expected, $mock->rfc822ParseHeaders($mockHeader));
     }
 
     public function test_extract_header_extensions()

@@ -389,16 +389,16 @@ class MessageTest extends LiveMailboxTestCase
     {
         $message = $this->getDefaultMessage();
 
-        $fetch_option = $message->fetch_options;
+        $fetch_option = $message->fetchOptions;
 
         $message->setFetchOption(IMAP::FT_UID);
-        $this->assertEquals(IMAP::FT_UID, $message->fetch_options);
+        $this->assertEquals(IMAP::FT_UID, $message->fetchOptions);
 
         $message->setFetchOption(IMAP::FT_PEEK);
-        $this->assertEquals(IMAP::FT_PEEK, $message->fetch_options);
+        $this->assertEquals(IMAP::FT_PEEK, $message->fetchOptions);
 
         $message->setFetchOption(IMAP::FT_UID | IMAP::FT_PEEK);
-        $this->assertEquals(IMAP::FT_UID | IMAP::FT_PEEK, $message->fetch_options);
+        $this->assertEquals(IMAP::FT_UID | IMAP::FT_PEEK, $message->fetchOptions);
 
         $message->setFetchOption($fetch_option);
 

@@ -214,7 +214,7 @@ abstract class Protocol implements ProtocolInterface
      */
     public function setStreamTimeout(int $streamTimeout): Protocol
     {
-        if (stream_set_timeout($this->stream, $streamTimeout) === false) {
+        if (! stream_set_timeout($this->stream, $streamTimeout)) {
             throw new ConnectionFailedException('Failed to set stream timeout');
         }
 
@@ -258,13 +258,13 @@ abstract class Protocol implements ProtocolInterface
 
         $messageNumber = 1;
 
-        $uid_cache = [];
+        $uidCache = [];
 
         foreach ($uids as $uid) {
-            $uid_cache[$messageNumber++] = (int) $uid;
+            $uidCache[$messageNumber++] = (int) $uid;
         }
 
-        $this->uidCache = $uid_cache;
+        $this->uidCache = $uidCache;
     }
 
     /**

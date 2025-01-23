@@ -439,11 +439,11 @@ class Client
         $items = $this->connection->folders('', $pattern)->getValidatedData();
 
         if (! empty($items)) {
-            foreach ($items as $folder_name => $item) {
-                $folder = new Folder($this, $folder_name, $item['delimiter'], $item['flags']);
+            foreach ($items as $folderName => $item) {
+                $folder = new Folder($this, $folderName, $item['delimiter'], $item['flags']);
 
                 if ($hierarchical && $folder->hasChildren()) {
-                    $pattern = $folder->full_name.$folder->delimiter.'%';
+                    $pattern = $folder->fullName.$folder->delimiter.'%';
 
                     $children = $this->getFolders(true, $pattern, $softFail);
                     $folder->setChildren($children);
@@ -480,7 +480,7 @@ class Client
                 $folder = new Folder($this, $folderName, $item['delimiter'], $item['flags']);
 
                 if ($hierarchical && $folder->hasChildren()) {
-                    $pattern = $folder->full_name.$folder->delimiter.'%';
+                    $pattern = $folder->fullName.$folder->delimiter.'%';
 
                     $children = $this->getFoldersWithStatus(true, $pattern, $softFail);
                     $folder->setChildren($children);
@@ -501,25 +501,25 @@ class Client
     /**
      * Open a given folder.
      */
-    public function openFolder(string $folder_path, bool $force_select = false): array
+    public function openFolder(string $folderPath, bool $forceSelect = false): array
     {
-        if ($this->activeFolder == $folder_path && $this->isConnected() && $force_select === false) {
+        if ($this->activeFolder == $folderPath && $this->isConnected() && ! $forceSelect) {
             return [];
         }
 
         $this->checkConnection();
 
-        $this->activeFolder = $folder_path;
+        $this->activeFolder = $folderPath;
 
-        return $this->connection->selectFolder($folder_path)->getValidatedData();
+        return $this->connection->selectFolder($folderPath)->getValidatedData();
     }
 
     /**
      * Set active folder.
      */
-    public function setActiveFolder(?string $folder_path = null): void
+    public function setActiveFolder(?string $folderPath = null): void
     {
-        $this->activeFolder = $folder_path;
+        $this->activeFolder = $folderPath;
     }
 
     /**
@@ -533,21 +533,21 @@ class Client
     /**
      * Create a new Folder.
      */
-    public function createFolder(string $folder_path, bool $expunge = true, bool $utf7 = false): Folder
+    public function createFolder(string $folderPath, bool $expunge = true, bool $utf7 = false): Folder
     {
         $this->checkConnection();
 
         if (! $utf7) {
-            $folder_path = EncodingAliases::convert($folder_path, 'utf-8', 'UTF7-IMAP');
+            $folderPath = EncodingAliases::convert($folderPath, 'utf-8', 'UTF7-IMAP');
         }
 
-        $status = $this->connection->createFolder($folder_path)->getValidatedData();
+        $status = $this->connection->createFolder($folderPath)->getValidatedData();
 
         if ($expunge) {
             $this->expunge();
         }
 
-        $folder = $this->getFolderByPath($folder_path, true);
+        $folder = $this->getFolderByPath($folderPath, true);
 
         if ($status && $folder) {
             $this->dispatch('folder', 'new', $folder);
@@ -559,11 +559,11 @@ class Client
     /**
      * Delete a given folder.
      */
-    public function deleteFolder(string $folder_path, bool $expunge = true): array
+    public function deleteFolder(string $folderPath, bool $expunge = true): array
     {
         $this->checkConnection();
 
-        $folder = $this->getFolderByPath($folder_path);
+        $folder = $this->getFolderByPath($folderPath);
 
         if ($this->activeFolder == $folder->path) {
             $this->activeFolder = null;
@@ -583,11 +583,11 @@ class Client
     /**
      * Check a given folder.
      */
-    public function checkFolder(string $folder_path): array
+    public function checkFolder(string $folderPath): array
     {
         $this->checkConnection();
 
-        return $this->connection->examineFolder($folder_path)->getValidatedData();
+        return $this->connection->examineFolder($folderPath)->getValidatedData();
     }
 
     /**
@@ -623,11 +623,11 @@ class Client
     /**
      * Retrieve the quota settings per user.
      */
-    public function getQuotaRoot(string $quota_root = 'INBOX'): array
+    public function getQuotaRoot(string $quotaRoot = 'INBOX'): array
     {
         $this->checkConnection();
 
-        return $this->connection->getQuotaRoot($quota_root)->getValidatedData();
+        return $this->connection->getQuotaRoot($quotaRoot)->getValidatedData();
     }
 
     /**

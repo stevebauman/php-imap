@@ -483,9 +483,7 @@ class ImapProtocol extends Protocol
             while (true) {
                 $tokens = '';
 
-                $is_plus = $this->readLine($response, $tokens, '+', true);
-
-                if ($is_plus) {
+                if ($this->readLine($response, $tokens, '+', true)) {
                     // Try to log the challenge somewhere where it can be found.
                     error_log("got an extra server challenge: $tokens");
 
@@ -1206,9 +1204,9 @@ class ImapProtocol extends Protocol
      *
      * @Doc https://www.rfc-editor.org/rfc/rfc2087.txt
      */
-    public function getQuotaRoot(string $quota_root = 'INBOX'): Response
+    public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response
     {
-        return $this->requestAndResponse('GETQUOTAROOT', [$quota_root]);
+        return $this->requestAndResponse('GETQUOTAROOT', [$quotaRoot]);
     }
 
     /**
@@ -1306,8 +1304,8 @@ class ImapProtocol extends Protocol
 
             $response->addResponse($headers);
 
-            foreach ($headers->data() as $id => $raw_header) {
-                $result[$id] = (new Header($raw_header))->getAttributes();
+            foreach ($headers->data() as $id => $rawHeader) {
+                $result[$id] = (new Header($rawHeader))->getAttributes();
             }
         }
 

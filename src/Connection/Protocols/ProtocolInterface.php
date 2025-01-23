@@ -358,7 +358,7 @@ interface ProtocolInterface
      *
      * @throws ConnectionFailedException
      */
-    public function getQuotaRoot(string $quota_root = 'INBOX'): Response;
+    public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response;
 
     /**
      * Send noop command.

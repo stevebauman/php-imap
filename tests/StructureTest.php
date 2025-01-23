@@ -26,13 +26,13 @@ class StructureTest extends TestCase
         $textPart = $structure->parts[0];
 
         $this->assertSame('UTF-8', $textPart->charset);
-        $this->assertSame('text/plain', $textPart->content_type);
+        $this->assertSame('text/plain', $textPart->contentType);
         $this->assertSame(278, $textPart->bytes);
 
         $htmlPart = $structure->parts[1];
 
         $this->assertSame('UTF-8', $htmlPart->charset);
-        $this->assertSame('text/html', $htmlPart->content_type);
+        $this->assertSame('text/html', $htmlPart->contentType);
         $this->assertSame(1478, $htmlPart->bytes);
     }
 }

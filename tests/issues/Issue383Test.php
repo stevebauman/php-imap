@@ -25,7 +25,7 @@ class Issue383Test extends LiveMailboxTestCase
         $this->assertInstanceOf(Folder::class, $folder);
 
         $this->assertEquals('Entwürfe+', $folder->name);
-        $this->assertEquals($folder_path, $folder->full_name);
+        $this->assertEquals($folder_path, $folder->fullName);
 
         $folder_path = implode($delimiter, ['INBOX', 'Entw&APw-rfe+']);
         $this->assertEquals($folder_path, $folder->path);

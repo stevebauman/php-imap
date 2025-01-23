@@ -32,7 +32,7 @@ class Folder
     /**
      * Folder full name.
      */
-    public string $full_name;
+    public string $fullName;
 
     /**
      * Children folders.
@@ -48,12 +48,12 @@ class Folder
      * Indicates if folder can't contain any "children".
      * CreateFolder won't work on this folder.
      */
-    public bool $no_inferiors;
+    public bool $noInferiors;
 
     /**
      * Indicates if folder is only container, not a mailbox - you can't open it.
      */
-    public bool $no_select;
+    public bool $noSelect;
 
     /**
      * Indicates if folder is marked. This means that it may contain new messages since the last time it was checked.
@@ -65,7 +65,7 @@ class Folder
      * Indicates if folder contains any "children".
      * Not provided by all IMAP servers.
      */
-    public bool $has_children;
+    public bool $hasChildren;
 
     /**
      * Indicates if folder refers to others.
@@ -83,7 +83,7 @@ class Folder
      *
      * @param  string[]  $attributes
      */
-    public function __construct(Client $client, string $folder_name, string $delimiter, array $attributes)
+    public function __construct(Client $client, string $folderName, string $delimiter, array $attributes)
     {
         $this->client = $client;
 
@@ -92,11 +92,11 @@ class Folder
 
         $this->setDelimiter($delimiter);
 
-        $this->path = $folder_name;
-        $this->has_children = false;
+        $this->path = $folderName;
+        $this->hasChildren = false;
         $this->children = new FolderCollection;
-        $this->full_name = $this->decodeName($folder_name);
-        $this->name = $this->getSimpleName($this->delimiter, $this->full_name);
+        $this->fullName = $this->decodeName($folderName);
+        $this->name = $this->getSimpleName($this->delimiter, $this->fullName);
 
         $this->parseAttributes($attributes);
     }
@@ -144,7 +144,7 @@ class Folder
      */
     public function hasChildren(): bool
     {
-        return $this->has_children;
+        return $this->hasChildren;
     }
 
     /**
@@ -194,29 +194,29 @@ class Folder
      */
     protected function parseAttributes(array $attributes): void
     {
-        $this->no_inferiors = in_array('\NoInferiors', $attributes);
-        $this->no_select = in_array('\NoSelect', $attributes);
+        $this->noInferiors = in_array('\NoInferiors', $attributes);
+        $this->noSelect = in_array('\NoSelect', $attributes);
         $this->marked = in_array('\Marked', $attributes);
         $this->referral = in_array('\Referral', $attributes);
-        $this->has_children = in_array('\HasChildren', $attributes);
+        $this->hasChildren = in_array('\HasChildren', $attributes);
     }
 
     /**
      * Move or rename the current folder.
      */
-    public function move(string $new_name, bool $expunge = true): array
+    public function move(string $newName, bool $expunge = true): array
     {
         $this->client->checkConnection();
 
         $status = $this->client->getConnection()
-            ->renameFolder($this->full_name, $new_name)
+            ->renameFolder($this->fullName, $newName)
             ->getValidatedData();
 
         if ($expunge) {
             $this->client->expunge();
         }
 
-        $folder = $this->client->getFolder($new_name);
+        $folder = $this->client->getFolder($newName);
 
         $this->dispatch('folder', 'moved', $this, $folder);
 
@@ -242,26 +242,26 @@ class Folder
     /**
      * Append a string message to the current mailbox.
      */
-    public function appendMessage(string $message, ?array $options = null, Carbon|string|null $internal_date = null): array
+    public function appendMessage(string $message, ?array $options = null, Carbon|string|null $internalDate = null): array
     {
         // Check if $internal_date is parsed. If it is null it should not be set. Otherwise, the message can't be stored.
         // If this parameter is set, it will set the INTERNALDATE on the appended message. The parameter should be a
         // date string that conforms to the rfc2060 specifications for a date_time value or be a Carbon object.
-        if ($internal_date instanceof Carbon) {
-            $internal_date = $internal_date->format('d-M-Y H:i:s O');
+        if ($internalDate instanceof Carbon) {
+            $internalDate = $internalDate->format('d-M-Y H:i:s O');
         }
 
         return $this->client->getConnection()
-            ->appendMessage($this->path, $message, $options, $internal_date)
+            ->appendMessage($this->path, $message, $options, $internalDate)
             ->getValidatedData();
     }
 
     /**
      * Rename the current folder.
      */
-    public function rename(string $new_name, bool $expunge = true): array
+    public function rename(string $newName, bool $expunge = true): array
     {
-        return $this->move($new_name, $expunge);
+        return $this->move($newName, $expunge);
     }
 
     /**

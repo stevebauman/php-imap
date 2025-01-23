@@ -74,7 +74,7 @@ class Part
     /**
      * The part number of the current part.
      */
-    public int $part_number = 0;
+    public int $partNumber = 0;
 
     /**
      * Part length in bytes.
@@ -84,7 +84,7 @@ class Part
     /**
      * Part content type.
      */
-    public ?string $content_type = null;
+    public ?string $contentType = null;
 
     /**
      * Part header.
@@ -93,15 +93,12 @@ class Part
 
     /**
      * Part constructor.
-     *
-     *
-     * @throws InvalidMessageDateException
      */
-    public function __construct($raw_part, ?Header $header = null, int $part_number = 0)
+    public function __construct(string $rawPart, ?Header $header = null, int $partNumber = 0)
     {
-        $this->raw = $raw_part;
+        $this->raw = $rawPart;
         $this->header = $header;
-        $this->part_number = $part_number;
+        $this->partNumber = $partNumber;
 
         $this->parse();
     }
@@ -138,13 +135,16 @@ class Part
             ]);
         }
 
-        $content_types = $this->header->get('content_type')->all();
+        $contentTypes = $this->header->get('content_type')->all();
 
-        if (! empty($content_types)) {
-            $this->subtype = $this->parseSubtype($content_types);
-            $content_type = $content_types[0];
-            $parts = explode(';', $content_type);
-            $this->content_type = trim($parts[0]);
+        if (! empty($contentTypes)) {
+            $this->subtype = $this->parseSubtype($contentTypes);
+
+            $contentType = $contentTypes[0];
+
+            $parts = explode(';', $contentType);
+
+            $this->contentType = trim($parts[0]);
         }
 
         $this->content = trim(rtrim($body));
@@ -173,19 +173,19 @@ class Part
     /**
      * Try to parse the subtype if any is present.
      */
-    protected function parseSubtype($content_type): ?string
+    protected function parseSubtype($contentType): ?string
     {
-        if (is_array($content_type)) {
-            foreach ($content_type as $part) {
-                if (strpos($part, '/') !== false) {
+        if (is_array($contentType)) {
+            foreach ($contentType as $part) {
+                if (str_contains($part, '/')) {
                     return $this->parseSubtype($part);
                 }
             }
 
             return null;
         }
-        if (($pos = strpos($content_type, '/')) !== false) {
-            return substr(explode(';', $content_type)[0], $pos + 1);
+        if (($pos = strpos($contentType, '/')) !== false) {
+            return substr(explode(';', $contentType)[0], $pos + 1);
         }
 
         return null;
@@ -196,11 +196,14 @@ class Part
      */
     protected function parseDisposition(): void
     {
-        $content_disposition = $this->header->get('content_disposition')->first();
+        $contentDisposition = $this->header->get('content_disposition')->first();
 
-        if ($content_disposition) {
+        if ($contentDisposition) {
             $this->ifdisposition = true;
-            $this->disposition = (is_array($content_disposition)) ? implode(' ', $content_disposition) : explode(';', $content_disposition)[0];
+
+            $this->disposition = (is_array($contentDisposition))
+                ? implode(' ', $contentDisposition)
+                : explode(';', $contentDisposition)[0];
         }
     }
 
@@ -209,11 +212,11 @@ class Part
      */
     protected function parseDescription(): void
     {
-        $content_description = $this->header->get('content_description')->first();
+        $contentDescription = $this->header->get('content_description')->first();
 
-        if ($content_description) {
+        if ($contentDescription) {
             $this->ifdescription = true;
-            $this->description = $content_description;
+            $this->description = $contentDescription;
         }
     }
 
@@ -241,9 +244,9 @@ class Part
      */
     public function isAttachment(): bool
     {
-        $valid_disposition = in_array(strtolower($this->disposition ?? ''), ClientManager::get('options.dispositions'));
+        $validDisposition = in_array(strtolower($this->disposition ?? ''), ClientManager::get('options.dispositions'));
 
-        if ($this->type == IMAP::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || ! $valid_disposition)) {
+        if ($this->type == IMAP::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || ! $validDisposition)) {
             if (($this->subtype == null || in_array(strtolower($this->subtype), ['plain', 'html'])) && $this->filename == null && $this->name == null) {
                 return false;
             }

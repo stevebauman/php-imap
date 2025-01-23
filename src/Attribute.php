@@ -183,7 +183,7 @@ class Attribute implements ArrayAccess
     public function attach($value, bool $strict = false): Attribute
     {
         if ($strict === true) {
-            if ($this->contains($value) === false) {
+            if (! $this->contains($value)) {
                 $this->values[] = $value;
             }
         } else {

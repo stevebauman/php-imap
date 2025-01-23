@@ -120,7 +120,7 @@ class Query
     /**
      * Get the raw IMAP search query.
      */
-    public function generate_query(): string
+    public function compile(): string
     {
         $query = '';
 
@@ -151,14 +151,14 @@ class Query
      */
     protected function search(): Collection
     {
-        $this->generate_query();
+        $this->compile();
 
         try {
-            $available_messages = $this->client->getConnection()
+            $availableMessages = $this->client->getConnection()
                 ->search([$this->getRawQuery()], $this->sequence)
                 ->getValidatedData();
 
-            return new Collection($available_messages);
+            return new Collection($availableMessages);
         } catch (RuntimeException|ConnectionFailedException $e) {
             throw new GetMessagesFailedException('failed to fetch messages', 0, $e);
         }
@@ -175,13 +175,13 @@ class Query
     /**
      * Fetch a given id collection.
      */
-    protected function fetch(Collection $available_messages): array
+    protected function fetch(Collection $availableMessages): array
     {
         if ($this->fetchOrder === 'desc') {
-            $available_messages = $available_messages->reverse();
+            $availableMessages = $availableMessages->reverse();
         }
 
-        $uids = $available_messages->forPage($this->page, $this->limit)->toArray();
+        $uids = $availableMessages->forPage($this->page, $this->limit)->toArray();
 
         $extensions = $this->getExtensions();
 
@@ -236,9 +236,9 @@ class Query
     /**
      * Get the message key for a given message.
      */
-    protected function getMessageKey(string $message_key, int $msglist, Message $message): string
+    protected function getMessageKey(string $messageKey, int $msglist, Message $message): string
     {
-        $key = match ($message_key) {
+        $key = match ($messageKey) {
             'number' => $message->getMessageNo(),
             'list' => $msglist,
             'uid' => $message->getUid(),
@@ -251,11 +251,11 @@ class Query
     /**
      * Curates a given collection aof messages.
      */
-    public function curate_messages(Collection $available_messages): MessageCollection
+    public function curateMessages(Collection $availableMessages): MessageCollection
     {
         try {
-            if ($available_messages->count() > 0) {
-                return $this->populate($available_messages);
+            if ($availableMessages->count() > 0) {
+                return $this->populate($availableMessages);
             }
 
             return MessageCollection::make();
@@ -267,22 +267,22 @@ class Query
     /**
      * Populate a given id collection and receive a fully fetched message collection.
      */
-    protected function populate(Collection $available_messages): MessageCollection
+    protected function populate(Collection $availableMessages): MessageCollection
     {
         $messages = MessageCollection::make();
 
-        $messages->total($available_messages->count());
+        $messages->total($availableMessages->count());
 
-        $message_key = ClientManager::get('options.message_key');
+        $messageKey = ClientManager::get('options.message_key');
 
-        $raw_messages = $this->fetch($available_messages);
+        $rawMessages = $this->fetch($availableMessages);
 
         $msglist = 0;
 
-        foreach ($raw_messages['headers'] as $uid => $header) {
-            $content = $raw_messages['contents'][$uid] ?? '';
-            $flag = $raw_messages['flags'][$uid] ?? [];
-            $extensions = $raw_messages['extensions'][$uid] ?? [];
+        foreach ($rawMessages['headers'] as $uid => $header) {
+            $content = $rawMessages['contents'][$uid] ?? '';
+            $flag = $rawMessages['flags'][$uid] ?? [];
+            $extensions = $rawMessages['extensions'][$uid] ?? [];
 
             $message = $this->make($uid, $msglist, $header, $content, $flag);
 
@@ -291,7 +291,7 @@ class Query
             }
 
             if ($message !== null) {
-                $key = $this->getMessageKey($message_key, $msglist, $message);
+                $key = $this->getMessageKey($messageKey, $msglist, $message);
 
                 $messages->put("$key", $message);
             }
@@ -307,31 +307,31 @@ class Query
      */
     public function get(): MessageCollection
     {
-        return $this->curate_messages($this->search());
+        return $this->curateMessages($this->search());
     }
 
     /**
      * Fetch the current query as chunked requests.
      */
-    public function chunked(callable $callback, int $chunk_size = 10, int $start_chunk = 1): void
+    public function chunked(callable $callback, int $chunkSize = 10, int $startChunk = 1): void
     {
-        $available_messages = $this->search();
+        $availableMessages = $this->search();
 
-        if (($available_messages_count = $available_messages->count()) > 0) {
+        if (($availableMessagesCount = $availableMessages->count()) > 0) {
             $previousLimit = $this->limit;
             $previousPage = $this->page;
 
-            $this->limit = $chunk_size;
-            $this->page = $start_chunk;
+            $this->limit = $chunkSize;
+            $this->page = $startChunk;
 
-            $handled_messages_count = 0;
+            $handledMessagesCount = 0;
 
             do {
-                $messages = $this->populate($available_messages);
-                $handled_messages_count += $messages->count();
+                $messages = $this->populate($availableMessages);
+                $handledMessagesCount += $messages->count();
                 $callback($messages, $this->page);
                 $this->page++;
-            } while ($handled_messages_count < $available_messages_count);
+            } while ($handledMessagesCount < $availableMessagesCount);
 
             $this->limit = $previousLimit;
             $this->page = $previousPage;
@@ -341,21 +341,21 @@ class Query
     /**
      * Paginate the current query.
      *
-     * @param  int  $per_page  Results you which to receive per page
+     * @param  int  $perPage  Results you which to receive per page
      * @param  null  $page  The current page you are on (e.g. 0, 1, 2, ...) use `null` to enable auto mode
-     * @param  string  $page_name  The page name / uri parameter used for the generated links and the auto mode
+     * @param  string  $pageName  The page name / uri parameter used for the generated links and the auto mode
      */
-    public function paginate(int $per_page = 5, $page = null, string $page_name = 'imap_page'): LengthAwarePaginator
+    public function paginate(int $perPage = 5, $page = null, string $pageName = 'imap_page'): LengthAwarePaginator
     {
-        if ($page === null && isset($_GET[$page_name]) && $_GET[$page_name] > 0) {
-            $this->page = intval($_GET[$page_name]);
+        if ($page === null && isset($_GET[$pageName]) && $_GET[$pageName] > 0) {
+            $this->page = intval($_GET[$pageName]);
         } elseif ($page > 0) {
             $this->page = (int) $page;
         }
 
-        $this->limit = $per_page;
+        $this->limit = $perPage;
 
-        return $this->get()->paginate($per_page, $this->page, $page_name, true);
+        return $this->get()->paginate($perPage, $this->page, $pageName, true);
     }
 
     /**
@@ -404,17 +404,17 @@ class Query
 
         $uids = $connection->getUid()->getValidatedData();
 
-        $available_messages = new Collection;
+        $availableMessages = new Collection;
 
         if (is_array($uids)) {
             foreach ($uids as $id) {
                 if ($closure($id)) {
-                    $available_messages->push($id);
+                    $availableMessages->push($id);
                 }
             }
         }
 
-        return $this->curate_messages($available_messages);
+        return $this->curateMessages($availableMessages);
     }
 
     /**
@@ -651,9 +651,9 @@ class Query
     /**
      * Set the fetch option flag.
      */
-    public function fetchOptions(int $fetch_options): Query
+    public function fetchOptions(int $fetchOptions): Query
     {
-        return $this->setFetchOptions($fetch_options);
+        return $this->setFetchOptions($fetchOptions);
     }
 
     /**
@@ -725,9 +725,9 @@ class Query
     /**
      * Set the fetch order.
      */
-    public function fetchOrder(string $fetch_order): Query
+    public function fetchOrder(string $fetchOrder): Query
     {
-        return $this->setFetchOrder($fetch_order);
+        return $this->setFetchOrder($fetchOrder);
     }
 
     /**

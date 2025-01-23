@@ -36,9 +36,9 @@ class Header
     /**
      * Constructor.
      */
-    public function __construct(string $raw_header)
+    public function __construct(string $rawHeader)
     {
-        $this->raw = $raw_header;
+        $this->raw = $rawHeader;
         $this->config = ClientManager::get('options');
         $this->parse();
     }
@@ -100,7 +100,7 @@ class Header
      */
     public function set(string $name, mixed $value, bool $strict = false): Attribute|array
     {
-        if (isset($this->attributes[$name]) && $strict === false) {
+        if (isset($this->attributes[$name]) && ! $strict) {
             $this->attributes[$name]->add($value, true);
         } else {
             $this->attributes[$name] = new Attribute($name, $value);
@@ -158,7 +158,7 @@ class Header
      */
     protected function parse(): void
     {
-        $header = $this->rfc822_parse_headers($this->raw);
+        $header = $this->rfc822ParseHeaders($this->raw);
 
         $this->extractAddresses($header);
 
@@ -199,23 +199,24 @@ class Header
      *
      * @link https://php.net/manual/en/function.imap-rfc822-parse-headers.php
      */
-    public function rfc822_parse_headers(string $raw_headers): object
+    public function rfc822ParseHeaders(string $rawHeaders): object
     {
         $headers = [];
-        $imap_headers = [];
+        $imapHeaders = [];
 
         if (extension_loaded('imap') && $this->config['rfc822']) {
-            $raw_imap_headers = (array) imap_rfc822_parse_headers($raw_headers);
+            $rawImapHeaders = (array) imap_rfc822_parse_headers($rawHeaders);
 
-            foreach ($raw_imap_headers as $key => $values) {
+            foreach ($rawImapHeaders as $key => $values) {
                 $key = strtolower(str_replace('-', '_', $key));
-                $imap_headers[$key] = $values;
+
+                $imapHeaders[$key] = $values;
             }
         }
 
-        $lines = explode("\r\n", preg_replace("/\r\n\s/", ' ', $raw_headers));
+        $lines = explode("\r\n", preg_replace("/\r\n\s/", ' ', $rawHeaders));
 
-        $prev_header = null;
+        $prevHeader = null;
 
         foreach ($lines as $line) {
             if (str_starts_with($line, "\n")) {
@@ -225,20 +226,20 @@ class Header
             if (str_starts_with($line, "\t")) {
                 $line = substr($line, 1);
                 $line = trim(rtrim($line));
-                if ($prev_header !== null) {
-                    $headers[$prev_header][] = $line;
+                if ($prevHeader !== null) {
+                    $headers[$prevHeader][] = $line;
                 }
             } elseif (str_starts_with($line, ' ')) {
                 $line = substr($line, 1);
                 $line = trim(rtrim($line));
-                if ($prev_header !== null) {
-                    if (! isset($headers[$prev_header])) {
-                        $headers[$prev_header] = '';
+                if ($prevHeader !== null) {
+                    if (! isset($headers[$prevHeader])) {
+                        $headers[$prevHeader] = '';
                     }
-                    if (is_array($headers[$prev_header])) {
-                        $headers[$prev_header][] = $line;
+                    if (is_array($headers[$prevHeader])) {
+                        $headers[$prevHeader][] = $line;
                     } else {
-                        $headers[$prev_header] .= $line;
+                        $headers[$prevHeader] .= $line;
                     }
                 }
             } else {
@@ -252,13 +253,13 @@ class Header
                     } else {
                         $headers[$key] = [$value];
                     }
-                    $prev_header = $key;
+                    $prevHeader = $key;
                 }
             }
         }
 
         foreach ($headers as $key => $values) {
-            if (isset($imap_headers[$key])) {
+            if (isset($imapHeaders[$key])) {
                 continue;
             }
 
@@ -284,12 +285,14 @@ class Header
                                 unset($values[$k]);
                             }
                         }
-                        $available_values = count($values);
-                        if ($available_values === 1) {
+
+                        $availableValues = count($values);
+
+                        if ($availableValues === 1) {
                             $value = array_pop($values);
-                        } elseif ($available_values === 2) {
+                        } elseif ($availableValues === 2) {
                             $value = implode(' ', $values);
-                        } elseif ($available_values > 2) {
+                        } elseif ($availableValues > 2) {
                             $value = array_values($values);
                         } else {
                             $value = '';
@@ -301,7 +304,7 @@ class Header
             $headers[$key] = $value;
         }
 
-        return (object) array_merge($headers, $imap_headers);
+        return (object) array_merge($headers, $imapHeaders);
     }
 
     /**
@@ -393,16 +396,16 @@ class Header
             return $this->decodeArray($value);
         }
 
-        $original_value = $value;
+        $original = $value;
         $decoder = $this->config['decoder']['message'];
 
         if ($value !== null) {
             if ($decoder === 'utf-8') {
-                $decoded_values = $this->mime_header_decode($value);
+                $decodedValues = $this->mime_header_decode($value);
                 $tempValue = '';
 
-                foreach ($decoded_values as $decoded_value) {
-                    $tempValue .= $this->convertEncoding($decoded_value->text, $decoded_value->charset);
+                foreach ($decodedValues as $decodedValue) {
+                    $tempValue .= $this->convertEncoding($decodedValue->text, $decodedValue->charset);
                 }
 
                 if ($tempValue) {
@@ -420,8 +423,8 @@ class Header
                 $value = mb_decode_mimeheader($value);
             }
 
-            if ($this->notDecoded($original_value, $value)) {
-                $value = $this->convertEncoding($original_value, $this->getEncoding($original_value));
+            if ($this->notDecoded($original, $value)) {
+                $value = $this->convertEncoding($original, $this->getEncoding($original));
             }
         }
 
@@ -468,14 +471,15 @@ class Header
 
         if (extension_loaded('mailparse') && $this->config['rfc822']) {
             foreach ($values as $address) {
-                foreach (mailparse_rfc822_parse_addresses($address) as $parsed_address) {
-                    if (isset($parsed_address['address'])) {
-                        $mail_address = explode('@', $parsed_address['address']);
-                        if (count($mail_address) == 2) {
+                foreach (mailparse_rfc822_parse_addresses($address) as $parsedAddress) {
+                    if (isset($parsedAddress['address'])) {
+                        $mailAddress = explode('@', $parsedAddress['address']);
+
+                        if (count($mailAddress) == 2) {
                             $addresses[] = (object) [
-                                'personal' => $parsed_address['display'] ?? '',
-                                'mailbox' => $mail_address[0],
-                                'host' => $mail_address[1],
+                                'personal' => $parsedAddress['display'] ?? '',
+                                'mailbox' => $mailAddress[0],
+                                'host' => $mailAddress[1],
                             ];
                         }
                     }
@@ -486,20 +490,23 @@ class Header
         }
 
         foreach ($values as $address) {
-            foreach (preg_split('/, (?=(?:[^"]*"[^"]*")*[^"]*$)/', $address) as $split_address) {
-                $split_address = trim(rtrim($split_address));
+            foreach (preg_split('/, (?=(?:[^"]*"[^"]*")*[^"]*$)/', $address) as $splitAddress) {
+                $splitAddress = trim(rtrim($splitAddress));
 
-                if (strpos($split_address, ',') == strlen($split_address) - 1) {
-                    $split_address = substr($split_address, 0, -1);
+                if (strpos($splitAddress, ',') == strlen($splitAddress) - 1) {
+                    $splitAddress = substr($splitAddress, 0, -1);
                 }
+
                 if (preg_match(
                     '/^(?:(?P<name>.+)\s)?(?(name)<|<?)(?P<email>[^\s]+?)(?(name)>|>?)$/',
-                    $split_address,
+                    $splitAddress,
                     $matches
                 )) {
                     $name = trim(rtrim($matches['name']));
                     $email = trim(rtrim($matches['email']));
+
                     [$mailbox, $host] = array_pad(explode('@', $email), 2, null);
+
                     $addresses[] = (object) [
                         'personal' => $name,
                         'mailbox' => $mailbox,
@@ -531,7 +538,7 @@ class Header
     {
         $addresses = [];
 
-        if (is_array($list) === false) {
+        if (! is_array($list)) {
             return $addresses;
         }
 
@@ -621,14 +628,14 @@ class Header
                             if (
                                 $previousKey !== null
                                 && $previousKey !== $key
-                                && isset($this->attributes[$previousKey]) === false
+                                && ! isset($this->attributes[$previousKey])
                             ) {
                                 $this->set($previousKey, $previousValue);
 
                                 $previousValue = '';
                             }
 
-                            if (isset($this->attributes[$key]) === false) {
+                            if (! isset($this->attributes[$key])) {
                                 $value = substr($extension, $pos + 1);
                                 $value = str_replace('"', '', $value);
                                 $value = trim(rtrim($value));
@@ -683,7 +690,7 @@ class Header
                 if (str_contains($date, ' UT ')) {
                     $date = str_replace(' UT ', ' UTC ', $date);
                 }
-                $parsed_date = Carbon::parse($date);
+                $parsedDate = Carbon::parse($date);
             } catch (Exception $e) {
                 switch (true) {
                     case preg_match('/([0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}\-[0-9]{1,2}\.[0-9]{1,2}.[0-9]{1,2})+$/i', $date) > 0:
@@ -739,17 +746,17 @@ class Header
                 }
 
                 try {
-                    $parsed_date = Carbon::parse($date);
+                    $parsedDate = Carbon::parse($date);
                 } catch (Exception $_e) {
                     if (! isset($this->config['fallback_date'])) {
                         throw new InvalidMessageDateException('Invalid message date. ID:'.$this->get('message_id').' Date:'.$header->date.'/'.$date, 1100, $e);
                     } else {
-                        $parsed_date = Carbon::parse($this->config['fallback_date']);
+                        $parsedDate = Carbon::parse($this->config['fallback_date']);
                     }
                 }
             }
 
-            $this->set('date', $parsed_date);
+            $this->set('date', $parsedDate);
         }
     }
 

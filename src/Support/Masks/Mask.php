@@ -10,19 +10,19 @@ class Mask
     use ForwardsCalls;
 
     /**
-     * Available attributes.
-     */
-    protected array $attributes = [];
-
-    /**
-     * Parent instance.
+     * Theb parent instance.
      */
     protected mixed $parent;
 
     /**
+     * The available attributes.
+     */
+    protected array $attributes = [];
+
+    /**
      * Mask constructor.
      */
-    public function __construct($parent)
+    public function __construct(mixed $parent)
     {
         $this->parent = $parent;
 
@@ -64,22 +64,16 @@ class Mask
 
     /**
      * Magic setter.
-     *
-     * @return mixed
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         $this->attributes[$name] = $value;
-
-        return $this->attributes[$name];
     }
 
     /**
      * Magic getter.
-     *
-     * @return mixed|null
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];

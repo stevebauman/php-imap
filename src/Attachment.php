@@ -92,19 +92,19 @@ class Attachment
 
         $this->oMessage = $oMessage;
         $this->part = $part;
-        $this->part_number = $part->part_number;
+        $this->part_number = $part->partNumber;
 
         if ($this->oMessage->getClient()) {
-            $default_mask = $this->oMessage->getClient()?->getDefaultAttachmentMask();
+            $defaultMask = $this->oMessage->getClient()?->getDefaultAttachmentMask();
 
-            if ($default_mask != null) {
-                $this->mask = $default_mask;
+            if ($defaultMask != null) {
+                $this->mask = $defaultMask;
             }
         } else {
-            $default_mask = ClientManager::getMask('attachment');
+            $defaultMask = ClientManager::getMask('attachment');
 
-            if ($default_mask != '') {
-                $this->mask = $default_mask;
+            if ($defaultMask != '') {
+                $this->mask = $defaultMask;
             }
         }
 
@@ -140,14 +140,10 @@ class Attachment
 
     /**
      * Handle setting attributes on the instance.
-     *
-     * @return mixed
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         $this->attributes[$name] = $value;
-
-        return $this->attributes[$name];
     }
 
     /**
@@ -155,7 +151,7 @@ class Attachment
      *
      * @return mixed|null
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
@@ -189,7 +185,7 @@ class Attachment
     {
         $content = $this->part->content;
 
-        $this->content_type = $this->part->content_type;
+        $this->content_type = $this->part->contentType;
         $this->content = $this->oMessage->decodeString($content, $this->part->encoding);
 
         // Create a hash of the raw part - this can be used to identify the attachment in the message context. However,
@@ -309,17 +305,17 @@ class Attachment
 
         $guesser = "\Symfony\Component\Mime\MimeTypes";
 
-        if (class_exists($guesser) !== false) {
+        if (class_exists($guesser)) {
             /** @var \Symfony\Component\Mime\MimeTypes $guesser */
             $extensions = $guesser::getDefault()->getExtensions($this->getMimeType());
             $extension = $extensions[0] ?? null;
         }
 
         if ($extension === null) {
-            $deprecated_guesser = "\Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser";
-            if (class_exists($deprecated_guesser) !== false) {
-                /** @var \Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser $deprecated_guesser */
-                $extension = $deprecated_guesser::getInstance()->guess($this->getMimeType());
+            $deprecatedGuesser = "\Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser";
+            if (class_exists($deprecatedGuesser)) {
+                /** @var \Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser $deprecatedGuesser */
+                $extension = $deprecatedGuesser::getInstance()->guess($this->getMimeType());
             }
         }
 
