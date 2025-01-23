@@ -763,9 +763,9 @@ class ImapProtocol extends Protocol
             return Response::empty($this->debug)->setResult($uids);
         }
 
-        foreach ($uids as $k => $v) {
-            if ($k == $id) {
-                return Response::empty($this->debug)->setResult($v);
+        foreach ($uids as $key => $value) {
+            if ($key == $id) {
+                return Response::empty($this->debug)->setResult($value);
             }
         }
 
@@ -784,9 +784,9 @@ class ImapProtocol extends Protocol
      */
     public function getMessageNumber(string $id): Response
     {
-        foreach ($this->getUid()->data() as $k => $v) {
-            if ($v == $id) {
-                return Response::empty($this->debug)->setResult((int) $k);
+        foreach ($this->getUid()->data() as $key => $value) {
+            if ($value == $id) {
+                return Response::empty($this->debug)->setResult((int) $key);
             }
         }
 
@@ -1164,7 +1164,7 @@ class ImapProtocol extends Protocol
      */
     protected function escapeString(array|string ...$string): array|string
     {
-        return Escape::string($string);
+        return Escape::string(...$string);
     }
 
     /**
