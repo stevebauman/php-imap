@@ -10,16 +10,9 @@ use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 class Header
 {
     /**
-     * Raw header.
+     * The raw header.
      */
     public string $raw = '';
-
-    /**
-     * Attribute holder.
-     *
-     * @var Attribute[]|array
-     */
-    protected array $attributes = [];
 
     /**
      * Config holder.
@@ -27,14 +20,19 @@ class Header
     protected array $config = [];
 
     /**
-     * Fallback Encoding.
+     * The header attributes.
+     *
+     * @var Attribute[]|array
      */
-    public string $fallback_encoding = 'UTF-8';
+    protected array $attributes = [];
 
     /**
-     * Header constructor.
-     *
-     * @throws InvalidMessageDateException
+     * The fallback Encoding.
+     */
+    public string $fallbackEncoding = 'UTF-8';
+
+    /**
+     * Constructor.
      */
     public function __construct(string $raw_header)
     {
@@ -44,15 +42,13 @@ class Header
     }
 
     /**
-     * Call dynamic attribute setter and getter methods.
+     * Handle dynamic method calls on the instance.
      *
      * @return Attribute|mixed
-     *
-     * @throws MethodNotFoundException
      */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $arguments): mixed
     {
-        if (strtolower(substr($method, 0, 3)) === 'get') {
+        if (str_starts_with($method, 'get')) {
             $name = preg_replace('/(.)(?=[A-Z])/u', '$1_', substr(strtolower($method), 3));
 
             if (in_array($name, array_keys($this->attributes))) {
@@ -64,9 +60,9 @@ class Header
     }
 
     /**
-     * Magic getter.
+     * Get a specific header attribute.
      */
-    public function __get($name): Attribute
+    public function __get(string $name): Attribute
     {
         return $this->get($name);
     }
@@ -74,7 +70,7 @@ class Header
     /**
      * Get a specific header attribute.
      */
-    public function get($name): Attribute
+    public function get(string $name): Attribute
     {
         $name = str_replace(['-', ' '], '_', strtolower($name));
 
@@ -86,7 +82,7 @@ class Header
     }
 
     /**
-     * Check if a specific attribute exists.
+     * Determine if an attribute exists.
      */
     public function has(string $name): bool
     {
@@ -201,7 +197,7 @@ class Header
      *
      * @link https://php.net/manual/en/function.imap-rfc822-parse-headers.php
      */
-    public function rfc822_parse_headers($raw_headers): object
+    public function rfc822_parse_headers(string $raw_headers): object
     {
         $headers = [];
         $imap_headers = [];
@@ -334,7 +330,7 @@ class Header
     /**
      * Check if a given pair of strings has been decoded.
      */
-    protected function notDecoded($encoded, $decoded): bool
+    protected function notDecoded(string $encoded, string $decoded): bool
     {
         return str_starts_with($decoded, '=?')
             && strlen($decoded) - 2 === strpos($decoded, '?=')
@@ -343,13 +339,11 @@ class Header
 
     /**
      * Convert the encoding.
-     *
-     * @return mixed|string
      */
-    public function convertEncoding($str, string $from = 'ISO-8859-2', string $to = 'UTF-8'): mixed
+    public function convertEncoding(mixed $str, string $from = 'ISO-8859-2', string $to = 'UTF-8'): mixed
     {
-        $from = EncodingAliases::get($from, $this->fallback_encoding);
-        $to = EncodingAliases::get($to, $this->fallback_encoding);
+        $from = EncodingAliases::get($from, $this->fallbackEncoding);
+        $to = EncodingAliases::get($to, $this->fallbackEncoding);
 
         if ($from === $to) {
             return $str;
@@ -366,24 +360,24 @@ class Header
         if (property_exists($structure, 'parameters')) {
             foreach ($structure->parameters as $parameter) {
                 if (strtolower($parameter->attribute) == 'charset') {
-                    return EncodingAliases::get($parameter->value, $this->fallback_encoding);
+                    return EncodingAliases::get($parameter->value, $this->fallbackEncoding);
                 }
             }
         } elseif (property_exists($structure, 'charset')) {
-            return EncodingAliases::get($structure->charset, $this->fallback_encoding);
+            return EncodingAliases::get($structure->charset, $this->fallbackEncoding);
         } elseif (is_string($structure) === true) {
             $result = mb_detect_encoding($structure);
 
-            return $result === false ? $this->fallback_encoding : $result;
+            return $result === false ? $this->fallbackEncoding : $result;
         }
 
-        return $this->fallback_encoding;
+        return $this->fallbackEncoding;
     }
 
     /**
      * Test if a given value is utf-8 encoded.
      */
-    protected function is_uft8($value): bool
+    protected function isUtf8(string $value): bool
     {
         return str_starts_with(strtolower($value), '=?utf-8?');
     }
@@ -420,7 +414,7 @@ class Header
                 }
             } elseif ($decoder === 'iconv') {
                 $value = iconv_mime_decode($value, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
-            } elseif ($this->is_uft8($value)) {
+            } elseif ($this->isUtf8($value)) {
                 $value = mb_decode_mimeheader($value);
             }
 
@@ -466,13 +460,13 @@ class Header
     /**
      * Extract a given part as address array from a given header.
      */
-    protected function decodeAddresses($values): array
+    protected function decodeAddresses(array $values): array
     {
         $addresses = [];
 
         if (extension_loaded('mailparse') && $this->config['rfc822']) {
             foreach ($values as $address) {
-                foreach (\mailparse_rfc822_parse_addresses($address) as $parsed_address) {
+                foreach (mailparse_rfc822_parse_addresses($address) as $parsed_address) {
                     if (isset($parsed_address['address'])) {
                         $mail_address = explode('@', $parsed_address['address']);
                         if (count($mail_address) == 2) {
@@ -531,7 +525,7 @@ class Header
     /**
      * Parse Addresses.
      */
-    protected function parseAddresses($list): array
+    protected function parseAddresses(mixed $list): array
     {
         $addresses = [];
 

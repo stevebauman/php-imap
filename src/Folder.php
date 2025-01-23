@@ -167,10 +167,8 @@ class Folder
 
     /**
      * Decode name. Converts UTF7-IMAP encoding to UTF-8.
-     *
-     * @return string|array|bool|string[]|null
      */
-    protected function decodeName($name): string|array|bool|null
+    protected function decodeName(mixed $name): string|array|bool|null
     {
         $parts = [];
 
@@ -184,9 +182,9 @@ class Folder
     /**
      * Get simple name (without parent folders).
      */
-    protected function getSimpleName($delimiter, $full_name): string|bool
+    protected function getSimpleName(string $delimiter, string $fullName): string|bool
     {
-        $arr = explode($delimiter, $full_name);
+        $arr = explode($delimiter, $fullName);
 
         return end($arr);
     }
@@ -194,7 +192,7 @@ class Folder
     /**
      * Parse attributes and set it to object properties.
      */
-    protected function parseAttributes($attributes): void
+    protected function parseAttributes(array $attributes): void
     {
         $this->no_inferiors = in_array('\NoInferiors', $attributes);
         $this->no_select = in_array('\NoSelect', $attributes);
@@ -313,7 +311,7 @@ class Folder
     }
 
     /**
-     * Idle the current connection.
+     * Begin idling on the current folder.
      */
     public function idle(callable $callback, int $timeout = 300): void
     {
@@ -417,7 +415,7 @@ class Folder
     /**
      * Set the delimiter.
      */
-    public function setDelimiter($delimiter): void
+    public function setDelimiter(string $delimiter): void
     {
         if (in_array($delimiter, [null, '', ' ', false]) === true) {
             $delimiter = ClientManager::get('options.delimiter', '/');

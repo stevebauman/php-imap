@@ -196,7 +196,7 @@ class Attribute implements ArrayAccess
     /**
      * Set the attribute name.
      */
-    public function setName($name): Attribute
+    public function setName(string $name): Attribute
     {
         $this->name = $name;
 

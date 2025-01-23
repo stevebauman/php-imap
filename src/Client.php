@@ -400,7 +400,7 @@ class Client
      *
      * @param  bool  $softFail  If true, it will return null instead of throwing an exception
      */
-    public function getFolderByName($folderName, bool $softFail = false): ?Folder
+    public function getFolderByName(string $folderName, bool $softFail = false): ?Folder
     {
         return $this->getFolders(false, null, $softFail)
             ->where('name', $folderName)
@@ -412,7 +412,7 @@ class Client
      *
      * @param  bool  $softFail  If true, it will return null instead of throwing an exception
      */
-    public function getFolderByPath($folderPath, bool $utf7 = false, bool $softFail = false): ?Folder
+    public function getFolderByPath(string $folderPath, bool $utf7 = false, bool $softFail = false): ?Folder
     {
         if (! $utf7) {
             $folderPath = EncodingAliases::convert($folderPath, 'utf-8', 'utf7-imap');
@@ -677,7 +677,7 @@ class Client
     /**
      * Get the default events for a given section.
      */
-    public function getDefaultEvents($section): array
+    public function getDefaultEvents(string $section): array
     {
         if (isset($this->events[$section])) {
             return is_array($this->events[$section]) ? $this->events[$section] : [];

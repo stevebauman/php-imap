@@ -298,7 +298,9 @@ class Message
             $name = Str::snake(substr($method, 3));
 
             if (in_array($name, array_keys($this->attributes))) {
-                return $this->__set($name, array_pop($arguments));
+                $this->__set($name, array_pop($arguments));
+
+                return null;
             }
         }
 
@@ -308,7 +310,7 @@ class Message
     /**
      * Magic setter.
      */
-    public function __set($name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this->attributes[$name] = $value;
     }
@@ -316,7 +318,7 @@ class Message
     /**
      * Magic getter.
      */
-    public function __get($name): mixed
+    public function __get(string $name): mixed
     {
         return $this->get($name);
     }
@@ -326,7 +328,7 @@ class Message
      *
      * @return Attribute|mixed
      */
-    public function get($name): mixed
+    public function get(string $name): mixed
     {
         if (isset($this->attributes[$name]) && $this->attributes[$name] !== null) {
             return $this->attributes[$name];
