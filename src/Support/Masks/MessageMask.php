@@ -8,6 +8,8 @@ use Webklex\PHPIMAP\Message;
 class MessageMask extends Mask
 {
     /**
+     * The parent message.
+     *
      * @var Message
      */
     protected mixed $parent;
