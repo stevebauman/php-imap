@@ -429,8 +429,7 @@ class ImapProtocol extends Protocol
                     // Respond with an empty response.
                     $response->addResponse($this->sendRequest(''));
                 } else {
-                    if (preg_match('/^NO /i', $tokens) ||
-                        preg_match('/^BAD /i', $tokens)) {
+                    if (preg_match('/^(NO|BAD) /i', $tokens)) {
                         return $response->addError("got failure response: $tokens");
                     } elseif (preg_match('/^OK /i', $tokens)) {
                         return $response->setResult(is_array($tokens) ? $tokens : [$tokens]);
