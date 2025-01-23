@@ -473,6 +473,7 @@ class Client
         $folders = FolderCollection::make();
 
         $pattern = $parentFolder.($hierarchical ? '%' : '*');
+
         $items = $this->connection->folders('', $pattern)->getValidatedData();
 
         if (! empty($items)) {
@@ -483,10 +484,12 @@ class Client
                     $pattern = $folder->fullName.$folder->delimiter.'%';
 
                     $children = $this->getFoldersWithStatus(true, $pattern, $softFail);
+
                     $folder->setChildren($children);
                 }
 
                 $folder->loadStatus();
+
                 $folders->push($folder);
             }
 
