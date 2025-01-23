@@ -57,7 +57,7 @@ class WhereQuery extends Query
     /**
      * Magic method in order to allow alias usage of all "where" methods in an optional connection with "NOT".
      */
-    public function __call(string $name, ?array $arguments): mixed
+    public function __call(string $name, ?array $parameters): mixed
     {
         $that = $this;
 
@@ -74,25 +74,7 @@ class WhereQuery extends Query
             $method = lcfirst($name);
         }
 
-        return $this->forwardCallTo($that, $method, $arguments);
-    }
-
-    /**
-     * Validate a given criteria.
-     */
-    protected function validateCriteria($criteria): string
-    {
-        $command = strtoupper($criteria);
-
-        if (str_starts_with($command, 'CUSTOM ')) {
-            return substr($criteria, 7);
-        }
-
-        if (in_array($command, $this->availableCriteria) === false) {
-            throw new InvalidWhereQueryCriteriaException("Invalid imap search criteria: $command");
-        }
-
-        return $criteria;
+        return $this->forwardCallTo($that, $method, $parameters);
     }
 
     /**
@@ -139,11 +121,30 @@ class WhereQuery extends Query
     }
 
     /**
+     * Validate the given criteria.
+     */
+    protected function validateCriteria(string $criteria): string
+    {
+        $command = strtoupper($criteria);
+
+        if (str_starts_with($command, 'CUSTOM ')) {
+            return substr($criteria, 7);
+        }
+
+        if (in_array($command, $this->availableCriteria) === false) {
+            throw new InvalidWhereQueryCriteriaException("Invalid imap search criteria: $command");
+        }
+
+        return $criteria;
+    }
+
+    /**
      * Add an "OR" clause to the query.
      */
     public function orWhere(?Closure $closure = null): WhereQuery
     {
         $this->query->push(['OR']);
+
         if ($closure !== null) {
             $closure($this);
         }
