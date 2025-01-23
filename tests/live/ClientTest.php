@@ -100,7 +100,7 @@ class ClientTest extends LiveMailboxTestCase
         $this->assertInstanceOf(Folder::class, $folder);
 
         $this->assertEquals($this->getSpecialChars(), $folder->name);
-        $this->assertEquals($folder_path, $folder->full_name);
+        $this->assertEquals($folder_path, $folder->fullName);
 
         $folder_path = implode($delimiter, ['INBOX', EncodingAliases::convert($this->getSpecialChars(), 'utf-8', 'utf7-imap')]);
         $this->assertEquals($folder_path, $folder->path);
