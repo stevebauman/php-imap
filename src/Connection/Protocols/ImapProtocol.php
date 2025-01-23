@@ -11,7 +11,6 @@ use Webklex\PHPIMAP\Exceptions\ConnectionTimedOutException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
 use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
-use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\IMAP;
@@ -549,13 +548,6 @@ class ImapProtocol extends Protocol
 
     /**
      * Get an array of available capabilities.
-     *
-     * @return Response list of capabilities
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
-     * @throws ResponseException
      */
     public function getCapabilities(): Response
     {

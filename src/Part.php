@@ -153,9 +153,6 @@ class Part
 
     /**
      * Find all available headers and return the leftover body segment.
-     *
-     *
-     * @throws InvalidMessageDateException
      */
     protected function findHeaders(): string
     {
