@@ -854,8 +854,6 @@ class Query
 
     /**
      * Get a specific error / exception.
-     *
-     * @var int
      */
     public function error(int $uid): ?Exception
     {
