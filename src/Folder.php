@@ -74,9 +74,14 @@ class Folder
     public bool $referral;
 
     /**
-     * Folder status information.
+     * The folder status information.
      */
     public array $status;
+
+    /**
+     * The folder capabilities.
+     */
+    protected ?array $capabilities = null;
 
     /**
      * Folder constructor.
@@ -437,7 +442,7 @@ class Folder
      */
     protected function getConnectionCapabilities(): array
     {
-        return $this->client->getConnection()
+        return $this->capabilities ??= $this->client->getConnection()
             ->getCapabilities()
             ->getValidatedData();
     }
