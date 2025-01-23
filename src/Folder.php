@@ -415,7 +415,7 @@ class Folder
     /**
      * Set the delimiter.
      */
-    public function setDelimiter(string $delimiter): void
+    public function setDelimiter(?string $delimiter): void
     {
         if (in_array($delimiter, [null, '', ' ', false]) === true) {
             $delimiter = ClientManager::get('options.delimiter', '/');
