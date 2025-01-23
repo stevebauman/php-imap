@@ -2,24 +2,12 @@
 
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
-use ErrorException;
-use Webklex\PHPIMAP\Exceptions\AuthFailedException;
-use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
-use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
-use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
-use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\IMAP;
 
 interface ProtocolInterface
 {
     /**
      * Public destructor.
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function __destruct();
 
@@ -28,10 +16,6 @@ interface ProtocolInterface
      *
      * @param  string  $host  hostname or IP address of IMAP server
      * @param  int|null  $port  of service server
-     *
-     * @throws ErrorException
-     * @throws ConnectionFailedException
-     * @throws RuntimeException
      */
     public function connect(string $host, ?int $port = null);
 
@@ -40,10 +24,6 @@ interface ProtocolInterface
      *
      * @param  string  $user  username
      * @param  string  $password  password
-     *
-     * @throws AuthFailedException
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
      */
     public function login(string $user, string $password): Response;
 
@@ -52,17 +32,11 @@ interface ProtocolInterface
      *
      * @param  string  $user  username
      * @param  string  $token  access token
-     *
-     * @throws AuthFailedException
      */
     public function authenticate(string $user, string $token): Response;
 
     /**
      * Logout of the current server session.
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function logout(): Response;
 
@@ -75,8 +49,6 @@ interface ProtocolInterface
      * Get an array of available capabilities.
      *
      * @return Response containing a list of capabilities
-     *
-     * @throws RuntimeException
      */
     public function getCapabilities(): Response;
 
@@ -85,16 +57,11 @@ interface ProtocolInterface
      *
      * @param  string  $folder  change to this folder
      * @return Response see examineOrSelect()
-     *
-     * @throws RuntimeException
      */
     public function selectFolder(string $folder = 'INBOX'): Response;
 
     /**
      * Examine a given folder.
-     *
-     *
-     * @throws RuntimeException
      */
     public function examineFolder(string $folder = 'INBOX'): Response;
 
@@ -102,10 +69,6 @@ interface ProtocolInterface
      * Get the status of a given folder.
      *
      * @return Response list of STATUS items
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function folderStatus(string $folder = 'INBOX', array $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response;
 
@@ -114,8 +77,6 @@ interface ProtocolInterface
      *
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
      */
     public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response;
 
@@ -124,8 +85,6 @@ interface ProtocolInterface
      *
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
      */
     public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response;
 
@@ -134,8 +93,6 @@ interface ProtocolInterface
      *
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
      */
     public function flags(int|array $uids, int|string $uid = IMAP::ST_UID): Response;
 
@@ -144,8 +101,6 @@ interface ProtocolInterface
      *
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
      */
     public function sizes(int|array $uids, int|string $uid = IMAP::ST_UID): Response;
 
@@ -154,8 +109,6 @@ interface ProtocolInterface
      *
      * @param  int|null  $id  message number
      * @return Response containing a message number for given message or all messages as array
-     *
-     * @throws MessageNotFoundException
      */
     public function getUid(?int $id = null): Response;
 
@@ -164,8 +117,6 @@ interface ProtocolInterface
      *
      * @param  string  $id  uid
      * @return Response containing the message number
-     *
-     * @throws MessageNotFoundException
      */
     public function getMessageNumber(string $id): Response;
 
@@ -175,8 +126,6 @@ interface ProtocolInterface
      * @param  string  $reference  mailbox reference for list
      * @param  string  $folder  mailbox / folder name match with wildcards
      * @return Response containing mailboxes that matched $folder as array(globalName => array('delim' => .., 'flags' => ..))
-     *
-     * @throws RuntimeException
      */
     public function folders(string $reference = '', string $folder = '*'): Response;
 
@@ -193,8 +142,6 @@ interface ProtocolInterface
      *                           message numbers instead.
      * @param  string|null  $item  command used to store a flag
      * @return Response containing the new flags if $silent is false, else true or false depending on success
-     *
-     * @throws RuntimeException
      */
     public function store(array|string $flags, int $from, ?int $to = null, ?string $mode = null, bool $silent = true, int|string $uid = IMAP::ST_UID, ?string $item = null): Response;
 
@@ -205,8 +152,6 @@ interface ProtocolInterface
      * @param  string  $message  full message content
      * @param  array|null  $flags  flags for new message
      * @param  string|null  $date  date for new message
-     *
-     * @throws RuntimeException
      */
     public function appendMessage(string $folder, string $message, ?array $flags = null, ?string $date = null): Response;
 
@@ -218,8 +163,6 @@ interface ProtocolInterface
      *                        last message, INF means last message available
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
      */
     public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response;
 
@@ -231,8 +174,6 @@ interface ProtocolInterface
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      * @return Response Tokens if operation successful, false if an error occurred
-     *
-     * @throws RuntimeException
      */
     public function copyManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response;
 
@@ -255,16 +196,12 @@ interface ProtocolInterface
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      * @return Response Tokens if operation successful, false if an error occurred
-     *
-     * @throws RuntimeException
      */
     public function moveManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response;
 
     /**
      * Exchange identification information
      * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
-     *
-     * @throws RuntimeException
      */
     public function id(?array $ids = null): Response;
 
@@ -272,8 +209,6 @@ interface ProtocolInterface
      * Create a new folder.
      *
      * @param  string  $folder  folder name
-     *
-     * @throws RuntimeException
      */
     public function createFolder(string $folder): Response;
 
@@ -282,8 +217,6 @@ interface ProtocolInterface
      *
      * @param  string  $old  old name
      * @param  string  $new  new name
-     *
-     * @throws RuntimeException
      */
     public function renameFolder(string $old, string $new): Response;
 
@@ -291,10 +224,6 @@ interface ProtocolInterface
      * Delete a folder.
      *
      * @param  string  $folder  folder name
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function deleteFolder(string $folder): Response;
 
@@ -302,10 +231,6 @@ interface ProtocolInterface
      * Subscribe to a folder.
      *
      * @param  string  $folder  folder name
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function subscribeFolder(string $folder): Response;
 
@@ -313,60 +238,36 @@ interface ProtocolInterface
      * Unsubscribe from a folder.
      *
      * @param  string  $folder  folder name
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function unsubscribeFolder(string $folder): Response;
 
     /**
      * Send idle command.
-     *
-     * @throws RuntimeException
      */
     public function idle();
 
     /**
      * Send done command.
-     *
-     * @throws RuntimeException
      */
     public function done();
 
     /**
      * Apply session saved changes to the server.
-     *
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function expunge(): Response;
 
     /**
      * Retrieve the quota level settings, and usage statics per mailbox.
-     *
-     *
-     * @throws RuntimeException
      */
     public function getQuota($username): Response;
 
     /**
      * Retrieve the quota settings per user.
-     *
-     *
-     * @throws ConnectionFailedException
      */
     public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response;
 
     /**
      * Send noop command.
-     *
-     *
-     * @throws ImapBadRequestException
-     * @throws ImapServerErrorException
-     * @throws RuntimeException
      */
     public function noop(): Response;
 
@@ -376,8 +277,6 @@ interface ProtocolInterface
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
      * @return Response containing the message ids
-     *
-     * @throws RuntimeException
      */
     public function search(array $params, int|string $uid = IMAP::ST_UID): Response;
 
@@ -387,10 +286,6 @@ interface ProtocolInterface
      * @param  string  $sequence  uid sequence
      * @param  int|string  $uid  set to IMAP::ST_UID or any string representing the UID - set to IMAP::ST_MSGN to use
      *                           message numbers instead.
-     *
-     * @throws RuntimeException
-     * @throws MessageNotFoundException
-     * @throws InvalidMessageDateException
      */
     public function overview(string $sequence, int|string $uid = IMAP::ST_UID): Response;
 
