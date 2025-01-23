@@ -4,6 +4,7 @@ namespace Webklex\PHPIMAP;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Webklex\PHPIMAP\Support\Arr as SupportArr;
 
 class ClientManager
 {
@@ -94,7 +95,7 @@ class ClientManager
      */
     protected function getClientConfig(?string $name): array
     {
-        if ($name === null || $name === 'null' || $name === '') {
+        if (empty($name === null) || $name === 'null') {
             return ['driver' => 'null'];
         }
 
@@ -132,26 +133,21 @@ class ClientManager
             $config = require $config;
         }
 
-        $config_key = 'imap';
-        $path = __DIR__.'/config/'.$config_key.'.php';
+        $vendorConfig = $this->getVendorConfig();
 
-        $vendor_config = require $path;
+        $config = SupportArr::mergeRecursiveDistinct($vendorConfig, $config);
 
-        $config = $this->array_merge_recursive_distinct($vendor_config, $config);
+        if (isset($config['default'])) {
+            if (isset($config['accounts']) && $config['default']) {
+                $defaultConfig = $vendorConfig['accounts']['default'];
 
-        if (is_array($config)) {
-            if (isset($config['default'])) {
-                if (isset($config['accounts']) && $config['default']) {
-                    $default_config = $vendor_config['accounts']['default'];
+                if (isset($config['accounts'][$config['default']])) {
+                    $defaultConfig = array_merge($defaultConfig, $config['accounts'][$config['default']]);
+                }
 
-                    if (isset($config['accounts'][$config['default']])) {
-                        $default_config = array_merge($default_config, $config['accounts'][$config['default']]);
-                    }
-
-                    if (is_array($config['accounts'])) {
-                        foreach ($config['accounts'] as $account_key => $account) {
-                            $config['accounts'][$account_key] = array_merge($default_config, $account);
-                        }
+                if (is_array($config['accounts'])) {
+                    foreach ($config['accounts'] as $accountKey => $account) {
+                        $config['accounts'][$accountKey] = array_merge($defaultConfig, $account);
                     }
                 }
             }
@@ -163,72 +159,10 @@ class ClientManager
     }
 
     /**
-     * Marge arrays recursively and distinct.
-     *
-     * Merges any number of arrays / parameters recursively, replacing
-     * entries with string keys with values from latter arrays.
-     * If the entry or the next value to be assigned is an array, then it
-     * automatically treats both arguments as an array.
-     * Numeric entries are appended, not replaced, but only if they are
-     * unique
-     *
-     * @link   http://www.php.net/manual/en/function.array-merge-recursive.php#96201
-     *
-     * @author Mark Roduner <mark.roduner@gmail.com>
+     * Get the vendor configuration.
      */
-    protected function array_merge_recursive_distinct(array ...$arrays): array
+    protected function getVendorConfig(): array
     {
-        $base = array_shift($arrays);
-
-        // From https://stackoverflow.com/a/173479
-        $isAssoc = function (array $arr) {
-            if ($arr === []) {
-                return false;
-            }
-
-            return array_keys($arr) !== range(0, count($arr) - 1);
-        };
-
-        if (! is_array($base)) {
-            $base = empty($base) ? [] : [$base];
-        }
-
-        foreach ($arrays as $append) {
-            if (! is_array($append)) {
-                $append = [$append];
-            }
-
-            foreach ($append as $key => $value) {
-                if (! array_key_exists($key, $base) and ! is_numeric($key)) {
-                    $base[$key] = $value;
-
-                    continue;
-                }
-
-                if (
-                    (
-                        is_array($value)
-                        && $isAssoc($value)
-                    )
-                    || (
-                        is_array($base[$key])
-                        && $isAssoc($base[$key])
-                    )
-                ) {
-                    // If the arrays are not associates we don't want to array_merge_recursive_distinct
-                    // else merging $baseConfig['dispositions'] = ['attachment', 'inline'] with $customConfig['dispositions'] = ['attachment']
-                    // results in $resultConfig['dispositions'] = ['attachment', 'inline']
-                    $base[$key] = $this->array_merge_recursive_distinct($base[$key], $value);
-                } elseif (is_numeric($key)) {
-                    if (! in_array($value, $base)) {
-                        $base[] = $value;
-                    }
-                } else {
-                    $base[$key] = $value;
-                }
-            }
-        }
-
-        return $base;
+        return require __DIR__.'/config/imap.php';
     }
 }
