@@ -4,11 +4,13 @@ namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
-use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 
 class Header
 {
+    use ForwardsCalls;
+
     /**
      * The raw header.
      */
@@ -56,7 +58,7 @@ class Header
             }
         }
 
-        throw new MethodNotFoundException('Method '.self::class.'::'.$method.'() is not supported');
+        static::throwBadMethodCallException($method);
     }
 
     /**

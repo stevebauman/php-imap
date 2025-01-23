@@ -4,13 +4,13 @@ namespace Webklex\PHPIMAP;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
 use ReflectionClass;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageFlagException;
 use Webklex\PHPIMAP\Exceptions\MessageHeaderFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageSizeFetchingException;
-use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
 use Webklex\PHPIMAP\Support\FlagCollection;
@@ -57,6 +57,7 @@ use Webklex\PHPIMAP\Traits\HasEvents;
  */
 class Message
 {
+    use ForwardsCalls;
     use HasEvents;
 
     /**
@@ -304,7 +305,7 @@ class Message
             }
         }
 
-        throw new MethodNotFoundException('Method '.self::class.'::'.$method.'() is not supported');
+        static::throwBadMethodCallException($method);
     }
 
     /**
