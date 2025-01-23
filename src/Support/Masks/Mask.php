@@ -3,10 +3,12 @@
 namespace Webklex\PHPIMAP\Support\Masks;
 
 use Illuminate\Support\Str;
-use Webklex\PHPIMAP\Exceptions\MethodNotFoundException;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 class Mask
 {
+    use ForwardsCalls;
+
     /**
      * Available attributes.
      */
@@ -32,18 +34,9 @@ class Mask
     }
 
     /**
-     * Boot method made to be used by any custom mask.
+     * Handle dynamic method calls on the instance.
      */
-    protected function boot(): void {}
-
-    /**
-     * Call dynamic attribute setter and getter methods and inherit the parent calls.
-     *
-     * @return mixed
-     *
-     * @throws MethodNotFoundException
-     */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $parameters): mixed
     {
         if (strtolower(substr($method, 0, 3)) === 'get') {
             $name = Str::snake(substr($method, 3));
@@ -55,18 +48,19 @@ class Mask
             $name = Str::snake(substr($method, 3));
 
             if (isset($this->attributes[$name])) {
-                $this->attributes[$name] = array_pop($arguments);
+                $this->attributes[$name] = array_pop($parameters);
 
                 return $this->attributes[$name];
             }
         }
 
-        if (method_exists($this->parent, $method) === true) {
-            return call_user_func_array([$this->parent, $method], $arguments);
-        }
-
-        throw new MethodNotFoundException('Method '.self::class.'::'.$method.'() is not supported');
+        return $this->forwardCallTo($this->parent, $method, $parameters);
     }
+
+    /**
+     * Boot method made to be used by any custom mask.
+     */
+    protected function boot(): void {}
 
     /**
      * Magic setter.
