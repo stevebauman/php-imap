@@ -3,6 +3,8 @@
 namespace Webklex\PHPIMAP\Connection;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use PHPUnit\Framework\Assert;
 use RuntimeException;
 
 class FakeStream implements StreamInterface
@@ -157,5 +159,25 @@ class FakeStream implements StreamInterface
     public function setSocketSetCrypto(bool $enabled, ?int $method): bool|int
     {
         return true;
+    }
+
+    /**
+     * Assert that the given data was written to the stream.
+     */
+    public function assertOutputContains(string $string): void
+    {
+        $found = false;
+
+        foreach ($this->written as $index => $written) {
+            if (Str::contains($written, $string)) {
+                unset($this->written[$index]);
+
+                $found = true;
+
+                break;
+            }
+        }
+
+        Assert::assertTrue($found, "Failed asserting that the string '{$string}' was written to the stream.");
     }
 }
