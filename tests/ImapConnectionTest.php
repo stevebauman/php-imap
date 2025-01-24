@@ -2,25 +2,15 @@
 
 namespace Tests;
 
+use Webklex\PHPIMAP\Connection\FakeStream;
 use Webklex\PHPIMAP\Connection\ImapConnection;
 use Webklex\PHPIMAP\Connection\Response;
 
-class ImapProtocolTest extends TestCase
+class ImapConnectionTest extends TestCase
 {
-    protected function stream(string $contents)
-    {
-        $stream = fopen('php://memory', 'rb+');
-
-        fwrite($stream, $contents);
-
-        rewind($stream);
-
-        return $stream;
-    }
-
     public function test_imap_protocol()
     {
-        $protocol = new ImapConnection(false);
+        $protocol = new ImapConnection(certValidation: false);
 
         $this->assertSame(false, $protocol->getCertValidation());
         $this->assertNull($protocol->getEncryption());
@@ -36,8 +26,13 @@ class ImapProtocolTest extends TestCase
     {
         $fixture = '* OK IMAP4rev1 Service Ready';
 
-        $protocol = new ImapConnection;
-        $protocol->stream = $this->stream($fixture);
+        $stream = (new FakeStream);
+
+        $stream->open();
+
+        $stream->feed($fixture);
+
+        $protocol = new ImapConnection($stream);
 
         $response = new Response;
 
@@ -50,22 +45,25 @@ class ImapProtocolTest extends TestCase
 
     public function test_next_line_multi_line_fixture()
     {
-        $fixture = <<<'TEXT'
-        * OK Dovecot ready.
-        * CAPABILITY IMAP4rev1 UIDPLUS
-        1 OK CAPABILITY completed
-        TEXT;
+        $stream = (new FakeStream);
 
-        $protocol = new ImapConnection;
-        $protocol->stream = $this->stream($fixture);
+        $stream->open();
+
+        $stream->feed([
+            '* OK Dovecot ready.',
+            '* CAPABILITY IMAP4rev1 UIDPLUS',
+            '1 OK CAPABILITY completed',
+        ]);
+
+        $protocol = new ImapConnection($stream);
 
         $response = new Response;
 
         $line1 = $protocol->nextLine($response);
-        $this->assertSame("* OK Dovecot ready.\n", $line1);
+        $this->assertSame('* OK Dovecot ready.', $line1);
 
         $line2 = $protocol->nextLine($response);
-        $this->assertSame("* CAPABILITY IMAP4rev1 UIDPLUS\n", $line2);
+        $this->assertSame('* CAPABILITY IMAP4rev1 UIDPLUS', $line2);
 
         $line3 = $protocol->nextLine($response);
         $this->assertSame('1 OK CAPABILITY completed', $line3);
