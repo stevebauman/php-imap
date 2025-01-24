@@ -4,7 +4,7 @@ namespace Tests;
 
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 
 class ClientManagerTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ClientManagerTest extends TestCase
     {
         $this->assertSame('default', ClientManager::get('default'));
         $this->assertSame('d-M-Y', ClientManager::get('date_format'));
-        $this->assertSame(IMAP::FT_PEEK, ClientManager::get('options.fetch'));
+        $this->assertSame(Imap::FT_PEEK, ClientManager::get('options.fetch'));
         $this->assertSame([], ClientManager::get('options.open'));
     }
 
@@ -43,7 +43,7 @@ class ClientManagerTest extends TestCase
         $config = [
             'default' => 'foo',
             'options' => [
-                'fetch' => IMAP::ST_MSGN,
+                'fetch' => Imap::ST_MSGN,
                 'open' => 'foo',
             ],
         ];
@@ -52,7 +52,7 @@ class ClientManagerTest extends TestCase
 
         $this->assertSame('foo', $cm->getDefaultAccount());
         $this->assertInstanceOf(Client::class, $cm->account('foo'));
-        $this->assertSame(IMAP::ST_MSGN, $cm->get('options.fetch'));
+        $this->assertSame(Imap::ST_MSGN, $cm->get('options.fetch'));
         $this->assertSame(false, is_array($cm->get('options.open')));
     }
 }

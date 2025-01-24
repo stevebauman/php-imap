@@ -19,7 +19,7 @@ class Structure
     /**
      * Message type (if multipart or not).
      */
-    public int $type = IMAP::MESSAGE_TYPE_TEXT;
+    public int $type = Imap::MESSAGE_TYPE_TEXT;
 
     /**
      * All available parts.
@@ -62,9 +62,9 @@ class Structure
         $contentType = $this->header->get('content_type')->first();
 
         if ($contentType && stripos($contentType, 'multipart') === 0) {
-            $this->type = IMAP::MESSAGE_TYPE_MULTIPART;
+            $this->type = Imap::MESSAGE_TYPE_MULTIPART;
         } else {
-            $this->type = IMAP::MESSAGE_TYPE_TEXT;
+            $this->type = Imap::MESSAGE_TYPE_TEXT;
         }
     }
 
@@ -125,7 +125,7 @@ class Structure
      */
     public function findParts(): array
     {
-        if ($this->type === IMAP::MESSAGE_TYPE_MULTIPART) {
+        if ($this->type === Imap::MESSAGE_TYPE_MULTIPART) {
             if (($boundary = $this->header->getBoundary()) === null) {
                 throw new MessageContentFetchingException('no content found', 0);
             }

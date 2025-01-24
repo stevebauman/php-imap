@@ -237,7 +237,7 @@ class Folder
 
         $sequence = $sequence === null ? '1:*' : $sequence;
 
-        $uid = ClientManager::get('options.sequence', IMAP::ST_MSGN);
+        $uid = ClientManager::get('options.sequence', Imap::ST_MSGN);
 
         $response = $this->client->getConnection()->overview($sequence, $uid);
 

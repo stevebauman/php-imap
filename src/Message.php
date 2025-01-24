@@ -95,7 +95,7 @@ class Message
     /**
      * Sequence type.
      */
-    protected int $sequence = IMAP::NIL;
+    protected int $sequence = Imap::NIL;
 
     /**
      * Fetch body options.
@@ -170,7 +170,7 @@ class Message
 
         $this->setSequenceId($uid, $msglist);
 
-        if ($this->fetchOptions == IMAP::FT_PEEK) {
+        if ($this->fetchOptions == Imap::FT_PEEK) {
             $this->parseFlags();
         }
 
@@ -180,7 +180,7 @@ class Message
             $this->parseBody();
         }
 
-        if ($this->getFetchFlagsOption() === true && $this->fetchOptions !== IMAP::FT_PEEK) {
+        if ($this->getFetchFlagsOption() === true && $this->fetchOptions !== Imap::FT_PEEK) {
             $this->parseFlags();
         }
     }
@@ -520,7 +520,7 @@ class Message
      */
     public function peek(): void
     {
-        if ($this->fetchOptions == IMAP::FT_PEEK) {
+        if ($this->fetchOptions == Imap::FT_PEEK) {
             if ($this->getFlags()->get('seen') == null) {
                 $this->unsetFlag('Seen');
             }
@@ -625,7 +625,7 @@ class Message
         if (is_int($option) === true) {
             $this->fetchOptions = $option;
         } elseif (is_null($option) === true) {
-            $config = ClientManager::get('options.fetch', IMAP::FT_UID);
+            $config = ClientManager::get('options.fetch', Imap::FT_UID);
 
             $this->fetchOptions = is_int($config) ? $config : 1;
         }
@@ -641,9 +641,9 @@ class Message
         if (is_int($sequence)) {
             $this->sequence = $sequence;
         } elseif (is_null($sequence)) {
-            $config = ClientManager::get('options.sequence', IMAP::ST_MSGN);
+            $config = ClientManager::get('options.sequence', Imap::ST_MSGN);
 
-            $this->sequence = is_int($config) ? $config : IMAP::ST_MSGN;
+            $this->sequence = is_int($config) ? $config : Imap::ST_MSGN;
         }
 
         return $this;
@@ -687,19 +687,19 @@ class Message
     public function decodeString($string, $encoding): string
     {
         switch ($encoding) {
-            case IMAP::MESSAGE_ENC_BINARY:
+            case Imap::MESSAGE_ENC_BINARY:
                 if (extension_loaded('imap')) {
                     return base64_decode(imap_binary($string));
                 }
 
                 return base64_decode($string);
-            case IMAP::MESSAGE_ENC_BASE64:
+            case Imap::MESSAGE_ENC_BASE64:
                 return base64_decode($string);
-            case IMAP::MESSAGE_ENC_QUOTED_PRINTABLE:
+            case Imap::MESSAGE_ENC_QUOTED_PRINTABLE:
                 return quoted_printable_decode($string);
-            case IMAP::MESSAGE_ENC_8BIT:
-            case IMAP::MESSAGE_ENC_7BIT:
-            case IMAP::MESSAGE_ENC_OTHER:
+            case Imap::MESSAGE_ENC_8BIT:
+            case Imap::MESSAGE_ENC_7BIT:
+            case Imap::MESSAGE_ENC_OTHER:
             default:
                 return $string;
         }
@@ -911,7 +911,7 @@ class Message
 
         $this->client->openFolder($folder->path);
 
-        if ($this->sequence === IMAP::ST_UID) {
+        if ($this->sequence === Imap::ST_UID) {
             $sequenceId = $nextUid;
         } else {
             $sequenceId = $this->client->getConnection()
@@ -1328,7 +1328,7 @@ class Message
      */
     public function getSequenceId(): int
     {
-        return $this->sequence === IMAP::ST_UID ? $this->uid : $this->msgn;
+        return $this->sequence === Imap::ST_UID ? $this->uid : $this->msgn;
     }
 
     /**
@@ -1336,7 +1336,7 @@ class Message
      */
     public function setSequenceId($uid, ?int $msglist = null): void
     {
-        if ($this->getSequence() === IMAP::ST_UID) {
+        if ($this->getSequence() === Imap::ST_UID) {
             $this->setUid($uid);
             $this->setMsglist($msglist);
         } else {

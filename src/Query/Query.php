@@ -15,7 +15,7 @@ use Webklex\PHPIMAP\Exceptions\MessageContentFetchingException;
 use Webklex\PHPIMAP\Exceptions\MessageFlagException;
 use Webklex\PHPIMAP\Exceptions\MessageSearchValidationException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Support\MessageCollection;
 
@@ -45,7 +45,7 @@ class Query
     protected bool $fetchFlags = true;
 
     /** @var int|string */
-    protected mixed $sequence = IMAP::NIL;
+    protected mixed $sequence = Imap::NIL;
 
     protected string $fetchOrder;
 
@@ -62,9 +62,9 @@ class Query
     {
         $this->setClient($client);
 
-        $this->sequence = ClientManager::get('options.sequence', IMAP::ST_MSGN);
+        $this->sequence = ClientManager::get('options.sequence', Imap::ST_MSGN);
 
-        if (ClientManager::get('options.fetch') === IMAP::FT_PEEK) {
+        if (ClientManager::get('options.fetch') === Imap::FT_PEEK) {
             $this->leaveUnread();
         }
 
@@ -384,7 +384,7 @@ class Query
      */
     public function getMessageByMsgn($msgn, $msglist = null): Message
     {
-        return $this->getMessage($msgn, $msglist, IMAP::ST_MSGN);
+        return $this->getMessage($msgn, $msglist, Imap::ST_MSGN);
     }
 
     /**
@@ -392,7 +392,7 @@ class Query
      */
     public function getMessageByUid($uid): Message
     {
-        return $this->getMessage($uid, null, IMAP::ST_UID);
+        return $this->getMessage($uid, null, Imap::ST_UID);
     }
 
     /**
@@ -472,7 +472,7 @@ class Query
      */
     public function leaveUnread(): Query
     {
-        $this->setFetchOptions(IMAP::FT_PEEK);
+        $this->setFetchOptions(Imap::FT_PEEK);
 
         return $this;
     }
@@ -482,7 +482,7 @@ class Query
      */
     public function markAsRead(): Query
     {
-        $this->setFetchOptions(IMAP::FT_UID);
+        $this->setFetchOptions(Imap::FT_UID);
 
         return $this;
     }

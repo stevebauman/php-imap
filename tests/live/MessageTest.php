@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Header;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Structure;
 use Webklex\PHPIMAP\Support\AttachmentCollection;
@@ -90,7 +90,7 @@ class MessageTest extends LiveMailboxTestCase
     public function test_get_fetch_options(): void
     {
         $message = $this->getDefaultMessage();
-        $this->assertEquals(IMAP::FT_PEEK, $message->getFetchOptions());
+        $this->assertEquals(Imap::FT_PEEK, $message->getFetchOptions());
 
         // Cleanup
         $this->assertTrue($message->delete());
@@ -127,7 +127,7 @@ class MessageTest extends LiveMailboxTestCase
         $message = $this->getDefaultMessage();
         $this->assertEquals($message->uid, $message->getSequenceId());
 
-        $message->setSequence(IMAP::ST_MSGN);
+        $message->setSequence(Imap::ST_MSGN);
         $this->assertEquals($message->msgn, $message->getSequenceId());
 
         $message->setSequence(null);
@@ -194,12 +194,12 @@ class MessageTest extends LiveMailboxTestCase
     {
         $message = $this->getDefaultMessage();
         $this->assertFalse($message->getFlags()->has('seen'));
-        $this->assertEquals(IMAP::FT_PEEK, $message->getFetchOptions());
+        $this->assertEquals(Imap::FT_PEEK, $message->getFetchOptions());
         $message->peek();
         $this->assertFalse($message->getFlags()->has('seen'));
 
-        $message->setFetchOption(IMAP::FT_UID);
-        $this->assertEquals(IMAP::FT_UID, $message->getFetchOptions());
+        $message->setFetchOption(Imap::FT_UID);
+        $this->assertEquals(Imap::FT_UID, $message->getFetchOptions());
         $message->peek();
         $this->assertTrue($message->getFlags()->has('seen'));
 
@@ -230,7 +230,7 @@ class MessageTest extends LiveMailboxTestCase
 
         $original_sequence = $message->getSequenceId();
 
-        $message->setSequenceId(1, IMAP::ST_MSGN);
+        $message->setSequenceId(1, Imap::ST_MSGN);
         $this->assertEquals(1, $message->getSequenceId());
 
         $message->setSequenceId(1);
@@ -346,7 +346,7 @@ class MessageTest extends LiveMailboxTestCase
 
         $original_sequence = $message->getSequenceId();
 
-        $message->setSequenceId(789, IMAP::ST_MSGN);
+        $message->setSequenceId(789, Imap::ST_MSGN);
         $this->assertEquals(789, $message->getSequenceId());
 
         $message->setSequenceId(789);
@@ -391,14 +391,14 @@ class MessageTest extends LiveMailboxTestCase
 
         $fetch_option = $message->fetchOptions;
 
-        $message->setFetchOption(IMAP::FT_UID);
-        $this->assertEquals(IMAP::FT_UID, $message->fetchOptions);
+        $message->setFetchOption(Imap::FT_UID);
+        $this->assertEquals(Imap::FT_UID, $message->fetchOptions);
 
-        $message->setFetchOption(IMAP::FT_PEEK);
-        $this->assertEquals(IMAP::FT_PEEK, $message->fetchOptions);
+        $message->setFetchOption(Imap::FT_PEEK);
+        $this->assertEquals(Imap::FT_PEEK, $message->fetchOptions);
 
-        $message->setFetchOption(IMAP::FT_UID | IMAP::FT_PEEK);
-        $this->assertEquals(IMAP::FT_UID | IMAP::FT_PEEK, $message->fetchOptions);
+        $message->setFetchOption(Imap::FT_UID | Imap::FT_PEEK);
+        $this->assertEquals(Imap::FT_UID | Imap::FT_PEEK, $message->fetchOptions);
 
         $message->setFetchOption($fetch_option);
 
@@ -421,7 +421,7 @@ class MessageTest extends LiveMailboxTestCase
         $message = $this->getDefaultMessage();
 
         $string = '<p class=3D"MsoNormal">Test<o:p></o:p></p>';
-        $this->assertEquals('<p class="MsoNormal">Test<o:p></o:p></p>', $message->decodeString($string, IMAP::MESSAGE_ENC_QUOTED_PRINTABLE));
+        $this->assertEquals('<p class="MsoNormal">Test<o:p></o:p></p>', $message->decodeString($string, Imap::MESSAGE_ENC_QUOTED_PRINTABLE));
 
         // Cleanup
         $this->assertTrue($message->delete());
@@ -520,15 +520,15 @@ class MessageTest extends LiveMailboxTestCase
     public function test_get_sequence(): void
     {
         $message = $this->getDefaultMessage();
-        $this->assertEquals(IMAP::ST_UID, $message->getSequence());
+        $this->assertEquals(Imap::ST_UID, $message->getSequence());
 
         $original_sequence = $message->getSequence();
 
-        $message->setSequence(IMAP::ST_MSGN);
-        $this->assertEquals(IMAP::ST_MSGN, $message->getSequence());
+        $message->setSequence(Imap::ST_MSGN);
+        $this->assertEquals(Imap::ST_MSGN, $message->getSequence());
 
         $message->setSequence($original_sequence);
-        $this->assertEquals(IMAP::ST_UID, $message->getSequence());
+        $this->assertEquals(Imap::ST_UID, $message->getSequence());
 
         // Cleanup
         $this->assertTrue($message->delete());
@@ -788,7 +788,7 @@ class MessageTest extends LiveMailboxTestCase
         $raw_header = substr($email, 0, strpos($email, "\r\n\r\n"));
         $raw_body = substr($email, strlen($raw_header) + 8);
 
-        $message = Message::make(0, null, $folder->getClient(), $raw_header, $raw_body, [0 => '\\Seen'], IMAP::ST_UID);
+        $message = Message::make(0, null, $folder->getClient(), $raw_header, $raw_body, [0 => '\\Seen'], Imap::ST_UID);
         $this->assertInstanceOf(Message::class, $message);
     }
 

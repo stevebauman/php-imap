@@ -10,7 +10,7 @@ use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
 use Webklex\PHPIMAP\Connection\Protocols\Response;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Message;
 
 class MessageTest extends TestCase
@@ -61,7 +61,7 @@ class MessageTest extends TestCase
 
         $this->assertNotEmpty($this->client->openFolder('INBOX'));
 
-        $message = Message::make(22, null, $this->client, $raw_header, $raw_body, [0 => '\\Seen'], IMAP::ST_UID);
+        $message = Message::make(22, null, $this->client, $raw_header, $raw_body, [0 => '\\Seen'], Imap::ST_UID);
 
         $this->assertInstanceOf(Client::class, $message->getClient());
         $this->assertSame(22, $message->uid);
@@ -79,7 +79,7 @@ class MessageTest extends TestCase
         $this->assertSame('-4.299', (string) $message->get('X-Spam-Score'));
         $this->assertSame('Webklex/php-imap/issues/349/1365266070@github.com', (string) $message->get('Message-ID'));
         $this->assertSame(6, $message->get('received')->count());
-        $this->assertSame(IMAP::MESSAGE_PRIORITY_UNKNOWN, (int) $message->get('priority')());
+        $this->assertSame(Imap::MESSAGE_PRIORITY_UNKNOWN, (int) $message->get('priority')());
     }
 
     public function test_get_message_number(): void
@@ -113,7 +113,7 @@ class MessageTest extends TestCase
         $this->assertSame('-4.299', (string) $message->get('X-Spam-Score'));
         $this->assertSame('Webklex/php-imap/issues/349/1365266070@github.com', (string) $message->get('Message-ID'));
         $this->assertSame(6, $message->get('received')->count());
-        $this->assertSame(IMAP::MESSAGE_PRIORITY_UNKNOWN, (int) $message->get('priority')());
+        $this->assertSame(Imap::MESSAGE_PRIORITY_UNKNOWN, (int) $message->get('priority')());
 
         $this->assertNull($message->getClient());
         $this->assertSame(0, $message->uid);
@@ -132,7 +132,7 @@ class MessageTest extends TestCase
         $this->assertSame('1.103', (string) $message->get('X-Spam-Score'));
         $this->assertSame('d3a5e91963cb805cee975687d5acb1c6@swift.generated', (string) $message->get('Message-ID'));
         $this->assertSame(5, $message->get('received')->count());
-        $this->assertSame(IMAP::MESSAGE_PRIORITY_HIGHEST, (int) $message->get('priority')());
+        $this->assertSame(Imap::MESSAGE_PRIORITY_HIGHEST, (int) $message->get('priority')());
 
         $this->assertNull($message->getClient());
         $this->assertSame(0, $message->uid);

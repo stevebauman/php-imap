@@ -2,7 +2,7 @@
 
 namespace Webklex\PHPIMAP;
 
-class IMAP
+class Imap
 {
     /**
      * Message const.

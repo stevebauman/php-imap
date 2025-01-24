@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Webklex\PHPIMAP\Header;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Part;
 
 class PartTest extends TestCase
@@ -23,8 +23,8 @@ class PartTest extends TestCase
         $this->assertSame(false, $part->ifdisposition);
         $this->assertSame(false, $part->isAttachment());
         $this->assertSame('Any updates?', $part->content);
-        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        $this->assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
+        $this->assertSame(Imap::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(Imap::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
     public function test_html_part(): void
@@ -42,8 +42,8 @@ class PartTest extends TestCase
         $this->assertSame(false, $part->ifdisposition);
         $this->assertSame(false, $part->isAttachment());
         $this->assertSame("<p></p>\r\n<p dir=\"auto\">Any updates?</p>", $part->content);
-        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        $this->assertSame(IMAP::MESSAGE_ENC_7BIT, $part->encoding);
+        $this->assertSame(Imap::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(Imap::MESSAGE_ENC_7BIT, $part->encoding);
     }
 
     public function test_base64_part(): void
@@ -64,7 +64,7 @@ class PartTest extends TestCase
         $this->assertSame('6mfFxiU5Yhv9WYJx.txt', $part->name);
         $this->assertSame('6mfFxiU5Yhv9WYJx.txt', $part->filename);
         $this->assertSame(true, $part->isAttachment());
-        $this->assertSame(IMAP::MESSAGE_TYPE_TEXT, $part->type);
-        $this->assertSame(IMAP::MESSAGE_ENC_BASE64, $part->encoding);
+        $this->assertSame(Imap::MESSAGE_TYPE_TEXT, $part->type);
+        $this->assertSame(Imap::MESSAGE_ENC_BASE64, $part->encoding);
     }
 }

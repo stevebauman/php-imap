@@ -166,14 +166,14 @@ class Attachment
     protected function findType(): void
     {
         $this->type = match ($this->part->type) {
-            IMAP::ATTACHMENT_TYPE_MESSAGE => 'message',
-            IMAP::ATTACHMENT_TYPE_APPLICATION => 'application',
-            IMAP::ATTACHMENT_TYPE_AUDIO => 'audio',
-            IMAP::ATTACHMENT_TYPE_IMAGE => 'image',
-            IMAP::ATTACHMENT_TYPE_VIDEO => 'video',
-            IMAP::ATTACHMENT_TYPE_MODEL => 'model',
-            IMAP::ATTACHMENT_TYPE_TEXT => 'text',
-            IMAP::ATTACHMENT_TYPE_MULTIPART => 'multipart',
+            Imap::ATTACHMENT_TYPE_MESSAGE => 'message',
+            Imap::ATTACHMENT_TYPE_APPLICATION => 'application',
+            Imap::ATTACHMENT_TYPE_AUDIO => 'audio',
+            Imap::ATTACHMENT_TYPE_IMAGE => 'image',
+            Imap::ATTACHMENT_TYPE_VIDEO => 'video',
+            Imap::ATTACHMENT_TYPE_MODEL => 'model',
+            Imap::ATTACHMENT_TYPE_TEXT => 'text',
+            Imap::ATTACHMENT_TYPE_MULTIPART => 'multipart',
             default => 'other',
         };
     }
@@ -225,7 +225,7 @@ class Attachment
             $this->name = $this->decodeName($name);
         }
 
-        if ($this->part->type == IMAP::ATTACHMENT_TYPE_MESSAGE) {
+        if ($this->part->type == Imap::ATTACHMENT_TYPE_MESSAGE) {
             if ($this->part->ifdescription) {
                 if (! $this->name) {
                     $this->name = $this->part->description;

@@ -9,7 +9,7 @@ use stdClass;
 use Webklex\PHPIMAP\Address;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Header;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 
 class HeaderTest extends TestCase
 {
@@ -45,7 +45,7 @@ class HeaderTest extends TestCase
         $this->assertSame('-4.299', (string) $header->get('X-Spam-Score'));
         $this->assertSame('Webklex/php-imap/issues/349/1365266070@github.com', (string) $header->get('Message-ID'));
         $this->assertSame(6, $header->get('received')->count());
-        $this->assertSame(IMAP::MESSAGE_PRIORITY_UNKNOWN, (int) $header->get('priority')());
+        $this->assertSame(Imap::MESSAGE_PRIORITY_UNKNOWN, (int) $header->get('priority')());
 
         $this->assertSame('Username', $from->personal);
         $this->assertSame('notifications', $from->mailbox);

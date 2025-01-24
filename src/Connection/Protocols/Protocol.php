@@ -3,7 +3,7 @@
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 
 abstract class Protocol implements ProtocolInterface
 {
@@ -226,7 +226,7 @@ abstract class Protocol implements ProtocolInterface
      */
     public function getUidKey(int|string $uid): string
     {
-        if ($uid == IMAP::ST_UID || $uid == IMAP::FT_UID) {
+        if ($uid == Imap::ST_UID || $uid == Imap::FT_UID) {
             return 'UID';
         }
 

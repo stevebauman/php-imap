@@ -451,12 +451,12 @@ class Header
         $priority = $this->get('x_priority');
 
         $priority = match ((int) "$priority") {
-            IMAP::MESSAGE_PRIORITY_HIGHEST => IMAP::MESSAGE_PRIORITY_HIGHEST,
-            IMAP::MESSAGE_PRIORITY_HIGH => IMAP::MESSAGE_PRIORITY_HIGH,
-            IMAP::MESSAGE_PRIORITY_NORMAL => IMAP::MESSAGE_PRIORITY_NORMAL,
-            IMAP::MESSAGE_PRIORITY_LOW => IMAP::MESSAGE_PRIORITY_LOW,
-            IMAP::MESSAGE_PRIORITY_LOWEST => IMAP::MESSAGE_PRIORITY_LOWEST,
-            default => IMAP::MESSAGE_PRIORITY_UNKNOWN,
+            Imap::MESSAGE_PRIORITY_HIGHEST => Imap::MESSAGE_PRIORITY_HIGHEST,
+            Imap::MESSAGE_PRIORITY_HIGH => Imap::MESSAGE_PRIORITY_HIGH,
+            Imap::MESSAGE_PRIORITY_NORMAL => Imap::MESSAGE_PRIORITY_NORMAL,
+            Imap::MESSAGE_PRIORITY_LOW => Imap::MESSAGE_PRIORITY_LOW,
+            Imap::MESSAGE_PRIORITY_LOWEST => Imap::MESSAGE_PRIORITY_LOWEST,
+            default => Imap::MESSAGE_PRIORITY_UNKNOWN,
         };
 
         $this->set('priority', $priority);

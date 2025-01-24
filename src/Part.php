@@ -14,7 +14,7 @@ class Part
     /**
      * Part type.
      */
-    public int $type = IMAP::MESSAGE_TYPE_TEXT;
+    public int $type = Imap::MESSAGE_TYPE_TEXT;
 
     /**
      * Part content.
@@ -34,7 +34,7 @@ class Part
     /**
      * Part encoding method.
      */
-    public int $encoding = IMAP::MESSAGE_ENC_OTHER;
+    public int $encoding = Imap::MESSAGE_ENC_OTHER;
 
     /**
      * Alias to check if the part is an attachment.
@@ -229,12 +229,12 @@ class Part
 
         if ($encoding) {
             $this->encoding = match (strtolower($encoding)) {
-                'quoted-printable' => IMAP::MESSAGE_ENC_QUOTED_PRINTABLE,
-                'base64' => IMAP::MESSAGE_ENC_BASE64,
-                '7bit' => IMAP::MESSAGE_ENC_7BIT,
-                '8bit' => IMAP::MESSAGE_ENC_8BIT,
-                'binary' => IMAP::MESSAGE_ENC_BINARY,
-                default => IMAP::MESSAGE_ENC_OTHER,
+                'quoted-printable' => Imap::MESSAGE_ENC_QUOTED_PRINTABLE,
+                'base64' => Imap::MESSAGE_ENC_BASE64,
+                '7bit' => Imap::MESSAGE_ENC_7BIT,
+                '8bit' => Imap::MESSAGE_ENC_8BIT,
+                'binary' => Imap::MESSAGE_ENC_BINARY,
+                default => Imap::MESSAGE_ENC_OTHER,
             };
         }
     }
@@ -246,7 +246,7 @@ class Part
     {
         $validDisposition = in_array(strtolower($this->disposition ?? ''), ClientManager::get('options.dispositions'));
 
-        if ($this->type == IMAP::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || ! $validDisposition)) {
+        if ($this->type == Imap::MESSAGE_TYPE_TEXT && ($this->ifdisposition == 0 || empty($this->disposition) || ! $validDisposition)) {
             if (($this->subtype == null || in_array(strtolower($this->subtype), ['plain', 'html'])) && $this->filename == null && $this->name == null) {
                 return false;
             }

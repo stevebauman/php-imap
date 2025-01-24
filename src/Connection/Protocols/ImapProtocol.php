@@ -13,7 +13,7 @@ use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MessageNotFoundException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Header;
-use Webklex\PHPIMAP\IMAP;
+use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Support\Escape;
 
 /**
@@ -602,7 +602,7 @@ class ImapProtocol extends Protocol
     /**
      * Fetch one or more items of one or more messages.
      */
-    public function fetch(array|string $items, array|int $from, mixed $to = null, int|string $uid = IMAP::ST_UID): Response
+    public function fetch(array|string $items, array|int $from, mixed $to = null, int|string $uid = Imap::ST_UID): Response
     {
         if (is_array($from) && count($from) > 1) {
             $set = implode(',', $from);
@@ -634,7 +634,7 @@ class ImapProtocol extends Protocol
             $data = [];
 
             // Find array key of UID value; try the last elements, or search for it.
-            if ($uid === IMAP::ST_UID) {
+            if ($uid === Imap::ST_UID) {
                 $count = count($tokens[2]);
 
                 if ($tokens[2][$count - 2] == 'UID') {
@@ -651,7 +651,7 @@ class ImapProtocol extends Protocol
             }
 
             // Ignore other messages.
-            if ($to === null && ! is_array($from) && ($uid === IMAP::ST_UID ? $tokens[2][$uidKey] != $from : $tokens[0] != $from)) {
+            if ($to === null && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] != $from : $tokens[0] != $from)) {
                 continue;
             }
 
@@ -659,7 +659,7 @@ class ImapProtocol extends Protocol
             if (count($items) == 1) {
                 if ($tokens[2][0] == $items[0]) {
                     $data = $tokens[2][1];
-                } elseif ($uid === IMAP::ST_UID && $tokens[2][2] == $items[0]) {
+                } elseif ($uid === Imap::ST_UID && $tokens[2][2] == $items[0]) {
                     $data = $tokens[2][3];
                 } else {
                     $expectedResponse = 0;
@@ -692,14 +692,14 @@ class ImapProtocol extends Protocol
             }
 
             // If we want only one message we can ignore everything else and just return.
-            if ($to === null && ! is_array($from) && ($uid === IMAP::ST_UID ? $tokens[2][$uidKey] == $from : $tokens[0] == $from)) {
+            if ($to === null && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] == $from : $tokens[0] == $from)) {
                 // We still need to read all lines.
                 if (! $this->readLine($response, $tokens, $tag)) {
                     return $response->setResult($data);
                 }
             }
 
-            if ($uid === IMAP::ST_UID) {
+            if ($uid === Imap::ST_UID) {
                 $result[$tokens[2][$uidKey]] = $data;
             } else {
                 $result[$tokens[0]] = $data;
@@ -716,7 +716,7 @@ class ImapProtocol extends Protocol
     /**
      * Fetch message body (without headers).
      */
-    public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
+    public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
         return $this->fetch(["$rfc.TEXT"], is_array($uids) ? $uids : [$uids], null, $uid);
     }
@@ -724,7 +724,7 @@ class ImapProtocol extends Protocol
     /**
      * Fetch message headers.
      */
-    public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = IMAP::ST_UID): Response
+    public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
         return $this->fetch(["$rfc.HEADER"], is_array($uids) ? $uids : [$uids], null, $uid);
     }
@@ -732,7 +732,7 @@ class ImapProtocol extends Protocol
     /**
      * Fetch message flags.
      */
-    public function flags(int|array $uids, int|string $uid = IMAP::ST_UID): Response
+    public function flags(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
         return $this->fetch(['FLAGS'], is_array($uids) ? $uids : [$uids], null, $uid);
     }
@@ -740,7 +740,7 @@ class ImapProtocol extends Protocol
     /**
      * Fetch message sizes.
      */
-    public function sizes(int|array $uids, int|string $uid = IMAP::ST_UID): Response
+    public function sizes(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
         return $this->fetch(['RFC822.SIZE'], is_array($uids) ? $uids : [$uids], null, $uid);
     }
@@ -834,7 +834,7 @@ class ImapProtocol extends Protocol
         ?int $to = null,
         ?string $mode = null,
         bool $silent = true,
-        int|string $uid = IMAP::ST_UID,
+        int|string $uid = Imap::ST_UID,
         ?string $item = null
     ): Response {
         $flags = $this->escapeList(
@@ -891,7 +891,7 @@ class ImapProtocol extends Protocol
     /**
      * Copy a message set from current folder to another folder.
      */
-    public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
+    public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = Imap::ST_UID): Response
     {
         $set = $this->buildSet($from, $to);
 
@@ -903,7 +903,7 @@ class ImapProtocol extends Protocol
     /**
      * Copy multiple messages to the target folder.
      */
-    public function copyManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response
+    public function copyManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
         $command = $this->buildUIDCommand('COPY', $uid);
 
@@ -917,7 +917,7 @@ class ImapProtocol extends Protocol
     /**
      * Move a message set from current folder to another folder.
      */
-    public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = IMAP::ST_UID): Response
+    public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = Imap::ST_UID): Response
     {
         $set = $this->buildSet($from, $to);
 
@@ -929,7 +929,7 @@ class ImapProtocol extends Protocol
     /**
      * Move multiple messages to the target folder.
      */
-    public function moveManyMessages(array $messages, string $folder, int|string $uid = IMAP::ST_UID): Response
+    public function moveManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
         $command = $this->buildUIDCommand('MOVE', $uid);
 
@@ -1077,7 +1077,7 @@ class ImapProtocol extends Protocol
     /**
      * Search for matching messages.
      */
-    public function search(array $params, int|string $uid = IMAP::ST_UID): Response
+    public function search(array $params, int|string $uid = Imap::ST_UID): Response
     {
         $command = $this->buildUIDCommand('SEARCH', $uid);
 
@@ -1099,7 +1099,7 @@ class ImapProtocol extends Protocol
     /**
      * Get a message overview.
      */
-    public function overview(string $sequence, int|string $uid = IMAP::ST_UID): Response
+    public function overview(string $sequence, int|string $uid = Imap::ST_UID): Response
     {
         $result = [];
 
@@ -1110,7 +1110,7 @@ class ImapProtocol extends Protocol
         $ids = [];
 
         foreach ($response->data() as $msgn => $v) {
-            $id = $uid === IMAP::ST_UID ? $v : $msgn;
+            $id = $uid === Imap::ST_UID ? $v : $msgn;
 
             if (($to >= $id && $from <= $id) || ($to === '*' && $from <= $id)) {
                 $ids[] = $id;
