@@ -179,7 +179,6 @@ class MessageTest extends TestCase
     {
         $this->protocol = $this->createMock(ImapConnection::class);
 
-        $this->protocol->expects($this->any())->method('createStream')->willReturn(true);
         $this->protocol->expects($this->any())->method('connected')->willReturn(true);
         $this->protocol->expects($this->any())->method('getConnectionTimeout')->willReturn(30);
         $this->protocol->expects($this->any())->method('logout')->willReturn(Response::empty()->setResponse([
