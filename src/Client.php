@@ -5,8 +5,8 @@ namespace Webklex\PHPIMAP;
 use ErrorException;
 use Illuminate\Support\Str;
 use Throwable;
-use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
-use Webklex\PHPIMAP\Connection\Protocols\ProtocolInterface;
+use Webklex\PHPIMAP\Connection\ConnectionInterface;
+use Webklex\PHPIMAP\Connection\ImapConnection;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
@@ -115,7 +115,7 @@ class Client
     /**
      * The underlying connection resource.
      */
-    public ?ProtocolInterface $connection = null;
+    public ?ConnectionInterface $connection = null;
 
     /**
      * Constructor.
@@ -263,7 +263,7 @@ class Client
     /**
      * Get the current imap resource.
      */
-    public function getConnection(): ProtocolInterface
+    public function getConnection(): ConnectionInterface
     {
         $this->checkConnection();
 
@@ -329,7 +329,7 @@ class Client
     {
         $this->disconnect();
 
-        $this->connection = new ImapProtocol($this->validateCert, $this->encryption);
+        $this->connection = new ImapConnection($this->validateCert, $this->encryption);
         $this->connection->setConnectionTimeout($this->timeout);
         $this->connection->setProxy($this->proxy);
 
@@ -646,7 +646,7 @@ class Client
     /**
      * Set the connection timeout.
      */
-    public function setTimeout(int $timeout): ProtocolInterface
+    public function setTimeout(int $timeout): ConnectionInterface
     {
         $this->timeout = $timeout;
 

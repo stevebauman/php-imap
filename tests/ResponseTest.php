@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\Response;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 
 class ResponseTest extends TestCase

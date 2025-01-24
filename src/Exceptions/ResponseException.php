@@ -3,7 +3,7 @@
 namespace Webklex\PHPIMAP\Exceptions;
 
 use Exception;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\Response;
 
 class ResponseException extends Exception
 {

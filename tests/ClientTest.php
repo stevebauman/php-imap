@@ -5,8 +5,8 @@ namespace Tests;
 use PHPUnit\Framework\MockObject\MockObject;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\ImapConnection;
+use Webklex\PHPIMAP\Connection\Response;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 use Webklex\PHPIMAP\Support\Masks\MessageMask;
@@ -43,7 +43,7 @@ class ClientTest extends TestCase
     {
         $this->createNewProtocolMockup();
 
-        $this->assertInstanceOf(ImapProtocol::class, $this->client->getConnection());
+        $this->assertInstanceOf(ImapConnection::class, $this->client->getConnection());
         $this->assertSame(true, $this->client->isConnected());
         $this->assertSame(false, $this->client->checkConnection());
         $this->assertSame(30, $this->client->getTimeout());
@@ -268,7 +268,7 @@ class ClientTest extends TestCase
 
     protected function createNewProtocolMockup(): void
     {
-        $this->protocol = $this->createMock(ImapProtocol::class);
+        $this->protocol = $this->createMock(ImapConnection::class);
 
         $this->protocol->expects($this->any())->method('connected')->willReturn(true);
         $this->protocol->expects($this->any())->method('getConnectionTimeout')->willReturn(30);

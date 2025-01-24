@@ -1,6 +1,6 @@
 <?php
 
-namespace Webklex\PHPIMAP\Connection\Protocols;
+namespace Webklex\PHPIMAP\Connection;
 
 use Exception;
 use Throwable;
@@ -19,7 +19,7 @@ use Webklex\PHPIMAP\Support\Escape;
 /**
  * @see https://www.rfc-editor.org/rfc/rfc2087.txt
  */
-class ImapProtocol extends Protocol
+class ImapConnection extends Connection
 {
     /**
      * The current request sequence.

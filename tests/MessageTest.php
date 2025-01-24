@@ -7,8 +7,8 @@ use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\ImapConnection;
+use Webklex\PHPIMAP\Connection\Response;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Imap;
 use Webklex\PHPIMAP\Message;
@@ -177,7 +177,7 @@ class MessageTest extends TestCase
 
     protected function createNewProtocolMockup(): void
     {
-        $this->protocol = $this->createMock(ImapProtocol::class);
+        $this->protocol = $this->createMock(ImapConnection::class);
 
         $this->protocol->expects($this->any())->method('createStream')->willReturn(true);
         $this->protocol->expects($this->any())->method('connected')->willReturn(true);

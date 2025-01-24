@@ -1,11 +1,11 @@
 <?php
 
-namespace Webklex\PHPIMAP\Connection\Protocols;
+namespace Webklex\PHPIMAP\Connection;
 
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Imap;
 
-abstract class Protocol implements ProtocolInterface
+abstract class Connection implements ConnectionInterface
 {
     /**
      * The stream resource.
@@ -76,7 +76,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Enable SSL certificate validation.
      */
-    public function enableCertValidation(): Protocol
+    public function enableCertValidation(): Connection
     {
         $this->certValidation = true;
 
@@ -86,7 +86,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Disable SSL certificate validation.
      */
-    public function disableCertValidation(): Protocol
+    public function disableCertValidation(): Connection
     {
         $this->certValidation = false;
 
@@ -96,7 +96,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Set SSL certificate validation.
      */
-    public function setCertValidation(int $certValidation): Protocol
+    public function setCertValidation(int $certValidation): Connection
     {
         $this->certValidation = $certValidation;
 
@@ -114,7 +114,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Set connection proxy settings.
      */
-    public function setProxy(array $options): Protocol
+    public function setProxy(array $options): Connection
     {
         foreach ($this->proxy as $key => $val) {
             if (isset($options[$key])) {
@@ -202,7 +202,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Set the connection timeout.
      */
-    public function setConnectionTimeout(int $connectionTimeout): Protocol
+    public function setConnectionTimeout(int $connectionTimeout): Connection
     {
         $this->connectionTimeout = $connectionTimeout;
 
@@ -212,7 +212,7 @@ abstract class Protocol implements ProtocolInterface
     /**
      * Set the stream timeout.
      */
-    public function setStreamTimeout(int $streamTimeout): Protocol
+    public function setStreamTimeout(int $streamTimeout): Connection
     {
         if (! stream_set_timeout($this->stream, $streamTimeout)) {
             throw new ConnectionFailedException('Failed to set stream timeout');

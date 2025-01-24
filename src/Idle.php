@@ -3,7 +3,7 @@
 namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\Response;
 use Webklex\PHPIMAP\Exceptions\ConnectionClosedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionTimedOutException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;

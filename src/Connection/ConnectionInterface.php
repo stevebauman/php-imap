@@ -1,10 +1,10 @@
 <?php
 
-namespace Webklex\PHPIMAP\Connection\Protocols;
+namespace Webklex\PHPIMAP\Connection;
 
 use Webklex\PHPIMAP\Imap;
 
-interface ProtocolInterface
+interface ConnectionInterface
 {
     /**
      * Public destructor.

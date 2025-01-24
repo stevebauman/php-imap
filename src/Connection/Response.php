@@ -1,6 +1,6 @@
 <?php
 
-namespace Webklex\PHPIMAP\Connection\Protocols;
+namespace Webklex\PHPIMAP\Connection;
 
 use Illuminate\Support\Arr;
 use Webklex\PHPIMAP\Exceptions\ResponseException;

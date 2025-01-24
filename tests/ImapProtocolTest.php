@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
-use Webklex\PHPIMAP\Connection\Protocols\Response;
+use Webklex\PHPIMAP\Connection\ImapConnection;
+use Webklex\PHPIMAP\Connection\Response;
 
 class ImapProtocolTest extends TestCase
 {
@@ -20,7 +20,7 @@ class ImapProtocolTest extends TestCase
 
     public function test_imap_protocol()
     {
-        $protocol = new ImapProtocol(false);
+        $protocol = new ImapConnection(false);
 
         $this->assertSame(false, $protocol->getCertValidation());
         $this->assertNull($protocol->getEncryption());
@@ -36,7 +36,7 @@ class ImapProtocolTest extends TestCase
     {
         $fixture = '* OK IMAP4rev1 Service Ready';
 
-        $protocol = new ImapProtocol;
+        $protocol = new ImapConnection;
         $protocol->stream = $this->stream($fixture);
 
         $response = new Response;
@@ -56,7 +56,7 @@ class ImapProtocolTest extends TestCase
         1 OK CAPABILITY completed
         TEXT;
 
-        $protocol = new ImapProtocol;
+        $protocol = new ImapConnection;
         $protocol->stream = $this->stream($fixture);
 
         $response = new Response;

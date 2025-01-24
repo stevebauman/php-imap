@@ -3,7 +3,7 @@
 namespace Tests\live;
 
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\Connection\Protocols\ProtocolInterface;
+use Webklex\PHPIMAP\Connection\ConnectionInterface;
 use Webklex\PHPIMAP\EncodingAliases;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
@@ -169,7 +169,7 @@ class ClientTest extends LiveMailboxTestCase
     {
         $client = $this->getClient()->connect();
 
-        $this->assertInstanceOf(ProtocolInterface::class, $client->setTimeout(57));
+        $this->assertInstanceOf(ConnectionInterface::class, $client->setTimeout(57));
         $this->assertEquals(57, $client->getTimeout());
     }
 
