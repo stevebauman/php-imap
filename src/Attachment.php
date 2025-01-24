@@ -234,6 +234,7 @@ class Attachment
                 $this->name = $this->part->subtype;
             }
         }
+
         $this->attributes = array_merge($this->part->getHeader()->getAttributes(), $this->attributes);
 
         if (! $this->filename) {
@@ -263,6 +264,7 @@ class Attachment
         if ($name !== null) {
             if (str_contains($name, "''")) {
                 $parts = explode("''", $name);
+
                 if (EncodingAliases::has($parts[0])) {
                     $name = implode("''", array_slice($parts, 1));
                 }
