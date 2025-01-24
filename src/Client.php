@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Throwable;
 use Webklex\PHPIMAP\Connection\ConnectionInterface;
 use Webklex\PHPIMAP\Connection\ImapConnection;
+use Webklex\PHPIMAP\Connection\ImapStream;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
@@ -329,7 +330,7 @@ class Client
     {
         $this->disconnect();
 
-        $this->connection = new ImapConnection($this->validateCert, $this->encryption);
+        $this->connection = new ImapConnection(new ImapStream, $this->validateCert, $this->encryption);
         $this->connection->setConnectionTimeout($this->timeout);
         $this->connection->setProxy($this->proxy);
 
