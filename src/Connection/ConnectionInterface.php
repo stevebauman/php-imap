@@ -7,17 +7,12 @@ use Webklex\PHPIMAP\Imap;
 interface ConnectionInterface
 {
     /**
-     * Public destructor.
-     */
-    public function __destruct();
-
-    /**
      * Open a new connection / session.
      *
      * @param  string  $host  hostname or IP address of IMAP server
      * @param  int|null  $port  of service server
      */
-    public function connect(string $host, ?int $port = null);
+    public function connect(string $host, ?int $port = null): void;
 
     /**
      * Login to a new session.
@@ -200,8 +195,9 @@ interface ConnectionInterface
     public function moveManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response;
 
     /**
-     * Exchange identification information
-     * Ref.: https://datatracker.ietf.org/doc/html/rfc2971.
+     * Exchange identification information.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc2971.
      */
     public function id(?array $ids = null): Response;
 
@@ -244,12 +240,12 @@ interface ConnectionInterface
     /**
      * Send idle command.
      */
-    public function idle();
+    public function idle(): void;
 
     /**
      * Send done command.
      */
-    public function done();
+    public function done(): void;
 
     /**
      * Apply session saved changes to the server.
@@ -259,7 +255,7 @@ interface ConnectionInterface
     /**
      * Retrieve the quota level settings, and usage statics per mailbox.
      */
-    public function getQuota($username): Response;
+    public function getQuota(string $username): Response;
 
     /**
      * Retrieve the quota settings per user.
@@ -288,29 +284,4 @@ interface ConnectionInterface
      *                           message numbers instead.
      */
     public function overview(string $sequence, int|string $uid = Imap::ST_UID): Response;
-
-    /**
-     * Enable the debug mode.
-     */
-    public function enableDebug();
-
-    /**
-     * Disable the debug mode.
-     */
-    public function disableDebug();
-
-    /**
-     * Enable uid caching.
-     */
-    public function enableUidCache();
-
-    /**
-     * Disable uid caching.
-     */
-    public function disableUidCache();
-
-    /**
-     * Set the uid cache of current active folder.
-     */
-    public function setUidCache(?array $uids);
 }

@@ -8,11 +8,9 @@ use Webklex\PHPIMAP\Imap;
 abstract class Connection implements ConnectionInterface
 {
     /**
-     * The stream resource.
-     *
-     * @var resource
+     * The underlying stream.
      */
-    public mixed $stream = false;
+    protected StreamInterface $stream;
 
     /**
      * Whether to debugging is enabled.
@@ -53,6 +51,16 @@ abstract class Connection implements ConnectionInterface
         'username' => null,
         'password' => null,
     ];
+
+    /**
+     * Constructor.
+     */
+    public function __construct(StreamInterface $stream = new ImapStream, bool $certValidation = true, ?string $encryption = null)
+    {
+        $this->stream = $stream;
+        $this->certValidation = $certValidation;
+        $this->encryption = $encryption;
+    }
 
     /**
      * Get an available cryptographic method.
@@ -164,34 +172,6 @@ abstract class Connection implements ConnectionInterface
     }
 
     /**
-     * Create a new resource stream.
-     *
-     * @param  string  $host  hostname or IP address of IMAP server
-     * @param  int  $port  of IMAP server, default is 143 (993 for ssl)
-     * @param  int  $connectionTimeout  timeout in seconds for initiating session
-     * @return resource The socket created.
-     *
-     * @throws ConnectionFailedException
-     */
-    public function createStream(string $transport, string $host, int $port, int $connectionTimeout): mixed
-    {
-        $stream = stream_socket_client(
-            "$transport://$host:$port",
-            $errno,
-            $errstr,
-            $connectionTimeout,
-            STREAM_CLIENT_CONNECT,
-            stream_context_create($this->defaultSocketOptions($transport))
-        );
-
-        if (! $stream) {
-            throw new ConnectionFailedException($errstr, $errno);
-        }
-
-        return $stream;
-    }
-
-    /**
      * Get the current connection timeout.
      */
     public function getConnectionTimeout(): int
@@ -214,7 +194,7 @@ abstract class Connection implements ConnectionInterface
      */
     public function setStreamTimeout(int $streamTimeout): Connection
     {
-        if (! stream_set_timeout($this->stream, $streamTimeout)) {
+        if (! $this->stream->setTimeout($streamTimeout)) {
             throw new ConnectionFailedException('Failed to set stream timeout');
         }
 
@@ -304,7 +284,7 @@ abstract class Connection implements ConnectionInterface
      */
     public function connected(): bool
     {
-        return (bool) $this->stream;
+        return $this->stream->isOpen();
     }
 
     /**
@@ -312,7 +292,7 @@ abstract class Connection implements ConnectionInterface
      */
     public function meta(): array
     {
-        if (! $this->stream) {
+        if (! $this->stream->isOpen()) {
             return [
                 'crypto' => [
                     'protocol' => '',
@@ -330,14 +310,6 @@ abstract class Connection implements ConnectionInterface
             ];
         }
 
-        return stream_get_meta_data($this->stream);
-    }
-
-    /**
-     * Get the resource stream.
-     */
-    public function getStream(): mixed
-    {
-        return $this->stream;
+        return $this->stream->meta();
     }
 }

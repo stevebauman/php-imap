@@ -27,16 +27,7 @@ class ImapConnection extends Connection
     protected int $sequence = 0;
 
     /**
-     * Constructor.
-     */
-    public function __construct(bool $certValidation = true, ?string $encryption = null)
-    {
-        $this->certValidation = $certValidation;
-        $this->encryption = $encryption;
-    }
-
-    /**
-     * Handle the class destruction / tear down.
+     * Tear down the connection.
      */
     public function __destruct()
     {
@@ -44,12 +35,9 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Open connection to IMAP server.
-     *
-     * @param  string  $host  hostname or IP address of IMAP server
-     * @param  int|null  $port  of IMAP server, default is 143 and 993 for ssl
+     * {@inheritDoc}
      */
-    public function connect(string $host, ?int $port = null): bool
+    public function connect(string $host, ?int $port = null): void
     {
         $transport = 'tcp';
         $encryption = '';
@@ -68,14 +56,15 @@ class ImapConnection extends Connection
         try {
             $response = new Response(0, $this->debug);
 
-            $this->stream = $this->createStream(
+            $this->stream->open(
                 $transport,
                 $host,
                 $port,
                 $this->connectionTimeout,
+                $this->defaultSocketOptions($transport),
             );
 
-            if (! $this->stream || ! $this->assumedNextLine($response, '* OK')) {
+            if (! $this->assumedNextLine($response, '* OK')) {
                 throw new ConnectionFailedException('Connection refused');
             }
 
@@ -87,8 +76,6 @@ class ImapConnection extends Connection
         } catch (Exception $e) {
             throw new ConnectionFailedException('Connection failed', 0, $e);
         }
-
-        return true;
     }
 
     /**
@@ -98,7 +85,7 @@ class ImapConnection extends Connection
     {
         $response = $this->requestAndResponse('STARTTLS');
 
-        $result = $response->successful() && stream_socket_enable_crypto($this->stream, true, $this->getCryptoMethod());
+        $result = $response->successful() && $this->stream->setSocketSetCrypto(true, $this->getCryptoMethod());
 
         if (! $result) {
             throw new ConnectionFailedException('Failed to enable TLS');
@@ -110,7 +97,7 @@ class ImapConnection extends Connection
      */
     public function nextLine(Response $response): string
     {
-        $line = fgets($this->stream);
+        $line = $this->stream->fgets();
 
         if ($line === false) {
             $meta = $this->meta();
@@ -376,7 +363,7 @@ class ImapConnection extends Connection
 
         $response->addCommand($command);
 
-        if (fwrite($this->stream, $command) === false) {
+        if ($this->stream->fwrite($command) === false) {
             throw new RuntimeException('Failed to write - connection closed?');
         }
     }
@@ -398,7 +385,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Login to a new session.
+     * {@inheritDoc}
      */
     public function login(string $user, string $password): Response
     {
@@ -413,7 +400,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Authenticate your current IMAP session.
+     * {@inheritDoc}
      */
     public function authenticate(string $user, string $token): Response
     {
@@ -442,11 +429,11 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Logout of imap server.
+     * {@inheritDoc}
      */
     public function logout(): Response
     {
-        if (! $this->stream) {
+        if (! $this->stream->isOpen()) {
             $this->reset();
 
             return new Response(0, $this->debug);
@@ -461,7 +448,7 @@ class ImapConnection extends Connection
         try {
             $result = $this->requestAndResponse('LOGOUT', [], false);
 
-            fclose($this->stream);
+            $this->stream->close();
         } catch (Throwable) {
             // Do nothing.
         }
@@ -476,12 +463,13 @@ class ImapConnection extends Connection
      */
     public function reset(): void
     {
-        $this->stream = null;
+        $this->stream->close();
+
         $this->uidCache = [];
     }
 
     /**
-     * Get an array of available capabilities.
+     * {@inheritDoc}
      */
     public function getCapabilities(): Response
     {
@@ -512,6 +500,7 @@ class ImapConnection extends Connection
         while (! $this->readLine($response, $tokens, $tag)) {
             if ($tokens[0] == 'FLAGS') {
                 array_shift($tokens);
+
                 $result['flags'] = $tokens;
 
                 continue;
@@ -548,7 +537,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Select the current folder.
+     * {@inheritDoc}
      */
     public function selectFolder(string $folder = 'INBOX'): Response
     {
@@ -558,7 +547,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Examine the given folder.
+     * {@inheritDoc}
      */
     public function examineFolder(string $folder = 'INBOX'): Response
     {
@@ -566,7 +555,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Get the status of a given folder.
+     * {@inheritDoc}
      */
     public function folderStatus(string $folder = 'INBOX', array $arguments = ['MESSAGES', 'UNSEEN', 'RECENT', 'UIDNEXT', 'UIDVALIDITY']): Response
     {
@@ -714,7 +703,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Fetch message body (without headers).
+     * {@inheritDoc}
      */
     public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
@@ -722,7 +711,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Fetch message headers.
+     * {@inheritDoc}
      */
     public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
@@ -730,7 +719,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Fetch message flags.
+     * {@inheritDoc}
      */
     public function flags(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
@@ -738,7 +727,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Fetch message sizes.
+     * {@inheritDoc}
      */
     public function sizes(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
@@ -746,7 +735,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Get uid for a given id.
+     * {@inheritDoc}
      */
     public function getUid(?int $id = null): Response
     {
@@ -781,7 +770,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Get a message number for a uid.
+     * {@inheritDoc}
      */
     public function getMessageNumber(string $id): Response
     {
@@ -795,11 +784,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Get a list of available folders.
-     *
-     * @param  string  $reference  mailbox reference for list
-     * @param  string  $folder  mailbox name match with wildcards
-     * @return Response folders that matched $folder as array(name => array('delimiter' => .., 'flags' => ..))
+     * {@inheritDoc}
      */
     public function folders(string $reference = '', string $folder = '*'): Response
     {
@@ -826,7 +811,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Manage flags.
+     * {@inheritDoc}
      */
     public function store(
         array|string $flags,
@@ -867,7 +852,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Append a new message to given folder.
+     * {@inheritDoc}
      */
     public function appendMessage(string $folder, string $message, ?array $flags = null, ?string $date = null): Response
     {
@@ -889,7 +874,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Copy a message set from current folder to another folder.
+     * {@inheritDoc}
      */
     public function copyMessage(string $folder, $from, ?int $to = null, int|string $uid = Imap::ST_UID): Response
     {
@@ -901,7 +886,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Copy multiple messages to the target folder.
+     * {@inheritDoc}
      */
     public function copyManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
@@ -915,7 +900,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Move a message set from current folder to another folder.
+     * {@inheritDoc}
      */
     public function moveMessage(string $folder, $from, ?int $to = null, int|string $uid = Imap::ST_UID): Response
     {
@@ -927,7 +912,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Move multiple messages to the target folder.
+     * {@inheritDoc}
      */
     public function moveManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
@@ -941,9 +926,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Exchange identification information.
-     *
-     * @see https://datatracker.ietf.org/doc/html/rfc2971
+     * {@inheritDoc}
      */
     public function id(?array $ids = null): Response
     {
@@ -963,7 +946,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Create a new folder (and parent folders if needed).
+     * {@inheritDoc}
      */
     public function createFolder(string $folder): Response
     {
@@ -971,7 +954,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Rename an existing folder.
+     * {@inheritDoc}
      */
     public function renameFolder(string $old, string $new): Response
     {
@@ -979,7 +962,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Delete a folder.
+     * {@inheritDoc}
      */
     public function deleteFolder(string $folder): Response
     {
@@ -987,7 +970,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Subscribe to a folder.
+     * {@inheritDoc}
      */
     public function subscribeFolder(string $folder): Response
     {
@@ -995,7 +978,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Unsubscribe from a folder.
+     * {@inheritDoc}
      */
     public function unsubscribeFolder(string $folder): Response
     {
@@ -1003,7 +986,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Apply session saved changes to the server.
+     * {@inheritDoc}
      */
     public function expunge(): Response
     {
@@ -1013,7 +996,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Send noop command.
+     * {@inheritDoc}
      */
     public function noop(): Response
     {
@@ -1021,15 +1004,15 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Retrieve the quota level settings, and usage statistics per mailbox.
+     * {@inheritDoc}
      */
-    public function getQuota($username): Response
+    public function getQuota(string $username): Response
     {
         return $this->requestAndResponse('GETQUOTA', ['"#user/'.$username.'"']);
     }
 
     /**
-     * Retrieve the quota settings per user.
+     * {@inheritDoc}
      */
     public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response
     {
@@ -1037,7 +1020,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Send idle command.
+     * {@inheritDoc}
      */
     public function idle(): void
     {
@@ -1059,9 +1042,9 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Send done command.
+     * {@inheritDoc}
      */
-    public function done(): bool
+    public function done(): void
     {
         $response = new Response($this->sequence, $this->debug);
 
@@ -1070,12 +1053,10 @@ class ImapConnection extends Connection
         if (! $this->assumedNextTaggedLine($response, 'OK', $tags)) {
             throw new RuntimeException('Done failed');
         }
-
-        return true;
     }
 
     /**
-     * Search for matching messages.
+     * {@inheritDoc}
      */
     public function search(array $params, int|string $uid = Imap::ST_UID): Response
     {
@@ -1097,7 +1078,7 @@ class ImapConnection extends Connection
     }
 
     /**
-     * Get a message overview.
+     * {@inheritDoc}
      */
     public function overview(string $sequence, int|string $uid = Imap::ST_UID): Response
     {
