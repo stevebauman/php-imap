@@ -41,13 +41,6 @@ interface ConnectionInterface
     public function connected(): bool;
 
     /**
-     * Get an array of available capabilities.
-     *
-     * @return Response containing a list of capabilities
-     */
-    public function getCapabilities(): Response;
-
-    /**
      * Change the current folder.
      *
      * @param  string  $folder  change to this folder
@@ -98,22 +91,6 @@ interface ConnectionInterface
      *                           message numbers instead.
      */
     public function sizes(int|array $uids, int|string $uid = Imap::ST_UID): Response;
-
-    /**
-     * Get uid for a given id.
-     *
-     * @param  int|null  $id  message number
-     * @return Response containing a message number for given message or all messages as array
-     */
-    public function getUid(?int $id = null): Response;
-
-    /**
-     * Get a message number for a uid.
-     *
-     * @param  string  $id  uid
-     * @return Response containing the message number
-     */
-    public function getMessageNumber(string $id): Response;
 
     /**
      * Get a list of available folders.
@@ -261,6 +238,29 @@ interface ConnectionInterface
      * Retrieve the quota settings per user.
      */
     public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response;
+
+    /**
+     * Get uid for a given id.
+     *
+     * @param  int|null  $id  message number
+     * @return Response containing a message number for given message or all messages as array
+     */
+    public function getUid(?int $id = null): Response;
+
+    /**
+     * Get an array of available capabilities.
+     *
+     * @return Response containing a list of capabilities
+     */
+    public function getCapabilities(): Response;
+
+    /**
+     * Get a message number for a uid.
+     *
+     * @param  string  $id  uid
+     * @return Response containing the message number
+     */
+    public function getMessageNumber(string $id): Response;
 
     /**
      * Send noop command.

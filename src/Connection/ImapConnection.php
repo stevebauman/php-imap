@@ -469,22 +469,6 @@ class ImapConnection extends Connection
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getCapabilities(): Response
-    {
-        $response = $this->requestAndResponse('CAPABILITY');
-
-        if (! $response->getResponse()) {
-            return $response;
-        }
-
-        return $response->setResult(
-            $response->getValidatedData()[0]
-        );
-    }
-
-    /**
      * Examine and select have the same response.
      *
      * @param  string  $command  can be 'EXAMINE' or 'SELECT'
@@ -737,55 +721,6 @@ class ImapConnection extends Connection
     /**
      * {@inheritDoc}
      */
-    public function getUid(?int $id = null): Response
-    {
-        if (! $this->enableUidCache || empty($this->uidCache) || count($this->uidCache) <= 0) {
-            try {
-                // Set cache for this folder.
-                $this->setUidCache((array) $this->fetch('UID', 1, INF)->data());
-            } catch (RuntimeException) {
-            }
-        }
-
-        $uids = $this->uidCache;
-
-        if ($id == null) {
-            return Response::empty($this->debug)->setResult($uids);
-        }
-
-        foreach ($uids as $key => $value) {
-            if ($key == $id) {
-                return Response::empty($this->debug)->setResult($value);
-            }
-        }
-
-        // Clear uid cache and run method again.
-        if ($this->enableUidCache && $this->uidCache) {
-            $this->setUidCache(null);
-
-            return $this->getUid($id);
-        }
-
-        throw new MessageNotFoundException('Unique id not found');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getMessageNumber(string $id): Response
-    {
-        foreach ($this->getUid()->data() as $key => $value) {
-            if ($value == $id) {
-                return Response::empty($this->debug)->setResult((int) $key);
-            }
-        }
-
-        throw new MessageNotFoundException('Message number not found: '.$id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function folders(string $reference = '', string $folder = '*'): Response
     {
         $response = $this->requestAndResponse('LIST', $this->escapeString($reference, $folder));
@@ -1006,22 +941,6 @@ class ImapConnection extends Connection
     /**
      * {@inheritDoc}
      */
-    public function getQuota(string $username): Response
-    {
-        return $this->requestAndResponse('GETQUOTA', ['"#user/'.$username.'"']);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response
-    {
-        return $this->requestAndResponse('GETQUOTAROOT', [$quotaRoot]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function idle(): void
     {
         $response = $this->sendRequest('IDLE');
@@ -1033,7 +952,7 @@ class ImapConnection extends Connection
                 return;
             }
 
-            if (preg_match('/^\* OK /i', $line) || preg_match('/^TAG\d+ OK /i', $line)) {
+            if (preg_match('/^\* OK/i', $line) || preg_match('/^TAG\d+ OK/i', $line)) {
                 continue;
             }
 
@@ -1109,6 +1028,87 @@ class ImapConnection extends Connection
         }
 
         return $response->setResult($result)->setCanBeEmpty(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getQuota(string $username): Response
+    {
+        return $this->requestAndResponse('GETQUOTA', ['"#user/'.$username.'"']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getQuotaRoot(string $quotaRoot = 'INBOX'): Response
+    {
+        return $this->requestAndResponse('GETQUOTAROOT', [$quotaRoot]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUid(?int $id = null): Response
+    {
+        if (! $this->enableUidCache || empty($this->uidCache) || count($this->uidCache) <= 0) {
+            try {
+                // Set cache for this folder.
+                $this->setUidCache((array) $this->fetch('UID', 1, INF)->data());
+            } catch (RuntimeException) {
+            }
+        }
+
+        $uids = $this->uidCache;
+
+        if ($id == null) {
+            return Response::empty($this->debug)->setResult($uids);
+        }
+
+        foreach ($uids as $key => $value) {
+            if ($key == $id) {
+                return Response::empty($this->debug)->setResult($value);
+            }
+        }
+
+        // Clear uid cache and run method again.
+        if ($this->enableUidCache && $this->uidCache) {
+            $this->setUidCache(null);
+
+            return $this->getUid($id);
+        }
+
+        throw new MessageNotFoundException('Unique id not found');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCapabilities(): Response
+    {
+        $response = $this->requestAndResponse('CAPABILITY');
+
+        if (! $response->getResponse()) {
+            return $response;
+        }
+
+        return $response->setResult(
+            $response->getValidatedData()[0]
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMessageNumber(string $id): Response
+    {
+        foreach ($this->getUid()->data() as $key => $value) {
+            if ($value == $id) {
+                return Response::empty($this->debug)->setResult((int) $key);
+            }
+        }
+
+        throw new MessageNotFoundException('Message number not found: '.$id);
     }
 
     /**
