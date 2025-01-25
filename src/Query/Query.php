@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
@@ -62,20 +62,20 @@ class Query
     {
         $this->setClient($client);
 
-        $this->sequence = ClientManager::get('options.sequence', Imap::ST_MSGN);
+        $this->sequence = ClientContainer::get('options.sequence', Imap::ST_MSGN);
 
-        if (ClientManager::get('options.fetch') === Imap::FT_PEEK) {
+        if (ClientContainer::get('options.fetch') === Imap::FT_PEEK) {
             $this->leaveUnread();
         }
 
-        if (ClientManager::get('options.fetch_order') === 'desc') {
+        if (ClientContainer::get('options.fetch_order') === 'desc') {
             $this->fetchOrder = 'desc';
         } else {
             $this->fetchOrder = 'asc';
         }
 
-        $this->dateFormat = ClientManager::get('date_format', 'd M y');
-        $this->softFail = ClientManager::get('options.soft_fail', false);
+        $this->dateFormat = ClientContainer::get('date_format', 'd M y');
+        $this->softFail = ClientContainer::get('options.soft_fail', false);
 
         $this->setExtensions($extensions);
         $this->query = new Collection;
@@ -273,7 +273,7 @@ class Query
 
         $messages->total($availableMessages->count());
 
-        $messageKey = ClientManager::get('options.message_key');
+        $messageKey = ClientContainer::get('options.message_key');
 
         $rawMessages = $this->fetch($availableMessages);
 

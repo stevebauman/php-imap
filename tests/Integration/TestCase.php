@@ -4,7 +4,7 @@ namespace Tests\Integration;
 
 use Tests\TestCase as BaseTestCase;
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
@@ -12,12 +12,12 @@ abstract class TestCase extends BaseTestCase
 {
     const SPECIAL_CHARS = 'A_\\|!"£$%&()=?àèìòùÀÈÌÒÙ<>-@#[]_ß_б_π_€_✔_你_يد_Z_';
 
-    protected static ClientManager $manager;
+    protected static ClientContainer $manager;
 
-    protected function getManager(): ClientManager
+    protected function getManager(): ClientContainer
     {
         if (! isset(self::$manager)) {
-            self::$manager = new ClientManager([
+            self::$manager = ClientContainer::getNewInstance([
                 'options' => [
                     'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
                 ],

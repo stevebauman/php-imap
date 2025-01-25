@@ -40,7 +40,7 @@ class Structure
     {
         $this->raw = $rawStructure;
         $this->header = $header;
-        $this->config = ClientManager::get('options');
+        $this->config = ClientContainer::get('options');
         $this->parse();
     }
 

@@ -44,7 +44,7 @@ class Idle
 
         $ttl = $this->getNextTimeout();
 
-        $sequence = ClientManager::get('options.sequence', Imap::ST_MSGN);
+        $sequence = ClientContainer::get('options.sequence', Imap::ST_MSGN);
 
         while (true) {
             try {

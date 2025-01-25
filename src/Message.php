@@ -247,7 +247,7 @@ class Message
 
         $instance->boot();
 
-        if ($defaultMask = ClientManager::getMask('message')) {
+        if ($defaultMask = ClientContainer::getMask('message')) {
             $instance->setMask($defaultMask);
         } else {
             throw new MaskNotFoundException('Unknown message mask provided');
@@ -275,8 +275,8 @@ class Message
     {
         $this->attributes = [];
 
-        $this->config = ClientManager::get('options');
-        $this->availableFlags = ClientManager::get('flags');
+        $this->config = ClientContainer::get('options');
+        $this->availableFlags = ClientContainer::get('flags');
 
         $this->attachments = AttachmentCollection::make();
         $this->flags = FlagCollection::make();
@@ -625,7 +625,7 @@ class Message
         if (is_int($option) === true) {
             $this->fetchOptions = $option;
         } elseif (is_null($option) === true) {
-            $config = ClientManager::get('options.fetch', Imap::FT_UID);
+            $config = ClientContainer::get('options.fetch', Imap::FT_UID);
 
             $this->fetchOptions = is_int($config) ? $config : 1;
         }
@@ -641,7 +641,7 @@ class Message
         if (is_int($sequence)) {
             $this->sequence = $sequence;
         } elseif (is_null($sequence)) {
-            $config = ClientManager::get('options.sequence', Imap::ST_MSGN);
+            $config = ClientContainer::get('options.sequence', Imap::ST_MSGN);
 
             $this->sequence = is_int($config) ? $config : Imap::ST_MSGN;
         }
@@ -657,7 +657,7 @@ class Message
         if (is_bool($option)) {
             $this->fetchBody = $option;
         } elseif (is_null($option)) {
-            $config = ClientManager::get('options.fetch_body', true);
+            $config = ClientContainer::get('options.fetch_body', true);
 
             $this->fetchBody = is_bool($config) ? $config : true;
         }
@@ -673,7 +673,7 @@ class Message
         if (is_bool($option)) {
             $this->fetchFlags = $option;
         } elseif (is_null($option)) {
-            $config = ClientManager::get('options.fetch_flags', true);
+            $config = ClientContainer::get('options.fetch_flags', true);
 
             $this->fetchFlags = is_bool($config) ? $config : true;
         }
@@ -787,7 +787,7 @@ class Message
         $folder = $folder ?: $this->getFolder();
 
         $sentFolder = $sentFolder ?: $this->client->getFolderByPath(
-            ClientManager::get('options.common_folders.sent', 'INBOX/Sent')
+            ClientContainer::get('options.common_folders.sent', 'INBOX/Sent')
         );
 
         /** @var Message $message */

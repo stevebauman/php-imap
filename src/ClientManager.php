@@ -11,9 +11,9 @@ class ClientManager
     use ForwardsCalls;
 
     /**
-     * The singleton configuration array.
+     * The configuration array.
      */
-    public static array $config = [];
+    protected array $config = [];
 
     /**
      * The array of resolved accounts.
@@ -21,7 +21,7 @@ class ClientManager
     protected array $accounts = [];
 
     /**
-     * ClientManager constructor.
+     * Constructor.
      */
     public function __construct(array|string $config = [])
     {
@@ -47,9 +47,9 @@ class ClientManager
     /**
      * Get a config value using dot notation.
      */
-    public static function get(string $key, mixed $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
-        return Arr::get(self::$config, $key, $default);
+        return Arr::get($this->config, $key, $default);
     }
 
     /**
@@ -57,9 +57,9 @@ class ClientManager
      *
      * @param  string  $section  section name such as "message" or "attachment"
      */
-    public static function getMask(string $section): ?string
+    public function getMask(string $section): ?string
     {
-        $defaultMasks = ClientManager::get('masks');
+        $defaultMasks = $this->get('masks');
 
         if (! isset($defaultMasks[$section])) {
             return null;
@@ -99,7 +99,7 @@ class ClientManager
             return ['driver' => 'null'];
         }
 
-        $account = self::$config['accounts'][$name] ?? [];
+        $account = $this->config['accounts'][$name] ?? [];
 
         return is_array($account) ? $account : [];
     }
@@ -109,7 +109,7 @@ class ClientManager
      */
     public function getDefaultAccount(): string
     {
-        return self::$config['default'];
+        return $this->config['default'];
     }
 
     /**
@@ -117,7 +117,7 @@ class ClientManager
      */
     public function setDefaultAccount(string $name): void
     {
-        self::$config['default'] = $name;
+        $this->config['default'] = $name;
     }
 
     /**
@@ -127,7 +127,7 @@ class ClientManager
      * If however the default account is missing a parameter the package default account parameter will be used.
      * This can be disabled by setting imap.default in your config file to 'false'
      */
-    public function setConfig(array|string $config): ClientManager
+    public function setConfig(array|string $config): self
     {
         if (is_string($config)) {
             $config = require $config;
@@ -153,7 +153,7 @@ class ClientManager
             }
         }
 
-        self::$config = $config;
+        $this->config = $config;
 
         return $this;
     }

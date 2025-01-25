@@ -3,18 +3,18 @@
 namespace Tests\Fixture;
 
 use Tests\TestCase;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Message;
 
 abstract class FixtureTestCase extends TestCase
 {
-    protected static ClientManager $manager;
+    protected static ClientContainer $manager;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
-        self::$manager = new ClientManager([
+        self::$manager = ClientContainer::getNewInstance([
             'options' => [
                 'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
             ],

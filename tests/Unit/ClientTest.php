@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Connection\FakeStream;
 use Webklex\PHPIMAP\Connection\ImapConnection;
 use Webklex\PHPIMAP\Connection\Response;
@@ -22,7 +22,7 @@ class ClientTest extends TestCase
 
     protected function setUp(): void
     {
-        $manager = new ClientManager([
+        $manager = ClientContainer::getNewInstance([
             'accounts' => [
                 'default' => [
                     'encryption' => 'ssl',

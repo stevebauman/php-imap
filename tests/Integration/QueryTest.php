@@ -3,7 +3,7 @@
 namespace Tests\Integration;
 
 use Carbon\Carbon;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Query\WhereQuery;
 
@@ -148,7 +148,7 @@ class QueryTest extends TestCase
         $criteria = str_replace('CUSTOM ', '', $criteria);
         $expected = $value === null ? [$criteria] : [$criteria, $value];
         if ($date === true && $value instanceof Carbon) {
-            $date_format = ClientManager::get('date_format', 'd M y');
+            $date_format = ClientContainer::get('date_format', 'd M y');
             $expected[1] = $value->format($date_format);
         }
 

@@ -237,7 +237,7 @@ class Folder
 
         $sequence = $sequence === null ? '1:*' : $sequence;
 
-        $uid = ClientManager::get('options.sequence', Imap::ST_MSGN);
+        $uid = ClientContainer::get('options.sequence', Imap::ST_MSGN);
 
         $response = $this->client->getConnection()->overview($sequence, $uid);
 
@@ -423,7 +423,7 @@ class Folder
     public function setDelimiter(?string $delimiter): void
     {
         if (in_array($delimiter, [null, '', ' ', false]) === true) {
-            $delimiter = ClientManager::get('options.delimiter', '/');
+            $delimiter = ClientContainer::get('options.delimiter', '/');
         }
 
         $this->delimiter = $delimiter;

@@ -148,8 +148,8 @@ class Client
      */
     public function setConfig(array $config): Client
     {
-        $defaultAccount = ClientManager::get('default');
-        $defaultConfig = ClientManager::get("accounts.$defaultAccount", []);
+        $defaultAccount = ClientContainer::get('default');
+        $defaultConfig = ClientContainer::get("accounts.$defaultAccount", []);
 
         foreach ($this->defaultAccountConfig as $key => $value) {
             $this->setAccountConfig($key, $config, $defaultConfig);
@@ -213,7 +213,7 @@ class Client
      */
     protected function setEventsFromConfig(array $config): void
     {
-        $this->events = ClientManager::get('events', []);
+        $this->events = ClientContainer::get('events', []);
 
         if (! isset($config['events'])) {
             return;
@@ -257,7 +257,7 @@ class Client
      */
     protected function getDefaultMask(string $type, string $default): string
     {
-        return ClientManager::getMask($type) ?? $default;
+        return ClientContainer::getMask($type) ?? $default;
     }
 
     /**
@@ -336,11 +336,11 @@ class Client
         $this->connection->setEncryption($this->encryption);
         $this->connection->setProxy($this->proxy);
 
-        if (ClientManager::get('options.debug')) {
+        if (ClientContainer::get('options.debug')) {
             $this->connection->enableDebug();
         }
 
-        if (! ClientManager::get('options.uid_cache')) {
+        if (! ClientContainer::get('options.uid_cache')) {
             $this->connection->disableUidCache();
         }
 
@@ -389,7 +389,7 @@ class Client
     public function getFolder(string $folderName, ?string $delimiter = null, bool $utf7 = false): ?Folder
     {
         // Set delimiter to false to force selection via getFolderByName (maybe useful for uncommon folder names)
-        $delimiter = is_null($delimiter) ? ClientManager::get('options.delimiter', '/') : $delimiter;
+        $delimiter = is_null($delimiter) ? ClientContainer::get('options.delimiter', '/') : $delimiter;
 
         if (str_contains($folderName, (string) $delimiter)) {
             return $this->getFolderByPath($folderName, $utf7);

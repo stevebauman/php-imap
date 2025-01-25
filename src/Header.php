@@ -39,7 +39,7 @@ class Header
     public function __construct(string $rawHeader)
     {
         $this->raw = $rawHeader;
-        $this->config = ClientManager::get('options');
+        $this->config = ClientContainer::get('options');
         $this->parse();
     }
 

@@ -7,7 +7,7 @@ use Tests\TestCase;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Client;
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 use Webklex\PHPIMAP\Connection\ImapConnection;
 use Webklex\PHPIMAP\Connection\Response;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
@@ -25,7 +25,7 @@ class MessageTest extends TestCase
 
     protected function setUp(): void
     {
-        $manager = new ClientManager([
+        $manager = ClientContainer::getNewInstance([
             'accounts' => [
                 'default' => [
                     'encryption' => 'ssl',

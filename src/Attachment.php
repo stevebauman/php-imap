@@ -88,7 +88,7 @@ class Attachment
      */
     public function __construct(Message $oMessage, Part $part)
     {
-        $this->config = ClientManager::get('options');
+        $this->config = ClientContainer::get('options');
 
         $this->oMessage = $oMessage;
         $this->part = $part;
@@ -101,7 +101,7 @@ class Attachment
                 $this->mask = $defaultMask;
             }
         } else {
-            $defaultMask = ClientManager::getMask('attachment');
+            $defaultMask = ClientContainer::getMask('attachment');
 
             if ($defaultMask != '') {
                 $this->mask = $defaultMask;
