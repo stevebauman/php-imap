@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 use Throwable;
 use Webklex\PHPIMAP\Connection\ConnectionInterface;
 use Webklex\PHPIMAP\Connection\ImapConnection;
-use Webklex\PHPIMAP\Connection\ImapStream;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
@@ -324,14 +323,17 @@ class Client
     }
 
     /**
-     * Connect to server.
+     * Connect to the IMAP server.
      */
-    public function connect(): Client
+    public function connect(?ConnectionInterface $connection = null): Client
     {
         $this->disconnect();
 
-        $this->connection = new ImapConnection(new ImapStream, $this->validateCert, $this->encryption);
+        $this->connection = $connection ?? new ImapConnection;
+
+        $this->connection->setCertValidation($this->validateCert);
         $this->connection->setConnectionTimeout($this->timeout);
+        $this->connection->setEncryption($this->encryption);
         $this->connection->setProxy($this->proxy);
 
         if (ClientManager::get('options.debug')) {

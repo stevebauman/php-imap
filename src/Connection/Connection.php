@@ -55,11 +55,9 @@ abstract class Connection implements ConnectionInterface
     /**
      * Constructor.
      */
-    public function __construct(StreamInterface $stream = new ImapStream, bool $certValidation = true, ?string $encryption = null)
+    public function __construct(StreamInterface $stream = new ImapStream)
     {
         $this->stream = $stream;
-        $this->certValidation = $certValidation;
-        $this->encryption = $encryption;
     }
 
     /**
