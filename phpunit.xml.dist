@@ -13,9 +13,9 @@
   <testsuites>
     <testsuite name="PHP-IMAP Test Suite">
       <directory>tests</directory>
-      <directory>tests/fixtures</directory>
-      <directory>tests/issues</directory>
-      <directory>tests/live</directory>
+      <directory>tests/Issue</directory>
+      <directory>tests/Fixture</directory>
+      <directory>tests/Integration</directory>
     </testsuite>
   </testsuites>
   <logging>
