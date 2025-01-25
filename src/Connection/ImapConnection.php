@@ -64,6 +64,9 @@ class ImapConnection extends Connection
                 $this->defaultSocketOptions($transport),
             );
 
+            // Upon opening the connection, we should receive
+            // an initial IMAP greeting message from the
+            // server to indicate it was successful.
             if (! $this->assumedNextLine($response, '* OK')) {
                 throw new ConnectionFailedException('Connection refused');
             }
@@ -266,7 +269,7 @@ class ImapConnection extends Connection
      */
     public function readLine(Response $response, array|string &$tokens = [], string $wantedTag = '*', bool $parse = true): bool
     {
-        $line = $this->nextTaggedLine($response, $tag); // Get next tag
+        $line = $this->nextTaggedLine($response, $tag); // Get next tag.
 
         if ($parse) {
             $tokens = $this->decodeLine($response, $line);
@@ -391,6 +394,7 @@ class ImapConnection extends Connection
     {
         try {
             $command = 'LOGIN';
+
             $params = $this->escapeString($user, $password);
 
             return $this->requestAndResponse($command, $params, false);
