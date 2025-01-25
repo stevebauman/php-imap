@@ -10,7 +10,7 @@ class StructureTest extends TestCase
 {
     public function test_structure_parsing(): void
     {
-        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '../', 'messages', '1366671050@github.com.eml']));
+        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
 
         if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);

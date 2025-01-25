@@ -48,7 +48,7 @@ class MessageTest extends TestCase
     {
         $this->createNewProtocolMockup();
 
-        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '../', 'messages', '1366671050@github.com.eml']));
+        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
         if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }
@@ -100,7 +100,7 @@ class MessageTest extends TestCase
 
     public function test_load_message_from_file(): void
     {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '../', 'messages', '1366671050@github.com.eml']);
+        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']);
         $message = Message::fromFile($filename);
 
         $subject = $message->get('subject');
@@ -119,7 +119,7 @@ class MessageTest extends TestCase
         $this->assertNull($message->getClient());
         $this->assertSame(0, $message->uid);
 
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '../', 'messages', 'example_attachment.eml']);
+        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'example_attachment.eml']);
         $message = Message::fromFile($filename);
 
         $subject = $message->get('subject');
@@ -156,7 +156,7 @@ class MessageTest extends TestCase
 
     public function test_issue348()
     {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '../', 'messages', 'issue-348.eml']);
+        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-348.eml']);
         $message = Message::fromFile($filename);
 
         $this->assertSame(1, $message->getAttachments()->count());
