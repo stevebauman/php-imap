@@ -30,9 +30,9 @@ Original Documentation: [php-imap.com](https://www.php-imap.com/)
 ### Connecting
 
 ```php
-use Webklex\PHPIMAP\ClientManager;
+use Webklex\PHPIMAP\ClientContainer;
 
-$manager = new ClientManager([
+$manager = ClientContainer::getInstance([
     'options' => [
         'debug' => true,
     ],
