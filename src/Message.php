@@ -458,7 +458,7 @@ class Message
                 ->flags([$sequenceId], $this->sequence)
                 ->getValidatedData();
         } catch (Exceptions\RuntimeException $e) {
-            throw new MessageFlagException('flag could not be fetched', 0, $e);
+            throw new MessageFlagException('Flags could not be fetched', 0, $e);
         }
 
         if (isset($flags[$sequenceId])) {
@@ -482,11 +482,11 @@ class Message
                 $this->sequence
             )->getValidatedData();
         } catch (Exceptions\RuntimeException $e) {
-            throw new MessageContentFetchingException('failed to fetch content', 0, previous: $e);
+            throw new MessageContentFetchingException('Failed to fetch content', 0, previous: $e);
         }
 
         if (! isset($contents[$sequenceId])) {
-            throw new MessageContentFetchingException('no content found', 0);
+            throw new MessageContentFetchingException('No content found', 0);
         }
 
         $content = $contents[$sequenceId];
@@ -510,7 +510,7 @@ class Message
             ->getValidatedData();
 
         if (! isset($sizes[$sequenceId])) {
-            throw new MessageSizeFetchingException('sizes did not set an array entry for the supplied sequence_id', 0);
+            throw new MessageSizeFetchingException('Sizes did not set an array entry for the supplied sequence_id', 0);
         }
         $this->attributes['size'] = $sizes[$sequenceId];
     }
@@ -970,7 +970,9 @@ class Message
     public function setFlag(array|string $flag): bool
     {
         $this->client->openFolder($this->folderPath);
+
         $flag = '\\'.trim(is_array($flag) ? implode(' \\', $flag) : $flag);
+
         $sequenceId = $this->getSequenceId();
 
         try {
@@ -996,6 +998,7 @@ class Message
         $this->client->openFolder($this->folderPath);
 
         $flag = '\\'.trim(is_array($flag) ? implode(' \\', $flag) : $flag);
+
         $sequenceId = $this->getSequenceId();
 
         try {

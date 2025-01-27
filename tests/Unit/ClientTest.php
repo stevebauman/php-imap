@@ -73,7 +73,7 @@ class ClientTest extends TestCase
             new ImapConnection($stream)
         );
 
-        $stream->assertOutputContains('TAG1 LOGIN "foo@domain.tld" "bar"');
+        $stream->assertWritten('TAG1 LOGIN "foo@domain.tld" "bar"');
     }
 
     public function test_logout(): void

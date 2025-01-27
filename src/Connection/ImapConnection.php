@@ -3,6 +3,7 @@
 namespace Webklex\PHPIMAP\Connection;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Throwable;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionClosedException;
@@ -304,7 +305,7 @@ class ImapConnection extends Connection
             $tokens = [trim(substr($tokens, 0, 3))];
         }
 
-        $original = is_array($original) ? $original : [$original];
+        $original = Arr::wrap($original);
 
         // Last line has response code.
         if ($tokens[0] == 'OK') {
@@ -332,6 +333,7 @@ class ImapConnection extends Connection
         }
 
         $line = $tag.' '.$command;
+
         $response = new Response($this->sequence, $this->debug);
 
         foreach ($tokens as $token) {
@@ -393,11 +395,7 @@ class ImapConnection extends Connection
     public function login(string $user, string $password): Response
     {
         try {
-            $command = 'LOGIN';
-
-            $params = $this->escapeString($user, $password);
-
-            return $this->requestAndResponse($command, $params, false);
+            return $this->requestAndResponse('LOGIN', $this->escapeString($user, $password), false);
         } catch (RuntimeException $e) {
             throw new AuthFailedException('Failed to authenticate', 0, $e);
         }
@@ -594,9 +592,12 @@ class ImapConnection extends Connection
         }
 
         $items = (array) $items;
-        $itemList = $this->escapeList($items);
 
-        $response = $this->sendRequest($this->buildUIDCommand('FETCH', $uid), [$set, $itemList], $tag);
+        $response = $this->sendRequest(
+            $this->buildUidCommand('FETCH', $uid),
+            [$set, $this->escapeList($items)],
+            $tag
+        );
 
         $result = [];
         $tokens = [];
@@ -695,7 +696,7 @@ class ImapConnection extends Connection
      */
     public function content(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
-        return $this->fetch(["$rfc.TEXT"], is_array($uids) ? $uids : [$uids], null, $uid);
+        return $this->fetch(["$rfc.TEXT"], Arr::wrap($uids), null, $uid);
     }
 
     /**
@@ -703,7 +704,7 @@ class ImapConnection extends Connection
      */
     public function headers(int|array $uids, string $rfc = 'RFC822', int|string $uid = Imap::ST_UID): Response
     {
-        return $this->fetch(["$rfc.HEADER"], is_array($uids) ? $uids : [$uids], null, $uid);
+        return $this->fetch(["$rfc.HEADER"], Arr::wrap($uids), null, $uid);
     }
 
     /**
@@ -711,7 +712,7 @@ class ImapConnection extends Connection
      */
     public function flags(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
-        return $this->fetch(['FLAGS'], is_array($uids) ? $uids : [$uids], null, $uid);
+        return $this->fetch(['FLAGS'], Arr::wrap($uids), null, $uid);
     }
 
     /**
@@ -719,7 +720,7 @@ class ImapConnection extends Connection
      */
     public function sizes(int|array $uids, int|string $uid = Imap::ST_UID): Response
     {
-        return $this->fetch(['RFC822.SIZE'], is_array($uids) ? $uids : [$uids], null, $uid);
+        return $this->fetch(['RFC822.SIZE'], Arr::wrap($uids), null, $uid);
     }
 
     /**
@@ -742,7 +743,11 @@ class ImapConnection extends Connection
                 }
 
                 $item[3] = str_replace('\\\\', '\\', str_replace('\\"', '"', $item[3]));
-                $result[$item[3]] = ['delimiter' => $item[2], 'flags' => $item[1]];
+
+                $result[$item[3]] = [
+                    'delimiter' => $item[2],
+                    'flags' => $item[1],
+                ];
             }
         }
 
@@ -761,13 +766,11 @@ class ImapConnection extends Connection
         int|string $uid = Imap::ST_UID,
         ?string $item = null
     ): Response {
-        $flags = $this->escapeList(
-            is_array($flags) ? $flags : [$flags]
-        );
+        $flags = $this->escapeList(Arr::wrap($flags));
 
         $set = $this->buildSet($from, $to);
 
-        $command = $this->buildUIDCommand('STORE', $uid);
+        $command = $this->buildUidCommand('STORE', $uid);
 
         $item = ($mode == '-' ? '-' : '+').($item === null ? 'FLAGS' : $item).($silent ? '.SILENT' : '');
 
@@ -779,7 +782,7 @@ class ImapConnection extends Connection
 
         $result = [];
 
-        foreach ($response as $token) {
+        foreach ($response->data() as $token) {
             if ($token[1] != 'FETCH' || $token[2][0] != 'FLAGS') {
                 continue;
             }
@@ -819,7 +822,7 @@ class ImapConnection extends Connection
     {
         $set = $this->buildSet($from, $to);
 
-        $command = $this->buildUIDCommand('COPY', $uid);
+        $command = $this->buildUidCommand('COPY', $uid);
 
         return $this->requestAndResponse($command, [$set, $this->escapeString($folder)], false);
     }
@@ -829,7 +832,7 @@ class ImapConnection extends Connection
      */
     public function copyManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
-        $command = $this->buildUIDCommand('COPY', $uid);
+        $command = $this->buildUidCommand('COPY', $uid);
 
         $set = implode(',', $messages);
 
@@ -845,7 +848,7 @@ class ImapConnection extends Connection
     {
         $set = $this->buildSet($from, $to);
 
-        $command = $this->buildUIDCommand('MOVE', $uid);
+        $command = $this->buildUidCommand('MOVE', $uid);
 
         return $this->requestAndResponse($command, [$set, $this->escapeString($folder)], false);
     }
@@ -855,7 +858,7 @@ class ImapConnection extends Connection
      */
     public function moveManyMessages(array $messages, string $folder, int|string $uid = Imap::ST_UID): Response
     {
-        $command = $this->buildUIDCommand('MOVE', $uid);
+        $command = $this->buildUidCommand('MOVE', $uid);
 
         $set = implode(',', $messages);
 
@@ -983,7 +986,7 @@ class ImapConnection extends Connection
      */
     public function search(array $params, int|string $uid = Imap::ST_UID): Response
     {
-        $command = $this->buildUIDCommand('SEARCH', $uid);
+        $command = $this->buildUidCommand('SEARCH', $uid);
 
         $response = $this->requestAndResponse($command, $params);
 

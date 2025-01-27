@@ -218,7 +218,7 @@ abstract class Connection implements ConnectionInterface
     /**
      * Build a UID / MSGN command.
      */
-    public function buildUIDCommand(string $command, int|string $uid): string
+    public function buildUidCommand(string $command, int|string $uid): string
     {
         return trim($this->getUidKey($uid).' '.$command);
     }

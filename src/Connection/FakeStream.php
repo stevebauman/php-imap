@@ -164,7 +164,7 @@ class FakeStream implements StreamInterface
     /**
      * Assert that the given data was written to the stream.
      */
-    public function assertOutputContains(string $string): void
+    public function assertWritten(string $string): void
     {
         $found = false;
 
