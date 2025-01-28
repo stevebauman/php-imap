@@ -172,6 +172,7 @@ class ImapConnection extends Connection
                 continue;
             }
 
+            // Handle opening parentheses by pushing current tokens to stack.
             while ($token[0] == '(') {
                 $stack[] = $tokens;
 
@@ -191,33 +192,40 @@ class ImapConnection extends Connection
             }
 
             if ($token[0] == '{') {
+                // Extract the byte count from the literal (e.g., {20}).
                 $endPos = strpos($token, '}');
                 $chars = substr($token, 1, $endPos - 1);
 
                 if (is_numeric($chars)) {
                     $token = '';
 
+                    // Read exactly the number of bytes specified by the literal.
                     while (strlen($token) < $chars) {
                         $token .= $this->nextLine($response);
                     }
 
                     $line = '';
 
+                    // If more bytes are read than required, split the excess.
                     if (strlen($token) > $chars) {
                         $line = substr($token, $chars);
                         $token = substr($token, 0, $chars);
                     } else {
+                        // Continue reading the next line if exact bytes are read.
                         $line .= $this->nextLine($response);
                     }
 
+                    // Add the exact literal data to the tokens array.
                     $tokens[] = $token;
 
+                    // Trim any trailing spaces for further processing.
                     $line = trim($line).' ';
 
                     continue;
                 }
             }
 
+            // Handle closing parentheses and manage stack.
             if ($stack && $token[strlen($token) - 1] == ')') {
                 // Closing braces are not separated by spaces, so we need to count them.
                 $braces = strlen($token);
@@ -244,8 +252,10 @@ class ImapConnection extends Connection
                 }
             }
 
+            // Add the current token to the tokens array
             $tokens[] = $token;
 
+            // Move to the next part of the line.
             $line = substr($line, $pos + 1);
         }
 
@@ -621,9 +631,11 @@ class ImapConnection extends Connection
                     $uidKey = 1;
                 } else {
                     $found = array_search('UID', $tokens[2]);
+
                     if ($found === false || $found === -1) {
                         continue;
                     }
+
                     $uidKey = $found + 1;
                 }
             }
@@ -654,6 +666,7 @@ class ImapConnection extends Connection
                         $data = $tokens[2][$i + 1];
 
                         $expectedResponse = 1;
+
                         break;
                     }
 
@@ -1016,8 +1029,8 @@ class ImapConnection extends Connection
 
         $ids = [];
 
-        foreach ($response->data() as $msgn => $v) {
-            $id = $uid === Imap::ST_UID ? $v : $msgn;
+        foreach ($response->data() as $msgn => $value) {
+            $id = $uid === Imap::ST_UID ? $value : $msgn;
 
             if (($to >= $id && $from <= $id) || ($to === '*' && $from <= $id)) {
                 $ids[] = $id;
