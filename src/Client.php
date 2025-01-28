@@ -311,7 +311,7 @@ class Client
     }
 
     /**
-     * Force the connection to reconnect.
+     * Force the client to reconnect.
      */
     public function reconnect(): void
     {
@@ -323,10 +323,10 @@ class Client
     /**
      * Connect to the IMAP server.
      */
-    public function connect(?ConnectionInterface $connection = null): Client
+    public function connect(?ConnectionInterface $connection = null): void
     {
         if ($this->isConnected()) {
-            return $this;
+            return;
         }
 
         $this->connection = $connection ?? new ImapConnection;
@@ -347,12 +347,10 @@ class Client
         try {
             $this->connection->connect($this->host, $this->port);
         } catch (ErrorException|RuntimeException $e) {
-            throw new ConnectionFailedException('connection setup failed', 0, $e);
+            throw new ConnectionFailedException('Connection setup failed', 0, $e);
         }
 
         $this->authenticate();
-
-        return $this;
     }
 
     /**
@@ -372,15 +370,13 @@ class Client
     /**
      * Disconnect from server.
      */
-    public function disconnect(): Client
+    public function disconnect(): void
     {
         if ($this->isConnected()) {
             $this->connection->logout();
         }
 
         $this->activeFolder = null;
-
-        return $this;
     }
 
     /**
@@ -465,6 +461,7 @@ class Client
 
     /**
      * Get folders list.
+     *
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
      * @param  bool  $softFail  If true, it will return an empty collection instead of throwing an exception
@@ -609,7 +606,7 @@ class Client
      *
      * @see https://datatracker.ietf.org/doc/html/rfc2971
      */
-    public function Id(?array $ids = null): array
+    public function id(?array $ids = null): array
     {
         $this->checkConnection();
 

@@ -13,26 +13,34 @@ class ClientTest extends TestCase
 {
     public function test_connect(): void
     {
-        $this->assertNotNull($this->getClient()->connect());
+        $this->assertNull($this->getClient()->connect());
     }
 
     public function test_is_connected(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $this->assertTrue($client->isConnected());
     }
 
     public function test_disconnect(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
 
-        $this->assertFalse($client->disconnect()->isConnected());
+        $client->connect();
+
+        $client->disconnect();
+
+        $this->assertFalse($client->isConnected());
     }
 
     public function test_get_folder(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $folder = $client->getFolder('INBOX');
         $this->assertInstanceOf(Folder::class, $folder);
@@ -40,7 +48,9 @@ class ClientTest extends TestCase
 
     public function test_get_folder_by_name(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $folder = $client->getFolderByName('INBOX');
         $this->assertInstanceOf(Folder::class, $folder);
@@ -48,7 +58,9 @@ class ClientTest extends TestCase
 
     public function test_get_folder_by_path(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $folder = $client->getFolderByPath('INBOX');
         $this->assertInstanceOf(Folder::class, $folder);
@@ -56,7 +68,9 @@ class ClientTest extends TestCase
 
     public function test_get_folders(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $folders = $client->getFolders(false);
         $this->assertTrue($folders->count() > 0);
@@ -64,7 +78,9 @@ class ClientTest extends TestCase
 
     public function test_get_folders_with_status(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $folders = $client->getFoldersWithStatus(false);
         $this->assertTrue($folders->count() > 0);
@@ -72,7 +88,9 @@ class ClientTest extends TestCase
 
     public function test_open_folder(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $status = $client->openFolder('INBOX');
         $this->assertTrue(isset($status['flags']) && count($status['flags']) > 0);
@@ -84,7 +102,9 @@ class ClientTest extends TestCase
 
     public function test_create_folder(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', $this->getSpecialChars()]);
@@ -113,7 +133,9 @@ class ClientTest extends TestCase
 
     public function test_check_folder(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $status = $client->checkFolder('INBOX');
         $this->assertTrue(isset($status['flags']) && count($status['flags']) > 0);
@@ -125,7 +147,9 @@ class ClientTest extends TestCase
 
     public function test_get_folder_path(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $this->assertIsArray($client->openFolder('INBOX'));
         $this->assertEquals('INBOX', $client->getFolderPath());
@@ -133,9 +157,11 @@ class ClientTest extends TestCase
 
     public function test_id(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
 
-        $info = $client->Id();
+        $client->connect();
+
+        $info = $client->id();
         $this->assertIsArray($info);
         $valid = false;
         foreach ($info as $value) {
@@ -153,7 +179,9 @@ class ClientTest extends TestCase
             $this->markTestSkipped('Quota support is not enabled');
         }
 
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $quota = $client->getQuotaRoot();
         $this->assertIsArray($quota);
@@ -167,7 +195,9 @@ class ClientTest extends TestCase
 
     public function test_set_timeout(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $this->assertInstanceOf(ConnectionInterface::class, $client->setTimeout(57));
         $this->assertEquals(57, $client->getTimeout());
@@ -175,7 +205,9 @@ class ClientTest extends TestCase
 
     public function test_expunge(): void
     {
-        $client = $this->getClient()->connect();
+        $client = $this->getClient();
+
+        $client->connect();
 
         $client->openFolder('INBOX');
         $status = $client->expunge();

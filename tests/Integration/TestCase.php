@@ -54,9 +54,11 @@ abstract class TestCase extends BaseTestCase
     protected function getFolder(string $folder_path = 'INDEX'): Folder
     {
         $client = $this->getClient();
-        $this->assertInstanceOf(Client::class, $client->connect());
+
+        $client->connect();
 
         $folder = $client->getFolderByPath($folder_path);
+
         $this->assertInstanceOf(Folder::class, $folder);
 
         return $folder;

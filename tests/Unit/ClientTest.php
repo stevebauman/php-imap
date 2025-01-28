@@ -273,7 +273,7 @@ class ClientTest extends TestCase
 
         ]));
 
-        $this->assertSame("ID (\"name\" \"Dovecot\")\r\n", $this->client->Id()[0]);
+        $this->assertSame("ID (\"name\" \"Dovecot\")\r\n", $this->client->id()[0]);
     }
 
     public function test_config(): void
