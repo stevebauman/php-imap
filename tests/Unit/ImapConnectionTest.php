@@ -298,9 +298,7 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 NO [AUTHENTICATIONFAILED] Authentication failed.',
-        ]);
+        $stream->feed('TAG1 NO [AUTHENTICATIONFAILED] Authentication failed.');
 
         $connection = new ImapConnection($stream);
 
@@ -434,6 +432,7 @@ class ImapConnectionTest extends TestCase
         $response = $connection->examineFolder('INBOX');
 
         $stream->assertWritten('TAG1 EXAMINE "INBOX"');
+
         $this->assertEquals(23, $response->data()['exists'] ?? null);
         $this->assertEquals(2, $response->data()['recent'] ?? null);
     }
@@ -454,6 +453,7 @@ class ImapConnectionTest extends TestCase
         $response = $connection->folderStatus('INBOX');
 
         $stream->assertWritten('TAG1 STATUS "INBOX" (MESSAGES UNSEEN RECENT UIDNEXT UIDVALIDITY)');
+
         $this->assertEquals(42, $response->data()['messages'] ?? null);
         $this->assertEquals(3, $response->data()['unseen'] ?? null);
         $this->assertEquals(2, $response->data()['recent'] ?? null);
@@ -615,6 +615,7 @@ class ImapConnectionTest extends TestCase
         $response = $connection->folders('', '*');
 
         $stream->assertWritten('TAG1 LIST "" "*"');
+
         $this->assertArrayHasKey('INBOX', $response->data());
         $this->assertArrayHasKey('Archive', $response->data());
     }
@@ -646,15 +647,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK APPEND completed',
-        ]);
+        $stream->feed('TAG1 OK APPEND completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->appendMessage('INBOX', 'Raw message data', ['\\Seen'], '12-Jun-2023 12:00:00 +0000');
 
         $stream->assertWritten('TAG1 APPEND "INBOX" (\Seen) "12-Jun-2023 12:00:00 +0000" "Raw message data"');
+
         $this->assertEquals(['TAG1 OK APPEND completed'], $response->getResponse());
     }
 
@@ -664,15 +664,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK COPY completed',
-        ]);
+        $stream->feed('TAG1 OK COPY completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->copyMessage('Archive', 7);
 
         $stream->assertWritten('TAG1 UID COPY 7 "Archive"');
+
         $this->assertEquals(['TAG1 OK COPY completed'], $response->getResponse());
     }
 
@@ -682,15 +681,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK COPY completed',
-        ]);
+        $stream->feed('TAG1 OK COPY completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->copyManyMessages([1, 2, 3], 'Archive');
 
         $stream->assertWritten('TAG1 UID COPY 1,2,3 "Archive"');
+
         $this->assertEquals(['TAG1 OK COPY completed'], $response->getResponse());
     }
 
@@ -700,15 +698,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK MOVE completed',
-        ]);
+        $stream->feed('TAG1 OK MOVE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->moveMessage('Trash', 10);
 
         $stream->assertWritten('TAG1 UID MOVE 10 "Trash"');
+
         $this->assertEquals(['TAG1 OK MOVE completed'], $response->getResponse());
     }
 
@@ -718,15 +715,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK MOVE completed',
-        ]);
+        $stream->feed('TAG1 OK MOVE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->moveManyMessages([10, 11, 12], 'Trash');
 
         $stream->assertWritten('TAG1 UID MOVE 10,11,12 "Trash"');
+
         $this->assertEquals(['TAG1 OK MOVE completed'], $response->getResponse());
     }
 
@@ -743,10 +739,11 @@ class ImapConnectionTest extends TestCase
 
         $connection = new ImapConnection($stream);
 
-        // Provide some client data
+        // Provide some client data.
         $response = $connection->id(['name', 'MyClient']);
 
         $stream->assertWritten('TAG1 ID ("name" "MyClient")');
+
         $this->assertEquals(['* ID ("name" "Dovecot")', 'TAG1 OK ID completed'], $response->getResponse());
     }
 
@@ -756,15 +753,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK CREATE completed',
-        ]);
+        $stream->feed('TAG1 OK CREATE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->createFolder('NewFolder');
 
         $stream->assertWritten('TAG1 CREATE "NewFolder"');
+
         $this->assertEquals(['TAG1 OK CREATE completed'], $response->getResponse());
     }
 
@@ -774,15 +770,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK RENAME completed',
-        ]);
+        $stream->feed('TAG1 OK RENAME completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->renameFolder('OldFolder', 'RenamedFolder');
 
         $stream->assertWritten('TAG1 RENAME "OldFolder" "RenamedFolder"');
+
         $this->assertEquals(['TAG1 OK RENAME completed'], $response->getResponse());
     }
 
@@ -792,15 +787,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK DELETE completed',
-        ]);
+        $stream->feed('TAG1 OK DELETE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->deleteFolder('Trash');
 
         $stream->assertWritten('TAG1 DELETE "Trash"');
+
         $this->assertEquals(['TAG1 OK DELETE completed'], $response->getResponse());
     }
 
@@ -810,15 +804,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK SUBSCRIBE completed',
-        ]);
+        $stream->feed('TAG1 OK SUBSCRIBE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->subscribeFolder('Newsletters');
 
         $stream->assertWritten('TAG1 SUBSCRIBE "Newsletters"');
+
         $this->assertEquals(['TAG1 OK SUBSCRIBE completed'], $response->getResponse());
     }
 
@@ -828,15 +821,14 @@ class ImapConnectionTest extends TestCase
 
         $stream->open();
 
-        $stream->feed([
-            'TAG1 OK UNSUBSCRIBE completed',
-        ]);
+        $stream->feed('TAG1 OK UNSUBSCRIBE completed');
 
         $connection = new ImapConnection($stream);
 
         $response = $connection->unsubscribeFolder('Newsletters');
 
         $stream->assertWritten('TAG1 UNSUBSCRIBE "Newsletters"');
+
         $this->assertEquals(['TAG1 OK UNSUBSCRIBE completed'], $response->getResponse());
     }
 
@@ -883,6 +875,7 @@ class ImapConnectionTest extends TestCase
         $response = $connection->search(['ALL']);
 
         $stream->assertWritten('TAG1 UID SEARCH ALL');
+
         $this->assertEquals([3, 5, 7, 8], $response->data());
     }
 
