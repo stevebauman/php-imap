@@ -42,10 +42,10 @@ class MessageTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'thread']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder !== null) {
+        if (! is_null($folder = $client->getFolder($folder_path))) {
             $this->assertTrue($this->deleteFolder($folder));
         }
+
         $folder = $client->createFolder($folder_path, false);
 
         $message1 = $this->appendMessageTemplate($folder, 'thread_my_topic.eml');
@@ -174,10 +174,10 @@ class MessageTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder !== null) {
+        if (! is_null($folder = $client->getFolder($folder_path))) {
             $this->assertTrue($this->deleteFolder($folder));
         }
+
         $folder = $client->createFolder($folder_path, false);
 
         $message = $this->appendMessageTemplate($folder, 'plain.eml');
@@ -617,10 +617,10 @@ class MessageTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder !== null) {
+        if (! is_null($folder = $client->getFolder($folder_path))) {
             $this->assertTrue($this->deleteFolder($folder));
         }
+
         $folder = $client->createFolder($folder_path, false);
         $this->assertInstanceOf(Folder::class, $folder);
 
@@ -906,10 +906,10 @@ class MessageTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder !== null) {
+        if (! is_null($folder = $client->getFolder($folder_path))) {
             $this->assertTrue($this->deleteFolder($folder));
         }
+
         $folder = $client->createFolder($folder_path, false);
         $this->assertInstanceOf(Folder::class, $folder);
 

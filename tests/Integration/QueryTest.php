@@ -26,10 +26,10 @@ class QueryTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'search']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder !== null) {
+        if (! is_null($folder = $client->getFolder($folder_path))) {
             $this->assertTrue($this->deleteFolder($folder));
         }
+
         $folder = $client->createFolder($folder_path, false);
 
         $messages = [
@@ -98,6 +98,7 @@ class QueryTest extends TestCase
     public function test_query_where_criteria(): void
     {
         $folder = $this->getFolder('INBOX');
+
         $this->assertInstanceOf(Folder::class, $folder);
 
         $this->assertWhereSearchCriteria($folder, 'SUBJECT', 'Test');
@@ -142,11 +143,13 @@ class QueryTest extends TestCase
     protected function assertWhereSearchCriteria(Folder $folder, string $criteria, Carbon|string|null $value = null, bool $date = false): void
     {
         $query = $folder->query()->where($criteria, $value);
+
         $this->assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
         $criteria = str_replace('CUSTOM ', '', $criteria);
         $expected = $value === null ? [$criteria] : [$criteria, $value];
+
         if ($date === true && $value instanceof Carbon) {
             $date_format = ClientContainer::get('date_format', 'd M y');
             $expected[1] = $value->format($date_format);
@@ -154,18 +157,21 @@ class QueryTest extends TestCase
 
         $this->assertIsArray($item);
         $this->assertIsString($item[0]);
+
         if ($value !== null) {
             $this->assertCount(2, $item);
             $this->assertIsString($item[1]);
         } else {
             $this->assertCount(1, $item);
         }
+
         $this->assertSame($expected, $item);
     }
 
     protected function assertHeaderSearchCriteria(Folder $folder, string $criteria, mixed $value = null): void
     {
         $query = $folder->query()->whereHeader($criteria, $value);
+
         $this->assertInstanceOf(WhereQuery::class, $query);
 
         $item = $query->getQuery()->first();
