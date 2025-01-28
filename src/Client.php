@@ -136,7 +136,7 @@ class Client
     }
 
     /**
-     * Clone the instance.
+     * Prepare the cloned instance.
      */
     public function __clone()
     {
@@ -315,9 +315,7 @@ class Client
      */
     public function reconnect(): void
     {
-        if ($this->isConnected()) {
-            $this->disconnect();
-        }
+        $this->disconnect();
 
         $this->connect();
     }
@@ -327,7 +325,9 @@ class Client
      */
     public function connect(?ConnectionInterface $connection = null): Client
     {
-        $this->disconnect();
+        if ($this->isConnected()) {
+            return $this;
+        }
 
         $this->connection = $connection ?? new ImapConnection;
 
