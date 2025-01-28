@@ -12,29 +12,23 @@ abstract class TestCase extends BaseTestCase
 {
     const SPECIAL_CHARS = 'A_\\|!"£$%&()=?àèìòùÀÈÌÒÙ<>-@#[]_ß_б_π_€_✔_你_يد_Z_';
 
-    protected static ClientContainer $manager;
-
     protected function getManager(): ClientContainer
     {
-        if (! isset(self::$manager)) {
-            self::$manager = ClientContainer::getNewInstance([
-                'options' => [
-                    'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
+        return ClientContainer::getNewInstance([
+            'options' => [
+                'debug' => $_ENV['LIVE_MAILBOX_DEBUG'] ?? false,
+            ],
+            'accounts' => [
+                'default' => [
+                    'host' => getenv('LIVE_MAILBOX_HOST'),
+                    'port' => getenv('LIVE_MAILBOX_PORT'),
+                    'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
+                    'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
+                    'username' => getenv('LIVE_MAILBOX_USERNAME'),
+                    'password' => getenv('LIVE_MAILBOX_PASSWORD'),
                 ],
-                'accounts' => [
-                    'default' => [
-                        'host' => getenv('LIVE_MAILBOX_HOST'),
-                        'port' => getenv('LIVE_MAILBOX_PORT'),
-                        'encryption' => getenv('LIVE_MAILBOX_ENCRYPTION'),
-                        'validate_cert' => getenv('LIVE_MAILBOX_VALIDATE_CERT'),
-                        'username' => getenv('LIVE_MAILBOX_USERNAME'),
-                        'password' => getenv('LIVE_MAILBOX_PASSWORD'),
-                    ],
-                ],
-            ]);
-        }
-
-        return self::$manager;
+            ],
+        ]);
     }
 
     protected function getClient(): Client
@@ -67,23 +61,29 @@ abstract class TestCase extends BaseTestCase
     protected function appendMessage(Folder $folder, string $message): Message
     {
         $status = $folder->select();
+
         if (! isset($status['uidnext'])) {
             $this->fail('No UIDNEXT returned');
         }
 
         $response = $folder->appendMessage($message);
-        $valid_response = false;
+
+        $validResponse = false;
+
         foreach ($response as $line) {
             if (str_starts_with($line, 'OK')) {
-                $valid_response = true;
+                $validResponse = true;
+
                 break;
             }
         }
-        if (! $valid_response) {
+
+        if (! $validResponse) {
             $this->fail('Failed to append message: '.implode("\n", $response));
         }
 
         $message = $folder->messages()->getMessageByUid($status['uidnext']);
+
         $this->assertInstanceOf(Message::class, $message);
 
         return $message;
@@ -101,18 +101,20 @@ abstract class TestCase extends BaseTestCase
         $response = $folder?->delete(false);
 
         if (is_array($response)) {
-            $valid_response = false;
+            $validResponse = false;
+
             foreach ($response as $line) {
                 if (str_starts_with($line, 'OK')) {
-                    $valid_response = true;
+                    $validResponse = true;
                     break;
                 }
             }
-            if (! $valid_response) {
+
+            if (! $validResponse) {
                 $this->fail('Failed to delete mailbox: '.implode("\n", $response));
             }
 
-            return $valid_response;
+            return $validResponse;
         }
 
         return false;
