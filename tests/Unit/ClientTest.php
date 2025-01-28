@@ -84,7 +84,8 @@ class ClientTest extends TestCase
             0 => "BYE Logging out\r\n",
             1 => "OK Logout completed (0.001 + 0.000 secs).\r\n",
         ]));
-        $this->assertInstanceOf(Client::class, $this->client->disconnect());
+
+        $this->assertNull($this->client->disconnect());
     }
 
     public function test_expunge(): void
