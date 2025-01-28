@@ -11,19 +11,13 @@ use Webklex\PHPIMAP\Exceptions\RuntimeException;
 class Idle
 {
     /**
-     * The idle IMAP client.
-     */
-    protected Client $client;
-
-    /**
      * Constructor.
      */
     public function __construct(
-        protected Folder $folder,
+        protected Client $client,
+        protected string $folder,
         protected int $timeout,
-    ) {
-        $this->client = clone $folder->getClient();
-    }
+    ) {}
 
     /**
      * Destructor.
@@ -109,7 +103,7 @@ class Idle
     {
         $this->client->connect();
 
-        $this->client->openFolder($this->folder->path, true);
+        $this->client->openFolder($this->folder, true);
 
         $this->client->getConnection()->setStreamTimeout($this->timeout);
     }

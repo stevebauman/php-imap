@@ -337,26 +337,28 @@ class Folder
             return $message;
         };
 
-        (new Idle($this, $timeout))->await(function (int $msgn, int $sequence) use ($callback, $fetch) {
-            // Connect the client if the connection is closed.
-            if ($this->client->isClosed()) {
-                $this->client->connect();
+        (new Idle(clone $this->client, $this->path, $timeout))->await(
+            function (int $msgn, int $sequence) use ($callback, $fetch) {
+                // Connect the client if the connection is closed.
+                if ($this->client->isClosed()) {
+                    $this->client->connect();
+                }
+
+                try {
+                    $message = $fetch($msgn, $sequence);
+                } catch (RuntimeException|ResponseException) {
+                    // If fetching the message fails, we'll attempt
+                    // reconnecting and re-fetching the message.
+                    $this->client->reconnect();
+
+                    $message = $fetch($msgn, $sequence);
+                }
+
+                $callback($message);
+
+                $this->dispatch('message', 'new', $message);
             }
-
-            try {
-                $message = $fetch($msgn, $sequence);
-            } catch (RuntimeException|ResponseException) {
-                // If fetching the message fails, we'll attempt
-                // reconnecting and re-fetching the message.
-                $this->client->reconnect();
-
-                $message = $fetch($msgn, $sequence);
-            }
-
-            $callback($message);
-
-            $this->dispatch('message', 'new', $message);
-        });
+        );
     }
 
     /**
