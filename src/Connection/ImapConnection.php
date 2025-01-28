@@ -501,6 +501,7 @@ class ImapConnection extends Connection
 
                 continue;
             }
+
             switch ($tokens[1]) {
                 case 'EXISTS':
                 case 'RECENT':
