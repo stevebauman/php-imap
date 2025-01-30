@@ -87,7 +87,11 @@ class Structure
         $headers = new Header($headers);
 
         if (($boundary = $headers->getBoundary()) !== null) {
-            return $this->detectParts($boundary, $body, $partNumber);
+            $parts = $this->detectParts($boundary, $body, $partNumber);
+
+            if (count($parts) > 1) {
+                return $parts;
+            }
         }
 
         return [new Part($body, $headers, $partNumber)];
