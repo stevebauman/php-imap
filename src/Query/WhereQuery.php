@@ -111,7 +111,7 @@ class WhereQuery extends Query
     protected function pushSearchCriteria(string $criteria, mixed $value): void
     {
         $criteria = $this->validateCriteria($criteria);
-        $value = $this->parse_value($value);
+        $value = $this->parseValue($value);
 
         if ($value === '') {
             $this->query->push([$criteria]);
@@ -195,7 +195,7 @@ class WhereQuery extends Query
      */
     public function whereBefore(mixed $value): static
     {
-        $date = $this->parse_date($value);
+        $date = $this->parseDate($value);
 
         return $this->where('BEFORE', $date);
     }
@@ -277,7 +277,7 @@ class WhereQuery extends Query
      */
     public function whereOn(mixed $value): static
     {
-        $date = $this->parse_date($value);
+        $date = $this->parseDate($value);
 
         return $this->where('ON', $date);
     }
@@ -303,7 +303,7 @@ class WhereQuery extends Query
      */
     public function whereSince(mixed $value): static
     {
-        $date = $this->parse_date($value);
+        $date = $this->parseDate($value);
 
         return $this->where('SINCE', $date);
     }

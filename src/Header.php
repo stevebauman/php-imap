@@ -316,7 +316,7 @@ class Header
      * @return array The decoded elements are returned in an array of objects, where each
      *               object has two properties, charset and text.
      */
-    public function mime_header_decode(string $text): array
+    public function mimeHeaderDecode(string $text): array
     {
         if (extension_loaded('imap')) {
             $result = imap_mime_header_decode($text);
@@ -401,7 +401,7 @@ class Header
 
         if ($value !== null) {
             if ($decoder === 'utf-8') {
-                $decodedValues = $this->mime_header_decode($value);
+                $decodedValues = $this->mimeHeaderDecode($value);
                 $tempValue = '';
 
                 foreach ($decodedValues as $decodedValue) {
@@ -556,7 +556,7 @@ class Header
             if (! property_exists($address, 'personal')) {
                 $address->personal = false;
             } else {
-                $personalParts = $this->mime_header_decode($address->personal);
+                $personalParts = $this->mimeHeaderDecode($address->personal);
 
                 $address->personal = '';
                 foreach ($personalParts as $p) {

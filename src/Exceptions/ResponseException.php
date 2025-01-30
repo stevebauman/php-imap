@@ -24,7 +24,7 @@ class ResponseException extends Exception
         }
 
         if ($debug) {
-            $message .= self::debug_message($response);
+            $message .= self::debugMessage($response);
         }
 
         foreach ($response->getResponses() as $_response) {
@@ -37,7 +37,7 @@ class ResponseException extends Exception
     /**
      * Generate a debug message containing all commands send and responses received.
      */
-    protected static function debug_message(Response $response): string
+    protected static function debugMessage(Response $response): string
     {
         $commands = $response->getCommands();
 

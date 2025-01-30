@@ -90,7 +90,7 @@ class Query
     /**
      * Parse a given value.
      */
-    protected function parse_value(mixed $value): string
+    protected function parseValue(mixed $value): string
     {
         if ($value instanceof Carbon) {
             $value = $value->format($this->dateFormat);
@@ -102,7 +102,7 @@ class Query
     /**
      * Check if a given date is a valid carbon object and if not try to convert it.
      */
-    protected function parse_date(mixed $date): Carbon
+    protected function parseDate(mixed $date): Carbon
     {
         if ($date instanceof Carbon) {
             return $date;
@@ -138,6 +138,7 @@ class Query
                     }
                 }
             }
+
             $query .= ' ';
         });
 
