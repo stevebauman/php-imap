@@ -313,29 +313,39 @@ class Query
     /**
      * Fetch the current query as chunked requests.
      */
-    public function chunked(callable $callback, int $chunkSize = 10, int $startChunk = 1): void
+    public function chunk(callable $callback, int $chunkSize = 10, int $startChunk = 1): void
     {
+        $startChunk = max($startChunk, 1);
+        $chunkSize = max($chunkSize, 1);
+        $skippedMessagesCount = $chunkSize * ($startChunk - 1);
+
         $availableMessages = $this->search();
+        $availableMessagesCount = max($availableMessages->count() - $skippedMessagesCount, 0);
 
-        if (($availableMessagesCount = $availableMessages->count()) > 0) {
-            $previousLimit = $this->limit;
-            $previousPage = $this->page;
-
-            $this->limit = $chunkSize;
-            $this->page = $startChunk;
-
-            $handledMessagesCount = 0;
-
-            do {
-                $messages = $this->populate($availableMessages);
-                $handledMessagesCount += $messages->count();
-                $callback($messages, $this->page);
-                $this->page++;
-            } while ($handledMessagesCount < $availableMessagesCount);
-
-            $this->limit = $previousLimit;
-            $this->page = $previousPage;
+        if (! $availableMessagesCount) {
+            return;
         }
+
+        $previousLimit = $this->limit;
+        $previousPage = $this->page;
+
+        $this->limit = $chunkSize;
+        $this->page = $startChunk;
+
+        $handledMessagesCount = 0;
+
+        do {
+            $messages = $this->populate($availableMessages);
+
+            $handledMessagesCount += $messages->count();
+
+            $callback($messages, $this->page);
+
+            $this->page++;
+        } while ($handledMessagesCount < $availableMessagesCount);
+
+        $this->limit = $previousLimit;
+        $this->page = $previousPage;
     }
 
     /**
