@@ -490,7 +490,7 @@ class Header
         }
 
         foreach ($values as $address) {
-            foreach (preg_split('/, (?=(?:[^"]*"[^"]*")*[^"]*$)/', $address) as $splitAddress) {
+            foreach (preg_split('/, ?(?=(?:[^"]*"[^"]*")*[^"]*$)/', $address) as $splitAddress) {
                 $splitAddress = trim(rtrim($splitAddress));
 
                 if (strpos($splitAddress, ',') == strlen($splitAddress) - 1) {
