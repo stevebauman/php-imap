@@ -470,7 +470,7 @@ class Query
     /**
      * Don't mark messages as read when fetching.
      */
-    public function leaveUnread(): Query
+    public function leaveUnread(): static
     {
         $this->setFetchOptions(Imap::FT_PEEK);
 
@@ -480,7 +480,7 @@ class Query
     /**
      * Mark all messages as read when fetching.
      */
-    public function markAsRead(): Query
+    public function markAsRead(): static
     {
         $this->setFetchOptions(Imap::FT_UID);
 
@@ -490,7 +490,7 @@ class Query
     /**
      * Set the sequence type.
      */
-    public function setSequence(int $sequence): Query
+    public function setSequence(int $sequence): static
     {
         $this->sequence = $sequence;
 
@@ -518,7 +518,7 @@ class Query
     /**
      * Set the limit and page for the current query.
      */
-    public function limit(int $limit, int $page = 1): Query
+    public function limit(int $limit, int $page = 1): static
     {
         if ($page >= 1) {
             $this->page = $page;
@@ -539,7 +539,7 @@ class Query
     /**
      * Set all query parameters.
      */
-    public function setQuery(array $query): Query
+    public function setQuery(array $query): static
     {
         $this->query = new Collection($query);
 
@@ -557,7 +557,7 @@ class Query
     /**
      * Set the raw query.
      */
-    public function setRawQuery(string $rawQuery): Query
+    public function setRawQuery(string $rawQuery): static
     {
         $this->rawQuery = $rawQuery;
 
@@ -579,7 +579,7 @@ class Query
      *
      * @param  string[]  $extensions
      */
-    public function setExtensions(array $extensions): Query
+    public function setExtensions(array $extensions): static
     {
         $this->extensions = $extensions;
 
@@ -595,7 +595,7 @@ class Query
     /**
      * Set the client instance.
      */
-    public function setClient(Client $client): Query
+    public function setClient(Client $client): static
     {
         $this->client = $client;
 
@@ -613,7 +613,7 @@ class Query
     /**
      * Set the fetch limit.
      */
-    public function setLimit(int $limit): Query
+    public function setLimit(int $limit): static
     {
         $this->limit = $limit <= 0 ? null : $limit;
 
@@ -631,7 +631,7 @@ class Query
     /**
      * Set the page.
      */
-    public function setPage(int $page): Query
+    public function setPage(int $page): static
     {
         $this->page = $page;
 
@@ -641,7 +641,7 @@ class Query
     /**
      * Set the fetch option flag.
      */
-    public function setFetchOptions(int $fetchOptions): Query
+    public function setFetchOptions(int $fetchOptions): static
     {
         $this->fetchOptions = $fetchOptions;
 
@@ -651,7 +651,7 @@ class Query
     /**
      * Set the fetch option flag.
      */
-    public function fetchOptions(int $fetchOptions): Query
+    public function fetchOptions(int $fetchOptions): static
     {
         return $this->setFetchOptions($fetchOptions);
     }
@@ -675,7 +675,7 @@ class Query
     /**
      * Set the fetch body flag.
      */
-    public function setFetchBody(bool $fetchBody): Query
+    public function setFetchBody(bool $fetchBody): static
     {
         $this->fetchBody = $fetchBody;
 
@@ -685,7 +685,7 @@ class Query
     /**
      * Set the fetch body flag.
      */
-    public function fetchBody(bool $fetchBody): Query
+    public function fetchBody(bool $fetchBody): static
     {
         return $this->setFetchBody($fetchBody);
     }
@@ -701,7 +701,7 @@ class Query
     /**
      * Set the fetch flag.
      */
-    public function setFetchFlags(bool $fetchFlags): Query
+    public function setFetchFlags(bool $fetchFlags): static
     {
         $this->fetchFlags = $fetchFlags;
 
@@ -711,7 +711,7 @@ class Query
     /**
      * Set the fetch order.
      */
-    public function setFetchOrder(string $fetchOrder): Query
+    public function setFetchOrder(string $fetchOrder): static
     {
         $fetchOrder = strtolower($fetchOrder);
 
@@ -725,7 +725,7 @@ class Query
     /**
      * Set the fetch order.
      */
-    public function fetchOrder(string $fetchOrder): Query
+    public function fetchOrder(string $fetchOrder): static
     {
         return $this->setFetchOrder($fetchOrder);
     }
@@ -741,7 +741,7 @@ class Query
     /**
      * Set the fetch order to 'ascending'.
      */
-    public function setFetchOrderAsc(): Query
+    public function setFetchOrderAsc(): static
     {
         return $this->setFetchOrder('asc');
     }
@@ -749,7 +749,7 @@ class Query
     /**
      * Set the fetch order to 'ascending'.
      */
-    public function fetchOrderAsc(): Query
+    public function fetchOrderAsc(): static
     {
         return $this->setFetchOrderAsc();
     }
@@ -757,7 +757,7 @@ class Query
     /**
      * Set the fetch order to 'descending'.
      */
-    public function setFetchOrderDesc(): Query
+    public function setFetchOrderDesc(): static
     {
         return $this->setFetchOrder('desc');
     }
@@ -765,7 +765,7 @@ class Query
     /**
      * Set the fetch order to 'descending'.
      */
-    public function fetchOrderDesc(): Query
+    public function fetchOrderDesc(): static
     {
         return $this->setFetchOrderDesc();
     }
@@ -773,7 +773,7 @@ class Query
     /**
      * Set soft fail mode.
      */
-    public function softFail(bool $state = true): Query
+    public function softFail(bool $state = true): static
     {
         return $this->setSoftFail($state);
     }
@@ -781,7 +781,7 @@ class Query
     /**
      * Set soft fail mode.
      */
-    public function setSoftFail(bool $state = true): Query
+    public function setSoftFail(bool $state = true): static
     {
         $this->softFail = $state;
 

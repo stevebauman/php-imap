@@ -88,7 +88,7 @@ class WhereQuery extends Query
      * $query->where(["FROM" => "someone@email.tld", "SEEN"]);
      * $query->where("FROM", "someone@email.tld")->where("SEEN");
      */
-    public function where(mixed $criteria, mixed $value = null): WhereQuery
+    public function where(mixed $criteria, mixed $value = null): static
     {
         if (is_array($criteria)) {
             foreach ($criteria as $key => $value) {
@@ -141,7 +141,7 @@ class WhereQuery extends Query
     /**
      * Add an "OR" clause to the query.
      */
-    public function orWhere(?Closure $closure = null): WhereQuery
+    public function orWhere(?Closure $closure = null): static
     {
         $this->query->push(['OR']);
 
@@ -155,7 +155,7 @@ class WhereQuery extends Query
     /**
      * Add an "AND" clause to the query.
      */
-    public function andWhere(?Closure $closure = null): WhereQuery
+    public function andWhere(?Closure $closure = null): static
     {
         $this->query->push(['AND']);
 
@@ -169,7 +169,7 @@ class WhereQuery extends Query
     /**
      * Add a where all clause to the query.
      */
-    public function whereAll(): WhereQuery
+    public function whereAll(): static
     {
         return $this->where('ALL');
     }
@@ -177,7 +177,7 @@ class WhereQuery extends Query
     /**
      * Add a where answered clause to the query.
      */
-    public function whereAnswered(): WhereQuery
+    public function whereAnswered(): static
     {
         return $this->where('ANSWERED');
     }
@@ -185,7 +185,7 @@ class WhereQuery extends Query
     /**
      * Add a where bcc clause to the query.
      */
-    public function whereBcc(string $value): WhereQuery
+    public function whereBcc(string $value): static
     {
         return $this->where('BCC', $value);
     }
@@ -193,7 +193,7 @@ class WhereQuery extends Query
     /**
      * Add a where before clause to the query.
      */
-    public function whereBefore(mixed $value): WhereQuery
+    public function whereBefore(mixed $value): static
     {
         $date = $this->parse_date($value);
 
@@ -203,7 +203,7 @@ class WhereQuery extends Query
     /**
      * Add a where body clause to the query.
      */
-    public function whereBody(string $value): WhereQuery
+    public function whereBody(string $value): static
     {
         return $this->where('BODY', $value);
     }
@@ -211,7 +211,7 @@ class WhereQuery extends Query
     /**
      * Add a where cc clause to the query.
      */
-    public function whereCc(string $value): WhereQuery
+    public function whereCc(string $value): static
     {
         return $this->where('CC', $value);
     }
@@ -219,7 +219,7 @@ class WhereQuery extends Query
     /**
      * Add a where deleted clause to the query.
      */
-    public function whereDeleted(): WhereQuery
+    public function whereDeleted(): static
     {
         return $this->where('DELETED');
     }
@@ -227,7 +227,7 @@ class WhereQuery extends Query
     /**
      * Add a where flagged clause to the query.
      */
-    public function whereFlagged(string $value): WhereQuery
+    public function whereFlagged(string $value): static
     {
         return $this->where('FLAGGED', $value);
     }
@@ -235,7 +235,7 @@ class WhereQuery extends Query
     /**
      * Add a where from clause to the query.
      */
-    public function whereFrom(string $value): WhereQuery
+    public function whereFrom(string $value): static
     {
         return $this->where('FROM', $value);
     }
@@ -243,7 +243,7 @@ class WhereQuery extends Query
     /**
      * Add a where keyword clause to the query.
      */
-    public function whereKeyword(string $value): WhereQuery
+    public function whereKeyword(string $value): static
     {
         return $this->where('KEYWORD', $value);
     }
@@ -251,7 +251,7 @@ class WhereQuery extends Query
     /**
      * Add a where new clause to the query.
      */
-    public function whereNew(): WhereQuery
+    public function whereNew(): static
     {
         return $this->where('NEW');
     }
@@ -259,7 +259,7 @@ class WhereQuery extends Query
     /**
      * Add a where not clause to the query.
      */
-    public function whereNot(): WhereQuery
+    public function whereNot(): static
     {
         return $this->where('NOT');
     }
@@ -267,7 +267,7 @@ class WhereQuery extends Query
     /**
      * Add a where old clause to the query.
      */
-    public function whereOld(): WhereQuery
+    public function whereOld(): static
     {
         return $this->where('OLD');
     }
@@ -275,7 +275,7 @@ class WhereQuery extends Query
     /**
      * Add a where on clause to the query.
      */
-    public function whereOn(mixed $value): WhereQuery
+    public function whereOn(mixed $value): static
     {
         $date = $this->parse_date($value);
 
@@ -285,7 +285,7 @@ class WhereQuery extends Query
     /**
      * Add a where recent clause to the query.
      */
-    public function whereRecent(): WhereQuery
+    public function whereRecent(): static
     {
         return $this->where('RECENT');
     }
@@ -293,7 +293,7 @@ class WhereQuery extends Query
     /**
      * Add a where seen clause to the query.
      */
-    public function whereSeen(): WhereQuery
+    public function whereSeen(): static
     {
         return $this->where('SEEN');
     }
@@ -301,7 +301,7 @@ class WhereQuery extends Query
     /**
      * Add a where since clause to the query.
      */
-    public function whereSince(mixed $value): WhereQuery
+    public function whereSince(mixed $value): static
     {
         $date = $this->parse_date($value);
 
@@ -311,7 +311,7 @@ class WhereQuery extends Query
     /**
      * Add a where subject clause to the query.
      */
-    public function whereSubject(string $value): WhereQuery
+    public function whereSubject(string $value): static
     {
         return $this->where('SUBJECT', $value);
     }
@@ -319,7 +319,7 @@ class WhereQuery extends Query
     /**
      * Add a where text clause to the query.
      */
-    public function whereText(string $value): WhereQuery
+    public function whereText(string $value): static
     {
         return $this->where('TEXT', $value);
     }
@@ -327,7 +327,7 @@ class WhereQuery extends Query
     /**
      * Add a where to clause to the query.
      */
-    public function whereTo(string $value): WhereQuery
+    public function whereTo(string $value): static
     {
         return $this->where('TO', $value);
     }
@@ -335,7 +335,7 @@ class WhereQuery extends Query
     /**
      * Add a where unkeyword clause to the query.
      */
-    public function whereUnkeyword(string $value): WhereQuery
+    public function whereUnkeyword(string $value): static
     {
         return $this->where('UNKEYWORD', $value);
     }
@@ -343,7 +343,7 @@ class WhereQuery extends Query
     /**
      * Add a where undeleted clause to the query.
      */
-    public function whereUnanswered(): WhereQuery
+    public function whereUnanswered(): static
     {
         return $this->where('UNANSWERED');
     }
@@ -351,7 +351,7 @@ class WhereQuery extends Query
     /**
      * Add a where undeleted clause to the query.
      */
-    public function whereUndeleted(): WhereQuery
+    public function whereUndeleted(): static
     {
         return $this->where('UNDELETED');
     }
@@ -359,7 +359,7 @@ class WhereQuery extends Query
     /**
      * Add a where unflagged clause to the query.
      */
-    public function whereUnflagged(): WhereQuery
+    public function whereUnflagged(): static
     {
         return $this->where('UNFLAGGED');
     }
@@ -367,7 +367,7 @@ class WhereQuery extends Query
     /**
      * Add a where unseen clause to the query.
      */
-    public function whereUnseen(): WhereQuery
+    public function whereUnseen(): static
     {
         return $this->where('UNSEEN');
     }
@@ -375,7 +375,7 @@ class WhereQuery extends Query
     /**
      * Add a where is not spam clause to the query.
      */
-    public function whereNoXSpam(): WhereQuery
+    public function whereNoXSpam(): static
     {
         return $this->where('CUSTOM X-Spam-Flag NO');
     }
@@ -383,7 +383,7 @@ class WhereQuery extends Query
     /**
      * Add a where is spam clause to the query.
      */
-    public function whereIsXSpam(): WhereQuery
+    public function whereIsXSpam(): static
     {
         return $this->where('CUSTOM X-Spam-Flag YES');
     }
@@ -391,7 +391,7 @@ class WhereQuery extends Query
     /**
      * Add a where header clause to the query.
      */
-    public function whereHeader($header, $value): WhereQuery
+    public function whereHeader($header, $value): static
     {
         return $this->where("CUSTOM HEADER $header $value");
     }
@@ -399,7 +399,7 @@ class WhereQuery extends Query
     /**
      * Add a where message id clause to the query.
      */
-    public function whereMessageId($messageId): WhereQuery
+    public function whereMessageId($messageId): static
     {
         return $this->whereHeader('Message-ID', $messageId);
     }
@@ -407,7 +407,7 @@ class WhereQuery extends Query
     /**
      * Add a where in reply to clause to the query.
      */
-    public function whereInReplyTo($messageId): WhereQuery
+    public function whereInReplyTo($messageId): static
     {
         return $this->whereHeader('In-Reply-To', $messageId);
     }
@@ -415,7 +415,7 @@ class WhereQuery extends Query
     /**
      * Add a where language clause to the query.
      */
-    public function whereLanguage($countryCode): WhereQuery
+    public function whereLanguage($countryCode): static
     {
         return $this->where("Content-Language $countryCode");
     }
@@ -423,7 +423,7 @@ class WhereQuery extends Query
     /**
      * Add a where UID clause to the query.
      */
-    public function whereUid(int|string $uid): WhereQuery
+    public function whereUid(int|string $uid): static
     {
         return $this->where('UID', $uid);
     }
@@ -433,7 +433,7 @@ class WhereQuery extends Query
      *
      * @param  array<int, int>  $uids
      */
-    public function whereUidIn(array $uids): WhereQuery
+    public function whereUidIn(array $uids): static
     {
         return $this->where('UID', implode(',', $uids));
     }
