@@ -3,11 +3,14 @@
 namespace Tests\Issue;
 
 use Tests\Integration\TestCase;
+use Tests\InteractsWithFixtures;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
 class Issue413Test extends TestCase
 {
+    use InteractsWithFixtures;
+
     public function test_live_issue_email()
     {
         $folder = $this->getFolder('INBOX');
@@ -27,8 +30,7 @@ class Issue413Test extends TestCase
 
     public function test_issue_email()
     {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-413.eml']);
-        $message = Message::fromFile($filename);
+        $message = $this->getFixture('issue-413.eml');
 
         $this->assertSame('Test Message', (string) $message->subject);
         $this->assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());

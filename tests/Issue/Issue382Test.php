@@ -2,15 +2,16 @@
 
 namespace Tests\Issue;
 
+use Tests\InteractsWithFixtures;
 use Tests\TestCase;
-use Webklex\PHPIMAP\Message;
 
 class Issue382Test extends TestCase
 {
+    use InteractsWithFixtures;
+
     public function test_issue_email()
     {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-382.eml']);
-        $message = Message::fromFile($filename);
+        $message = $this->getFixture('issue-382.eml');
 
         $from = $message->from->first();
 

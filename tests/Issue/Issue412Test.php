@@ -2,15 +2,16 @@
 
 namespace Tests\Issue;
 
+use Tests\InteractsWithFixtures;
 use Tests\TestCase;
-use Webklex\PHPIMAP\Message;
 
 class Issue412Test extends TestCase
 {
+    use InteractsWithFixtures;
+
     public function test_issue_email()
     {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', 'issue-412.eml']);
-        $message = Message::fromFile($filename);
+        $message = $this->getFixture('issue-412.eml');
 
         $this->assertSame('RE: TEST MESSAGE', (string) $message->subject);
         $this->assertSame('64254d63e92a36ee02c760676351e60a', md5($message->getTextBody()));

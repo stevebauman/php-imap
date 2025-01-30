@@ -2,12 +2,14 @@
 
 namespace Tests\Fixture;
 
+use Tests\InteractsWithFixtures;
 use Tests\TestCase;
 use Webklex\PHPIMAP\ClientContainer;
-use Webklex\PHPIMAP\Message;
 
 abstract class FixtureTestCase extends TestCase
 {
+    use InteractsWithFixtures;
+
     protected static ClientContainer $manager;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
@@ -31,16 +33,5 @@ abstract class FixtureTestCase extends TestCase
         ]);
 
         return self::$manager;
-    }
-
-    public function getFixture(string $template): Message
-    {
-        $filename = implode(DIRECTORY_SEPARATOR, [__DIR__, '..',  'messages', $template]);
-
-        $message = Message::fromFile($filename);
-
-        $this->assertInstanceOf(Message::class, $message);
-
-        return $message;
     }
 }
