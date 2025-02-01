@@ -5,6 +5,7 @@ namespace Webklex\PHPIMAP;
 use finfo;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Symfony\Component\Mime\MimeTypes;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Support\Masks\AttachmentMask;
 
@@ -309,35 +310,13 @@ class Attachment
      */
     public function getExtension(): ?string
     {
-        $extension = null;
-
-        $guesser = "\Symfony\Component\Mime\MimeTypes";
-
-        if (class_exists($guesser)) {
-            /** @var \Symfony\Component\Mime\MimeTypes $guesser */
-            $extensions = $guesser::getDefault()->getExtensions($this->getMimeType());
-            $extension = $extensions[0] ?? null;
+        if ($extension = pathinfo($this->filename)['extension'] ?? null) {
+            return $extension;
         }
 
-        if (is_null($extension)) {
-            $deprecatedGuesser = "\Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser";
-            if (class_exists($deprecatedGuesser)) {
-                /** @var \Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser $deprecatedGuesser */
-                $extension = $deprecatedGuesser::getInstance()->guess($this->getMimeType());
-            }
-        }
-
-        if (is_null($extension)) {
-            $parts = explode('.', $this->filename);
-            $extension = count($parts) > 1 ? end($parts) : null;
-        }
-
-        if (is_null($extension)) {
-            $parts = explode('.', $this->name);
-            $extension = count($parts) > 1 ? end($parts) : null;
-        }
-
-        return $extension;
+        return MimeTypes::getDefault()->getExtensions(
+            $this->getContentType() ?? $this->getMimeType()
+        )[0] ?? null;
     }
 
     /**
