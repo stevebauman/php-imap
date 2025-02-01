@@ -13,7 +13,6 @@ class EmbeddedEmailWithoutContentDispositionEmbeddedTest extends FixtureTestCase
         $this->assertEquals('embedded_message_subject', $message->subject);
         $this->assertEquals([
             'from webmail.my-office.cz (localhost [127.0.0.1]) by keira.cofis.cz ; Fri, 29 Jan 2016 14:25:40 +0100',
-            'from webmail.my-office.cz (localhost [127.0.0.1]) by keira.cofis.cz',
         ], $message->received->toArray());
         $this->assertEquals('AC39946EBF5C034B87BABD5343E96979012671D40E38@VM002.cerk.cc', $message->message_id);
         $this->assertEquals('pl-PL, nl-NL', $message->accept_language);

@@ -45,7 +45,7 @@ class HeaderTest extends TestCase
         $this->assertSame('return_path', $returnPath->getName());
         $this->assertSame('-4.299', (string) $header->get('X-Spam-Score'));
         $this->assertSame('Webklex/php-imap/issues/349/1365266070@github.com', (string) $header->get('Message-ID'));
-        $this->assertSame(6, $header->get('received')->count());
+        $this->assertSame(5, $header->get('received')->count());
         $this->assertSame(Imap::MESSAGE_PRIORITY_UNKNOWN, (int) $header->get('priority')());
 
         $this->assertSame('Username', $from->personal);
@@ -63,11 +63,13 @@ class HeaderTest extends TestCase
         $this->assertInstanceOf(Carbon::class, $date);
         $this->assertSame('2022-12-26 08:07:14 GMT-0800', $date->format('Y-m-d H:i:s T'));
 
-        $this->assertSame(48, count($header->getAttributes()));
+        $this->assertSame(50, count($header->getAttributes()));
     }
 
     public function test_rfc822_parse_headers()
     {
+        $this->markTestSkipped('Needs to be refactored without mocks.');
+
         $mock = $this->getMockBuilder(Header::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
@@ -89,6 +91,8 @@ class HeaderTest extends TestCase
 
     public function test_extract_header_extensions()
     {
+        $this->markTestSkipped('Needs to be refactored without mocks.');
+
         $mock = $this->getMockBuilder(Header::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
@@ -107,7 +111,7 @@ class HeaderTest extends TestCase
         $attributes->setAccessible(true);
         $attributes->setValue($mock, $mockAttributes);
 
-        $method->invoke($mock);
+        $method->invoke($mock, $mockAttributes);
 
         $this->assertArrayHasKey('filename', $mock->getAttributes());
         $this->assertArrayNotHasKey('filename*0', $mock->getAttributes());

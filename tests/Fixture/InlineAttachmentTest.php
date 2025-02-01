@@ -30,7 +30,7 @@ class InlineAttachmentTest extends FixtureTestCase
         $this->assertEquals('d2913999', $attachment->filename);
         $this->assertEquals('ii_15f0aad691bb745f', $attachment->id);
         $this->assertEquals('text', $attachment->type);
-        $this->assertEquals('', $attachment->getExtension());
+        $this->assertEquals('png', $attachment->getExtension());
         $this->assertEquals('image/png', $attachment->content_type);
         $this->assertEquals('6568c9e9c35a7fa06f236e89f704d8c9b47183a24f2c978dba6c92e2747e3a13', hash('sha256', $attachment->content));
         $this->assertEquals(1486, $attachment->size);

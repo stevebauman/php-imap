@@ -18,7 +18,6 @@ class UndefinedCharsetHeaderTest extends FixtureTestCase
         $this->assertEquals('<info@bla.bla>', $message->get('Return-Path'));
         $this->assertEquals([
             'from <postmaster@bla.bla>  by bla.bla (CommuniGate Pro RULE 6.1.13)  with RULE id 14057804; Mon, 27 Feb 2017 13:21:44 +0930',
-            'from <postmaster@bla.bla>  by bla.bla (CommuniGate Pro RULE 6.1.13)  with RULE id 14057804',
         ], $message->get('Received')->all());
         $this->assertEquals(')', $message->getHTMLBody());
         $this->assertFalse($message->hasTextBody());

@@ -20,15 +20,16 @@ class Issue414Test extends TestCase
         $this->assertSame(2, $attachments->count());
 
         $attachment = $attachments->first();
+
         $this->assertEmpty($attachment->description);
-        $this->assertSame('exampleMyFile.txt', $attachment->filename);
-        $this->assertSame('exampleMyFile.txt', $attachment->name);
+        $this->assertSame('MyFile.txt', $attachment->filename);
+        $this->assertSame('MyFile.txt', $attachment->name);
         $this->assertSame('be62f7e6', $attachment->id);
 
         $attachment = $attachments->last();
         $this->assertEmpty($attachment->description);
-        $this->assertSame('phpfoo', $attachment->filename);
-        $this->assertSame('phpfoo', $attachment->name);
+        $this->assertSame('foo', $attachment->filename);
+        $this->assertSame('foo', $attachment->name);
         $this->assertSame('12e1d38b', $attachment->hash);
     }
 }

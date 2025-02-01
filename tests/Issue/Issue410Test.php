@@ -46,11 +46,11 @@ class Issue410Test extends TestCase
 
         $attachments = $message->getAttachments();
 
-        self::assertSame(1, $attachments->count());
+        $this->assertSame(1, $attachments->count());
 
         $attachment = $attachments->first();
-        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->description);
-        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->filename);
-        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->name);
+        $this->assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->description);
+        $this->assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->filename);
+        $this->assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->name);
     }
 }
