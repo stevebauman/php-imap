@@ -284,7 +284,13 @@ class Attachment
 
             // sanitize $name
             // order of '..' is important
-            return str_replace(['\\', '/', chr(0), ':', '..'], '', $name);
+            $replaces = [
+                '/\\\\/' => '',
+                '/[\/\0:]+/' => '',
+                '/\.+/' => '.',
+            ];
+
+            return preg_replace(array_keys($replaces), array_values($replaces), $name);
         }
 
         return '';
