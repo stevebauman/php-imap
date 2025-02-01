@@ -40,6 +40,13 @@ class HeaderTest extends TestCase
         $to = $header->get('to')->first();
 
         $this->assertSame($rawHeader, $header->raw);
+        $this->assertSame([
+            0 => 'from mx.domain.tld by localhost with LMTP id SABVMNfGqWP+PAAA0J78UA (envelope-from <noreply@github.com>) for <someone@domain.tld>; Mon, 26 Dec 2022 17:07:51 +0100',
+            1 => 'from localhost (localhost [127.0.0.1]) by mx.domain.tld (Postfix) with ESMTP id C3828140227 for <someone@domain.tld>; Mon, 26 Dec 2022 17:07:51 +0100 (CET)',
+            2 => 'from mx.domain.tld ([127.0.0.1]) by localhost (mx.domain.tld [127.0.0.1]) (amavisd-new, port 10024) with ESMTP id JcIS9RuNBTNx for <someone@domain.tld>; Mon, 26 Dec 2022 17:07:21 +0100 (CET)',
+            3 => 'from smtp.github.com (out-26.smtp.github.com [192.30.252.209]) (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)) (No client certificate requested) by mx.domain.tld (Postfix) with ESMTPS id 6410B13FEB2 for <someone@domain.tld>; Mon, 26 Dec 2022 17:07:21 +0100 (CET)',
+            4 => 'from github-lowworker-891b8d2.va3-iad.github.net (github-lowworker-891b8d2.va3-iad.github.net [10.48.109.104]) by smtp.github.com (Postfix) with ESMTP id 176985E0200 for <someone@domain.tld>; Mon, 26 Dec 2022 08:07:14 -0800 (PST)',
+        ], $header->get('received')->toArray());
         $this->assertSame($returnPath, $header->return_path);
         $this->assertInstanceOf(Attribute::class, $subject);
         $this->assertSame('Re: [Webklex/php-imap] Read all folders? (Issue #349)', $subject->toString());
