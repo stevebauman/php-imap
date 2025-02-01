@@ -32,10 +32,10 @@
         "ext-openssl": "*",
         "ext-mbstring": "*",
         "ext-fileinfo": "*",
+        "symfony/mime": ">=6.0",
         "nesbot/carbon": ">=2.0",
         "illuminate/support": ">=9.0",
-        "illuminate/pagination": ">=9.0",
-        "symfony/http-foundation": ">=2.8"
+        "illuminate/pagination": ">=9.0"
     },
     "require-dev": {
         "laravel/pint": "^1.18",
