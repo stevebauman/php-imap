@@ -6,7 +6,7 @@ class PlainOnlyTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('plain_only.eml');
+        $message = $this->getMessageFixture('plain_only.eml');
 
         $this->assertEquals('Nuu', $message->getSubject());
         $this->assertEquals('Hi', $message->getTextBody());

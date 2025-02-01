@@ -6,7 +6,7 @@ class MissingDateTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('missing_date.eml');
+        $message = $this->getMessageFixture('missing_date.eml');
 
         $this->assertEquals('Nuu', $message->getSubject());
         $this->assertEquals('Hi', $message->getTextBody());

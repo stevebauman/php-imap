@@ -6,7 +6,7 @@ class MultipartWithoutBodyTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('multipart_without_body.eml');
+        $message = $this->getMessageFixture('multipart_without_body.eml');
 
         $this->assertEquals('This mail will not contain a body', $message->subject);
         $this->assertEquals('This mail will not contain a body', $message->getTextBody());

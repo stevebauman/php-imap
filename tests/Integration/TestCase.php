@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use Tests\InteractsWithFixtures;
 use Tests\TestCase as BaseTestCase;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientContainer;
@@ -10,6 +11,8 @@ use Webklex\PHPIMAP\Message;
 
 abstract class TestCase extends BaseTestCase
 {
+    use InteractsWithFixtures;
+
     const SPECIAL_CHARS = 'A_\\|!"£$%&()=?àèìòùÀÈÌÒÙ<>-@#[]_ß_б_π_€_✔_你_يد_Z_';
 
     protected static ClientContainer $container;
@@ -91,9 +94,9 @@ abstract class TestCase extends BaseTestCase
         return $message;
     }
 
-    protected function appendMessageTemplate(Folder $folder, string $template): Message
+    protected function appendMessageTemplate(Folder $folder, string $filename): Message
     {
-        $content = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', $template]));
+        $content = $this->getFixtureContents($filename);
 
         return $this->appendMessage($folder, $content);
     }

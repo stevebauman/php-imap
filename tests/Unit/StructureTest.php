@@ -2,15 +2,18 @@
 
 namespace Tests\Unit;
 
+use Tests\InteractsWithFixtures;
 use Tests\TestCase;
 use Webklex\PHPIMAP\Header;
 use Webklex\PHPIMAP\Structure;
 
 class StructureTest extends TestCase
 {
+    use InteractsWithFixtures;
+
     public function test_structure_parsing(): void
     {
-        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
+        $email = $this->getFixtureContents('1366671050@github.com.eml');
 
         if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);

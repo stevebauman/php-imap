@@ -8,7 +8,7 @@ class UndefinedCharsetHeaderTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('undefined_charset_header.eml');
+        $message = $this->getMessageFixture('undefined_charset_header.eml');
 
         $this->assertEquals('<monitor@bla.bla>', $message->get('x-real-to'));
         $this->assertEquals('1.0', $message->get('mime-version'));

@@ -8,7 +8,7 @@ class FourNestedEmailsTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('four_nested_emails.eml');
+        $message = $this->getMessageFixture('four_nested_emails.eml');
 
         $this->assertEquals('3-third-subject', $message->subject);
         $this->assertEquals('3-third-content', $message->getTextBody());

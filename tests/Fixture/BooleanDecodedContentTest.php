@@ -8,7 +8,7 @@ class BooleanDecodedContentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('boolean_decoded_content.eml');
+        $message = $this->getMessageFixture('boolean_decoded_content.eml');
 
         $this->assertEquals('Nuu', $message->subject);
         $this->assertEquals("Here is the problem mail\r\n \r\nBody text", $message->getTextBody());

@@ -9,7 +9,7 @@ class MultipleHtmlPartsAndAttachmentsTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('multiple_html_parts_and_attachments.eml');
+        $message = $this->getMessageFixture('multiple_html_parts_and_attachments.eml');
 
         $this->assertEquals('multiple_html_parts_and_attachments', $message->subject);
         $this->assertEquals("This is the first html part\r\n\r\n￼\r\n\r\nThis is the second html part\r\n\r\n￼\r\n\r\nThis is the last html part\r\nhttps://www.there.com", $message->getTextBody());

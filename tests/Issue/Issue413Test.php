@@ -30,7 +30,7 @@ class Issue413Test extends TestCase
 
     public function test_issue_email()
     {
-        $message = $this->getFixture('issue-413.eml');
+        $message = $this->getMessageFixture('issue-413.eml');
 
         $this->assertSame('Test Message', (string) $message->subject);
         $this->assertSame("This is just a test, so ignore it (if you can!)\r\n\r\nTony Marston", $message->getTextBody());

@@ -6,7 +6,7 @@ class ReferencesTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('references.eml');
+        $message = $this->getMessageFixture('references.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals("Hi\r\nHow are you?", $message->getTextBody());

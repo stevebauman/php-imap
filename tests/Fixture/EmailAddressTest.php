@@ -6,7 +6,7 @@ class EmailAddressTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('email_address.eml');
+        $message = $this->getMessageFixture('email_address.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals('123@example.com', $message->message_id);

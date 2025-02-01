@@ -11,7 +11,7 @@ class Issue410Test extends TestCase
 
     public function test_issue_email()
     {
-        $message = $this->getFixture('issue-410.eml');
+        $message = $this->getMessageFixture('issue-410.eml');
 
         $this->assertSame('☆第132号　「ガーデン&エクステリア」専門店のためのＱ&Ａサロン　【月刊エクステリア・ワーク】', (string) $message->subject);
 
@@ -26,7 +26,7 @@ class Issue410Test extends TestCase
 
     public function test_issue_email_b()
     {
-        $message = $this->getFixture('issue-410b.eml');
+        $message = $this->getMessageFixture('issue-410b.eml');
 
         $this->assertSame('386 - 400021804 - 19., Heiligenstädter Straße 80 - 0819306 - Anfrage Vergabevorschlag', (string) $message->subject);
 
@@ -42,7 +42,7 @@ class Issue410Test extends TestCase
 
     public function test_issue_email_symbols()
     {
-        $message = $this->getFixture('issue-410symbols.eml');
+        $message = $this->getMessageFixture('issue-410symbols.eml');
 
         $attachments = $message->getAttachments();
 

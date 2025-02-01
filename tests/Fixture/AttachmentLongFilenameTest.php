@@ -8,7 +8,7 @@ class AttachmentLongFilenameTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('attachment_long_filename.eml');
+        $message = $this->getMessageFixture('attachment_long_filename.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals('multipart/mixed', $message->content_type->last());

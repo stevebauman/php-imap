@@ -11,7 +11,7 @@ class Issue382Test extends TestCase
 
     public function test_issue_email()
     {
-        $message = $this->getFixture('issue-382.eml');
+        $message = $this->getMessageFixture('issue-382.eml');
 
         $from = $message->from->first();
 

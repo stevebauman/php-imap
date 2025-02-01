@@ -9,7 +9,7 @@ class MultipleNestedAttachmentsTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('multiple_nested_attachments.eml');
+        $message = $this->getMessageFixture('multiple_nested_attachments.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals('------------------------------------------------------------------------', $message->getTextBody());

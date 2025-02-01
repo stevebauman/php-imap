@@ -6,7 +6,7 @@ class GbkCharsetTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('gbk_charset.eml');
+        $message = $this->getMessageFixture('gbk_charset.eml');
 
         $this->assertEquals('Nuu', $message->subject);
         $this->assertEquals('Hi', $message->getTextBody());

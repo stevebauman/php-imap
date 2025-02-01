@@ -27,7 +27,7 @@ class DateTemplateTest extends FixtureTestCase
     public function test_fixture(): void
     {
         try {
-            $message = $this->getFixture('date-template.eml');
+            $message = $this->getMessageFixture('date-template.eml');
             $this->fail('Expected InvalidMessageDateException');
         } catch (InvalidMessageDateException $e) {
             $this->assertTrue(true);
@@ -38,7 +38,7 @@ class DateTemplateTest extends FixtureTestCase
                 'fallback_date' => '2021-01-01 00:00:00',
             ],
         ]);
-        $message = $this->getFixture('date-template.eml');
+        $message = $this->getMessageFixture('date-template.eml');
 
         $this->assertEquals('test', $message->subject);
         $this->assertEquals('1.0', $message->mime_version);

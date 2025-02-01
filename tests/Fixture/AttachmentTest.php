@@ -9,7 +9,7 @@ class AttachmentTest extends FixtureTestCase
      */
     public function test_decode_name(string $input, string $output): void
     {
-        $message = $this->getFixture('attachment_encoded_filename.eml');
+        $message = $this->getMessageFixture('attachment_encoded_filename.eml');
 
         $attachment = $message->getAttachments()->first();
 

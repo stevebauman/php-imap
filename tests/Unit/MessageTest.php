@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Tests\InteractsWithFixtures;
 use Tests\TestCase;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Attribute;
@@ -16,6 +17,8 @@ use Webklex\PHPIMAP\Message;
 
 class MessageTest extends TestCase
 {
+    use InteractsWithFixtures;
+
     protected Message $message;
 
     protected Client $client;
@@ -48,7 +51,7 @@ class MessageTest extends TestCase
     {
         $this->createNewProtocolMockup();
 
-        $email = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'messages', '1366671050@github.com.eml']));
+        $email = $this->getFixtureContents('1366671050@github.com.eml');
         if (! str_contains($email, "\r\n")) {
             $email = str_replace("\n", "\r\n", $email);
         }

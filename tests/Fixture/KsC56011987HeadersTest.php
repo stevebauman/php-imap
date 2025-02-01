@@ -6,7 +6,7 @@ class KsC56011987HeadersTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('ks_c_5601-1987_headers.eml');
+        $message = $this->getMessageFixture('ks_c_5601-1987_headers.eml');
 
         $this->assertEquals('RE: 회원님께 Ersi님이 메시지를 보냈습니다.', $message->subject);
         $this->assertEquals('=?ks_c_5601-1987?B?yLi/+LTUsrIgRXJzabTUwMwguN69w8H2uKYgurizwr3AtM+02S4=?=', $message->thread_topic);

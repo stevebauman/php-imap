@@ -8,7 +8,7 @@ class AttachmentEncodedFilenameTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('attachment_encoded_filename.eml');
+        $message = $this->getMessageFixture('attachment_encoded_filename.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals('multipart/mixed', $message->content_type->last());

@@ -6,7 +6,7 @@ class NullContentCharsetTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('null_content_charset.eml');
+        $message = $this->getMessageFixture('null_content_charset.eml');
 
         $this->assertEquals('test', $message->getSubject());
         $this->assertEquals('Hi!', $message->getTextBody());

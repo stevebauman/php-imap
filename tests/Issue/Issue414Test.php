@@ -11,7 +11,7 @@ class Issue414Test extends TestCase
 
     public function test_issue_email()
     {
-        $message = $this->getFixture('issue-414.eml');
+        $message = $this->getMessageFixture('issue-414.eml');
 
         $this->assertSame('Test', (string) $message->subject);
 

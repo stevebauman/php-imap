@@ -6,7 +6,7 @@ class UnknownEncodingTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('unknown_encoding.eml');
+        $message = $this->getMessageFixture('unknown_encoding.eml');
 
         $this->assertEquals('test', $message->getSubject());
         $this->assertEquals('MyPlain', $message->getTextBody());

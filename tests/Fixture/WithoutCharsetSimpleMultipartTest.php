@@ -6,7 +6,7 @@ class WithoutCharsetSimpleMultipartTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('without_charset_simple_multipart.eml');
+        $message = $this->getMessageFixture('without_charset_simple_multipart.eml');
 
         $this->assertEquals('test', $message->getSubject());
         $this->assertEquals('MyPlain', $message->getTextBody());

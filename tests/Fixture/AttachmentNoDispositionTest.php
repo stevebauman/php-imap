@@ -8,7 +8,7 @@ class AttachmentNoDispositionTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('attachment_no_disposition.eml');
+        $message = $this->getMessageFixture('attachment_no_disposition.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertEquals('multipart/mixed', $message->content_type->last());

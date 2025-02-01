@@ -9,7 +9,7 @@ class PecTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('pec.eml');
+        $message = $this->getMessageFixture('pec.eml');
 
         $this->assertEquals('Certified', $message->subject);
         $this->assertEquals('Signed', $message->getTextBody());

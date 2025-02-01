@@ -6,7 +6,7 @@ class UndisclosedRecipientsTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('undisclosed_recipients.eml');
+        $message = $this->getMessageFixture('undisclosed_recipients.eml');
 
         $this->assertEquals('test', $message->subject);
         $this->assertEquals('Hi!', $message->getTextBody());

@@ -6,7 +6,7 @@ class HtmlOnlyTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('html_only.eml');
+        $message = $this->getMessageFixture('html_only.eml');
 
         $this->assertEquals('Nuu', $message->subject);
         $this->assertEquals('<html><body>Hi</body></html>', $message->getHTMLBody());

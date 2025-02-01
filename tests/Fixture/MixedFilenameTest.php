@@ -8,7 +8,7 @@ class MixedFilenameTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('mixed_filename.eml');
+        $message = $this->getMessageFixture('mixed_filename.eml');
 
         $this->assertEquals('Свежий прайс-лист', $message->subject);
         $this->assertFalse($message->hasTextBody());

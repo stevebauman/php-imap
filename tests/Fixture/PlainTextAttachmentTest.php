@@ -8,7 +8,7 @@ class PlainTextAttachmentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('plain_text_attachment.eml');
+        $message = $this->getMessageFixture('plain_text_attachment.eml');
 
         $this->assertEquals('Plain text attachment', $message->subject);
         $this->assertEquals('Test', $message->getTextBody());

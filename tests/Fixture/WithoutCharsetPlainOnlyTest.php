@@ -6,7 +6,7 @@ class WithoutCharsetPlainOnlyTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('without_charset_plain_only.eml');
+        $message = $this->getMessageFixture('without_charset_plain_only.eml');
 
         $this->assertEquals('Nuu', $message->getSubject());
         $this->assertEquals('Hi', $message->getTextBody());

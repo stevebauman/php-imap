@@ -8,7 +8,7 @@ class EmbeddedEmailTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('embedded_email.eml');
+        $message = $this->getMessageFixture('embedded_email.eml');
 
         $this->assertEquals('embedded message', $message->subject);
         $this->assertEquals([

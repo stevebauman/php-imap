@@ -9,7 +9,7 @@ class InlineAttachmentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('inline_attachment.eml');
+        $message = $this->getMessageFixture('inline_attachment.eml');
 
         $this->assertEquals('', $message->subject);
         $this->assertFalse($message->hasTextBody());

@@ -6,7 +6,7 @@ class BccTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('bcc.eml');
+        $message = $this->getMessageFixture('bcc.eml');
 
         $this->assertEquals('test', $message->subject);
         $this->assertEquals('<return-path@here.com>', $message->return_path);

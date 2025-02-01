@@ -8,7 +8,7 @@ class EmbeddedEmailWithoutContentDispositionTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('embedded_email_without_content_disposition.eml');
+        $message = $this->getMessageFixture('embedded_email_without_content_disposition.eml');
 
         $this->assertEquals('Subject', $message->subject);
         $this->assertEquals([

@@ -8,7 +8,7 @@ class StructuredWithAttachmentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('structured_with_attachment.eml');
+        $message = $this->getMessageFixture('structured_with_attachment.eml');
 
         $this->assertEquals('Test', $message->getSubject());
         $this->assertEquals('Test', $message->getTextBody());

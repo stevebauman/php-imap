@@ -8,7 +8,7 @@ class MailThatIsAttachmentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('mail_that_is_attachment.eml');
+        $message = $this->getMessageFixture('mail_that_is_attachment.eml');
 
         $this->assertEquals('Report domain: yyy.cz Submitter: google.com Report-ID: 2244696771454641389', $message->subject);
         $this->assertEquals('2244696771454641389@google.com', $message->message_id);

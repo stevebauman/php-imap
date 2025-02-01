@@ -9,7 +9,7 @@ class NestesEmbeddedWithAttachmentTest extends FixtureTestCase
 {
     public function test_fixture(): void
     {
-        $message = $this->getFixture('nestes_embedded_with_attachment.eml');
+        $message = $this->getMessageFixture('nestes_embedded_with_attachment.eml');
 
         $this->assertEquals('Nuu', $message->subject);
         $this->assertEquals('Dear Sarah', $message->getTextBody());
