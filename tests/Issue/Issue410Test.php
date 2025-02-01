@@ -39,4 +39,18 @@ class Issue410Test extends TestCase
         $this->assertSame('2021_Mängelliste_0819306.xlsx', $attachment->filename);
         $this->assertSame('2021_Mängelliste_0819306.xlsx', $attachment->name);
     }
+
+    public function test_issue_email_symbols()
+    {
+        $message = $this->getFixture('issue-410symbols.eml');
+
+        $attachments = $message->getAttachments();
+
+        self::assertSame(1, $attachments->count());
+
+        $attachment = $attachments->first();
+        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->description);
+        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->filename);
+        self::assertSame('Checkliste 10.,DAVIDGASSE 76-80;2;2.pdf', $attachment->name);
+    }
 }
