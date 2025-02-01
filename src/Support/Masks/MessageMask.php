@@ -37,23 +37,23 @@ class MessageMask extends Mask
      */
     public function getCustomHTMLBody(?callable $callback = null): ?string
     {
-        $body = $this->getHtmlBody();
-
-        if ($body === null) {
+        if (is_null($body = $this->getHtmlBody())) {
             return null;
         }
 
-        if ($callback !== null) {
-            $aAttachment = $this->parent->getAttachments();
-
-            $aAttachment->each(function (Attachment $oAttachment) use (&$body, $callback) {
-                if (is_callable($callback)) {
-                    $body = $callback($body, $oAttachment);
-                } elseif (is_string($callback)) {
-                    call_user_func($callback, [$body, $oAttachment]);
-                }
-            });
+        if (is_null($callback)) {
+            return $body;
         }
+
+        $this->parent->getAttachments()->each(
+            function (Attachment $attachment) use (&$body, $callback) {
+                if (is_callable($callback)) {
+                    $body = $callback($body, $attachment);
+                } elseif (is_string($callback)) {
+                    call_user_func($callback, [$body, $attachment]);
+                }
+            }
+        );
 
         return $body;
     }
