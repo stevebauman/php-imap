@@ -430,16 +430,58 @@ class Header
             }
 
             // Only parse strings and don't parse any attributes like the user-agent.
-            if (! in_array($key, ['user-agent', 'subject', 'received'])) {
-                if (str_contains($value, ';') && str_contains($value, '=')) {
-                    $_attributes = $this->readAttribute($value);
-                    foreach ($_attributes as $_key => $_value) {
-                        if ($_value === '') {
-                            $this->set($key, $_key);
+            if (! in_array($key, ['user-agent', 'subject'])) {
+                if (($pos = strpos($value, ';')) !== false) {
+                    $original = substr($value, 0, $pos);
+                    $this->set($key, trim(rtrim($original)));
+
+                    // Get all potential extensions
+                    $extensions = explode(';', substr($value, $pos + 1));
+                    $previousKey = null;
+                    $previousValue = '';
+
+                    foreach ($extensions as $extension) {
+                        if (($pos = strpos($extension, '=')) !== false) {
+                            $key = substr($extension, 0, $pos);
+                            $key = trim(rtrim(strtolower($key)));
+
+                            $matches = [];
+
+                            if (preg_match('/^(?P<key_name>\w+)\*/', $key, $matches) !== 0) {
+                                $key = $matches['key_name'];
+                                $previousKey = $key;
+
+                                $value = substr($extension, $pos + 1);
+                                $value = str_replace('"', '', $value);
+                                $previousValue .= trim(rtrim($value));
+
+                                continue;
+                            }
+
+                            if (
+                                $previousKey !== null
+                                && $previousKey !== $key
+                                && ! isset($this->attributes[$previousKey])
+                            ) {
+                                $this->set($previousKey, $previousValue);
+
+                                $previousValue = '';
+                            }
+
+                            if (! isset($this->attributes[$key])) {
+                                $value = substr($extension, $pos + 1);
+                                $value = str_replace('"', '', $value);
+                                $value = trim(rtrim($value));
+
+                                $this->set($key, $value);
+                            }
+
+                            $previousKey = $key;
                         }
-                        if (! isset($this->attributes[$_key])) {
-                            $this->set($_key, $_value);
-                        }
+                    }
+
+                    if ($previousValue !== '') {
+                        $this->set($previousKey, $previousValue);
                     }
                 }
             }
