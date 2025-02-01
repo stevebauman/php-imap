@@ -117,6 +117,35 @@ class HeaderParser
         return (object) array_merge($headers, $imapHeaders);
     }
 
+    public static function split(string $header): array
+    {
+        $parts = [];
+        $buffer = '';
+        $inQuote = false;
+        $length = strlen($header);
+
+        for ($i = 0; $i < $length; $i++) {
+            $char = $header[$i];
+
+            if ($char === '"') {
+                // Toggle the quote flag; assumes no escaped quotes.
+                $inQuote = ! $inQuote;
+                $buffer .= $char;
+            } elseif ($char === ';' && ! $inQuote) {
+                $parts[] = $buffer;
+                $buffer = '';
+            } else {
+                $buffer .= $char;
+            }
+        }
+
+        if (strlen($buffer) > 0) {
+            $parts[] = $buffer;
+        }
+
+        return $parts;
+    }
+
     /**
      * Extract a given part as address array from a given header.
      */

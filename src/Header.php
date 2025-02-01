@@ -4,6 +4,8 @@ namespace Webklex\PHPIMAP;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Webklex\PHPIMAP\Exceptions\InvalidMessageDateException;
 use Webklex\PHPIMAP\Support\DateParser;
@@ -192,7 +194,14 @@ class Header
             }
         }
 
-        $this->extractHeaderExtensions();
+        $this->extractHeaderExtensions(
+            Arr::except($this->attributes, [
+                'user-agent',
+                'subject',
+                'received',
+            ])
+        );
+
         $this->findPriority();
     }
 
@@ -417,162 +426,58 @@ class Header
         return $addresses;
     }
 
-    /**
-     * Search and extract potential header extensions.
-     */
-    protected function extractHeaderExtensions(): void
+    protected function extractHeaderExtensions(array $headers): void
     {
-        foreach ($this->attributes as $key => $value) {
-            if (is_array($value)) {
-                $value = implode(', ', $value);
-            } else {
-                $value = (string) $value;
-            }
+        $extensions = [];
 
-            // Only parse strings and don't parse any attributes like the user-agent.
-            if (! in_array($key, ['user-agent', 'subject'])) {
-                if (($pos = strpos($value, ';')) !== false) {
-                    $original = substr($value, 0, $pos);
-                    $this->set($key, trim(rtrim($original)));
-
-                    // Get all potential extensions
-                    $extensions = explode(';', substr($value, $pos + 1));
-                    $previousKey = null;
-                    $previousValue = '';
-
-                    foreach ($extensions as $extension) {
-                        if (($pos = strpos($extension, '=')) !== false) {
-                            $key = substr($extension, 0, $pos);
-                            $key = trim(rtrim(strtolower($key)));
-
-                            $matches = [];
-
-                            if (preg_match('/^(?P<key_name>\w+)\*/', $key, $matches) !== 0) {
-                                $key = $matches['key_name'];
-                                $previousKey = $key;
-
-                                $value = substr($extension, $pos + 1);
-                                $value = str_replace('"', '', $value);
-                                $previousValue .= trim(rtrim($value));
-
-                                continue;
-                            }
-
-                            if (
-                                $previousKey !== null
-                                && $previousKey !== $key
-                                && ! isset($this->attributes[$previousKey])
-                            ) {
-                                $this->set($previousKey, $previousValue);
-
-                                $previousValue = '';
-                            }
-
-                            if (! isset($this->attributes[$key])) {
-                                $value = substr($extension, $pos + 1);
-                                $value = str_replace('"', '', $value);
-                                $value = trim(rtrim($value));
-
-                                $this->set($key, $value);
-                            }
-
-                            $previousKey = $key;
-                        }
-                    }
-
-                    if ($previousValue !== '') {
-                        $this->set($previousKey, $previousValue);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Read a given attribute string.
-     */
-    private function readAttribute(string $rawAttribute): array
-    {
-        $parsedRawAttributes = [];
-        $currentKey = '';
-        $currentValue = '';
-        $isInsideQuotedString = false;
-        $isParsingKey = true;
-        $isEscaped = false;
-
-        foreach (str_split($rawAttribute) as $char) {
-            if ($isEscaped) {
-                $isEscaped = false;
-
+        /** @var \Webklex\PHPIMAP\Attribute|string $header */
+        foreach ($headers as $name => $header) {
+            // If the header does not contain an equals
+            // or a semicolon, it is not an extension.
+            if (! str_contains($header, '=') && ! str_contains($header, ';')) {
                 continue;
             }
 
-            if ($isInsideQuotedString) {
-                if ($char === '\\') {
-                    $isEscaped = true;
-                } elseif ($char === '"' && $currentValue !== '') {
-                    $isInsideQuotedString = false;
-                } else {
-                    $currentValue .= $char;
+            // If the header contains a semicolon, it is broken up
+            // into segments. We need to extract the values and
+            // then merge them together into one string.
+            foreach (HeaderParser::split($header) as $value) {
+                [$key, $value] = array_pad(explode('=', $value, 2), 2, null);
+
+                // If the value is empty, we'll assume the key is the value.
+                if (! $value) {
+                    $this->set($name, $key);
+
+                    continue;
                 }
-            } else {
-                if ($isParsingKey) {
-                    if ($char === '"') {
-                        $isInsideQuotedString = true;
-                    } elseif ($char === ';') {
-                        $parsedRawAttributes[$currentKey] = $currentValue;
-                        $currentKey = '';
-                        $currentValue = '';
-                        $isParsingKey = true;
-                    } elseif ($char === '=') {
-                        $isParsingKey = false;
-                    } else {
-                        $currentKey .= $char;
-                    }
+
+                // Values may be surrounded by excess spaces.
+                // We'll trim them off before continuing.
+                $value = trim($value);
+
+                // If the key contains an asterisk, the header value is broken up
+                // into segments across new lines. We need to extract the values
+                // and then merge them together into one string.
+                $segments = array_values(
+                    array_filter(
+                        explode('*', $key), filled(...)
+                    )
+                );
+
+                if (count($segments) > 1) {
+                    $extensions[trim($segments[0])][$segments[1]] = $value;
                 } else {
-                    if ($char === '"' && $currentValue === '') {
-                        $isInsideQuotedString = true;
-                    } elseif ($char === ';') {
-                        $parsedRawAttributes[$currentKey] = $currentValue;
-                        $currentKey = '';
-                        $currentValue = '';
-                        $isParsingKey = true;
-                    } else {
-                        $currentValue .= $char;
-                    }
+                    $extensions[trim($key)][] = $value;
                 }
             }
         }
 
-        // Capture the final key/value pair
-        $parsedRawAttributes[$currentKey] = $currentValue;
-
-        // Normalize and combine attributes
-        $attributes = [];
-
-        foreach ($parsedRawAttributes as $key => $value) {
-            // Remove any trailing '*'
-            if (($pos = strpos($key, '*')) !== false) {
-                $key = substr($key, 0, $pos);
-            }
-
-            $key = strtolower(trim($key));
-            $value = str_replace(["\r", "\n"], '', $value);
-            $value = trim($value);
-
-            if (! isset($attributes[$key])) {
-                $attributes[$key] = '';
-            }
-
-            // Remove surrounding quotes if present
-            if (str_starts_with($value, '"') && str_ends_with($value, '"')) {
-                $value = substr($value, 1, -1);
-            }
-
-            $attributes[$key] .= $value;
+        foreach ($extensions as $name => $values) {
+            $this->set(
+                Str::of($name)->trim()->lower()->value(),
+                Str::of(implode($values))->unwrap('"')->trim(" \t\n\r\0\x0B\"")->basename()->value()
+            );
         }
-
-        return $attributes;
     }
 
     /**
