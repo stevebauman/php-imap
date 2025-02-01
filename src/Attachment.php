@@ -267,6 +267,7 @@ class Attachment
                 $parts = explode("''", $name);
 
                 if (EncodingAliases::has($parts[0])) {
+                    $encoding = $parts[0];
                     $name = implode("''", array_slice($parts, 1));
                 }
             }
@@ -283,18 +284,40 @@ class Attachment
                 $name = urldecode($name);
             }
 
-            // sanitize $name
-            // order of '..' is important
-            $replaces = [
-                '/\\\\/' => '',
-                '/[\/\0:]+/' => '',
-                '/\.+/' => '.',
-            ];
+            if (isset($encoding)) {
+                $name = EncodingAliases::convert($name, $encoding);
+            }
 
-            return preg_replace(array_keys($replaces), array_values($replaces), $name);
+            return $this->sanitizeFilename($name);
         }
 
         return '';
+    }
+
+    /**
+     * Sanitize the given filename.
+     */
+    protected function sanitizeFilename(string $filename): string
+    {
+        $replaces = [
+            '/\\\\/' => '',
+            '/[\/\0:]+/' => '',
+            '/\.+/' => '.',
+        ];
+
+        $startsWithDots = str_starts_with($filename, '..');
+
+        $filename = preg_replace(
+            array_keys($replaces),
+            array_values($replaces),
+            $filename
+        );
+
+        if ($startsWithDots) {
+            return substr($filename, 1);
+        }
+
+        return $filename;
     }
 
     /**

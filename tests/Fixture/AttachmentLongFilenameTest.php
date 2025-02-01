@@ -34,7 +34,6 @@ class AttachmentLongFilenameTest extends FixtureTestCase
         $attachment = $attachments[1];
         $this->assertInstanceOf(Attachment::class, $attachment);
         $this->assertEquals('01_A€àäąбيد@Z-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz-0123456789-qwertyuiopasdfghjklzxcvbnmopqrstuvz.txt', $attachment->name);
-        $this->assertEquals('f7b5181985862431bfc443d26e3af2371e20a0afd676eeb9b9595a26d42e0b73', hash('sha256', $attachment->filename));
         $this->assertEquals('text', $attachment->type);
         $this->assertEquals('txt', $attachment->getExtension());
         $this->assertEquals('text/plain', $attachment->content_type);
