@@ -128,7 +128,7 @@ class Query
             if (count($statement) == 1) {
                 $query .= $statement[0];
             } else {
-                if ($statement[1] === null) {
+                if (is_null($statement[1])) {
                     $query .= $statement[0];
                 } else {
                     if (is_numeric($statement[1])) {
@@ -358,7 +358,7 @@ class Query
      */
     public function paginate(int $perPage = 5, $page = null, string $pageName = 'imap_page'): LengthAwarePaginator
     {
-        if ($page === null && isset($_GET[$pageName]) && $_GET[$pageName] > 0) {
+        if (is_null($page) && isset($_GET[$pageName]) && $_GET[$pageName] > 0) {
             $this->page = intval($_GET[$pageName]);
         } elseif ($page > 0) {
             $this->page = (int) $page;

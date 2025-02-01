@@ -319,7 +319,7 @@ class Attachment
             $extension = $extensions[0] ?? null;
         }
 
-        if ($extension === null) {
+        if (is_null($extension)) {
             $deprecatedGuesser = "\Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser";
             if (class_exists($deprecatedGuesser)) {
                 /** @var \Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser $deprecatedGuesser */
@@ -327,12 +327,12 @@ class Attachment
             }
         }
 
-        if ($extension === null) {
+        if (is_null($extension)) {
             $parts = explode('.', $this->filename);
             $extension = count($parts) > 1 ? end($parts) : null;
         }
 
-        if ($extension === null) {
+        if (is_null($extension)) {
             $parts = explode('.', $this->name);
             $extension = count($parts) > 1 ? end($parts) : null;
         }

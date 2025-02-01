@@ -148,7 +148,7 @@ class QueryTest extends TestCase
 
         $item = $query->getQuery()->first();
         $criteria = str_replace('CUSTOM ', '', $criteria);
-        $expected = $value === null ? [$criteria] : [$criteria, $value];
+        $expected = is_null($value) ? [$criteria] : [$criteria, $value];
 
         if ($date === true && $value instanceof Carbon) {
             $date_format = ClientContainer::get('date_format', 'd M y');

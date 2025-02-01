@@ -235,7 +235,7 @@ class Folder
     {
         $this->client->openFolder($this->path);
 
-        $sequence = $sequence === null ? '1:*' : $sequence;
+        $sequence = is_null($sequence) ? '1:*' : $sequence;
 
         $uid = ClientContainer::get('options.sequence', Imap::ST_MSGN);
 

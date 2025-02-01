@@ -95,7 +95,7 @@ class ClientManager
      */
     protected function getClientConfig(?string $name): array
     {
-        if (empty($name === null) || $name === 'null') {
+        if (empty($name) || $name === 'null') {
             return ['driver' => 'null'];
         }
 

@@ -437,7 +437,7 @@ class Message
 
             $flagKey = strtolower($flag);
 
-            if ($this->availableFlags === null || in_array($flagKey, $this->availableFlags)) {
+            if (is_null($this->availableFlags) || in_array($flagKey, $this->availableFlags)) {
                 $this->flags->put($flagKey, $flag);
             }
         }

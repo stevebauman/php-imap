@@ -110,7 +110,7 @@ class Part
      */
     protected function parse(): void
     {
-        if ($this->header === null) {
+        if (is_null($this->header)) {
             $body = $this->findHeaders();
         } else {
             $body = $this->raw;

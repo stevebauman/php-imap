@@ -572,7 +572,7 @@ class ImapConnection extends Connection
         $key = null;
 
         foreach ($data[0][2] as $value) {
-            if ($key === null) {
+            if (is_null($key)) {
                 $key = $value;
             } else {
                 $result[strtolower($key)] = (int) $value;
@@ -594,7 +594,7 @@ class ImapConnection extends Connection
             $set = implode(',', $from);
         } elseif (is_array($from) && count($from) === 1) {
             $set = $from[0].':'.$from[0];
-        } elseif ($to === null) {
+        } elseif (is_null($to)) {
             $set = $from.':'.$from;
         } elseif ($to == INF) {
             $set = $from.':*';
@@ -642,7 +642,7 @@ class ImapConnection extends Connection
             }
 
             // Ignore other messages.
-            if ($to === null && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] != $from : $tokens[0] != $from)) {
+            if (is_null($to) && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] != $from : $tokens[0] != $from)) {
                 continue;
             }
 
@@ -684,7 +684,7 @@ class ImapConnection extends Connection
             }
 
             // If we want only one message we can ignore everything else and just return.
-            if ($to === null && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] == $from : $tokens[0] == $from)) {
+            if (is_null($to) && ! is_array($from) && ($uid === Imap::ST_UID ? $tokens[2][$uidKey] == $from : $tokens[0] == $from)) {
                 // We still need to read all lines.
                 if (! $this->readLine($response, $tokens, $tag)) {
                     return $response->setResult($data);
@@ -698,7 +698,7 @@ class ImapConnection extends Connection
             }
         }
 
-        if ($to === null && ! is_array($from)) {
+        if (is_null($to) && ! is_array($from)) {
             throw new RuntimeException('The single id was not found in response');
         }
 
@@ -786,7 +786,7 @@ class ImapConnection extends Connection
 
         $command = $this->buildUidCommand('STORE', $uid);
 
-        $item = ($mode == '-' ? '-' : '+').($item === null ? 'FLAGS' : $item).($silent ? '.SILENT' : '');
+        $item = ($mode == '-' ? '-' : '+').(is_null($item) ? 'FLAGS' : $item).($silent ? '.SILENT' : '');
 
         $response = $this->requestAndResponse($command, [$set, $item, $flags], ! $silent);
 

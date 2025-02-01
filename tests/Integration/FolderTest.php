@@ -27,7 +27,8 @@ class FolderTest extends TestCase
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
-        if ($folder->getClient()->getFolder($child_path) === null) {
+
+        if (is_null($folder->getClient()->getFolder($child_path))) {
             $folder->getClient()->createFolder($child_path, false);
             $folder = $this->getFolder('INBOX');
         }
@@ -42,7 +43,7 @@ class FolderTest extends TestCase
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
-        if ($folder->getClient()->getFolder($child_path) === null) {
+        if (is_null($folder->getClient()->getFolder($child_path))) {
             $folder->getClient()->createFolder($child_path, false);
             $folder = $this->getFolder('INBOX');
         }
@@ -59,7 +60,7 @@ class FolderTest extends TestCase
 
         $delimiter = $this->getManager()->get('options.delimiter');
         $child_path = implode($delimiter, ['INBOX', 'test']);
-        if ($folder->getClient()->getFolder($child_path) === null) {
+        if (is_null($folder->getClient()->getFolder($child_path))) {
             $folder->getClient()->createFolder($child_path, false);
         }
 
@@ -77,10 +78,10 @@ class FolderTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder === null) {
+        if (is_null($folder = $client->getFolder($folder_path))) {
             $folder = $client->createFolder($folder_path, false);
         }
+
         $new_folder_path = implode($delimiter, ['INBOX', 'other']);
         $new_folder = $client->getFolder($new_folder_path);
         $new_folder?->delete(false);
@@ -105,10 +106,10 @@ class FolderTest extends TestCase
         $delimiter = $this->getManager()->get('options.delimiter');
         $folder_path = implode($delimiter, ['INBOX', 'test']);
 
-        $folder = $client->getFolder($folder_path);
-        if ($folder === null) {
+        if (is_null($folder = $client->getFolder($folder_path))) {
             $folder = $client->createFolder($folder_path, false);
         }
+
         $this->assertInstanceOf(Folder::class, $folder);
 
         if ($this->deleteFolder($folder) === false) {

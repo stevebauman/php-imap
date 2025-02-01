@@ -130,7 +130,7 @@ class Structure
     public function findParts(): array
     {
         if ($this->type === Imap::MESSAGE_TYPE_MULTIPART) {
-            if (($boundary = $this->header->getBoundary()) === null) {
+            if (is_null($boundary = $this->header->getBoundary())) {
                 throw new MessageContentFetchingException('no content found', 0);
             }
 
