@@ -22,14 +22,14 @@ class Client
     use HasEvents;
 
     /**
-     * The server hostname.
-     */
-    public string $host;
-
-    /**
      * The server port.
      */
     public int $port;
+
+    /**
+     * The server hostname.
+     */
+    public string $host;
 
     /**
      * The encryption type (none, ssl, tls, starttls or notls).
