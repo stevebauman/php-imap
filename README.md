@@ -9,6 +9,9 @@
 <a href="https://packagist.org/packages/stevebauman/php-imap"><img src="https://img.shields.io/packagist/l/stevebauman/php-imap.svg?style=flat-square"></a>
 </p>
 
+> [!important]
+> This fork is not maintained. View [ImapEngine](https://github.com/DirectoryTree/ImapEngine) for a better alternative.
+
 ## Description
 
 PHP IMAP is a library that helps you interact with mailboxes over IMAP.
